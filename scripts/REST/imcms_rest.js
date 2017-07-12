@@ -22,7 +22,7 @@
                 "/srv/www/tomcat/instance/182/virt/webapp/WEB-INF/images/images_2016/spring",
                 "/srv/www/tomcat/instance/182/virt/webapp/WEB-INF/images/images_2016/summer",
                 "/srv/www/tomcat/instance/182/virt/webapp/WEB-INF/images/images_2016/summer/family",
-                "/srv/www/tomcat/instance/182/virt/webapp/WEB-INF/images/images_2016/summer/family/porno",
+                "/srv/www/tomcat/instance/182/virt/webapp/WEB-INF/images/images_2016/summer/family/foto",
                 "/srv/www/tomcat/instance/182/virt/webapp/WEB-INF/images/images_2016/summer/img"
             ];
         },
