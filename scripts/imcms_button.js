@@ -1,37 +1,46 @@
 (function (Imcms) {
+    var IMCMS_FLAG_ACTIVE = "imcms-flag--active",
+        IMCMS_FLAG_ENG = "imcms-flag--en",
+        IMCMS_FLAG_SWE = "imcms-flag--swe",
+        IMCMS_FLAG = "imcms-flag"
+    ;
+
+    function changeNeighborFlag($btn) {
+        var neighborFlag = ($btn.next().length !== 0) ? $btn.next() : $btn.prev();
+
+        if (neighborFlag.hasClass(IMCMS_FLAG_ENG)) {
+            neighborFlag.toggleClass(IMCMS_FLAG_ACTIVE);
+
+        } else if (neighborFlag.hasClass(IMCMS_FLAG_SWE)) {
+            neighborFlag.removeClass(IMCMS_FLAG_ACTIVE);
+
+        } else {
+            neighborFlag.addClass(IMCMS_FLAG_ACTIVE);
+        }
+    }
+
+    function flagBtn(event) {
+        var $btn = $(this);
+
+        if (!$btn.hasClass(IMCMS_FLAG)) {
+            return;
+        }
+
+        if ($btn.hasClass(IMCMS_FLAG_ACTIVE)) {
+            event.preventDefault();
+
+        } else {
+            $btn.addClass(IMCMS_FLAG_ACTIVE);
+            changeNeighborFlag($btn);
+        }
+    }
+
     Imcms.Button = {
         init: function () {
-            $(".imcms-flags__flag").click(Imcms.Button.flagBtn);
+            $(".imcms-flags__flag").click(flagBtn);
             $("#goHome").click(function () {
                 window.location.href = "./index.html";
             });
-        },
-        flagBtn: function (event) {
-            var $btn = $(this);
-
-            if ($btn.hasClass("imcms-flag")) {
-                if ($btn.hasClass("imcms-flag--active")) {
-                    event.preventDefault();
-                }
-                else {
-                    $btn.addClass("imcms-flag--active");
-                    Imcms.Button.changeNeighborFlag($btn);
-                }
-            }
-        },
-
-        changeNeighborFlag: function ($btn) {
-            var neighborFlag = ($btn.next().length !== 0) ? $btn.next() : $btn.prev();
-
-            if (neighborFlag.hasClass("imcms-flag--en")) {
-                neighborFlag.toggleClass("imcms-flag--active");
-            }
-            else if (neighborFlag.hasClass("imcms-flag--sw")) {
-                neighborFlag.removeClass("imcms-flag--active");
-            }
-            else {
-                neighborFlag.addClass("imcms-flag--active");
-            }
         }
     };
 
