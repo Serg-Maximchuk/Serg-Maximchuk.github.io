@@ -1,7 +1,9 @@
 (function (Imcms) {
+    Imcms.require("imcms-buttons").init();
+
     Imcms.Select.init();
     Imcms.NumberBox.init();
-    Imcms.Button.init();
+    // Imcms.Button.init();
     Imcms.DatePicker.init();
     Imcms.TimePicker.init();
     Imcms.Keyword.init();

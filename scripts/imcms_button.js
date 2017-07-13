@@ -1,4 +1,4 @@
-(function (Imcms) {
+Imcms.define("imcms-buttons", ["jquery"], function ($) {
     var IMCMS_FLAG_ACTIVE = "imcms-flag--active",
         IMCMS_FLAG_ENG = "imcms-flag--en",
         IMCMS_FLAG_SWE = "imcms-flag--swe",
@@ -35,7 +35,7 @@
         }
     }
 
-    Imcms.Button = {
+    return {
         init: function () {
             $(".imcms-flags__flag").click(flagBtn);
             $("#goHome").click(function () {
@@ -43,8 +43,6 @@
             });
         }
     };
-
-    return Imcms.Button;
-})(Imcms);
+});
 
 //todo: add logic for other buttons according to their specifics
