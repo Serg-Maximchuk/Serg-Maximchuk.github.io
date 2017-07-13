@@ -51,7 +51,7 @@ Imcms.getScript = function (url, callback, async) {
                 callback(eval(ajaxRequest.responseText));
 
             } else {
-                console.error('Script get request error: ' + ajaxRequest.status);
+                console.error('Script get request error: ' + ajaxRequest.status + ' for url: ' + url);
             }
         }
     };
@@ -68,7 +68,7 @@ Imcms.require = function (id) {
     return this.modules[id];
 };
 
-(function () {
+(Imcms.init = function () {
     function loadDependency(dependencyName, dependency) {
         function define() {
             console.log("define");
@@ -77,7 +77,7 @@ Imcms.require = function (id) {
 
         define.amd = {};
         Imcms.getScript(dependency.path, function () {
-            var dependencies = ["imcms"].concat(dependency.dependencies||[])
+            var dependencies = ["imcms"].concat(dependency.dependencies || [])
             ;
             Imcms.define(dependencyName, dependencies, function () {
                 return dependency.factory && dependency.factory();
