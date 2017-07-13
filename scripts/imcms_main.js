@@ -67,3 +67,27 @@ Imcms.define = function (id, dependencies, factory) {
 Imcms.require = function (id) {
     return this.modules[id];
 };
+
+(function () {
+    function loadDependency(dependencyName, dependency) {
+        function define() {
+            console.log("define");
+            console.log(arguments);
+        }
+
+        define.amd = {};
+        Imcms.getScript(dependency.path, function () {
+            var dependencies = ["imcms"].concat(dependency.dependencies||[])
+            ;
+            Imcms.define(dependencyName, dependencies, function () {
+                return dependency.factory && dependency.factory();
+            });
+        });
+    }
+
+    for (dependencyName in Imcms.dependencies) {
+        if (Imcms.dependencies.hasOwnProperty(dependencyName)) {
+            loadDependency(dependencyName, Imcms.dependencies[dependencyName]);
+        }
+    }
+})();
