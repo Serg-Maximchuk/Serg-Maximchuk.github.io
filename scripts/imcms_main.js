@@ -38,3 +38,22 @@ Imcms.createXMLHttpRequest = function () {
     }
     return xhr;
 };
+Imcms.getScript = function (url, callback, async) {
+    if (async === undefined) {
+        async = true;
+    }
+    var ajaxRequest = this.createXMLHttpRequest();
+    ajaxRequest.open("GET", url, async);
+    ajaxRequest.overrideMimeType('application/javascript');
+    ajaxRequest.onreadystatechange = function () {
+        if (ajaxRequest.readyState === XMLHttpRequest.DONE) {
+            if (ajaxRequest.status === 200) {
+                callback(eval(ajaxRequest.responseText));
+
+            } else {
+                console.error('Script get request error: ' + ajaxRequest.status);
+            }
+        }
+    };
+    ajaxRequest.send(null);
+};
