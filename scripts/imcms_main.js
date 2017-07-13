@@ -57,3 +57,13 @@ Imcms.getScript = function (url, callback, async) {
     };
     ajaxRequest.send(null);
 };
+Imcms.define = function (id, dependencies, factory) {
+    console.log(id);
+    //todo: handle anonymous (dependencies, factory) and independence (id, factory) modules, maybe
+    var modules = dependencies.map(this.require.bind(this));
+    this.modules[id] = factory.apply(null, modules);
+};
+
+Imcms.require = function (id) {
+    return this.modules[id];
+};
