@@ -39,6 +39,81 @@ Imcms.define("imcms-calendar", ["imcms", "jquery"], function (imcms, $) {
         $thisDay.addClass("imcms-day--today");
     }
 
+    function buildCalendar(year, month, day, $calendar) {
+        if (!$calendar || !$calendar.length) {
+            return;
+        }
+
+        var calendarTitle = $calendar.find(".imcms-calendar__title"),
+            calendarTitleVal = calendarTitle.val().split(" "),
+            calendarWeek = $calendar.find(".imcms-calendar__week"),
+            firstDay = new Date(year, month - 1),
+            firstDate = parseInt(firstDay.getDate()),
+            firstDayNumber = parseInt(firstDay.getDay()),
+            lastD = new Date(year, month, 0),
+            lastDay = parseInt(lastD.getDate()),
+            prevMonthD = new Date(year, month - 1, 0),
+            prevMonthDay = parseInt(prevMonthD.getDate()),
+            count = 0,
+            monthList = [
+                "January",
+                "February",
+                "March",
+                "April",
+                "May",
+                "June",
+                "July",
+                "August",
+                "September",
+                "October",
+                "November",
+                "December"
+            ]
+        ;
+
+        calendarTitleVal[0] = monthList[month - 1];
+        calendarTitleVal[1] = year;
+        calendarTitle.html(calendarTitleVal.join(" "));
+        count = 0;
+        var previousMonthDayNumber = firstDayNumber - 1;
+        var nextMonthDayNumber = 1;
+        calendarWeek.each(function () {
+            $(this).find(".imcms-calendar__day").each(function () {
+                var $calendarDay = $(this);
+                if (count < firstDayNumber) {
+                    $calendarDay.removeClass("imcms-day--outer-next imcms-day--today")
+                        .addClass("imcms-day--outer-prev")
+                        .attr("data-month", prevMonthD.getMonth() + 1)
+                        .text(prevMonthDay - previousMonthDayNumber);
+                    previousMonthDayNumber--
+
+                } else if ((count - firstDayNumber + 1) > lastDay) {
+                    $calendarDay.removeClass("imcms-day--outer-prev imcms-day--today")
+                        .addClass("imcms-day--outer-next")
+                        .attr("data-month", firstDay.getMonth() + 2)
+                        .text(nextMonthDayNumber++);
+
+                } else {
+                    $calendarDay.removeClass("imcms-day--outer-prev imcms-day--outer-next imcms-day--today")
+                        .removeAttr("data-month")
+                        .text(firstDate);
+                    firstDate++;
+                    if ((count - firstDayNumber + 1) === day) {
+                        $calendarDay.addClass("imcms-day--today");
+                    }
+                }
+                $calendarDay.click(setSelectDate);
+                count++;
+            });
+        });
+
+        var lastCalendarWeekCss = ((firstDayNumber + lastDay) <= 35)
+            ? {"display": "none"}
+            : {"display": "block"};
+
+        calendarWeek.last().css(lastCalendarWeekCss);
+    }
+
     function chooseMonth() {
         var $btn = $(this),
             calendar = $btn.parents(".imcms-calendar"),
@@ -113,80 +188,7 @@ Imcms.define("imcms-calendar", ["imcms", "jquery"], function (imcms, $) {
                 this.buildCalendar(year, month, date, calendar);
             }
         },
-        buildCalendar: function (year, month, day, $calendar) {
-            if (!$calendar || !$calendar.length) {
-                return;
-            }
-
-            var calendarTitle = $calendar.find(".imcms-calendar__title"),
-                calendarTitleVal = calendarTitle.val().split(" "),
-                calendarWeek = $calendar.find(".imcms-calendar__week"),
-                firstDay = new Date(year, month - 1),
-                firstDate = parseInt(firstDay.getDate()),
-                firstDayNumber = parseInt(firstDay.getDay()),
-                lastD = new Date(year, month, 0),
-                lastDay = parseInt(lastD.getDate()),
-                prevMonthD = new Date(year, month - 1, 0),
-                prevMonthDay = parseInt(prevMonthD.getDate()),
-                count = 0,
-                monthList = [
-                    "January",
-                    "February",
-                    "March",
-                    "April",
-                    "May",
-                    "June",
-                    "July",
-                    "August",
-                    "September",
-                    "October",
-                    "November",
-                    "December"
-                ]
-            ;
-
-            calendarTitleVal[0] = monthList[month - 1];
-            calendarTitleVal[1] = year;
-            calendarTitle.html(calendarTitleVal.join(" "));
-            count = 0;
-            var previousMonthDayNumber = firstDayNumber - 1;
-            var nextMonthDayNumber = 1;
-            calendarWeek.each(function () {
-                $(this).find(".imcms-calendar__day").each(function () {
-                    var $calendarDay = $(this);
-                    if (count < firstDayNumber) {
-                        $calendarDay.removeClass("imcms-day--outer-next imcms-day--today")
-                            .addClass("imcms-day--outer-prev")
-                            .attr("data-month", prevMonthD.getMonth() + 1)
-                            .text(prevMonthDay - previousMonthDayNumber);
-                        previousMonthDayNumber--
-
-                    } else if ((count - firstDayNumber + 1) > lastDay) {
-                        $calendarDay.removeClass("imcms-day--outer-prev imcms-day--today")
-                            .addClass("imcms-day--outer-next")
-                            .attr("data-month", firstDay.getMonth() + 2)
-                            .text(nextMonthDayNumber++);
-
-                    } else {
-                        $calendarDay.removeClass("imcms-day--outer-prev imcms-day--outer-next imcms-day--today")
-                            .removeAttr("data-month")
-                            .text(firstDate);
-                        firstDate++;
-                        if ((count - firstDayNumber + 1) === day) {
-                            $calendarDay.addClass("imcms-day--today");
-                        }
-                    }
-                    $calendarDay.click(setSelectDate);
-                    count++;
-                });
-            });
-
-            var lastCalendarWeekCss = ((firstDayNumber + lastDay) <= 35)
-                ? {"display": "none"}
-                : {"display": "block"};
-
-            calendarWeek.last().css(lastCalendarWeekCss);
-        },
+        buildCalendar: buildCalendar,
         chooseMonth: chooseMonth
     };
 });
