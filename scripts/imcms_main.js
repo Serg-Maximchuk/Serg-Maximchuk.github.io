@@ -1,46 +1,47 @@
-Imcms = {};
-(Imcms.init = function () {
+(function () {
+    Function.prototype.bindArgsArray = function (argsArray, context) {
+        return function () {
+            this.apply(context, argsArray);
+        }.bind(this);
+    };
+
+    var modulesQueue = [],
+        failsCounter = 0;
+
     /**
      * AMD interface function to catch only imcms-configured modules
      */
     function define() {
-        console.log(arguments);
+        var anonymousModuleId = undefined,
+            depsForIndependentModule = [],
+            unresolvedArgs = Array.prototype.slice.call(arguments),
+            resolvedArgs;
 
-        if (arguments[0]) {
-            if (arguments[0].constructor === String) {
-                // means first arg is id
-                Imcms.define.apply(Imcms, arguments);
+        switch (arguments[0].constructor) {
+            case String : // means first arg is id
+                resolvedArgs = unresolvedArgs;
+                break;
 
-            } else if (arguments[0].constructor === Array) {
-                // in this case we have an anonymous module
-                Imcms.define.apply(Imcms, [undefined].concat(Array.prototype.slice.call(arguments)));
-            }
+            case Array : // in this case we have an anonymous module with dependencies array
+                resolvedArgs = [anonymousModuleId].concat(unresolvedArgs);
+                break;
+
+            case Function : // anonymous independent module
+                resolvedArgs = [anonymousModuleId, depsForIndependentModule].concat(unresolvedArgs);
+                break;
+
+            default :
+                console.error("Something wrong!");
+                console.error(arguments);
+                return;
         }
+
+        Imcms.define.apply(Imcms, resolvedArgs);
     }
 
     define.amd = {};
 
-    Imcms.modules = {
-        imcms: Imcms // default module
-    };
-    Imcms.dependencies = {
-        "jquery": {
-            path: "//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js",
-            factory: function () {
-                return $.noConflict(true);
-            }
-        },
-        "jquery-mask": {
-            dependencies: ["jquery"],
-            path: "./libs/jquery.mask.min.js",
-            factory: function () {
-                Imcms.define("jquery", ["jquery"], function ($) {
-                    return $.fn.init();
-                });
-            }
-        }
-    };
-    Imcms.createXMLHttpRequest = function () {
+    function createXMLHttpRequest() {
         if (typeof XMLHttpRequest !== 'undefined') {
             return new XMLHttpRequest();
         }
@@ -63,51 +64,81 @@ Imcms = {};
             }
         }
         return xhr;
-    };
-    Imcms.getScript = function (url, callback, async) {
-        if (async === undefined) {
-            async = true;
-        }
-        var ajaxRequest = this.createXMLHttpRequest();
-        ajaxRequest.open("GET", url, async);
-        ajaxRequest.overrideMimeType('application/javascript');
-        ajaxRequest.onreadystatechange = function () {
-            if (ajaxRequest.readyState === XMLHttpRequest.DONE) {
-                if (ajaxRequest.status === 200) {
-                    callback && callback(eval(ajaxRequest.responseText));
+    }
+
+    Imcms = {
+        dependencies: {
+            paths: {
+                "jquery": "//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js",
+                "jquery-mask": "./libs/jquery.mask.min.js"
+            }
+        },
+        getScript: function (url, callback, async) {
+            if (async === undefined) {
+                async = true;
+            }
+            var ajaxRequest = createXMLHttpRequest();
+            ajaxRequest.open("GET", url, async);
+            ajaxRequest.overrideMimeType('application/javascript');
+            ajaxRequest.onreadystatechange = function () {
+                if (ajaxRequest.readyState === XMLHttpRequest.DONE) {
+                    if (ajaxRequest.status === 200) {
+                        callback && callback(eval(ajaxRequest.responseText));
+
+                    } else {
+                        console.error('Script get request error: ' + ajaxRequest.status + ' for url: ' + url);
+                    }
+                }
+            };
+            ajaxRequest.send(null);
+        },
+        define: function (id, dependencies, factory) {
+            var modules = dependencies.map(this.require.bind(this));
+
+            if (modules.indexOf(undefined) === -1) {
+                // means all modules are loaded or independent module
+                var factoryResult;
+                failsCounter = 0;
+
+                if (Imcms.dependencies.paths[id]) {
+                    var path = Imcms.dependencies.paths[id];
+                    delete Imcms.dependencies.paths[id];
+                    Imcms.getScript(path, factory.bindArgsArray(modules));
 
                 } else {
-                    console.error('Script get request error: ' + ajaxRequest.status + ' for url: ' + url);
+                    factoryResult = factory.apply(null, modules);
                 }
+
+                if (id && factoryResult) {
+                    // register only non-anonymous modules
+                    Imcms.modules[id] = factoryResult;
+                }
+
+                var dependencyToDefineNext = modulesQueue.shift();
+                dependencyToDefineNext && setTimeout(Imcms.define.bindArgsArray(dependencyToDefineNext, Imcms));
+
+            } else if (failsCounter < 10) {
+                // means not all dependencies are loaded yet, try to load next one
+                modulesQueue.push(arguments);
+                failsCounter++;
+                var dependencyToDefine = modulesQueue.shift();
+                setTimeout(Imcms.define.bindArgsArray(dependencyToDefine, Imcms), 50);
+
+            } else {
+                console.error("Error while loading modules and their dependencies!");
+                console.error(modulesQueue);
             }
-        };
-        ajaxRequest.send(null);
-    };
-    Imcms.define = function (id, dependencies, factory) {
-        console.log(id);
-        //todo: handle anonymous (dependencies, factory) and independence (id, factory) modules, maybe
-        var modules = dependencies.map(this.require.bind(this));
-        this.modules[id] = factory.apply(null, modules);
-    };
-
-    Imcms.require = function (id) {
-        return this.modules[id];
-    };
-
-    function loadDependency(dependencyName, dependency) {
-        Imcms.getScript(dependency.path, dependency.factory || function () {
-                var dependencies = ["imcms"].concat(dependency.dependencies || [])
-                ;
-                Imcms.define(dependencyName, dependencies, function () {
-                    return dependency.factory && dependency.factory();
-                });
-            }
-        );
-    }
-
-    for (dependencyName in Imcms.dependencies) {
-        if (Imcms.dependencies.hasOwnProperty(dependencyName)) {
-            loadDependency(dependencyName, Imcms.dependencies[dependencyName]);
+        },
+        /**
+         *
+         * @param id
+         * @returns {*}
+         */
+        require: function (id) {
+            return this.modules[id];
         }
-    }
+    };
+    Imcms.modules = {
+        imcms: Imcms // default module
+    };
 })();
