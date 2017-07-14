@@ -5,6 +5,7 @@ Imcms.define("imcms-date-picker", ["imcms", "jquery", "imcms-calendar"], functio
             calendar = datePicker.find(".imcms-calendar")
         ;
 
+        // todo: is this needed?
         // if (!datePicker.hasClass("imcms-date-picker--active")) {
         //     datePicker.addClass("imcms-date-picker--active");
         // }
@@ -16,6 +17,7 @@ Imcms.define("imcms-date-picker", ["imcms", "jquery", "imcms-calendar"], functio
     }
 
     function closeCalendar(e) {
+        // todo: simplify condition
         if (
             !$(e.target).closest(".imcms-current-date__input").length
             &&

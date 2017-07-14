@@ -7,9 +7,6 @@ Imcms.define("init",
 
         imcms.Select.init();
         imcms.NumberBox.init();
-        // imcms.Button.init();
-        // imcms.DatePicker.init();
-        // imcms.TimePicker.init();
         imcms.Keyword.init();
         imcms.AdminPanel.init();
         imcms.Folders.init();
