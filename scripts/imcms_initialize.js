@@ -1,4 +1,4 @@
-Imcms.define(["imcms", "imcms-buttons"], function (imcms, imcmsButtons) {
+Imcms.define("init", ["imcms", "imcms-buttons"], function (imcms, imcmsButtons) {
     imcmsButtons.init();
 
     imcms.Select.init();
@@ -13,4 +13,6 @@ Imcms.define(["imcms", "imcms-buttons"], function (imcms, imcmsButtons) {
     imcms.ContentManager.init();
     imcms.ImageEditor.init();
     imcms.MenuEditor.init();
+
+    return true;
 });

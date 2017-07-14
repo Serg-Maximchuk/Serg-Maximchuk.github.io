@@ -81,17 +81,29 @@
             ajaxRequest.open("GET", url, async);
             ajaxRequest.overrideMimeType('application/javascript');
             ajaxRequest.onreadystatechange = function () {
-                if (ajaxRequest.readyState === XMLHttpRequest.DONE) {
-                    if (ajaxRequest.status === 200) {
-                        callback && callback(eval(ajaxRequest.responseText));
+                if (ajaxRequest.readyState !== XMLHttpRequest.DONE) {
+                    return;
+                }
 
-                    } else {
-                        console.error('Script get request error: ' + ajaxRequest.status + ' for url: ' + url);
-                    }
+                if (ajaxRequest.status === 200) {
+                    console.info('script ' + url + " loaded successfully.");
+                    callback && callback(eval(ajaxRequest.responseText));
+
+                } else {
+                    console.error('Script get request error: ' + ajaxRequest.status + ' for url: ' + url);
                 }
             };
             ajaxRequest.send(null);
         },
+        /**
+         * AMD define function.
+         * Defines module by it's (optional) id with (optional) dependencies
+         * by calling factory function after dependencies load.
+         *
+         * @param {string?} id defined module id
+         * @param {[]?} dependencies as module ids
+         * @param factory which return is this defined module in result
+         */
         define: function (id, dependencies, factory) {
             var modules = dependencies.map(this.require.bind(this));
 
@@ -130,9 +142,11 @@
             }
         },
         /**
+         * AMD require function.
+         * Call only if you are sure that required module loaded!
          *
-         * @param id
-         * @returns {*}
+         * @param {string} id required module id
+         * @returns {*} required module
          */
         require: function (id) {
             return this.modules[id];
