@@ -1,5 +1,97 @@
-(function (Imcms) {
-    Imcms.Calendar = {
+Imcms.define("imcms-calendar", ["imcms", "jquery"], function (imcms, $) {
+
+    function setSelectDate() {
+        var $thisDay = $(this),
+            curDateInput = $thisDay.parents(".imcms-date-picker").find(".imcms-current-date__input"),
+            curDateInputVal = curDateInput.val().split('-'),
+            year = curDateInputVal[0],
+            month = curDateInputVal[1],
+            date = $thisDay.text()
+        ;
+
+        if (curDateInput.val() === "--") {
+            var d = new Date();
+            year = d.getFullYear();
+            month = d.getMonth() + 1;
+            if (month < 10) month = "0" + month;
+        }
+
+        if ($thisDay.hasClass("imcms-day--outer-prev")) {
+            month = $thisDay.attr("data-month");
+            if (month < 10) month = "0" + month;
+
+        } else if ($thisDay.hasClass("imcms-day--outer-next")) {
+            month = $thisDay.attr("data-month");
+            if (month < 10) month = "0" + month;
+
+        } else {
+            year = curDateInputVal[0];
+            month = curDateInputVal[1];
+            date = $thisDay.text();
+        }
+
+        $thisDay.parents(".imcms-calendar__body")
+            .find(".imcms-day--today")
+            .removeClass("imcms-day--today");
+
+        if (date < 10) date = "0" + date;
+        curDateInput.val(year + "-" + month + "-" + date);
+        $thisDay.addClass("imcms-day--today");
+    }
+
+    function chooseMonth() {
+        var $btn = $(this),
+            calendar = $btn.parents(".imcms-calendar"),
+            curDate = $btn.parents(".imcms-date-picker")
+                .find(".imcms-current-date__input")
+                .val()
+                .split("-"),
+            year = parseInt(curDate[0]),
+            month = parseInt(curDate[1]),
+            date = parseInt(curDate[2])
+        ;
+
+        if ($btn.hasClass("imcms-calendar__prev-month")) {
+            if (parseInt(curDate[1]) > 1) {
+                curDate[1] = parseInt(curDate[1]) - 1;
+                curDate[1] = (curDate[1] < 10) ? "0" + curDate[1] : curDate[1];
+                $btn.parents(".imcms-date-picker")
+                    .find(".imcms-current-date__input")
+                    .val(curDate.join("-"))
+
+            } else if (parseInt(curDate[1]) === 1) {
+                curDate[1] = "12";
+                curDate[0] = year - 1;
+                $btn.parents(".imcms-date-picker")
+                    .find(".imcms-current-date__input")
+                    .val(curDate.join("-"))
+            }
+            month = curDate[1];
+            year = curDate[0];
+            buildCalendar(year, month, date, calendar);
+
+        } else {
+            if (parseInt(curDate[1]) < 12) {
+                curDate[1] = parseInt(curDate[1]) + 1;
+                curDate[1] = (curDate[1] < 10) ? "0" + curDate[1] : curDate[1];
+                $btn.parents(".imcms-date-picker")
+                    .find(".imcms-current-date__input")
+                    .val(curDate.join("-"))
+
+            } else if (parseInt(curDate[1]) === 12) {
+                curDate[1] = "01";
+                curDate[0] = year + 1;
+                $btn.parents(".imcms-date-picker")
+                    .find(".imcms-current-date__input")
+                    .val(curDate.join("-"))
+            }
+            month = curDate[1];
+            year = curDate[0];
+            buildCalendar(year, month, date, calendar);
+        }
+    }
+
+    return {
         init: function (datePicker) {
             var curDateInput = datePicker.find(".imcms-current-date__input"),
                 calendar = datePicker.find(".imcms-calendar"),
@@ -18,7 +110,7 @@
 
             if (!datePicker.hasClass("imcms-date-picker--active") && datePicker.find(".imcms-calendar").length !== 0) {
                 datePicker.addClass("imcms-date-picker--active");
-                Imcms.Calendar.buildCalendar(year, month, date, calendar);
+                this.buildCalendar(year, month, date, calendar);
             }
         },
         buildCalendar: function (year, month, day, $calendar) {
@@ -68,14 +160,14 @@
                             .attr("data-month", prevMonthD.getMonth() + 1)
                             .text(prevMonthDay - previousMonthDayNumber);
                         previousMonthDayNumber--
-                    }
-                    else if ((count - firstDayNumber + 1) > lastDay) {
+
+                    } else if ((count - firstDayNumber + 1) > lastDay) {
                         $calendarDay.removeClass("imcms-day--outer-prev imcms-day--today")
                             .addClass("imcms-day--outer-next")
                             .attr("data-month", firstDay.getMonth() + 2)
                             .text(nextMonthDayNumber++);
-                    }
-                    else {
+
+                    } else {
                         $calendarDay.removeClass("imcms-day--outer-prev imcms-day--outer-next imcms-day--today")
                             .removeAttr("data-month")
                             .text(firstDate);
@@ -84,7 +176,7 @@
                             $calendarDay.addClass("imcms-day--today");
                         }
                     }
-                    $calendarDay.click(Imcms.Calendar.setSelectDate);
+                    $calendarDay.click(setSelectDate);
                     count++;
                 });
             });
@@ -95,96 +187,6 @@
 
             calendarWeek.last().css(lastCalendarWeekCss);
         },
-        setSelectDate: function () {
-            var $thisDay = $(this),
-                curDateInput = $thisDay.parents(".imcms-date-picker").find(".imcms-current-date__input"),
-                curDateInputVal = curDateInput.val().split('-'),
-                year = curDateInputVal[0],
-                month = curDateInputVal[1],
-                date = $thisDay.text()
-            ;
-
-            if (curDateInput.val() === "--") {
-                var d = new Date();
-                year = d.getFullYear();
-                month = d.getMonth() + 1;
-                if (month < 10) month = "0" + month;
-            }
-
-            if ($thisDay.hasClass("imcms-day--outer-prev")) {
-                month = $thisDay.attr("data-month");
-                if (month < 10) month = "0" + month;
-            }
-            else if ($thisDay.hasClass("imcms-day--outer-next")) {
-                month = $thisDay.attr("data-month");
-                if (month < 10) month = "0" + month;
-            }
-            else {
-                year = curDateInputVal[0];
-                month = curDateInputVal[1];
-                date = $thisDay.text();
-            }
-
-            $thisDay.parents(".imcms-calendar__body")
-                .find(".imcms-day--today")
-                .removeClass("imcms-day--today");
-
-            if (date < 10) date = "0" + date;
-            curDateInput.val(year + "-" + month + "-" + date);
-            $thisDay.addClass("imcms-day--today");
-        },
-        chooseMonth: function () {
-            var $btn = $(this),
-                calendar = $btn.parents(".imcms-calendar"),
-                curDate = $btn.parents(".imcms-date-picker")
-                    .find(".imcms-current-date__input")
-                    .val()
-                    .split("-"),
-                year = parseInt(curDate[0]),
-                month = parseInt(curDate[1]),
-                date = parseInt(curDate[2])
-            ;
-
-            if ($btn.hasClass("imcms-calendar__prev-month")) {
-                if (parseInt(curDate[1]) > 1) {
-                    curDate[1] = parseInt(curDate[1]) - 1;
-                    curDate[1] = (curDate[1] < 10) ? "0" + curDate[1] : curDate[1];
-                    $btn.parents(".imcms-date-picker")
-                        .find(".imcms-current-date__input")
-                        .val(curDate.join("-"))
-                }
-                else if (parseInt(curDate[1]) === 1) {
-                    curDate[1] = "12";
-                    curDate[0] = year - 1;
-                    $btn.parents(".imcms-date-picker")
-                        .find(".imcms-current-date__input")
-                        .val(curDate.join("-"))
-                }
-                month = curDate[1];
-                year = curDate[0];
-                Imcms.Calendar.buildCalendar(year, month, date, calendar);
-            }
-            else {
-                if (parseInt(curDate[1]) < 12) {
-                    curDate[1] = parseInt(curDate[1]) + 1;
-                    curDate[1] = (curDate[1] < 10) ? "0" + curDate[1] : curDate[1];
-                    $btn.parents(".imcms-date-picker")
-                        .find(".imcms-current-date__input")
-                        .val(curDate.join("-"))
-                }
-                else if (parseInt(curDate[1]) === 12) {
-                    curDate[1] = "01";
-                    curDate[0] = year + 1;
-                    $btn.parents(".imcms-date-picker")
-                        .find(".imcms-current-date__input")
-                        .val(curDate.join("-"))
-                }
-                month = curDate[1];
-                year = curDate[0];
-                Imcms.Calendar.buildCalendar(year, month, date, calendar);
-            }
-        }
+        chooseMonth: chooseMonth
     };
-
-    return Imcms.Calendar;
-})(Imcms);
+});

@@ -129,7 +129,7 @@
                 var dependencyToDefineNext = modulesQueue.shift();
                 dependencyToDefineNext && setTimeout(Imcms.define.bindArgsArray(dependencyToDefineNext, Imcms));
 
-            } else if (failsCounter < 10) {
+            } else if (failsCounter < 100) { // dummy fail limit value
                 // means not all dependencies are loaded yet, try to load next one
                 modulesQueue.push(arguments);
                 failsCounter++;
@@ -138,6 +138,7 @@
 
             } else {
                 console.error("Error while loading modules and their dependencies!");
+                console.error(modules);
                 console.error(modulesQueue);
             }
         },
