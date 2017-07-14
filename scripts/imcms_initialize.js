@@ -1,4 +1,4 @@
-Imcms.define("init",
+Imcms.define(
     ["imcms", "imcms-buttons", "imcms-date-picker", "imcms-time-picker"],
     function (imcms, imcmsButtons, imcmsDatePicker, imcmsTimePicker) {
         imcmsButtons.init();
@@ -16,4 +16,5 @@ Imcms.define("init",
         imcms.MenuEditor.init();
 
         return true;
-    });
+    }
+);

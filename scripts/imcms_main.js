@@ -8,38 +8,87 @@
     var modulesQueue = [],
         failsCounter = 0;
 
-    /**
-     * AMD interface function to catch only imcms-configured modules
-     */
-    function define() {
+    function resolveDefineArgs() {
         var anonymousModuleId = undefined,
             depsForIndependentModule = [],
             unresolvedArgs = Array.prototype.slice.call(arguments),
             resolvedArgs;
 
-        switch (arguments[0].constructor) {
-            case String : // means first arg is id
-                resolvedArgs = unresolvedArgs;
-                break;
+        try {
+            switch (arguments[0] && arguments[0].constructor) {
+                case undefined : // anonymous module with undefined id, nothing to modify
+                case String : // means first arg is id
+                    resolvedArgs = unresolvedArgs;
+                    break;
 
-            case Array : // in this case we have an anonymous module with dependencies array
-                resolvedArgs = [anonymousModuleId].concat(unresolvedArgs);
-                break;
+                case Array : // in this case we have an anonymous module with dependencies array
+                    resolvedArgs = [anonymousModuleId].concat(unresolvedArgs);
+                    break;
 
-            case Function : // anonymous independent module
-                resolvedArgs = [anonymousModuleId, depsForIndependentModule].concat(unresolvedArgs);
-                break;
+                case Function : // anonymous independent module
+                    resolvedArgs = [anonymousModuleId, depsForIndependentModule].concat(unresolvedArgs);
+                    break;
 
-            default :
-                console.error("Something wrong!");
-                console.error(arguments);
-                return;
+                default :
+                    console.error("Something wrong!");
+                    console.error(arguments);
+            }
+        } catch (e) {
+            console.error(e);
+            console.error(arguments);
         }
 
-        Imcms.define.apply(Imcms, resolvedArgs);
+        return resolvedArgs;
+    }
+
+    /**
+     * AMD interface function to catch only imcms-configured modules
+     */
+    function define() {
+        var resolvedArgs = resolveDefineArgs.apply(null, arguments);
+        defineModule.apply(null, resolvedArgs);
     }
 
     define.amd = {};
+
+    function defineModule(id, dependencies, factory) {
+        var modules = dependencies.map(Imcms.require.bind(Imcms));
+
+        if (modules.indexOf(undefined) === -1) {
+            // means all modules are loaded or independent module
+            var factoryResult;
+            failsCounter = 0;
+
+            if (Imcms.dependencies.paths[id]) {
+                var path = Imcms.dependencies.paths[id];
+                delete Imcms.dependencies.paths[id];
+                Imcms.getScript(path, factory.bindArgsArray(modules));
+
+            } else {
+                factoryResult = factory.apply(null, modules);
+            }
+
+            if (id && factoryResult) {
+                // register only non-anonymous modules
+                Imcms.modules[id] = factoryResult;
+            }
+
+            var dependencyToDefineNext = modulesQueue.shift();
+            dependencyToDefineNext && setTimeout(Imcms.define.bindArgsArray(dependencyToDefineNext, Imcms));
+
+        } else if (failsCounter < 100) { // dummy fail limit value
+            // means not all dependencies are loaded yet, try to load next one
+            modulesQueue.push(arguments);
+            failsCounter++;
+            var dependencyToDefine = modulesQueue.shift();
+            setTimeout(Imcms.define.bindArgsArray(dependencyToDefine, Imcms), 50);
+
+        } else {
+            console.error("Error while loading modules and their dependencies!");
+            console.error(modules);
+            console.error(modulesQueue);
+        }
+    }
 
     function createXMLHttpRequest() {
         if (typeof XMLHttpRequest !== 'undefined') {
@@ -105,42 +154,7 @@
          * @param factory which return is this defined module in result
          */
         define: function (id, dependencies, factory) {
-            var modules = dependencies.map(this.require.bind(this));
-
-            if (modules.indexOf(undefined) === -1) {
-                // means all modules are loaded or independent module
-                var factoryResult;
-                failsCounter = 0;
-
-                if (Imcms.dependencies.paths[id]) {
-                    var path = Imcms.dependencies.paths[id];
-                    delete Imcms.dependencies.paths[id];
-                    Imcms.getScript(path, factory.bindArgsArray(modules));
-
-                } else {
-                    factoryResult = factory.apply(null, modules);
-                }
-
-                if (id && factoryResult) {
-                    // register only non-anonymous modules
-                    Imcms.modules[id] = factoryResult;
-                }
-
-                var dependencyToDefineNext = modulesQueue.shift();
-                dependencyToDefineNext && setTimeout(Imcms.define.bindArgsArray(dependencyToDefineNext, Imcms));
-
-            } else if (failsCounter < 100) { // dummy fail limit value
-                // means not all dependencies are loaded yet, try to load next one
-                modulesQueue.push(arguments);
-                failsCounter++;
-                var dependencyToDefine = modulesQueue.shift();
-                setTimeout(Imcms.define.bindArgsArray(dependencyToDefine, Imcms), 50);
-
-            } else {
-                console.error("Error while loading modules and their dependencies!");
-                console.error(modules);
-                console.error(modulesQueue);
-            }
+            define.apply(null, arguments);
         },
         /**
          * AMD require function.
