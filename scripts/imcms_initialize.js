@@ -1,16 +1,16 @@
-(function (Imcms) {
-    Imcms.require("imcms-buttons").init();
+Imcms.define(["imcms", "imcms-buttons"], function (imcms, imcmsButtons) {
+    imcmsButtons.init();
 
-    Imcms.Select.init();
-    Imcms.NumberBox.init();
-    // Imcms.Button.init();
-    Imcms.DatePicker.init();
-    Imcms.TimePicker.init();
-    Imcms.Keyword.init();
-    Imcms.AdminPanel.init();
-    Imcms.Folders.init();
-    Imcms.ChooseImg.init();
-    Imcms.ContentManager.init();
-    Imcms.ImageEditor.init();
-    Imcms.MenuEditor.init();
-})(Imcms);
+    imcms.Select.init();
+    imcms.NumberBox.init();
+    // imcms.Button.init();
+    imcms.DatePicker.init();
+    imcms.TimePicker.init();
+    imcms.Keyword.init();
+    imcms.AdminPanel.init();
+    imcms.Folders.init();
+    imcms.ChooseImg.init();
+    imcms.ContentManager.init();
+    imcms.ImageEditor.init();
+    imcms.MenuEditor.init();
+});
