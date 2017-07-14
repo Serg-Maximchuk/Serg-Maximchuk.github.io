@@ -31,7 +31,7 @@ Imcms.define("imcms-tests", ["imcms", "jquery"], function (imcms, $) {
         checkAnonymousIndependentModuleDefinition: function () {
             var isLoadedFlag = false;
 
-            imcms.define(function (imcms2) {
+            imcms.define(["imcms"], function (imcms2) {
                 isLoadedFlag = true;
                 console.assert(imcms === imcms2, "Anonymous independent module definition works wrong!");
             });
@@ -41,6 +41,13 @@ Imcms.define("imcms-tests", ["imcms", "jquery"], function (imcms, $) {
             }, 500);
 
             return true;
+        },
+        runAllTests: function () {
+            for (testFunc in this) {
+                if ((testFunc !== "runAllTests") && this.hasOwnProperty(testFunc)) {
+                    console.log(this[testFunc].call());
+                }
+            }
         }
     }
 });

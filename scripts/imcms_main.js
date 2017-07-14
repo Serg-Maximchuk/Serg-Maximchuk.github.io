@@ -51,6 +51,11 @@
 
     define.amd = {};
 
+    function loadNextDependencyWithDelay(delay) {
+        var dependencyToDefineNext = modulesQueue.shift();
+        dependencyToDefineNext && setTimeout(Imcms.define.bindArgsArray(dependencyToDefineNext, Imcms), delay);
+    }
+
     function defineModule(id, dependencies, factory) {
         var modules = dependencies.map(Imcms.require.bind(Imcms));
 
@@ -73,15 +78,13 @@
                 Imcms.modules[id] = factoryResult;
             }
 
-            var dependencyToDefineNext = modulesQueue.shift();
-            dependencyToDefineNext && setTimeout(Imcms.define.bindArgsArray(dependencyToDefineNext, Imcms));
+            loadNextDependencyWithDelay(0);
 
         } else if (failsCounter < 100) { // dummy fail limit value
             // means not all dependencies are loaded yet, try to load next one
             modulesQueue.push(arguments);
             failsCounter++;
-            var dependencyToDefine = modulesQueue.shift();
-            setTimeout(Imcms.define.bindArgsArray(dependencyToDefine, Imcms), 50);
+            loadNextDependencyWithDelay(50);
 
         } else {
             console.error("Error while loading modules and their dependencies!");
