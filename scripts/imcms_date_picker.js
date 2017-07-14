@@ -64,18 +64,18 @@ Imcms.define("imcms-date-picker", ["imcms", "jquery", "imcms-calendar"], functio
         ) {
             imcmsCalendar.buildCalendar(year, month, date, calendar);
             return true;
-        }
-        else if (currentDateInput.val() === "") {
+
+        } else if (currentDateInput.val() === "") {
             currentDateInput.val("--");
             imcmsCalendar.buildCalendar(year, month, date, calendar);
             return true;
-        }
-        else if (currentDateInput.val() === "--") {
+
+        } else if (currentDateInput.val() === "--") {
             imcmsCalendar.buildCalendar(year, month, date, calendar);
             return true;
-        }
-        else {
-            var cd = currentDate();
+
+        } else {
+            var cd = getCurrentDate();
             currentDateInput.val(cd);
             return false;
         }
