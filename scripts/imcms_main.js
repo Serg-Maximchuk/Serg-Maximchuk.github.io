@@ -56,7 +56,19 @@
         dependencyToDefineNext && setTimeout(Imcms.define.bindArgsArray(dependencyToDefineNext, Imcms), delay);
     }
 
+    function loadModuleById(id) {
+        var deps = (Imcms.dependencies[id] && Imcms.dependencies[id].deps) || [];
+        deps.forEach(loadModuleById);
+        defineModule(id, deps, function () {
+            // empty function to let module provide it's own factory
+        });
+    }
+
     function defineModule(id, dependencies, factory) {
+        if (Imcms.modules[id]) {
+            return;
+        }
+
         var modules = dependencies.map(Imcms.require.bind(Imcms));
 
         if (modules.indexOf(undefined) === -1) {
@@ -64,9 +76,9 @@
             var factoryResult;
             failsCounter = 0;
 
-            if (Imcms.dependencies.paths[id]) {
-                var path = Imcms.dependencies.paths[id];
-                delete Imcms.dependencies.paths[id];
+            if (Imcms.dependencies[id]) {
+                var path = Imcms.dependencies[id].path;
+                delete Imcms.dependencies[id];
                 Imcms.getScript(path, factory.bindArgsArray(modules));
 
             } else {
@@ -80,13 +92,19 @@
 
             loadNextDependencyWithDelay(0);
 
-        } else if (failsCounter < 100) { // dummy fail limit value
-            // means not all dependencies are loaded yet, try to load next one
-            modulesQueue.push(arguments);
-            failsCounter++;
-            loadNextDependencyWithDelay(50);
-
         } else {
+            dependencies.filter(function (dependency) {
+                return !Imcms.modules[dependency];
+            }).map(loadModuleById);
+
+            if (failsCounter < 100) { // dummy fail limit value
+                // means not all dependencies are loaded yet, try to load next one
+                modulesQueue.push(arguments);
+                failsCounter++;
+                loadNextDependencyWithDelay(50);
+                return;
+            }
+
             console.error("Error while loading modules and their dependencies!");
             console.error(modules);
             console.error(modulesQueue);
@@ -120,9 +138,12 @@
 
     Imcms = {
         dependencies: {
-            paths: {
-                "jquery": "//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js",
-                "jquery-mask": "./libs/jquery.mask.min.js"
+            "jquery": {
+                path: "//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"
+            },
+            "jquery-mask": {
+                path: "./libs/jquery.mask.min.js",
+                deps: ["jquery"]
             }
         },
         getScript: function (url, callback, async) {
