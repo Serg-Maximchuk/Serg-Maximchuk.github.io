@@ -51,21 +51,24 @@
 
     define.amd = {};
 
-    function loadNextDependencyWithDelay(delay) {
-        var dependencyToDefineNext = modulesQueue.shift();
-        dependencyToDefineNext && setTimeout(Imcms.define.bindArgsArray(dependencyToDefineNext, Imcms), delay);
-    }
-
     function loadModuleById(id) {
-        var deps = (Imcms.dependencies[id] && Imcms.dependencies[id].deps) || [];
-        deps.forEach(loadModuleById);
-        defineModule(id, deps, function () {
-            // empty function to let module provide it's own factory
+        if (!Imcms.dependencies[id]) {
+            return;
+        }
+
+        setTimeout(function () {
+            var deps = (Imcms.dependencies[id] && Imcms.dependencies[id].deps) || [];
+            deps.forEach(loadModuleById);
+            defineModule(id, deps, function () {
+                // empty function to let module provide it's own factory
+            });
         });
     }
 
     function defineModule(id, dependencies, factory) {
         if (Imcms.modules[id]) {
+            // skip already registered modules
+            console.info("Trying to load already loaded module " + id);
             return;
         }
 
@@ -90,7 +93,8 @@
                 Imcms.modules[id] = factoryResult;
             }
 
-            loadNextDependencyWithDelay(0);
+            var dependencyToDefineNext = modulesQueue.shift();
+            dependencyToDefineNext && setTimeout(Imcms.define.bindArgsArray(dependencyToDefineNext, Imcms));
 
         } else {
             dependencies.filter(function (dependency) {
@@ -101,13 +105,12 @@
                 // means not all dependencies are loaded yet, try to load next one
                 modulesQueue.push(arguments);
                 failsCounter++;
-                loadNextDependencyWithDelay(50);
                 return;
             }
 
             console.error("Error while loading modules and their dependencies!");
-            console.error(modules);
             console.error(modulesQueue);
+            console.error(dependencies);
         }
     }
 
