@@ -38,6 +38,11 @@ Imcms.config = {
             return;
         }
 
+        if (!Imcms.config.dependencies[id]) {
+            console.error("Not found dependency: " + id);
+            return;
+        }
+
         if (Imcms.config.dependencies[id].init) {
             module = Imcms.config.dependencies[id].init.call(null, module);
         }
@@ -235,7 +240,11 @@ Imcms.config = {
 
     function defineModule(id, dependencies, factory) {
         Imcms.require(dependencies, function () {
-            registerModule(id, factory.apply(null, arguments));
+            var module = factory.apply(null, arguments);
+            if (id) {
+                // register only not anonymous modules
+                registerModule(id, module);
+            }
         });
     }
 
@@ -258,9 +267,6 @@ Imcms.config = {
                 console.error(id);
             }
         }
-
-        console.log("Pushing requires: ");
-        console.log(requires);
 
         Imcms.requiresQueue.push({
             requires: requires,
@@ -312,8 +318,6 @@ Imcms.config = {
             });
 
             if (undefinedRequires.length) {
-                console.log("Still not all deps are loaded:");
-                console.log(undefinedRequires);
                 Imcms.requiresQueue.push(require);
                 return;
             }
@@ -323,9 +327,6 @@ Imcms.config = {
             var requires = require.requires.map(function (require2) {
                 return Imcms.modules[require2];
             });
-
-            console.log("Resolved deps:");
-            console.log(requires);
 
             require.onLoad.apply(null, requires);
         });

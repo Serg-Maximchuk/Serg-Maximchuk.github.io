@@ -6,24 +6,24 @@ Imcms.define("imcms-tests", ["imcms", "jquery"], function (imcms, $) {
     return {
         checkRequired: function () {
             Imcms.require("imcms-tests", function (tests) {
-                console.log("%c Testing module require", "color: blue;");
                 console.assert(tests, "Tests are empty! " + tests);
-                return true;
+                return tests;
             });
+            return true;
         },
         requireJquery: function () {
             Imcms.require("jquery", function ($) {
-                console.log("%c Testing jQuery", "color: blue;");
                 console.assert($, "jQuery not loaded!" + $);
-                return true;
+                return $;
             });
+            return true;
         },
         requireTwoJqueries: function () {
             Imcms.require(["jquery", "jquery"], function ($1, $2) {
-                console.log("%c Testing two dependencies", "color: blue;");
                 console.assert($1 === $2, "Two deps not loaded!");
-                return true;
+                return $1 === $2;
             });
+            return true;
         },
         checkModules: function () {
             var isThereMoreThanOneModule = Object.keys(imcms.modules).length > 1;
@@ -70,11 +70,26 @@ Imcms.define("imcms-tests", ["imcms", "jquery"], function (imcms, $) {
             return true;
         },
         runAllTests: function () {
+            var testsRun = 0;
+            var totalPassed = 0;
+            var totalFailed = 0;
+
             for (testFunc in this) {
                 if ((testFunc !== "runAllTests") && this.hasOwnProperty(testFunc)) {
-                    console.log(this[testFunc].call());
+                    console.log("%c Running " + testFunc + " test.", "color: blue;");
+                    var passed = this[testFunc].call();
+                    var logMessage = "%c " + testFunc + (passed ? " passed." : " failed");
+                    var color = passed ? "color: green;" : "color: red;";
+                    console.log(logMessage, color);
+
+                    testsRun++;
+                    passed ? totalPassed++ : totalFailed++;
                 }
             }
+
+            console.info("%c Tests run: " + testsRun, "color: blue;");
+            console.info("%c Total passed: " + totalPassed, "color: green;");
+            console.info("%c Total failed: " + totalFailed, "color: red;");
         }
     }
 });
