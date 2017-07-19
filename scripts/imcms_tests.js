@@ -3,7 +3,7 @@
  * 14.07.17.
  */
 Imcms.define("imcms-tests", ["imcms", "jquery"], function (imcms, $) {
-    return imcms.Tests = {
+    return {
         checkModules: function () {
             var isThereMoreThanOneModule = Object.keys(imcms.modules).length > 1;
             console.assert(isThereMoreThanOneModule, "There should be more modules than only one!");
@@ -40,6 +40,12 @@ Imcms.define("imcms-tests", ["imcms", "jquery"], function (imcms, $) {
                 console.assert(isLoadedFlag, "Anonymous independent module definition not working!");
             }, 500);
 
+            return true;
+        },
+        checkJqueryRequire: function () {
+            Imcms.require("jquery", function ($) {
+                console.assert($.fn.jquery !== jQuery.fn.jquery, "jQueries have same versions!!");
+            });
             return true;
         },
         runAllTests: function () {

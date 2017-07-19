@@ -1,3 +1,30 @@
+Imcms = {};
+Imcms.modules = {
+    imcms: Imcms // default module
+};
+Imcms.config = {
+    // todo: support basePath!!!
+    basePath: "scripts"
+};
+Imcms.dependencies = {
+    "jquery": {
+        path: "//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js",
+        init: function ($) {
+            return $.noConflict(true);
+        }
+    },
+    "jquery-mask": {
+        path: "./libs/jquery.mask.min.js",
+        deps: ["jquery"]
+    },
+    "imcms-buttons": "imcms_button.js",
+    "imcms-date-picker": "imcms_date_picker.js",
+    "imcms-calendar": "imcms_calendar.js",
+    "imcms-time-picker": "imcms_time_picker.js",
+    "imcms-tests": "scripts/imcms_tests.js",
+    "imcms-start": "imcms_initialize.js"
+};
+
 (function () {
     Function.prototype.bindArgsArray = function (argsArray, context) {
         return function () {
@@ -5,8 +32,49 @@
         }.bind(this);
     };
 
+    var modulesThatLoadsRightNow = {};
+    var modulesWaitingForDependencies = {};
+
     var modulesQueue = [],
         failsCounter = 0;
+
+    function registerModule(id, module) {
+        console.log("Registering module " + id);
+        if (Imcms.modules[id]) {
+            console.error("Module already registered! " + id);
+            return;
+        }
+
+        if (Imcms.dependencies[id].init) {
+            module = Imcms.dependencies[id].init.call(null, module);
+        }
+
+        Imcms.modules[id] = module;
+    }
+
+    function getModule(id) {
+        return Imcms.modules[id];
+    }
+
+    function getDependency(id) {
+        return Imcms.dependencies[id];
+    }
+
+    function loadModuleAsync(id, path) {
+        setTimeout(loadModule.bind(null, id, path));
+    }
+
+    function loadScriptAsync(id, dependency) {
+        setTimeout(loadScript.bind(null, id, dependency));
+    }
+
+    function loadModule(id, path) {
+        Imcms.appendScript(path, Imcms.loadedDependencies[id]);
+    }
+
+    function loadScript(id, dependency) {
+        Imcms.getScript(dependency.path, Imcms.loadedDependencies[id]);
+    }
 
     function resolveDefineArgs() {
         var anonymousModuleId = undefined,
@@ -46,23 +114,42 @@
      */
     function define() {
         var resolvedArgs = resolveDefineArgs.apply(null, arguments);
-        defineModule.apply(null, resolvedArgs);
+        defineModule2.apply(null, resolvedArgs);
     }
 
     define.amd = {};
 
-    function loadModuleById(id) {
-        if (!Imcms.dependencies[id]) {
+    Imcms.loadedDependencies = {};
+
+    function loadDependencyById(id, onLoad) {
+        var dependency = getDependency(id);
+
+        if (!dependency) {
+            console.error("No dependency found with id " + id);
             return;
         }
 
-        setTimeout(function () {
-            var deps = (Imcms.dependencies[id] && Imcms.dependencies[id].deps) || [];
-            deps.forEach(loadModuleById);
-            defineModule(id, deps, function () {
-                // empty function to let module provide it's own factory
-            });
-        });
+        if (Imcms.loadedDependencies[id]) {
+            console.error("Dependency is already loaded!!!! " + id);
+            return;
+        }
+
+        modulesThatLoadsRightNow[id] = true;
+        Imcms.loadedDependencies[id] = onLoad;
+
+        var loader;
+
+        switch (typeof dependency) {
+            case "string": {
+                loader = loadModuleAsync;
+                break;
+            }
+            case "object": {
+                loader = loadScriptAsync;
+            }
+        }
+
+        loader.call(null, id, dependency);
     }
 
     function defineModule(id, dependencies, factory) {
@@ -72,34 +159,33 @@
             return;
         }
 
-        var modules = dependencies.map(Imcms.require.bind(Imcms));
+        var modules = dependencies.map(getModule);
 
         if (modules.indexOf(undefined) === -1) {
             // means all modules are loaded or independent module
-            var factoryResult;
             failsCounter = 0;
 
-            if (Imcms.dependencies[id]) {
-                var path = Imcms.dependencies[id].path;
-                delete Imcms.dependencies[id];
-                Imcms.getScript(path, factory.bindArgsArray(modules));
-
-            } else {
-                factoryResult = factory.apply(null, modules);
-            }
-
-            if (id && factoryResult) {
+            if (id) {
                 // register only non-anonymous modules
-                Imcms.modules[id] = factoryResult;
+                registerModule(id, factory.apply(null, modules));
             }
 
+            delete modulesWaitingForDependencies[id];
             var dependencyToDefineNext = modulesQueue.shift();
             dependencyToDefineNext && setTimeout(Imcms.define.bindArgsArray(dependencyToDefineNext, Imcms));
 
         } else {
-            dependencies.filter(function (dependency) {
+            if (modulesWaitingForDependencies[id]) {
+                console.log("Trying to load module that is already waiting for dependencies!");
+                return;
+            }
+
+            dependencies = dependencies.filter(function (dependency) {
                 return !Imcms.modules[dependency];
-            }).map(loadModuleById);
+            });
+
+            modulesWaitingForDependencies[id] = dependencies;
+            dependencies.map(loadDependencyById);
 
             if (failsCounter < 100) { // dummy fail limit value
                 // means not all dependencies are loaded yet, try to load next one
@@ -139,62 +225,195 @@
         return xhr;
     }
 
-    Imcms = {
-        dependencies: {
-            "jquery": {
-                path: "//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"
-            },
-            "jquery-mask": {
-                path: "./libs/jquery.mask.min.js",
-                deps: ["jquery"]
+    Imcms.getScript = function (url, callback, async) {
+        if (async === undefined) {
+            async = true;
+        }
+        var ajaxRequest = createXMLHttpRequest();
+        ajaxRequest.open("GET", url, async);
+        ajaxRequest.overrideMimeType('application/javascript');
+        ajaxRequest.onreadystatechange = function () {
+            if (ajaxRequest.readyState !== XMLHttpRequest.DONE) {
+                return;
             }
-        },
-        getScript: function (url, callback, async) {
-            if (async === undefined) {
-                async = true;
+
+            if (ajaxRequest.status === 200) {
+                console.info('script ' + url + " loaded successfully.");
+                callback && callback(eval(ajaxRequest.responseText));
+
+            } else {
+                console.error('Script get request error: ' + ajaxRequest.status + ' for url: ' + url);
             }
-            var ajaxRequest = createXMLHttpRequest();
-            ajaxRequest.open("GET", url, async);
-            ajaxRequest.overrideMimeType('application/javascript');
-            ajaxRequest.onreadystatechange = function () {
-                if (ajaxRequest.readyState !== XMLHttpRequest.DONE) {
-                    return;
-                }
+        };
+        ajaxRequest.send(null);
+    };
 
-                if (ajaxRequest.status === 200) {
-                    console.info('script ' + url + " loaded successfully.");
-                    callback && callback(eval(ajaxRequest.responseText));
+    Imcms.appendScript = function (url, callback) {
+        var script = document.createElement("script");
+        script.type = "text/javascript";
+        script.async = true;
 
-                } else {
-                    console.error('Script get request error: ' + ajaxRequest.status + ' for url: ' + url);
+        if (script.readyState) {  //IE
+            script.onreadystatechange = function () {
+                if (script.readyState === "loaded" ||
+                    script.readyState === "complete") {
+                    script.onreadystatechange = null;
+                    console.info('script ' + url + " appended successfully.");
+                    callback.call();
                 }
             };
-            ajaxRequest.send(null);
+        } else {  //Others
+            script.onload = function () {
+                console.info('module ' + url + " loaded successfully.");
+                callback.call();
+            };
+        }
+
+        script.src = url;
+        document.getElementsByTagName("head")[0].appendChild(script);
+    };
+
+    /**
+     * AMD define function.
+     * Defines module by it's (optional) id with (optional) dependencies
+     * by calling factory function after dependencies load.
+     *
+     * @param {string?} id defined module id
+     * @param {[]?} dependencies as module ids
+     * @param factory which return is this defined module in result
+     */
+    Imcms.define = function (id, dependencies, factory) {
+        define.apply(null, arguments);
+    };
+    /**
+     * AMD require function.
+     *
+     * @param {string|[string]} id required module id
+     * @param {function} onLoad function that will be called with loaded required modules
+     */
+    // todo: support not only but also array of ids!!!
+    Imcms.require = function (id, onLoad) {
+        registerRequires(id, onLoad);
+        setTimeout(runModuleLoader);
+
+        // if (this.modules[id]) {
+        //     setTimeout(onLoad.bind(null, this.modules[id]));
+        //     return;
+        // }
+        //
+        // loadDependencyById(id, onLoad);
+    };
+
+    function defineModule2(id, dependencies, factory) {
+        Imcms.require(dependencies, function () {
+            registerModule(id, factory.apply(null, arguments));
+        });
+    }
+
+    Imcms.requiresQueue = [];
+
+    function registerRequires(id, onLoad) {
+        var requires;
+
+        switch (id.constructor) {
+            case String : {
+                requires = [id];
+                break;
+            }
+            case Array : {
+                requires = id;
+                break;
+            }
+            default : {
+                console.error("Wrong type: ");
+                console.error(id);
+            }
+        }
+
+        console.log("Pushing requires: ");
+        console.log(requires);
+
+        Imcms.requiresQueue.push({
+            requires: requires,
+            onLoad: onLoad
+        });
+    }
+
+    function runModuleLoader() {
+        var secondLoadingCycle = [];
+
+        while (Imcms.requiresQueue.length) {
+            var require = Imcms.requiresQueue.shift();
+            var undefinedRequires = require.requires.filter(function (dependency) {
+                return !Imcms.modules[dependency];
+            });
+
+            if (undefinedRequires.length) {
+                undefinedRequires.forEach(function (id) {
+                    setTimeout(loadDependencyById.bind(null, id, checkOnLoad.bind(null, require)));
+                });
+
+                secondLoadingCycle.push(require);
+            } else {
+                var dependencies = require.requires.map(getModule);
+                require.onLoad.apply(null, dependencies);
+            }
+        }
+
+        Imcms.requiresQueue.concat(secondLoadingCycle);
+    }
+
+    function checkOnLoad(require) {
+        setTimeout(function () {
+            console.log("Imcms.modules: ");
+            console.log(Imcms.modules);
+            console.log("requires: ");
+            console.log(require.requires);
+
+            var undefinedRequires = require.requires.filter(function (dependency) {
+                return !Imcms.modules[dependency];
+            });
+
+            if (undefinedRequires.length) {
+                console.log("Still not all deps are loaded:");
+                console.log(undefinedRequires);
+                return;
+            }
+
+            var requires = require.requires.map(function (require2) {
+                return Imcms.modules[require2];
+            });
+
+            console.log("Resolved deps:");
+            console.log(requires);
+
+            require.onLoad.apply(null, requires);
+        });
+    }
+
+    Imcms.tests = {
+        checkRequired: function () {
+            Imcms.require("imcms-tests", function (tests) {
+                console.log("%c Testing module require", "color: blue;");
+                console.assert(tests, "Tests are empty! " + tests);
+                return true;
+            });
         },
-        /**
-         * AMD define function.
-         * Defines module by it's (optional) id with (optional) dependencies
-         * by calling factory function after dependencies load.
-         *
-         * @param {string?} id defined module id
-         * @param {[]?} dependencies as module ids
-         * @param factory which return is this defined module in result
-         */
-        define: function (id, dependencies, factory) {
-            define.apply(null, arguments);
+        requireJquery: function () {
+            Imcms.require("jquery", function ($) {
+                console.log("%c Testing jQuery", "color: blue;");
+                console.assert($, "jQuery not loaded!" + $);
+                return true;
+            });
         },
-        /**
-         * AMD require function.
-         * Call only if you are sure that required module loaded!
-         *
-         * @param {string} id required module id
-         * @returns {*} required module
-         */
-        require: function (id) {
-            return this.modules[id];
+        requireTwoJqueries: function () {
+            Imcms.require(["jquery", "jquery"], function ($1, $2) {
+                console.log("%c Testing two dependencies", "color: blue;");
+                console.assert($1 === $2, "Two deps not loaded!");
+                return true;
+            });
         }
     };
-    Imcms.modules = {
-        imcms: Imcms // default module
-    };
+
+    // Imcms.require("imcms-start").init();
 })();
