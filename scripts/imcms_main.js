@@ -35,7 +35,8 @@ Imcms = {
             "imcms-content-manager": "choose_img/imcms_content_manager.js",
             "imcms-image-editor-crop": "image_editor/imcms_image_editor_crop.js",
             "imcms-image-editor-bottom-panel": "image_editor/imcms_image_editor_bottom_panel.js",
-            "imcms-image-editor": "image_editor/imcms_image_editor.js"
+            "imcms-image-editor": "image_editor/imcms_image_editor.js",
+            "imcms-menu-editor": "menu_editor/imcms_menu_editor.js"
         }
     }
 };

@@ -1,10 +1,11 @@
-Imcms.define(
-    "imcms-start",
-    ["imcms", "imcms-buttons", "imcms-date-picker", "imcms-time-picker", "imcms-select", "imcms-numberbox",
-        "imcms-keyword", "imcms-folders", "imcms-admin-panel", "imcms-choose-image", "imcms-content-manager",
-        "imcms-image-editor"],
-    function (imcms, imcmsButtons, imcmsDatePicker, imcmsTimePicker, imcmsSelect, imcmsNumberbox, imcmsKeyword,
-              imcmsFolders, imcmsAdminPanel, imcmsChooseImg, imcmsContentManager, imcmsImageEditor) {
+Imcms.define("imcms-start",
+    [
+        "imcms-buttons", "imcms-date-picker", "imcms-time-picker", "imcms-select", "imcms-numberbox", "imcms-keyword",
+        "imcms-folders", "imcms-admin-panel", "imcms-choose-image", "imcms-content-manager", "imcms-image-editor",
+        "imcms-menu-editor"
+    ],
+    function (imcmsButtons, imcmsDatePicker, imcmsTimePicker, imcmsSelect, imcmsNumberbox, imcmsKeyword,
+              imcmsFolders, imcmsAdminPanel, imcmsChooseImg, imcmsContentManager, imcmsImageEditor, imcmsMenuEditor) {
         return {
             init: function () {
                 imcmsButtons.init();
@@ -18,8 +19,7 @@ Imcms.define(
                 imcmsChooseImg.init();
                 imcmsContentManager.init();
                 imcmsImageEditor.init();
-
-                imcms.MenuEditor.init();
+                imcmsMenuEditor.init();
             }
         };
     }
