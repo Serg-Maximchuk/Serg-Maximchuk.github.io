@@ -8,7 +8,7 @@ Imcms = {
         basePath: "scripts",
         dependencies: {
             "jquery": {
-                path: "//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js",
+                path: "//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js",
                 init: function ($) {
                     return $.noConflict(true);
                 }
@@ -16,6 +16,10 @@ Imcms = {
             "jquery-mask": {
                 path: "./libs/jquery.mask.min.js",
                 addon: "jquery-mask"
+            },
+            "jquery-ui": {
+                path: "//ajax.aspnetcdn.com/ajax/jquery.ui/1.12.1/jquery-ui.min.js",
+                addon: "jquery-ui"
             },
             "imcms-buttons": "imcms_button.js",
             "imcms-date-picker": "imcms_date_picker.js",
