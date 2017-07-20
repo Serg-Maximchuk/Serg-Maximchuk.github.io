@@ -69,6 +69,13 @@ Imcms.define("imcms-tests", ["imcms", "jquery"], function (imcms, $) {
             });
             return true;
         },
+        checkJqueryMaskModuleLoading: function () {
+            Imcms.require(["jquery", "jquery-mask"], function ($) {
+                console.assert($, "jQuery not loaded!");
+                console.assert($.mask, "jQuery.mask not found!");
+            });
+            return true;
+        },
         runAllTests: function () {
             var testsRun = 0;
             var totalPassed = 0;

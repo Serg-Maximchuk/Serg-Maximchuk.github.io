@@ -14,7 +14,11 @@ Imcms.config = {
         },
         "jquery-mask": {
             path: "./libs/jquery.mask.min.js",
-            deps: ["jquery"]
+            deps: ["jquery"],
+            init: function () {
+                // renew jquery to have new functions from plugin
+                // Imcms.modules.jquery = Imcms.modules.jquery.fn.init();
+            }
         },
         "imcms-buttons": "imcms_button.js",
         "imcms-date-picker": "imcms_date_picker.js",
@@ -281,6 +285,8 @@ Imcms.config = {
         });
     }
 
+    var failsCount = 0;
+
     function runModuleLoader() {
         while (Imcms.requiresQueue.length) {
             var require = Imcms.requiresQueue.shift();
@@ -295,10 +301,17 @@ Imcms.config = {
 
                 if (undefinedRequires.length) {
                     undefinedRequires.forEach(loadDependencyAndCheck(require));
-                } else {
+
+                } else if (failsCount < 100) {// dummy fail limit
+                    failsCount++;
                     delayedAddToQueue(require);
+
+                } else {
+                    console.error("Failed to load dependency:");
+                    console.error(require);
                 }
             } else {
+                failsCount = 0;
                 var dependencies = require.requires.map(getModule);
                 require.onLoad.apply(null, dependencies);
             }
@@ -319,6 +332,7 @@ Imcms.config = {
 
             if (undefinedRequires.length) {
                 Imcms.requiresQueue.push(require);
+                setTimeout(runModuleLoader);
                 return;
             }
 
