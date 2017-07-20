@@ -21,7 +21,9 @@ Imcms.config = {
         "imcms-time-picker": "imcms_time_picker.js",
         "imcms-tests": "imcms_tests.js",
         "imcms-start": "imcms_initialize.js",
-        "imcms-select": "imcms_select.js"
+        "imcms-select": "imcms_select.js",
+        "imcms-numberbox": "imcms_numberbox.js",
+        "imcms-keyword": "imcms_keyword.js"
     }
 };
 

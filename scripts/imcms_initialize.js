@@ -1,16 +1,16 @@
 Imcms.define(
     "imcms-start",
-    ["imcms", "imcms-buttons", "imcms-date-picker", "imcms-time-picker", "imcms-select"],
-    function (imcms, imcmsButtons, imcmsDatePicker, imcmsTimePicker, imcmsSelect) {
+    ["imcms", "imcms-buttons", "imcms-date-picker", "imcms-time-picker", "imcms-select", "imcms-numberbox", "imcms-keyword"],
+    function (imcms, imcmsButtons, imcmsDatePicker, imcmsTimePicker, imcmsSelect, imcmsNumberbox, imcmsKeyword) {
         return {
             init: function () {
                 imcmsButtons.init();
                 imcmsDatePicker.init();
                 imcmsTimePicker.init();
                 imcmsSelect.init();
+                imcmsNumberbox.init();
+                imcmsKeyword.init();
 
-                imcms.NumberBox.init();
-                imcms.Keyword.init();
                 imcms.AdminPanel.init();
                 imcms.Folders.init();
                 imcms.ChooseImg.init();
