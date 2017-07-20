@@ -20,7 +20,8 @@ Imcms.config = {
         "imcms-calendar": "imcms_calendar.js",
         "imcms-time-picker": "imcms_time_picker.js",
         "imcms-tests": "imcms_tests.js",
-        "imcms-start": "imcms_initialize.js"
+        "imcms-start": "imcms_initialize.js",
+        "imcms-select": "imcms_select.js"
     }
 };
 
@@ -299,7 +300,7 @@ Imcms.config = {
         setTimeout(function () {
             Imcms.requiresQueue.push(require);
             setTimeout(runModuleLoader);
-        });
+        }, 100);
     }
 
     var failsCount = 0;
