@@ -1,5 +1,5 @@
-(function (Imcms) {
-    Imcms.REST = {
+Imcms.define("imcms-rest", function () {
+    return {
         create: function (url) {
             console.log(url);
         },
@@ -33,4 +33,4 @@
             console.log(url);
         }
     }
-})(Imcms);
+});

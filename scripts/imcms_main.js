@@ -26,7 +26,9 @@ Imcms = {
             "imcms-select": "imcms_select.js",
             "imcms-numberbox": "imcms_numberbox.js",
             "imcms-keyword": "imcms_keyword.js",
-            "imcms-rest": "imcms_rest.js"
+            "imcms-rest": "imcms_rest.js",
+            "imcms-modal-window": "modal_window/imcms_modal_window.js",
+            "imcms-folders": "choose_img/imcms_folders.js"
         }
     }
 };
