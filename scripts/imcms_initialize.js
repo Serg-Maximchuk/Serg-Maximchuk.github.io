@@ -1,9 +1,9 @@
 Imcms.define(
     "imcms-start",
     ["imcms", "imcms-buttons", "imcms-date-picker", "imcms-time-picker", "imcms-select", "imcms-numberbox",
-        "imcms-keyword", "imcms-folders", "imcms-admin-panel", "imcms-choose-image"],
+        "imcms-keyword", "imcms-folders", "imcms-admin-panel", "imcms-choose-image", "imcms-content-manager"],
     function (imcms, imcmsButtons, imcmsDatePicker, imcmsTimePicker, imcmsSelect, imcmsNumberbox, imcmsKeyword,
-              imcmsFolders, imcmsAdminPanel, imcmsChooseImg) {
+              imcmsFolders, imcmsAdminPanel, imcmsChooseImg, imcmsContentManager) {
         return {
             init: function () {
                 imcmsButtons.init();
@@ -15,8 +15,8 @@ Imcms.define(
                 imcmsFolders.init();
                 imcmsAdminPanel.init();
                 imcmsChooseImg.init();
+                imcmsContentManager.init();
 
-                imcms.ContentManager.init();
                 imcms.ImageEditor.init();
                 imcms.MenuEditor.init();
             }
