@@ -24,7 +24,7 @@
     Imcms.PopUp = {
         init: function (currentPopUp) {
             Imcms.PopUp.openPopUp(currentPopUp);
-            currentPopUp.find(".imcms-button--negative").click(Imcms.PopUp.closePopUp)
+            currentPopUp && currentPopUp.find(".imcms-button--negative").click(Imcms.PopUp.closePopUp)
         },
         openPopUp: function (currentPopUp) {
             var $popUp = currentPopUp,

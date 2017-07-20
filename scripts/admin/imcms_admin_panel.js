@@ -1,46 +1,41 @@
-(function (Imcms) {
-    Imcms.AdminPanel = {
-        init: function () {
-            Imcms.AdminPanel.showPanel();
-            $(document).click(Imcms.AdminPanel.hidePanel);
-            $(".imcms-admin").find(".imcms-menu__item").click(Imcms.AdminPanel.menuEvent);
-        },
-        showPanel: function () {
-            $(document).mousemove(function (event) {
-                if (event.pageY >= 0 && event.pageY <= 15) {
-                    $(".imcms-admin").css({"top": 0});
-                }
+Imcms.define("imcms-admin-panel", ["jquery"], function ($) {
 
-            });
-
-        },
-        hidePanel: function (event) {
-            if (
-                !$(event.target).closest(".imcms-admin").length
-
-            ) {
-                $(".imcms-admin").css({"top": "-90px"});
-                event.stopPropagation();
+    function showPanel() {
+        $(document).mousemove(function (event) {
+            if (event.pageY >= 0 && event.pageY <= 15) {
+                $(".imcms-admin").css({"top": 0});
             }
+        });
+    }
 
-        },
-        menuEvent: function () {
-            var $menuItem = $(this),
-                popUpModal = $(".imcms-pop-up-modal"),
-                currentPopUp
-            ;
-
-            if ($menuItem.hasClass("imcms-menu__item--page-info")) {
-                popUpModal.each(function () {
-                    if ($(this).attr("data-menu") === "pageInfo") {
-                        $(this).css({"display": "block"});
-                        currentPopUp = $(this)
-                    }
-                })
-            }
-            Imcms.PopUp.init(currentPopUp);
+    function hidePanel(event) {
+        if (!$(event.target).closest(".imcms-admin").length) {
+            $(".imcms-admin").css({"top": "-90px"});
+            event.stopPropagation();
         }
-    };
+    }
 
-    return Imcms.AdminPanel
-})(Imcms);
+    function menuEvent() {
+        var $menuItem = $(this),
+            currentPopUp = undefined
+        ;
+
+        if ($menuItem.hasClass("imcms-menu__item--page-info")) {
+            $(".imcms-pop-up-modal").each(function () {
+                if ($(this).attr("data-menu") === "pageInfo") {
+                    $(this).css({"display": "block"});
+                    currentPopUp = $(this)
+                }
+            });
+        }
+        Imcms.PopUp.init(currentPopUp);
+    }
+
+    return {
+        init: function () {
+            showPanel();
+            $(document).click(hidePanel);
+            $(".imcms-admin").find(".imcms-menu__item").click(menuEvent);
+        }
+    }
+});
