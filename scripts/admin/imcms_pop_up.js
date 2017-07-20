@@ -1,4 +1,4 @@
-(function (Imcms) {
+Imcms.define("imcms-pop-up", ["jquery"], function ($) {
     function initFormsAndTabs($popup, windowId) {
         $popup.find(".imcms-form").each(function () {
             var $form = $(this);
@@ -14,56 +14,53 @@
                         ;
                         $tab.toggleClass("imcms-tab--active", isCurrentWidowId);
                     });
-            }
-            else {
+            } else {
                 $form.css({"display": "none"});
             }
         });
     }
 
-    Imcms.PopUp = {
+    function openPopUp(currentPopUp) {
+        var $popUp = currentPopUp,
+            $tab = $popUp.find(".imcms-tab")
+        ;
+
+        var $modal = $("<div>", {
+            "class": "modal"
+        }).css({
+            "position": "absolute",
+            "top": 0,
+            "left": 0,
+            "z-index": 50,
+            "display": "block",
+            "width": "100vw",
+            "height": "100vh",
+            "background-color": "rgba(42, 42, 42, 0.8)"
+        });
+
+        $modal.appendTo("body");
+        initFormsAndTabs($popUp, "1");
+        $tab.click(showHideContent);
+    }
+
+    function showHideContent() {
+        var $tab = $(this),
+            windowId = $tab.attr("data-window-id"),
+            $popUp = $tab.parents(".imcms-pop-up-modal")
+        ;
+
+        initFormsAndTabs($popUp, windowId);
+    }
+
+    function closePopUp() {
+        $(this).parents(".imcms-pop-up-modal").css({"display": "none"});
+        $(".modal").css({"display": "none"});
+    }
+
+    return {
         init: function (currentPopUp) {
-            Imcms.PopUp.openPopUp(currentPopUp);
-            currentPopUp && currentPopUp.find(".imcms-button--negative").click(Imcms.PopUp.closePopUp)
-        },
-        openPopUp: function (currentPopUp) {
-            var $popUp = currentPopUp,
-                $tab = $popUp.find(".imcms-tab")
-            ;
-
-            var $modal = $("<div>", {
-                "class": "modal"
-            }).css({
-                "position": "absolute",
-                "top": 0,
-                "left": 0,
-                "z-index": 50,
-                "display": "block",
-                "width": "100vw",
-                "height": "100vh",
-                "background-color": "rgba(42, 42, 42, 0.8)"
-            });
-            $modal.appendTo("body");
-
-            initFormsAndTabs($popUp, "1");
-
-            $tab.each(function () {
-                $(this).click(Imcms.PopUp.showHideContent);
-            });
-        },
-        showHideContent: function () {
-            var $tab = $(this),
-                windowId = $tab.attr("data-window-id"),
-                $popUp = $tab.parents(".imcms-pop-up-modal")
-            ;
-
-            initFormsAndTabs($popUp, windowId);
-        },
-        closePopUp: function () {
-            $(this).parents(".imcms-pop-up-modal").css({"display": "none"});
-            $(".modal").css({"display": "none"});
+            openPopUp(currentPopUp);
+            currentPopUp && currentPopUp.find(".imcms-button--negative").click(closePopUp)
         }
     };
-
-    return Imcms.PopUp;
-})(Imcms);
+});

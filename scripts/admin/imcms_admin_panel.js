@@ -1,4 +1,4 @@
-Imcms.define("imcms-admin-panel", ["jquery"], function ($) {
+Imcms.define("imcms-admin-panel", ["imcms-pop-up", "jquery"], function (imcmsPopUp, $) {
 
     function showPanel() {
         $(document).mousemove(function (event) {
@@ -28,7 +28,7 @@ Imcms.define("imcms-admin-panel", ["jquery"], function ($) {
                 }
             });
         }
-        Imcms.PopUp.init(currentPopUp);
+        imcmsPopUp.init(currentPopUp);
     }
 
     return {
