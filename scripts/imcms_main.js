@@ -3,7 +3,6 @@ Imcms.modules = {
     imcms: Imcms // default module
 };
 Imcms.config = {
-    // todo: support basePath!!!
     basePath: "scripts",
     dependencies: {
         "jquery": {
@@ -15,16 +14,13 @@ Imcms.config = {
         "jquery-mask": {
             path: "./libs/jquery.mask.min.js",
             deps: ["jquery"],
-            init: function () {
-                // renew jquery to have new functions from plugin
-                // Imcms.modules.jquery = Imcms.modules.jquery.fn.init();
-            }
+            addon: "jquery-mask"
         },
         "imcms-buttons": "imcms_button.js",
         "imcms-date-picker": "imcms_date_picker.js",
         "imcms-calendar": "imcms_calendar.js",
         "imcms-time-picker": "imcms_time_picker.js",
-        "imcms-tests": "scripts/imcms_tests.js",
+        "imcms-tests": "imcms_tests.js",
         "imcms-start": "imcms_initialize.js"
     }
 };
@@ -67,7 +63,13 @@ Imcms.config = {
     }
 
     function loadScriptAsync(dependency, onLoad) {
-        setTimeout(getScript.bind(null, dependency.path, onLoad));
+        setTimeout(getScript.bind(null, dependency.path, function () {
+            onLoad.call(null, arguments);
+
+            if (dependency.addon) {
+                registerModule(dependency.addon, true);
+            }
+        }));
     }
 
     function resolveDefineArgs() {
@@ -134,6 +136,9 @@ Imcms.config = {
 
         switch (typeof dependency) {
             case "string": {
+                if (dependency.indexOf(".") !== 0) {
+                    dependency = Imcms.config.basePath + "/" + dependency;
+                }
                 loader = loadModuleAsync;
                 break;
             }
