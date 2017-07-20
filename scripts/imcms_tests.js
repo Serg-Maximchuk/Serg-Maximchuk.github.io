@@ -81,7 +81,7 @@ Imcms.define("imcms-tests", ["imcms", "jquery"], function (imcms, $) {
             var totalPassed = 0;
             var totalFailed = 0;
 
-            for (testFunc in this) {
+            for (var testFunc in this) {
                 if ((testFunc !== "runAllTests") && this.hasOwnProperty(testFunc)) {
                     console.log("%c Running " + testFunc + " test.", "color: blue;");
                     var passed = this[testFunc].call();
