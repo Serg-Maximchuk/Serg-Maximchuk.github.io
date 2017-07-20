@@ -25,7 +25,8 @@ Imcms = {
             "imcms-start": "imcms_initialize.js",
             "imcms-select": "imcms_select.js",
             "imcms-numberbox": "imcms_numberbox.js",
-            "imcms-keyword": "imcms_keyword.js"
+            "imcms-keyword": "imcms_keyword.js",
+            "imcms-rest": "imcms_rest.js"
         }
     }
 };
@@ -43,12 +44,7 @@ Function.prototype.bindArgs = function () {
             return;
         }
 
-        if (!Imcms.config.dependencies[id]) {
-            console.error("Not found dependency: " + id);
-            return;
-        }
-
-        if (Imcms.config.dependencies[id].init) {
+        if (Imcms.config.dependencies[id] && Imcms.config.dependencies[id].init) {
             module = Imcms.config.dependencies[id].init.call(null, module);
         }
 
@@ -203,6 +199,20 @@ Function.prototype.bindArgs = function () {
 
                 case Function : // anonymous independent module
                     resolvedArgs = [anonymousModuleId, depsForIndependentModule].concat(unresolvedArgs);
+                    break;
+
+                default :
+                    console.error("Something wrong!");
+                    console.error(arguments);
+            }
+            switch (resolvedArgs[1] && resolvedArgs[1].constructor) {
+                case Array : // dependencies are presented, nothing to change
+                    break;
+
+                case Function : // independent module and dependencies are not presented
+                    var factory = resolvedArgs[1];
+                    resolvedArgs[1] = []; // empty dependencies array
+                    resolvedArgs[2] = factory;
                     break;
 
                 default :

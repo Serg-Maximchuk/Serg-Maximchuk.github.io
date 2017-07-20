@@ -76,6 +76,21 @@ Imcms.define("imcms-tests", ["imcms", "jquery"], function (imcms, $) {
             });
             return true;
         },
+        checkIndependentDefine: function () {
+            Imcms.define("imcms-independent-define", function () {
+                console.assert(arguments.length === 0, "Some wrong arguments applied! " + arguments);
+                return {
+                    test: function () {
+                        console.assert(Imcms.modules["imcms-independent-define"], "Module was not added!");
+                    }
+                }
+            });
+            Imcms.require("imcms-independent-define", function (test) {
+                test.test();
+            });
+
+            return true;
+        },
         runAllTests: function () {
             var testsRun = 0;
             var totalPassed = 0;
