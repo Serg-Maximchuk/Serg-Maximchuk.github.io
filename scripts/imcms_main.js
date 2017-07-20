@@ -13,7 +13,6 @@ Imcms.config = {
         },
         "jquery-mask": {
             path: "./libs/jquery.mask.min.js",
-            deps: ["jquery"],
             addon: "jquery-mask"
         },
         "imcms-buttons": "imcms_button.js",
@@ -26,9 +25,8 @@ Imcms.config = {
 };
 
 (function () {
-    Array.prototype.remove = function (element) {
-        var index = this.indexOf(element);
-        return (index === -1) ? this : this.slice(0, index).concat(this.slice(index + 1));
+    Function.prototype.bindArgs = function () {
+        return this.bind.apply(this, [null].concat(Array.prototype.slice.call(arguments)));
     };
 
     function registerModule(id, module) {
@@ -58,18 +56,127 @@ Imcms.config = {
         return Imcms.config.dependencies[id];
     }
 
-    function loadModuleAsync(path, onLoad) {
-        setTimeout(appendScript.bind(null, path, onLoad));
+    function loadModuleAsync(path) {
+        setTimeout(appendScript.bindArgs(path));
     }
 
-    function loadScriptAsync(dependency, onLoad) {
-        setTimeout(getScript.bind(null, dependency.path, function () {
-            onLoad.call(null, arguments);
+    function loadScriptAsync(dependency) {
+        var onLoad;
 
-            if (dependency.addon) {
-                registerModule(dependency.addon, true);
+        if (dependency.addon) {
+            onLoad = registerModule.bindArgs(dependency.addon, true);
+        }
+
+        setTimeout(getScript.bindArgs(dependency.path, onLoad));
+    }
+
+    Imcms.loadedDependencies = {};
+
+    function loadDependencyById(id) {
+        var dependency = getDependency(id);
+
+        if (!dependency) {
+            console.error("No dependency found with id " + id);
+            return;
+        }
+
+        if (Imcms.loadedDependencies[id]) {
+            console.error("Dependency is already loaded!!!! " + id);
+            return;
+        }
+
+        Imcms.loadedDependencies[id] = true;
+
+        var loader;
+
+        switch (typeof dependency) {
+            case "string": {
+                if (dependency.indexOf(".") !== 0) {
+                    dependency = Imcms.config.basePath + "/" + dependency;
+                }
+                loader = loadModuleAsync;
+                break;
             }
-        }));
+            case "object": {
+                loader = loadScriptAsync;
+            }
+        }
+
+        loader(dependency);
+    }
+
+    function createXMLHttpRequest() {
+        if (typeof XMLHttpRequest !== 'undefined') {
+            return new XMLHttpRequest();
+        }
+        // old browsers support
+        var versions = [
+            "MSXML2.XmlHttp.6.0",
+            "MSXML2.XmlHttp.5.0",
+            "MSXML2.XmlHttp.4.0",
+            "MSXML2.XmlHttp.3.0",
+            "MSXML2.XmlHttp.2.0",
+            "Microsoft.XmlHttp"
+        ];
+
+        var xhr;
+        for (var i = 0; i < versions.length; i++) {
+            try {
+                xhr = new ActiveXObject(versions[i]);
+                break;
+            } catch (e) {
+            }
+        }
+        return xhr;
+    }
+
+    function getScript(url, callback, async) {
+        if (async === undefined) {
+            async = true;
+        }
+        var ajaxRequest = createXMLHttpRequest();
+        ajaxRequest.open("GET", url, async);
+        ajaxRequest.overrideMimeType('application/javascript');
+        ajaxRequest.onreadystatechange = function () {
+            if (ajaxRequest.readyState !== XMLHttpRequest.DONE) {
+                return;
+            }
+
+            if (ajaxRequest.status === 200) {
+                console.info('script ' + url + " loaded successfully.");
+                var response = eval(ajaxRequest.responseText);
+                callback && callback(response);
+
+            } else {
+                console.error('Script get request error: ' + ajaxRequest.status + ' for url: ' + url);
+            }
+        };
+        ajaxRequest.send(null);
+    }
+
+    function appendScript(url, callback) {
+        var script = document.createElement("script");
+        script.type = "text/javascript";
+        script.async = true;
+
+        if (script.readyState) {  // IE support
+            script.onreadystatechange = function () {
+                if (script.readyState === "loaded" ||
+                    script.readyState === "complete") {
+                    script.onreadystatechange = null;
+                    console.info('script ' + url + " appended successfully.");
+                    callback && callback.call();
+                }
+            };
+        } else {  // Other normal browsers
+            script.onload = function () {
+                console.info('module ' + url + " loaded successfully.");
+                callback && callback.call();
+            };
+        }
+
+        script.src = url;
+        document.getElementsByTagName("head")[0].appendChild(script);
     }
 
     function resolveDefineArgs() {
@@ -115,114 +222,6 @@ Imcms.config = {
 
     define.amd = {};
 
-    Imcms.loadedDependencies = {};
-
-    function loadDependencyById(id, onLoad) {
-        var dependency = getDependency(id);
-
-        if (!dependency) {
-            console.error("No dependency found with id " + id);
-            return;
-        }
-
-        if (Imcms.loadedDependencies[id]) {
-            console.error("Dependency is already loaded!!!! " + id);
-            return;
-        }
-
-        Imcms.loadedDependencies[id] = true;
-
-        var loader;
-
-        switch (typeof dependency) {
-            case "string": {
-                if (dependency.indexOf(".") !== 0) {
-                    dependency = Imcms.config.basePath + "/" + dependency;
-                }
-                loader = loadModuleAsync;
-                break;
-            }
-            case "object": {
-                loader = loadScriptAsync;
-            }
-        }
-
-        loader.call(null, dependency, onLoad);
-    }
-
-    function createXMLHttpRequest() {
-        if (typeof XMLHttpRequest !== 'undefined') {
-            return new XMLHttpRequest();
-        }
-        // old browsers support
-        var versions = [
-            "MSXML2.XmlHttp.6.0",
-            "MSXML2.XmlHttp.5.0",
-            "MSXML2.XmlHttp.4.0",
-            "MSXML2.XmlHttp.3.0",
-            "MSXML2.XmlHttp.2.0",
-            "Microsoft.XmlHttp"
-        ];
-
-        var xhr;
-        for (var i = 0; i < versions.length; i++) {
-            try {
-                xhr = new ActiveXObject(versions[i]);
-                break;
-            } catch (e) {
-            }
-        }
-        return xhr;
-    }
-
-    function getScript(url, callback, async) {
-        if (async === undefined) {
-            async = true;
-        }
-        var ajaxRequest = createXMLHttpRequest();
-        ajaxRequest.open("GET", url, async);
-        ajaxRequest.overrideMimeType('application/javascript');
-        ajaxRequest.onreadystatechange = function () {
-            if (ajaxRequest.readyState !== XMLHttpRequest.DONE) {
-                return;
-            }
-
-            if (ajaxRequest.status === 200) {
-                console.info('script ' + url + " loaded successfully.");
-                callback && callback(eval(ajaxRequest.responseText));
-
-            } else {
-                console.error('Script get request error: ' + ajaxRequest.status + ' for url: ' + url);
-            }
-        };
-        ajaxRequest.send(null);
-    }
-
-    function appendScript(url, callback) {
-        var script = document.createElement("script");
-        script.type = "text/javascript";
-        script.async = true;
-
-        if (script.readyState) {  // IE support
-            script.onreadystatechange = function () {
-                if (script.readyState === "loaded" ||
-                    script.readyState === "complete") {
-                    script.onreadystatechange = null;
-                    console.info('script ' + url + " appended successfully.");
-                    callback.call();
-                }
-            };
-        } else {  // Other normal browsers
-            script.onload = function () {
-                console.info('module ' + url + " loaded successfully.");
-                callback.call();
-            };
-        }
-
-        script.src = url;
-        document.getElementsByTagName("head")[0].appendChild(script);
-    }
-
     /**
      * AMD define function.
      * Defines module by it's (optional) id with (optional) dependencies
@@ -241,17 +240,27 @@ Imcms.config = {
      * @param {string|[string]} id required module id
      * @param {function} onLoad function that will be called with loaded required modules
      */
-    // todo: support not only but also array of ids!!!
     Imcms.require = function (id, onLoad) {
         registerRequires(id, onLoad);
         setTimeout(runModuleLoader);
     };
 
+    Imcms.dependencyTree = {
+        imcms: []
+    };
+
+    function addToDependencyTree(id, dependencies) {
+        Imcms.dependencyTree[id] = dependencies;
+    }
+
     function defineModule(id, dependencies, factory) {
+        if (id) {
+            addToDependencyTree(id, dependencies);
+        }
+
         Imcms.require(dependencies, function () {
             var module = factory.apply(null, arguments);
-            if (id) {
-                // register only not anonymous modules
+            if (id) { // register only not anonymous modules
                 registerModule(id, module);
             }
         });
@@ -278,6 +287,7 @@ Imcms.config = {
         }
 
         Imcms.requiresQueue.push({
+            id: id,
             requires: requires,
             onLoad: onLoad
         });
@@ -287,7 +297,7 @@ Imcms.config = {
         setTimeout(function () {
             Imcms.requiresQueue.push(require);
             setTimeout(runModuleLoader);
-        });
+        }, 50);
     }
 
     var failsCount = 0;
@@ -305,7 +315,8 @@ Imcms.config = {
                 });
 
                 if (undefinedRequires.length) {
-                    undefinedRequires.forEach(loadDependencyAndCheck(require));
+                    delayedAddToQueue(require);
+                    undefinedRequires.forEach(loadDependencyById);
 
                 } else if (failsCount < 100) {// dummy fail limit
                     failsCount++;
@@ -323,38 +334,12 @@ Imcms.config = {
         }
     }
 
-    function loadDependencyAndCheck(require) {
-        return function (id) {
-            setTimeout(loadDependencyById.bind(null, id, checkOnLoad.bind(null, require)));
-        }
-    }
-
-    function checkOnLoad(require) {
-        setTimeout(function () {
-            var undefinedRequires = require.requires.filter(function (dependency) {
-                return !Imcms.modules[dependency];
-            });
-
-            if (undefinedRequires.length) {
-                Imcms.requiresQueue.push(require);
-                setTimeout(runModuleLoader);
-                return;
-            }
-
-            Imcms.requiresQueue = Imcms.requiresQueue.remove(require);
-
-            var requires = require.requires.map(function (require2) {
-                return Imcms.modules[require2];
-            });
-
-            require.onLoad.apply(null, requires);
-        });
-    }
-
     Imcms.require("imcms-tests", function (tests) {
         console.info("%c Tests loaded.", "color: green");
         Imcms.tests = tests;
     });
 
-    // Imcms.require("imcms-start").init();
+    Imcms.require("imcms-start", function (imcmsStart) {
+        imcmsStart.init();
+    });
 })();
