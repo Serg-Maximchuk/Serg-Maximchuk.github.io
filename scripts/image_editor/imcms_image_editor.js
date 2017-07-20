@@ -1,13 +1,8 @@
-(function (Imcms) {
-    Imcms.ImageEditor = {
-        init: function () {
-            $("#showHideRightPanel").click(Imcms.ImageEditor.showHideRightPanel);
-            $("#showHideBottomPanel").click(Imcms.ImageEditor.showHideBottomPanel);
-            $("#chooseMode").click(Imcms.ImageEditor.chooseMode);
-            Imcms.ImageEditorBottomPanel.init();
-            Imcms.ImageEditorCrop.init();
-        },
-        showHideRightPanel: function () {
+Imcms.define("imcms-image-editor",
+    ["imcms-image-editor-crop", "imcms-image-editor-bottom-panel", "jquery"],
+    function (imcmsImageEditorCrop, imcmsImageEditorBottomPanel, $) {
+
+        function showHideRightPanel() {
             var $btn = $(this),
                 rightSidePanel = $("#rightSidePanel"),
                 rightSidePanelWidth = rightSidePanel.width()
@@ -26,8 +21,9 @@
                 $btn.data("state", true);
                 $btn.text("hide right panel");
             }
-        },
-        showHideBottomPanel: function () {
+        }
+
+        function showHideBottomPanel() {
             var $btn = $(this),
                 bottomPanel = $("#bottomPanel"),
                 bottomSidePanelHeight = bottomPanel.height()
@@ -46,8 +42,9 @@
                 $btn.data("state", true);
                 $btn.text("hide bottom panel");
             }
-        },
-        chooseMode: function () {
+        }
+
+        function chooseMode() {
             var $btn = $(this),
                 advancedOptionPanel = $(".imcms-advanced-mode")
             ;
@@ -62,7 +59,15 @@
                 $btn.text("simple");
             }
         }
-    };
 
-    return Imcms.ImageEditor;
-})(Imcms);
+        return {
+            init: function () {
+                $("#showHideRightPanel").click(showHideRightPanel);
+                $("#showHideBottomPanel").click(showHideBottomPanel);
+                $("#chooseMode").click(chooseMode);
+                imcmsImageEditorBottomPanel.init();
+                imcmsImageEditorCrop.init();
+            }
+        };
+    }
+);
