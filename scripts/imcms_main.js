@@ -1,37 +1,41 @@
-Imcms = {};
+Imcms = {
+    loadedDependencies: {},
+    dependencyTree: {
+        imcms: []
+    },
+    requiresQueue: [],
+    config: {
+        basePath: "scripts",
+        dependencies: {
+            "jquery": {
+                path: "//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js",
+                init: function ($) {
+                    return $.noConflict(true);
+                }
+            },
+            "jquery-mask": {
+                path: "./libs/jquery.mask.min.js",
+                addon: "jquery-mask"
+            },
+            "imcms-buttons": "imcms_button.js",
+            "imcms-date-picker": "imcms_date_picker.js",
+            "imcms-calendar": "imcms_calendar.js",
+            "imcms-time-picker": "imcms_time_picker.js",
+            "imcms-tests": "imcms_tests.js",
+            "imcms-start": "imcms_initialize.js",
+            "imcms-select": "imcms_select.js",
+            "imcms-numberbox": "imcms_numberbox.js",
+            "imcms-keyword": "imcms_keyword.js"
+        }
+    }
+};
 Imcms.modules = {
     imcms: Imcms // default module
 };
-Imcms.config = {
-    basePath: "scripts",
-    dependencies: {
-        "jquery": {
-            path: "//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js",
-            init: function ($) {
-                return $.noConflict(true);
-            }
-        },
-        "jquery-mask": {
-            path: "./libs/jquery.mask.min.js",
-            addon: "jquery-mask"
-        },
-        "imcms-buttons": "imcms_button.js",
-        "imcms-date-picker": "imcms_date_picker.js",
-        "imcms-calendar": "imcms_calendar.js",
-        "imcms-time-picker": "imcms_time_picker.js",
-        "imcms-tests": "imcms_tests.js",
-        "imcms-start": "imcms_initialize.js",
-        "imcms-select": "imcms_select.js",
-        "imcms-numberbox": "imcms_numberbox.js",
-        "imcms-keyword": "imcms_keyword.js"
-    }
+Function.prototype.bindArgs = function () {
+    return this.bind.apply(this, [null].concat(Array.prototype.slice.call(arguments)));
 };
-
 (function () {
-    Function.prototype.bindArgs = function () {
-        return this.bind.apply(this, [null].concat(Array.prototype.slice.call(arguments)));
-    };
-
     function registerModule(id, module) {
         console.log("Registering module " + id);
         if (Imcms.modules[id]) {
@@ -72,8 +76,6 @@ Imcms.config = {
 
         setTimeout(getScript.bindArgs(dependency.path, onLoad));
     }
-
-    Imcms.loadedDependencies = {};
 
     function loadDependencyById(id) {
         var dependency = getDependency(id);
@@ -248,13 +250,9 @@ Imcms.config = {
         setTimeout(runModuleLoader);
     };
 
-    Imcms.dependencyTree = {
-        imcms: []
-    };
-
     function addToDependencyTree(id, dependencies) {
         if (Imcms.dependencyTree[id]) {
-            console.error("Dependency already registered! " + id);
+            console.error("Dependency " + id + " already registered! Redundant define function calling!");
         }
         Imcms.dependencyTree[id] = dependencies;
     }
@@ -271,8 +269,6 @@ Imcms.config = {
             }
         });
     }
-
-    Imcms.requiresQueue = [];
 
     function registerRequires(id, onLoad) {
         var requires;
