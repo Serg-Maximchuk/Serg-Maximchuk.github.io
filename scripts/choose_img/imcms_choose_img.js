@@ -1,19 +1,17 @@
-(function (Imcms) {
-    Imcms.ChooseImg = {
-        init: function () {
-            $(".imcms-choose-img-wrap").click(Imcms.ChooseImg.active);
-            $(".imcms-choose-img-description__button").click(Imcms.ChooseImg.removeImg);
-        },
-        active: function () {
-            var $img = $(this);
+Imcms.define("imcms-choose-image", ["jquery"], function ($) {
 
-            $img.toggleClass("imcms-choose-img-wrap--active");
-        },
-        removeImg: function () {
-            var $btn = $(this);
-            $btn.parents(".imcms-choose-img-wrap").remove();
+    function active() {
+        $(this).toggleClass("imcms-choose-img-wrap--active");
+    }
+
+    function removeImg() {
+        $(this).parents(".imcms-choose-img-wrap").remove();
+    }
+
+    return {
+        init: function () {
+            $(".imcms-choose-img-wrap").click(active);
+            $(".imcms-choose-img-description__button").click(removeImg);
         }
     };
-
-    return Imcms.ChooseImg;
-})(Imcms);
+});

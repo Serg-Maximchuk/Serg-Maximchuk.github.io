@@ -30,7 +30,8 @@ Imcms = {
             "imcms-modal-window": "modal_window/imcms_modal_window.js",
             "imcms-folders": "choose_img/imcms_folders.js",
             "imcms-admin-panel": "admin/imcms_admin_panel.js",
-            "imcms-pop-up": "admin/imcms_pop_up.js"
+            "imcms-pop-up": "admin/imcms_pop_up.js",
+            "imcms-choose-image": "choose_img/imcms_choose_img.js"
         }
     }
 };
