@@ -250,6 +250,9 @@ Imcms.config = {
     };
 
     function addToDependencyTree(id, dependencies) {
+        if (Imcms.dependencyTree[id]) {
+            console.error("Dependency already registered! " + id);
+        }
         Imcms.dependencyTree[id] = dependencies;
     }
 
@@ -287,7 +290,6 @@ Imcms.config = {
         }
 
         Imcms.requiresQueue.push({
-            id: id,
             requires: requires,
             onLoad: onLoad
         });
@@ -297,7 +299,7 @@ Imcms.config = {
         setTimeout(function () {
             Imcms.requiresQueue.push(require);
             setTimeout(runModuleLoader);
-        }, 50);
+        });
     }
 
     var failsCount = 0;
@@ -315,8 +317,8 @@ Imcms.config = {
                 });
 
                 if (undefinedRequires.length) {
-                    delayedAddToQueue(require);
                     undefinedRequires.forEach(loadDependencyById);
+                    delayedAddToQueue(require);
 
                 } else if (failsCount < 100) {// dummy fail limit
                     failsCount++;
