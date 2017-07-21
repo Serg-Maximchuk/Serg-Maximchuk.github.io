@@ -6,7 +6,7 @@ Imcms.define("imcms-admin-panel", ["imcms-pop-up", "jquery"], function (imcmsPop
 
     function setShowPanelRule() {
         $(document).mousemove(function (event) {
-            if (event.pageY >= 0 && event.pageY <= 15) { // fixme: what is 15 ???
+            if (event.pageY >= 0 && event.pageY <= 15) { // fixme: what is 15 ??? why 15?
                 showPanel();
             }
         });
