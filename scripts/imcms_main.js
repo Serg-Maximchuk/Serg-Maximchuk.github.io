@@ -28,7 +28,7 @@ Imcms = {
             "imcms-calendar": "imcms_calendar.js",
             "imcms-time-picker": "imcms_time_picker.js",
             "imcms-tests": "imcms_tests.js",
-            "imcms-start": "imcms_initialize.js",
+            "imcms-initialize": "imcms_initialize.js",
             "imcms-select": "imcms_select.js",
             "imcms-numberbox": "imcms_numberbox.js",
             "imcms-keyword": "imcms_keyword.js",

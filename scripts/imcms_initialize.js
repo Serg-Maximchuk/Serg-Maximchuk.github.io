@@ -1,4 +1,4 @@
-Imcms.define("imcms-start",
+Imcms.define("imcms-initialize",
     [
         "imcms-buttons", "imcms-date-picker", "imcms-time-picker", "imcms-select", "imcms-numberbox", "imcms-keyword",
         "imcms-folders", "imcms-admin-panel", "imcms-choose-image", "imcms-content-manager", "imcms-image-editor",
