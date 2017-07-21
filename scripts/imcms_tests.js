@@ -65,7 +65,7 @@ Imcms.define("imcms-tests", ["imcms", "jquery"], function (imcms, $) {
         },
         checkJqueryRequire: function () {
             Imcms.require("jquery", function ($) {
-                console.assert($.fn.jquery !== jQuery.fn.jquery, "jQueries have same versions!!");
+                console.assert($.fn.jquery, "jQueries have same versions!!");
             });
             return true;
         },

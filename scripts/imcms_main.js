@@ -1,3 +1,4 @@
+console.time("imCMS JS loaded");
 Imcms = {
     loadedDependencies: {},
     dependencyTree: {
@@ -21,6 +22,7 @@ Imcms = {
                 path: "//ajax.aspnetcdn.com/ajax/jquery.ui/1.12.1/jquery-ui.min.js",
                 addon: "jquery-ui"
             },
+            // todo: support local modules without defining their paths directly!
             "imcms-buttons": "imcms_button.js",
             "imcms-date-picker": "imcms_date_picker.js",
             "imcms-calendar": "imcms_calendar.js",
@@ -49,6 +51,9 @@ Imcms.modules = {
 };
 Function.prototype.bindArgs = function () {
     return this.bind.apply(this, [null].concat(Array.prototype.slice.call(arguments)));
+};
+Function.prototype.applyAsync = function (args, context) {
+    setTimeout(this.apply.bind(this, context, args));
 };
 (function () {
     function registerModule(id, module) {
@@ -257,8 +262,8 @@ Function.prototype.bindArgs = function () {
      * by calling factory function after dependencies load.
      *
      * @param {string?} id defined module id
-     * @param {[]?} dependencies as module ids
-     * @param factory which return is this defined module in result
+     * @param {[]?} dependencies array as module ids
+     * @param {function} factory which return is this defined module in result
      */
     Imcms.define = function (id, dependencies, factory) {
         define.apply(null, arguments);
@@ -266,7 +271,7 @@ Function.prototype.bindArgs = function () {
     /**
      * AMD require function.
      *
-     * @param {string|[string]} id required module id
+     * @param {string|[string]} id required module id(s)
      * @param {function} onLoad function that will be called with loaded required modules
      */
     Imcms.require = function (id, onLoad) {
@@ -322,7 +327,7 @@ Function.prototype.bindArgs = function () {
         setTimeout(function () {
             Imcms.requiresQueue.push(require);
             setTimeout(runModuleLoader);
-        }, 100);
+        });
     }
 
     var failsCount = 0;
@@ -343,7 +348,7 @@ Function.prototype.bindArgs = function () {
                     undefinedRequires.forEach(loadDependencyById);
                     delayedAddToQueue(require);
 
-                } else if (failsCount < 100) {// dummy fail limit
+                } else if (failsCount < 1000) {// dummy fail limit
                     failsCount++;
                     delayedAddToQueue(require);
 
@@ -354,17 +359,34 @@ Function.prototype.bindArgs = function () {
             } else {
                 failsCount = 0;
                 var dependencies = require.requires.map(getModule);
-                require.onLoad.apply(null, dependencies);
+                require.onLoad.applyAsync(dependencies);
             }
         }
     }
 
-    Imcms.require("imcms-tests", function (tests) {
-        console.info("%c Tests loaded.", "color: green");
-        Imcms.tests = tests;
-    });
+    function getMainScriptPath() {
+        var imcmsMainScripts = Array.prototype.slice.apply(document.scripts).filter(function(script){
+            return script.attributes["data-name"] && script.attributes["data-name"].value === "imcms";
+        });
 
-    Imcms.require("imcms-start", function (imcmsStart) {
-        imcmsStart.init();
-    });
+        if (!imcmsMainScripts || imcmsMainScripts.length === 0) {
+            console.error("Not founded entry point for imCMS JS engine.\n" +
+                "Should be script tag with attribute data-name=\"imcms\" and attribute data-main with path to script " +
+                "to load as entry point.");
+            return;
+        }
+
+        if (imcmsMainScripts.length !== 1) {
+            console.error("Founded more than one entry points.");
+            console.error(imcmsMainScripts);
+            return;
+        }
+
+        var mainScriptPath = imcmsMainScripts[0].attributes["data-main"].value;
+        console.info("Founded entry point " + mainScriptPath);
+        return mainScriptPath;
+    }
+
+    var mainScriptPath = getMainScriptPath();
+    loadModuleAsync(mainScriptPath);
 })();
