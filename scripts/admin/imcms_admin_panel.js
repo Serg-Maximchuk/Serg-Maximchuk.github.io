@@ -1,41 +1,49 @@
 Imcms.define("imcms-admin-panel", ["imcms-pop-up", "jquery"], function (imcmsPopUp, $) {
 
-    function showPanel() {
+    function setShowPanelRule() {
         $(document).mousemove(function (event) {
-            if (event.pageY >= 0 && event.pageY <= 15) {
-                $(".imcms-admin").css({"top": 0});
+            if (event.pageY >= 0 && event.pageY <= 15) { // fixme: what is 15 ???
+                showPanel();
             }
         });
     }
 
-    function hidePanel(event) {
-        if (!$(event.target).closest(".imcms-admin").length) {
-            $(".imcms-admin").css({"top": "-90px"});
+    function setHidePanelRule() {
+        $(document).click(function (event) {
+            if ($(event.target).closest(".imcms-admin").length) {
+                return;
+            }
+
             event.stopPropagation();
-        }
+            hidePanel();
+        });
     }
 
-    function menuEvent() {
-        var $menuItem = $(this),
-            currentPopUp = undefined
-        ;
+    function hidePanel() {
+        setAdminPanelTop(-90);
+    }
 
-        if ($menuItem.hasClass("imcms-menu__item--page-info")) {
-            $(".imcms-pop-up-modal").each(function () {
-                if ($(this).attr("data-menu") === "pageInfo") {
-                    $(this).css({"display": "block"});
-                    currentPopUp = $(this)
-                }
-            });
-        }
-        imcmsPopUp.init(currentPopUp);
+    function showPanel() {
+        setAdminPanelTop(0);
+    }
+
+    function setAdminPanelTop(px) {
+        $(".imcms-admin").css({"top": "" + px + "px"});
+    }
+
+    function showPageInfo(e) {
+        e.preventDefault();
+
+        var $popup = $(".imcms-pop-up-modal[data-menu=pageInfo]").css({"display": "block"});
+
+        imcmsPopUp.init($popup);
     }
 
     return {
         init: function () {
-            showPanel();
-            $(document).click(hidePanel);
-            $(".imcms-admin").find(".imcms-menu__item").click(menuEvent);
+            setShowPanelRule();
+            setHidePanelRule();
+            $(".imcms-admin").find(".imcms-menu__item--page-info").click(showPageInfo);
         }
     }
 });

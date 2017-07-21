@@ -20,23 +20,20 @@ Imcms.define("imcms-pop-up", ["jquery"], function ($) {
         });
     }
 
-    function openPopUp(currentPopUp) {
-        var $popUp = currentPopUp,
-            $tab = $popUp.find(".imcms-tab")
-        ;
-
-        var $modal = $("<div>", {
-            "class": "modal"
-        }).css({
-            "position": "absolute",
-            "top": 0,
-            "left": 0,
-            "z-index": 50,
-            "display": "block",
-            "width": "100vw",
-            "height": "100vh",
-            "background-color": "rgba(42, 42, 42, 0.8)"
-        });
+    function openPopUp($popUp) {
+        var $tab = $popUp.find(".imcms-tab"),
+            $modal = $("<div>", {
+                "class": "modal"
+            }).css({
+                "position": "absolute",
+                "top": 0,
+                "left": 0,
+                "z-index": 50,
+                "display": "block",
+                "width": "100vw",
+                "height": "100vh",
+                "background-color": "rgba(42, 42, 42, 0.8)"
+            });
 
         $modal.appendTo("body");
         initFormsAndTabs($popUp, "1");
