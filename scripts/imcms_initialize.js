@@ -1,14 +1,14 @@
 Imcms.define("imcms-initialize",
     [
-        "imcms-buttons", "imcms-date-picker", "imcms-time-picker", "imcms-select", "imcms-numberbox", "imcms-keyword",
+        "imcms-flags", "imcms-date-picker", "imcms-time-picker", "imcms-select", "imcms-numberbox", "imcms-keyword",
         "imcms-folders", "imcms-admin-panel", "imcms-choose-image", "imcms-content-manager", "imcms-image-editor",
         "imcms-menu-editor"
     ],
-    function (imcmsButtons, imcmsDatePicker, imcmsTimePicker, imcmsSelect, imcmsNumberbox, imcmsKeyword,
+    function (imcmsFlags, imcmsDatePicker, imcmsTimePicker, imcmsSelect, imcmsNumberbox, imcmsKeyword,
               imcmsFolders, imcmsAdminPanel, imcmsChooseImg, imcmsContentManager, imcmsImageEditor, imcmsMenuEditor) {
         return {
             init: function () {
-                imcmsButtons.init();
+                imcmsFlags.init();
                 imcmsDatePicker.init();
                 imcmsTimePicker.init();
                 imcmsSelect.init();

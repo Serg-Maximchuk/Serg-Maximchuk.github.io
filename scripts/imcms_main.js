@@ -23,7 +23,7 @@ Imcms = {
                 addon: "jquery-ui"
             },
             // todo: support local modules without defining their paths directly!
-            "imcms-buttons": "imcms_button.js",
+            "imcms-flags": "imcms_flags.js",
             "imcms-date-picker": "imcms_date_picker.js",
             "imcms-calendar": "imcms_calendar.js",
             "imcms-time-picker": "imcms_time_picker.js",

@@ -2,9 +2,9 @@
  * Created by Serhii Maksymchuk from Ubrainians for imCode
  * 21.07.17.
  */
-Imcms.require(["imcms-initialize", "imcms-tests", "jquery"], function (imcms, tests, $) {
+Imcms.require(["imcms-flags", "imcms-tests", "jquery"], function (imcmsFlags, tests, $) {
     console.info("%c Tests loaded.", "color: green");
     Imcms.tests = tests;
-    imcms.init();
+    imcmsFlags.init();
     console.timeEnd("imCMS JS loaded");
 });
