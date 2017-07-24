@@ -65,14 +65,10 @@ Imcms.require(
         // flags
 
         var flags = componentsBuilder.flags,
-            $engFlag = flags.eng("<div>", {
-                active: true
-            }),
+            $engFlag = flags.eng("<div>", true),
             $engFlag2 = flags.eng("<div>"),
             $sweFlag = flags.swe("<div>"),
-            $sweFlag2 = flags.swe("<div>", {
-                active: true
-            }),
+            $sweFlag2 = flags.swe("<div>", true),
             $flagsRow = flags.container("<div>", {
                 id: "flags-container-example"
             }, [

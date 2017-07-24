@@ -2,11 +2,19 @@
  * Created by Serhii Maksymchuk from Ubrainians for imCode
  * 24.07.17.
  */
-Imcms.define("imcms-flags-builder", ["jquery"], function ($) {
+Imcms.define("imcms-flags-builder", ["imcms-bem-builder", "jquery"], function (bemBuilder, $) {
     var FLAGS_CLASS = "imcms-flag",
         CONTAINER_CLASS = "imcms-flags",
         FLAG_ACTIVE_CLASS = FLAGS_CLASS + "--" + "active"
     ;
+
+    var flagsBEM = new bemBuilder({
+        block: CONTAINER_CLASS,
+        element: {
+            name: FLAGS_CLASS,
+            block: "flag"
+        }
+    });
 
     function changeNeighborFlag($btn) {
         var $neighborFlag = ($btn.next("." + FLAGS_CLASS).length !== 0)
@@ -33,31 +41,20 @@ Imcms.define("imcms-flags-builder", ["jquery"], function ($) {
     }
 
     function flagsBuilder(lang) {
-        return function (tag, attributesObj) {
-            attributesObj = attributesObj || {};
-            attributesObj["class"] = FLAGS_CLASS + " " + FLAGS_CLASS + "--" + lang
-                + (attributesObj.active ? " " + FLAG_ACTIVE_CLASS : "")
-                + (attributesObj["class"] ? " " + attributesObj["class"] : "");
+        return function (tag, isActive, attributesObj) {
+            var modifiers = [lang];
 
-            delete attributesObj.active;
-            return $(tag, attributesObj).click(onFlagClick);
+            if (isActive) {
+                modifiers.push("active");
+            }
+
+            return flagsBEM.buildElement(tag, modifiers, attributesObj).click(onFlagClick);
         };
     }
 
     return {
-        "class": FLAGS_CLASS,
-        "container-class": CONTAINER_CLASS,
         eng: flagsBuilder("en"),
         swe: flagsBuilder("sw"),
-        container: function (tag, attributesObj, elements) {
-            attributesObj = attributesObj || {};
-            attributesObj["class"] = CONTAINER_CLASS + (attributesObj["class"] ? " " + attributesObj["class"] : "");
-
-            elements = elements.map(function (element) {
-                return element.addClass(CONTAINER_CLASS + "__flag");
-            });
-
-            return $(tag, attributesObj).append(elements);
-        }
+        container: flagsBEM.buildBlock.bind(flagsBEM)
     }
 });

@@ -45,7 +45,8 @@ Imcms = {
             "imcms-menu-editor": "menu_editor/imcms_menu_editor.js",
             "imcms-components-builder": "imcms_components_builder.js",
             "imcms-buttons-builder": "builder/imcms_buttons_builder.js",
-            "imcms-flags-builder": "builder/imcms_flags_builder.js"
+            "imcms-flags-builder": "builder/imcms_flags_builder.js",
+            "imcms-bem-builder": "builder/imcms_bem_builder.js"
         }
     }
 };
