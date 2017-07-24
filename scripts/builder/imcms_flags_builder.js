@@ -4,12 +4,11 @@
  */
 Imcms.define("imcms-flags-builder", ["imcms-bem-builder", "jquery"], function (bemBuilder, $) {
     var FLAGS_CLASS = "imcms-flag",
-        CONTAINER_CLASS = "imcms-flags",
         FLAG_ACTIVE_CLASS = FLAGS_CLASS + "--" + "active"
     ;
 
     var flagsBEM = new bemBuilder({
-        block: CONTAINER_CLASS,
+        block: "imcms-flags",
         element: {
             name: FLAGS_CLASS,
             block: "flag"
