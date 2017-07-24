@@ -126,7 +126,7 @@ Imcms.define("imcms-calendar", ["imcms", "jquery"], function (imcms, $) {
             date = parseInt(curDate[2])
         ;
 
-        if ($btn.hasClass("imcms-calendar__prev-month")) {
+        if ($btn.hasClass("imcms-calendar__button--prev-month")) {
             if (parseInt(curDate[1]) > 1) {
                 curDate[1] = parseInt(curDate[1]) - 1;
                 curDate[1] = (curDate[1] < 10) ? "0" + curDate[1] : curDate[1];

@@ -121,9 +121,7 @@ Imcms.define("imcms-date-picker",
                     .mask("0000-00-00");
                 $(document).click(closeCalendar);
 
-                datePicker.find(".imcms-calendar").find(".imcms-calendar__button").each(function () {
-                    $(this).click(imcmsCalendar.chooseMonth);
-                });
+                datePicker.find(".imcms-calendar").find("[class^=imcms-calendar__button]").click(imcmsCalendar.chooseMonth);
             }
         }
     });

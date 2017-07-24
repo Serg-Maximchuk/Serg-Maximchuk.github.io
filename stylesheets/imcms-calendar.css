@@ -27,14 +27,14 @@
     height: 20px;
 }
 
-.imcms-calendar__prev-month {
+.imcms-calendar__button--prev-month {
     padding: 10px;
     position: absolute;
     top: -7px;
     left: 0;
 }
 
-.imcms-calendar__next-month {
+.imcms-calendar__button--next-month {
     padding: 10px;
     position: absolute;
     top: -7px;
