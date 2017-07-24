@@ -42,7 +42,10 @@ Imcms = {
             "imcms-image-editor-crop": "image_editor/imcms_image_editor_crop.js",
             "imcms-image-editor-bottom-panel": "image_editor/imcms_image_editor_bottom_panel.js",
             "imcms-image-editor": "image_editor/imcms_image_editor.js",
-            "imcms-menu-editor": "menu_editor/imcms_menu_editor.js"
+            "imcms-menu-editor": "menu_editor/imcms_menu_editor.js",
+            "imcms-components-builder": "imcms_components_builder.js",
+            "imcms-buttons-builder": "builder/imcms_buttons_builder.js",
+            "imcms-flags-builder": "builder/imcms_flags_builder.js"
         }
     }
 };
