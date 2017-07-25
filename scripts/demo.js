@@ -4,10 +4,10 @@
  */
 Imcms.require(
     [
-        "imcms-date-picker", "imcms-time-picker", "imcms-select", "imcms-numberbox", "imcms-keyword", "imcms-tests",
+        "imcms-date-picker", "imcms-time-picker", "imcms-numberbox", "imcms-keyword", "imcms-tests",
         "imcms-components-builder", "jquery"
     ],
-    function (imcmsDatePicker, imcmsTimePicker, imcmsSelect, imcmsNumberbox, imcmsKeyword, tests, componentsBuilder, $) {
+    function (imcmsDatePicker, imcmsTimePicker, imcmsNumberbox, imcmsKeyword, tests, componentsBuilder, $) {
         console.info("%c Tests loaded.", "color: green");
         Imcms.tests = tests;
 
@@ -143,9 +143,54 @@ Imcms.require(
 
         $("#radio-buttons-example").append($radios);
 
+        // selects
+
+        var $select = componentsBuilder.selects.select("<div>", {
+            id: "select1",
+            "class": "selects-example-class",
+            text: "Select"
+        }, [
+            {
+                text: "option 1",
+                "data-value": 1
+            }, {
+                text: "option 2",
+                "data-value": 2
+            }, {
+                text: "option 3",
+                "data-value": 3
+            }, {
+                text: "option 4",
+                "data-value": 4
+            }
+        ]);
+
+        $("#select-example").append($select);
+
+        var $selectContainer = componentsBuilder.selects.container("<div>", {
+            id: "select2",
+            "class": "selects-field-example-class",
+            text: "Select in Field"
+        }, [
+            {
+                text: "option 1",
+                "data-value": 1
+            }, {
+                text: "option 2",
+                "data-value": 2
+            }, {
+                text: "option 3",
+                "data-value": 3
+            }, {
+                text: "option 4",
+                "data-value": 4
+            }
+        ]);
+
+        $("#select-field-example").append($selectContainer);
+
         imcmsDatePicker.init();
         imcmsTimePicker.init();
-        imcmsSelect.init();
         imcmsNumberbox.init();
         imcmsKeyword.init();
 

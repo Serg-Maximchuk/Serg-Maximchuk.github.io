@@ -16,10 +16,13 @@ Imcms.define("imcms-bem-builder", ["jquery"], function ($) {
     }
 
     BemBuilder.prototype = {
+        buildBlockElement: function (elementName, tag, modifiersArr, attributesObj) {
+            return this.buildElement.apply(this, arguments).addClass(this.block + BLOCK_SEPARATOR + elementName);
+        },
         buildElement: function (elementName, tag, modifiersArr, attributesObj) {
             var modifiers = "";
 
-            modifiersArr.forEach(function (modifier) {
+            (modifiersArr || []).forEach(function (modifier) {
                 modifiers += " " + this.elements[elementName] + MODIFIER_SEPARATOR + modifier;
             }.bind(this));
 
