@@ -3,10 +3,13 @@
  * 24.07.17.
  */
 Imcms.define("imcms-bem-builder", ["jquery"], function ($) {
-    var BemBuilder = function (options) {
-        this.elements = options.elements;
-        this.block = options.block;
-    };
+    var MODIFIER_SEPARATOR = "--",
+        BLOCK_SEPARATOR = "__",
+        BemBuilder = function (options) {
+            this.elements = options.elements;
+            this.block = options.block;
+        }
+    ;
 
     function getOriginClass(attributesObj) {
         return attributesObj["class"] ? " " + attributesObj["class"] : "";
@@ -17,7 +20,7 @@ Imcms.define("imcms-bem-builder", ["jquery"], function ($) {
             var modifiers = "";
 
             modifiersArr.forEach(function (modifier) {
-                modifiers += " " + this.elements[elementName] + "--" + modifier;
+                modifiers += " " + this.elements[elementName] + MODIFIER_SEPARATOR + modifier;
             }.bind(this));
 
             attributesObj = attributesObj || {};
@@ -40,7 +43,7 @@ Imcms.define("imcms-bem-builder", ["jquery"], function ($) {
                     $element = element[elementName];
                 }
 
-                return $element.addClass(this.block + "__" + elementName);
+                return $element.addClass(this.block + BLOCK_SEPARATOR + elementName);
             }.bind(this));
 
             return $(tag, attributesObj).append(elements);
