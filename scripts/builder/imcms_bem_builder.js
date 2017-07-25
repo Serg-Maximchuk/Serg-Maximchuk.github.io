@@ -4,7 +4,7 @@
  */
 Imcms.define("imcms-bem-builder", ["jquery"], function ($) {
     var BemBuilder = function (options) {
-        this.element = options.element;
+        this.elements = options.elements;
         this.block = options.block;
     };
 
@@ -13,15 +13,15 @@ Imcms.define("imcms-bem-builder", ["jquery"], function ($) {
     }
 
     BemBuilder.prototype = {
-        buildElement: function (tag, modifiersArr, attributesObj) {
+        buildElement: function (elementName, tag, modifiersArr, attributesObj) {
             var modifiers = "";
 
             modifiersArr.forEach(function (modifier) {
-                modifiers += " " + this.element.name + "--" + modifier;
+                modifiers += " " + this.elements[elementName] + "--" + modifier;
             }.bind(this));
 
             attributesObj = attributesObj || {};
-            attributesObj["class"] = this.element.name + modifiers + getOriginClass(attributesObj);
+            attributesObj["class"] = this.elements[elementName] + modifiers + getOriginClass(attributesObj);
 
             return $(tag, attributesObj);
         },
@@ -30,7 +30,10 @@ Imcms.define("imcms-bem-builder", ["jquery"], function ($) {
             attributesObj["class"] = this.block + getOriginClass(attributesObj);
 
             elements = elements.map(function (element) {
-                return element.addClass(this.block + "__" + this.element.block);
+                var elementName = Object.keys(element)[0];
+                var $element = element[elementName];
+
+                return $element.addClass(this.block + "__" + elementName);
             }.bind(this));
 
             return $(tag, attributesObj).append(elements);
