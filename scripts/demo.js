@@ -94,7 +94,8 @@ Imcms.require(
         var $checkbox2 = componentsBuilder.checkboxes.checkbox("<div>", {
             id: "checkbox02",
             name: "checkbox",
-            text: "item 2",
+            checked: "checked",
+            text: "item 2 (checked by default)",
             click: function () {
                 setTimeout(function () {
                     console.log("checkbox 2 " + ($("#" + $(this).attr("for")).is(":checked") ? "checked" : "unchecked"));
@@ -110,6 +111,37 @@ Imcms.require(
         ]);
 
         $("#checkboxes-example").append($checkboxes);
+
+        // radio
+
+        var $radio1 = componentsBuilder.radios.radio("<div>", {
+            id: "radio1",
+            name: "radio-name",
+            checked: "checked",
+            text: "item 1",
+            click: function () {
+                console.log("radio1 checked");
+            }
+        });
+
+        var $radio2 = componentsBuilder.radios.radio("<div>", {
+            id: "radio2",
+            name: "radio-name",
+            checked: "checked",
+            text: "item 2 (checked by default)",
+            click: function () {
+                console.log("radio2 checked");
+            }
+        });
+
+        var $radios = componentsBuilder.radios.container("<div>", {
+            "class": "radios-class-example"
+        }, [
+            $radio1,
+            $radio2
+        ]);
+
+        $("#radio-buttons-example").append($radios);
 
         imcmsDatePicker.init();
         imcmsTimePicker.init();

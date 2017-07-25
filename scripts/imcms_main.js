@@ -47,7 +47,8 @@ Imcms = {
             "imcms-buttons-builder": "builder/imcms_buttons_builder.js",
             "imcms-flags-builder": "builder/imcms_flags_builder.js",
             "imcms-bem-builder": "builder/imcms_bem_builder.js",
-            "imcms-checkboxes-builder": "builder/imcms_checkboxes_builder.js"
+            "imcms-checkboxes-builder": "builder/imcms_checkboxes_builder.js",
+            "imcms-radio-buttons-builder": "builder/imcms_radio_buttons_builder.js"
         }
     }
 };
