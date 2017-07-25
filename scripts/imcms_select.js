@@ -1,24 +1,23 @@
 Imcms.define("imcms-select", ["jquery"], function ($) {
     function toggleSelect() {
-        var $this = $(this),
-            select = $this.closest(".imcms-select").find(".imcms-drop-down-list"),
-            dropDownItem = select.children(".imcms-drop-down-list__items").find(".imcms-drop-down-list__item")
-        ;
-
-        select.toggleClass("imcms-select__drop-down-list--active");
-        dropDownItem.click(selectItem);
+        $(this).closest(".imcms-select")
+            .find(".imcms-drop-down-list")
+            .toggleClass("imcms-select__drop-down-list--active")
+            .children(".imcms-drop-down-list__items")
+            .find(".imcms-drop-down-list__item")
+            .click(onOptionSelected);
     }
 
-    function selectItem() {
+    function onOptionSelected() {
         var $this = $(this),
             content = $this.text(),
             select = $this.closest(".imcms-select__drop-down-list"),
-            itemValue = select.find(".imcms-drop-down-list__select-item-value").html(content),
-            selectInput = select.find("input")
+            itemValue = select.find(".imcms-drop-down-list__select-item-value").html(content)
         ;
 
-        select.removeClass("imcms-select__drop-down-list--active");
-        selectInput.val(content);
+        select.removeClass("imcms-select__drop-down-list--active")
+            .find("input")
+            .val(content);
 
         return itemValue;
     }
