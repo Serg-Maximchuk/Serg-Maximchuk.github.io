@@ -12,14 +12,6 @@ Imcms.define("imcms-flags-builder", ["imcms-bem-builder", "jquery"], function (b
         elements: {
             "flag": FLAGS_CLASS
         }
-        // "imcms-flags": [{
-        //     "flag": FLAGS_CLASS
-        // }]
-        // block: "imcms-flags",
-        // element: {
-        //     name: FLAGS_CLASS,
-        //     block: "flag"
-        // }
     });
 
     function changeNeighborFlag($btn) {
@@ -62,11 +54,7 @@ Imcms.define("imcms-flags-builder", ["imcms-bem-builder", "jquery"], function (b
         eng: flagsBuilder("en"),
         swe: flagsBuilder("sw"),
         container: function (tag, attributesObj, elements) {
-            elements = elements.map(function (element) {
-                return {"flag": element}
-            });
-
-            return flagsBEM.buildBlock(tag, attributesObj, elements);
+            return flagsBEM.buildBlock(tag, attributesObj, elements, "flag");
         }
     }
 });

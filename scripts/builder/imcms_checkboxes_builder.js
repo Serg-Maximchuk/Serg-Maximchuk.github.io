@@ -23,7 +23,8 @@ Imcms.define("imcms-checkboxes-builder", ["imcms-bem-builder", "jquery"], functi
             var $input = checkboxBEM.buildElement("checkbox", "<input>", [], {
                 type: "checkbox",
                 name: attributes.name,
-                id: attributes.id
+                id: attributes.id,
+                checked: attributes.checked
             });
             var $label = checkboxBEM.buildElement("label", "<label>", [], {
                 "for": attributes.id,
@@ -36,11 +37,7 @@ Imcms.define("imcms-checkboxes-builder", ["imcms-bem-builder", "jquery"], functi
             ]);
         },
         container: function (tag, attributesObj, elements) {
-            elements = elements.map(function (element) {
-                return {"checkbox": element}
-            });
-
-            return containerBEM.buildBlock(tag, attributesObj, elements);
+            return containerBEM.buildBlock(tag, attributesObj, elements, "checkbox");
         }
     }
 });

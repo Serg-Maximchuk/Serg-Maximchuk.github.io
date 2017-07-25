@@ -8,13 +8,6 @@ Imcms.define("imcms-buttons-builder", ["imcms-bem-builder"], function (bemBuilde
         elements: {
             "button": "imcms-button"
         }
-        // "imcms-buttons": [{
-        //     "button": "imcms-button"
-        // }]
-        // element: {
-        //     name: "imcms-button",
-        //     block: "button"
-        // }
     });
 
     function buttonBuilder(buttonType) {
@@ -29,10 +22,7 @@ Imcms.define("imcms-buttons-builder", ["imcms-bem-builder"], function (bemBuilde
         neutral: buttonBuilder("neutral"),
         save: buttonBuilder("save"),
         container: function (tag, attributesObj, elements) {
-            elements = elements.map(function (element) {
-                return {"button": element};
-            });
-            return buttonsBEM.buildBlock(tag, attributesObj, elements);
+            return buttonsBEM.buildBlock(tag, attributesObj, elements, "button");
         }
     }
 });

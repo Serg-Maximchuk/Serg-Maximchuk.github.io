@@ -25,13 +25,20 @@ Imcms.define("imcms-bem-builder", ["jquery"], function ($) {
 
             return $(tag, attributesObj);
         },
-        buildBlock: function (tag, attributesObj, elements) {
+        buildBlock: function (tag, attributesObj, elements, blockNameForEach) {
             attributesObj = attributesObj || {};
             attributesObj["class"] = this.block + getOriginClass(attributesObj);
 
             elements = elements.map(function (element) {
-                var elementName = Object.keys(element)[0];
-                var $element = element[elementName];
+                var elementName, $element;
+
+                if (blockNameForEach) {
+                    elementName = blockNameForEach;
+                    $element = element;
+                } else {
+                    elementName = Object.keys(element)[0];
+                    $element = element[elementName];
+                }
 
                 return $element.addClass(this.block + "__" + elementName);
             }.bind(this));
