@@ -2,7 +2,7 @@
  * Created by Serhii Maksymchuk from Ubrainians for imCode
  * 25.07.17.
  */
-Imcms.define("imcms-radio-buttons-builder", ["imcms-bem-builder", "jquery"], function (bemBuilder, $) {
+Imcms.define("imcms-radio-buttons-builder", ["imcms-bem-builder"], function (bemBuilder) {
     var radioBEM = new bemBuilder({
             block: "imcms-radio",
             elements: {
