@@ -12,7 +12,7 @@ Imcms.define("imcms-numberbox", ["jquery"], function ($) {
     }
 
     function deactivateNumberBox(e) {
-        if (!$(e.target).closest(".imcms-number-box__input").length &&
+        if (!$(e.target).parent().children(".imcms-number-box__input").length &&
             e.target.classList[0] !== "imcms-number-box__button") {
 
             $(".imcms-number-box__input").closest(".imcms-number-box")
