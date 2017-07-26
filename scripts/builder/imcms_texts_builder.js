@@ -11,6 +11,14 @@ Imcms.define("imcms-texts-builder", ["imcms-bem-builder", "jquery"], function (B
         }
     });
 
+    var textAreaBEM = new BEM({
+        block: "imcms-text-area",
+        elements: {
+            "label": "imcms-label",
+            "input": "imcms-input"
+        }
+    });
+
     return {
         fixedSizeText: function (tag, attributes) {
             var $label = textBEM.buildElement("label", "<label>", {
@@ -32,6 +40,26 @@ Imcms.define("imcms-texts-builder", ["imcms-bem-builder", "jquery"], function (B
         },
         text: function (tag, attributes) {
             return this.fixedSizeText.apply(this, arguments).addClass("imcms-field");
+        },
+        fixedSizeTextArea: function (tag, attributes) {
+            var $label = textAreaBEM.buildElement("label", "<label>", {
+                    "for": attributes.id,
+                    text: attributes.text
+                }),
+                $textArea = textAreaBEM.buildElement("input", "<textarea>", {
+                    id: attributes.id,
+                    name: attributes.name,
+                    placeholder: attributes.placeholder
+                })
+            ;
+
+            return textAreaBEM.buildBlock("<div>", [
+                {"label": $label},
+                {"input": $textArea}
+            ]);
+        },
+        textArea: function (tag, attributes) {
+            return this.fixedSizeTextArea.apply(this, arguments).addClass("imcms-field");
         }
     }
 });

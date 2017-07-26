@@ -218,15 +218,15 @@ Imcms.require(
         // text input
 
         var $textInputFixedSize = componentsBuilder.texts.fixedSizeText("<div>", {
-                text: "Text 1",
                 id: "text1",
+                text: "Text 1",
                 name: "text",
                 placeholder: "Text 1 placeholder"
             }).addClass("text-example-fixed-size"),
 
             $textInput = componentsBuilder.texts.text("<div>", {
-                    text: "Text 2",
                     id: "text2",
+                    text: "Text 2",
                     name: "text",
                     placeholder: "Text 2 placeholder"
                 })
@@ -235,6 +235,27 @@ Imcms.require(
 
         $("#text-input-example").append($textInputFixedSize);
         $("#text-input-field-example").append($textInput);
+
+        // text area
+
+        var $textAreaFixedSize = componentsBuilder.texts.fixedSizeTextArea("<div>", {
+                id: "textArea1",
+                text: "Text area 1",
+                name: "textArea",
+                placeholder: "Text area 1 placeholder"
+            }).addClass("text-area-example-fixed-size"),
+
+            $textArea = componentsBuilder.texts.textArea("<div>", {
+                    id: "textArea2",
+                    text: "Text area 2",
+                    name: "textArea",
+                    placeholder: "Text area 2 placeholder"
+                })
+                .addClass("text-area-example-free-size")
+        ;
+
+        $("#text-input-area-example").append($textAreaFixedSize);
+        $("#text-input-area-field-example").append($textArea);
 
         imcmsDatePicker.init();
         imcmsTimePicker.init();
