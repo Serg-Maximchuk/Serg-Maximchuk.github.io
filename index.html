@@ -83,19 +83,20 @@
 <hr>
 <h2>Choose File</h2>
 <hr>
-
-<div class="imcms-field imcms-choose-file">
-    <div class="imcms-choose-file__text-box imcms-text-box">
-        <label for="path1" class="imcms-text-box__label imcms-label">File Path</label>
-        <input type="text" id="path1" class="imcms-text-box__input imcms-input" name="text" placeholder="Text">
+<div id="choose-file-example"><!-- content builds on JS side --></div>
+<div id="choose-file-example-2">
+    <div class="imcms-field imcms-choose-file">
+        <div class="imcms-choose-file__text-box imcms-text-box">
+            <label for="path1" class="imcms-text-box__label imcms-label">File Path</label>
+            <input type="text" id="path1" class="imcms-text-box__input imcms-input" name="text" placeholder="Text">
+        </div>
+        <label for="file" class="imcms-choose-file__button imcms-button--neutral imcms-button">
+            choose...
+            <input id="file" type="file" class="imcms-button__item--invisible">
+        </label>
+        <span class="imcms-choose-file__file-name">File.path</span>
     </div>
-    <label for="file" class="imcms-choose-file__button imcms-button--neutral imcms-button">
-        choose...
-        <input id="file" type="file" class="imcms-button__item--invisible">
-    </label>
-    <span class="imcms-choose-file__file-name">File.path</span>
 </div>
-
 <hr>
 
 <hr>
