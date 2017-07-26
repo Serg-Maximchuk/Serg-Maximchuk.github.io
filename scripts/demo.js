@@ -3,11 +3,8 @@
  * 21.07.17.
  */
 Imcms.require(
-    [
-        "imcms-date-picker", "imcms-time-picker", "imcms-numberbox", "imcms-keyword", "imcms-tests",
-        "imcms-components-builder", "jquery"
-    ],
-    function (imcmsDatePicker, imcmsTimePicker, imcmsNumberbox, imcmsKeyword, tests, componentsBuilder, $) {
+    ["imcms-date-picker", "imcms-time-picker", "imcms-keyword", "imcms-tests", "imcms-components-builder", "jquery"],
+    function (imcmsDatePicker, imcmsTimePicker, imcmsKeyword, tests, componentsBuilder, $) {
         console.info("%c Tests loaded.", "color: green");
         Imcms.tests = tests;
 
@@ -225,12 +222,11 @@ Imcms.require(
             }).addClass("text-example-fixed-size"),
 
             $textInput = componentsBuilder.texts.text("<div>", {
-                    id: "text2",
-                    text: "Text 2",
-                    name: "text",
-                    placeholder: "Text 2 placeholder"
-                })
-                .addClass("text-example-free-size")
+                id: "text2",
+                text: "Text 2",
+                name: "text",
+                placeholder: "Text 2 placeholder"
+            }).addClass("text-example-free-size")
         ;
 
         $("#text-input-example").append($textInputFixedSize);
@@ -246,20 +242,43 @@ Imcms.require(
             }).addClass("text-area-example-fixed-size"),
 
             $textArea = componentsBuilder.texts.textArea("<div>", {
-                    id: "textArea2",
-                    text: "Text area 2",
-                    name: "textArea",
-                    placeholder: "Text area 2 placeholder"
-                })
-                .addClass("text-area-example-free-size")
+                id: "textArea2",
+                text: "Text area 2",
+                name: "textArea",
+                placeholder: "Text area 2 placeholder"
+            }).addClass("text-area-example-free-size")
         ;
 
         $("#text-input-area-example").append($textAreaFixedSize);
         $("#text-input-area-field-example").append($textArea);
 
+        // text number input
+
+        var $textNumberFixedSize = componentsBuilder.texts.fixedSizeTextNumber("<div>", {
+                id: "number1",
+                text: "Number 1",
+                name: "number",
+                placeholder: "Number 1 placeholder",
+                error: "Special info - Error"
+            }).addClass("number-input-example-fixed-size"),
+
+            $textNumber = componentsBuilder.texts.textNumber("<div>", {
+                id: "number2",
+                text: "Number 2",
+                name: "number",
+                placeholder: "Number 2 placeholder",
+                error: "Special info - Error"
+            }).addClass("number-input-example-free-size")
+        ;
+
+        // error in field, just an example
+        $textNumber.find(".imcms-number__number-box.imcms-number-box").addClass("imcms-number-box--error");
+
+        $("#text-number-example").append($textNumberFixedSize);
+        $("#text-number-field-example").append($textNumber);
+
         imcmsDatePicker.init();
         imcmsTimePicker.init();
-        imcmsNumberbox.init();
         imcmsKeyword.init();
 
         console.timeEnd("imCMS JS loaded");
