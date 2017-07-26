@@ -11,10 +11,38 @@ Imcms.require(
         console.info("%c Tests loaded.", "color: green");
         Imcms.tests = tests;
 
+        var buttons = componentsBuilder.buttons;
+
+        // links as imcms-button--neutral
+
+        var $homeEditLink = buttons.neutral("<a>", {
+                href: "home_edit.html",
+                text: "home + edit"
+            }),
+            $chooseImgLink = buttons.neutral("<a>", {
+                href: "choose_img.html",
+                text: "choose image"
+            }),
+            $imageEditorLink = buttons.neutral("<a>", {
+                href: "image_editor.html",
+                text: "image editor"
+            }),
+            $MenuEditorLink = buttons.neutral("<a>", {
+                href: "menu_editor.html",
+                text: "menu editor"
+            })
+        ;
+
+        $("#links-as-buttons").append(
+            $homeEditLink,
+            $chooseImgLink,
+            $imageEditorLink,
+            $MenuEditorLink
+        );
+
         // buttons
 
-        var buttons = componentsBuilder.buttons,
-            $negativeBtn = buttons.negative("<button>", {
+        var $negativeBtn = buttons.negative("<button>", {
                 type: "button",
                 text: "negative"
             }),
@@ -103,9 +131,7 @@ Imcms.require(
             }
         });
 
-        var $checkboxes = componentsBuilder.checkboxes.container("<div>", {
-            "class": "checkboxes-class-example"
-        }, [
+        var $checkboxes = componentsBuilder.checkboxes.container("<div>", {"class": "checkboxes-class-example"}, [
             $checkbox1,
             $checkbox2
         ]);
