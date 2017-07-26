@@ -1,6 +1,3 @@
-.imcms-flags {
-}
-
 .imcms-flags::after {
     content: '';
     display: block;
