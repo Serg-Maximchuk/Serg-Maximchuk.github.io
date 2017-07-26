@@ -233,7 +233,8 @@ Imcms.require(
                 .addClass("text-example-free-size")
         ;
 
-        $("#text-input-example").append($textInputFixedSize, $textInput);
+        $("#text-input-example").append($textInputFixedSize);
+        $("#text-input-field-example").append($textInput);
 
         imcmsDatePicker.init();
         imcmsTimePicker.init();
