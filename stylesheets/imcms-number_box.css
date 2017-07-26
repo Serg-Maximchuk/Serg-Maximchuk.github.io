@@ -19,7 +19,7 @@
     width: 100%;
 }
 
-.imcms-number-box__error-msg {
+.imcms-number__error-msg {
     display: none;
 }
 
@@ -45,12 +45,12 @@
     color: #da1a1a;
 }
 
-.imcms-number-box--error + .imcms-number-box__error-msg {
+.imcms-number-box--error + .imcms-number__error-msg {
     display: block;
     margin-top: 10px;
 }
 
-.imcms-number__button {
+.imcms-number-box__button {
     display: none;
     padding: 0 10px;
     right: 0;

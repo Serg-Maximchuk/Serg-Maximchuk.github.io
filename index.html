@@ -70,13 +70,16 @@
 <h2>Text Area</h2>
 <hr>
 <div id="text-input-area-example"><!-- content builds on JS side --></div>
+<div id="text-input-area-field-example"><!-- content builds on JS side --></div>
 <div id="text-input-area-example-2">
-    <div class="imcms-text-area imcms-field__text-area">
+    <div class="imcms-text-area">
         <label for="text-area" class="imcms-text-area__label imcms-label">Textarea</label>
         <textarea name="textArea" id="text-area" class="imcms-text-area__input imcms-input"
                   placeholder="Text"></textarea>
     </div>
-    <div class="imcms-field">
+</div>
+<div id="text-input-area-field-example-2">
+    <div class="imcms-field imcms-text-area">
         <label for="text-area0" class="imcms-text-area__label imcms-label">Textarea in Field</label>
         <textarea name="textArea" id="text-area0" class="imcms-text-area__input imcms-input"
                   placeholder="Text"></textarea>
@@ -89,25 +92,25 @@
 <hr>
 <div class="imcms-number">
     <label for="number1" class="imcms-number__label imcms-label">Number</label>
-    <div class="imcms-number-box">
+    <div class="imcms-number__number-box imcms-number-box">
         <input type="text" id="number1" class="imcms-number-box__input imcms-input" name="number"
                placeholder="Number">
-        <button type="button" class="imcms-number__button imcms-button--increment imcms-button"></button>
-        <button type="button" class="imcms-number__button imcms-button--decrement imcms-button"></button>
+        <button type="button" class="imcms-number-box__button imcms-button--increment imcms-button"></button>
+        <button type="button" class="imcms-number-box__button imcms-button--decrement imcms-button"></button>
     </div>
-    <div class="imcms-number-box__error-msg imcms-error-msg">Special info - Error</div>
+    <div class="imcms-number__error-msg imcms-error-msg">Special info - Error</div>
 </div>
 
 <div class="imcms-field">
     <div class="imcms-field__number imcms-number">
         <label for="number3" class="imcms-number__label imcms-label">Number</label>
-        <div class="imcms-number-box imcms-number-box--error">
+        <div class="imcms-number__number-box imcms-number-box imcms-number-box--error">
             <input type="text" id="number3" class="imcms-number-box__input imcms-input" name="number"
                    placeholder="Number">
-            <button type="button" class="imcms-number__button imcms-button--increment imcms-button"></button>
-            <button type="button" class="imcms-number__button imcms-button--decrement imcms-button"></button>
+            <button type="button" class="imcms-number-box__button imcms-button--increment imcms-button"></button>
+            <button type="button" class="imcms-number-box__button imcms-button--decrement imcms-button"></button>
         </div>
-        <div class="imcms-number-box__error-msg imcms-error-msg">Special info - Error</div>
+        <div class="imcms-number__error-msg imcms-error-msg">Special info - Error</div>
     </div>
 </div>
 <hr>
@@ -115,19 +118,19 @@
 <hr>
 <h2>Choose File</h2>
 <hr>
-<div class="imcms-field">
-    <div class="imcms-field__file imcms-choose-file">
-        <div class="imcms-field__text-box imcms-text-box">
-            <label for="path1" class="imcms-text-box__label imcms-label">File Path</label>
-            <input type="text" id="path1" class="imcms-text-box__input imcms-input" name="text" placeholder="Text">
-        </div>
-        <label for="file" class="imcms-number__label imcms-field__text-box imcms-button--neutral imcms-button">
-            choose...
-            <input id="file" type="file" class="imcms-choose-file__input">
-        </label>
-        <span class="imcms-choose-file__file-name">File.path</span>
+
+<div class="imcms-field imcms-choose-file">
+    <div class="imcms-choose-file__text-box imcms-text-box">
+        <label for="path1" class="imcms-text-box__label imcms-label">File Path</label>
+        <input type="text" id="path1" class="imcms-text-box__input imcms-input" name="text" placeholder="Text">
     </div>
+    <label for="file" class="imcms-choose-file__button imcms-button--neutral imcms-button">
+        choose...
+        <input id="file" type="file" class="imcms-button__item--invisible">
+    </label>
+    <span class="imcms-choose-file__file-name">File.path</span>
 </div>
+
 <hr>
 
 <hr>
@@ -457,13 +460,13 @@
                   placeholder=""></textarea>
     </div>
     <div class="imcms-form__field imcms-field imcms-choose-file">
-        <div class="imcms-text-box imcms-field__text-box">
+        <div class="imcms-text-box imcms-choose-file__text-box">
             <label for="path" class="imcms-text-box__label imcms-label">Link to image</label>
             <input type="text" id="path" class="imcms-text-box__input imcms-input" name="text" placeholder="Text">
         </div>
         <label for="file1" class="imcms-number__label imcms-button imcms-button--neutral">
             choose...
-            <input id="file1" type="file" class="imcms-choose-file__input">
+            <input id="file1" type="file" class="imcms-button__item--invisible">
         </label>
         <span class="imcms-choose-file__file-name">File.path</span>
     </div>

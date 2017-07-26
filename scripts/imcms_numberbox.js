@@ -13,7 +13,7 @@ Imcms.define("imcms-numberbox", ["jquery"], function ($) {
 
     function deactivateNumberBox(e) {
         if (!$(e.target).closest(".imcms-number-box__input").length &&
-            e.target.classList[0] !== "imcms-number__button") {
+            e.target.classList[0] !== "imcms-number-box__button") {
 
             $(".imcms-number-box__input").closest(".imcms-number-box")
                 .removeClass("imcms-number-box--active");
@@ -56,7 +56,7 @@ Imcms.define("imcms-numberbox", ["jquery"], function ($) {
         init: function () {
             $(".imcms-number-box__input").click(activateNumberBox)
                 .on('change keyup input click', validation);
-            $(".imcms-number__button").click(changeValue);
+            $(".imcms-number-box__button").click(changeValue);
             $(document).click(deactivateNumberBox);
         }
     }
