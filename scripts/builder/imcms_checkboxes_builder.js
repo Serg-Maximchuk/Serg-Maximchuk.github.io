@@ -20,24 +20,24 @@ Imcms.define("imcms-checkboxes-builder", ["imcms-bem-builder", "jquery"], functi
 
     return {
         checkbox: function (tag, attributes) {
-            var $input = checkboxBEM.buildElement("checkbox", "<input>", [], {
+            var $input = checkboxBEM.buildElement("checkbox", "<input>", {
                 type: "checkbox",
                 name: attributes.name,
                 id: attributes.id,
                 checked: attributes.checked
             });
-            var $label = checkboxBEM.buildElement("label", "<label>", [], {
+            var $label = checkboxBEM.buildElement("label", "<label>", {
                 "for": attributes.id,
                 text: attributes.text,
                 click: attributes.click
             });
-            return checkboxBEM.buildBlock(tag, {}, [
+            return checkboxBEM.buildBlock(tag, [
                 {"checkbox": $input},
                 {"label": $label}
             ]);
         },
         container: function (tag, attributesObj, elements) {
-            return containerBEM.buildBlock(tag, attributesObj, elements, "checkbox");
+            return containerBEM.buildBlock(tag, elements, attributesObj, "checkbox");
         }
     }
 });

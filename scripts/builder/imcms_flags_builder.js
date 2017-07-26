@@ -46,7 +46,7 @@ Imcms.define("imcms-flags-builder", ["imcms-bem-builder", "jquery"], function (b
                 modifiers.push("active");
             }
 
-            return flagsBEM.buildElement("flag", tag, modifiers, attributesObj).click(onFlagClick);
+            return flagsBEM.buildElement("flag", tag, attributesObj, modifiers).click(onFlagClick);
         };
     }
 
@@ -54,7 +54,7 @@ Imcms.define("imcms-flags-builder", ["imcms-bem-builder", "jquery"], function (b
         eng: flagsBuilder("en"),
         swe: flagsBuilder("sw"),
         container: function (tag, attributesObj, elements) {
-            return flagsBEM.buildBlock(tag, attributesObj, elements, "flag");
+            return flagsBEM.buildBlock(tag, elements, attributesObj, "flag");
         }
     }
 });

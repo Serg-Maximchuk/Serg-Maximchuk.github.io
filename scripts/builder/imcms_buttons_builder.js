@@ -12,7 +12,7 @@ Imcms.define("imcms-buttons-builder", ["imcms-bem-builder"], function (bemBuilde
 
     function buttonBuilder(buttonType) {
         return function (tag, attributesObj) {
-            return buttonsBEM.buildElement("button", tag, [buttonType], attributesObj);
+            return buttonsBEM.buildElement("button", tag, attributesObj, [buttonType]);
         };
     }
 
@@ -22,7 +22,7 @@ Imcms.define("imcms-buttons-builder", ["imcms-bem-builder"], function (bemBuilde
         neutral: buttonBuilder("neutral"),
         save: buttonBuilder("save"),
         container: function (tag, attributesObj, elements) {
-            return buttonsBEM.buildBlock(tag, attributesObj, elements, "button");
+            return buttonsBEM.buildBlock(tag, elements, attributesObj, "button");
         }
     }
 });

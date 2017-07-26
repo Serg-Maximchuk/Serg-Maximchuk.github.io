@@ -63,34 +63,31 @@ Imcms.define("imcms-selects-builder", ["imcms-bem-builder", "jquery"], function 
     return {
         select: function (tag, attributes, options) {
             var $itemsArr = options.map(function (option) {
-                    return dropDownListBEM.buildBlockElement("item", "<div>", [], option);
+                    return dropDownListBEM.buildBlockElement("item", "<div>", option);
                 }),
                 $itemsContainer = dropDownListBEM.buildElement("items", "<div>").append($itemsArr),
 
-                $button = dropDownListBEM.buildBlockElement("button", "<button>", ["drop-down"], {
-                    type: "button"
-                }),
-                $selectedValue = dropDownListBEM.buildBlockElement("select-item-value", "<span>", [], {
+                $button = dropDownListBEM.buildBlockElement("button", "<button>", {type: "button"}, ["drop-down"]),
+                $selectedValue = dropDownListBEM.buildBlockElement("select-item-value", "<span>", {
                     text: (options[0] && options[0].text) || ""
                 }),
-                $selectItem = dropDownListBEM.buildElement("select-item", "<div>", [], {
-                    click: toggleSelect
-                }).append($selectedValue, $button),
+                $selectItem = dropDownListBEM.buildElement("select-item", "<div>", {click: toggleSelect})
+                    .append($selectedValue, $button),
 
-                $dropDownList = dropDownListBEM.buildBlock("<div>", {}, [
+                $dropDownList = dropDownListBEM.buildBlock("<div>", [
                     {"select-item": $selectItem},
                     {"items": $itemsContainer}
                 ]),
-                $label = selectBEM.buildElement("label", "<label>", [], {
+                $label = selectBEM.buildElement("label", "<label>", {
                     "for": attributes.id, // add opening select on label click
                     text: attributes.text
                 })
             ;
 
-            return selectBEM.buildBlock("<div>", (attributes["class"] ? {"class": attributes["class"]} : {}), [
+            return selectBEM.buildBlock("<div>", [
                     {"label": $label},
                     {"drop-down-list": $dropDownList}
-                ])
+                ], (attributes["class"] ? {"class": attributes["class"]} : {}))
                 .append($("<input>", {
                     type: "hidden",
                     id: attributes.id
@@ -104,7 +101,7 @@ Imcms.define("imcms-selects-builder", ["imcms-bem-builder", "jquery"], function 
             }
 
             var $select = this.select("<div>", attributes, options);
-            return fieldBEM.buildBlock("<div>", (clas ? {"class": clas} : {}), [$select], "select");
+            return fieldBEM.buildBlock("<div>", [$select], (clas ? {"class": clas} : {}), "select");
         }
     }
 });
