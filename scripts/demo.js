@@ -215,6 +215,26 @@ Imcms.require(
 
         $("#select-field-example").append($selectContainer);
 
+        // text input
+
+        var $textInputFixedSize = componentsBuilder.texts.fixedSizeText("<div>", {
+                text: "Text 1",
+                id: "text1",
+                name: "text",
+                placeholder: "Text 1 placeholder"
+            }).addClass("text-example-fixed-size"),
+
+            $textInput = componentsBuilder.texts.text("<div>", {
+                    text: "Text 2",
+                    id: "text2",
+                    name: "text",
+                    placeholder: "Text 2 placeholder"
+                })
+                .addClass("text-example-free-size")
+        ;
+
+        $("#text-input-example").append($textInputFixedSize, $textInput);
+
         imcmsDatePicker.init();
         imcmsTimePicker.init();
         imcmsNumberbox.init();
