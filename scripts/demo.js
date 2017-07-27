@@ -39,38 +39,14 @@ Imcms.require(
 
         // buttons
 
-        var $negativeBtn = buttons.negative("<button>", {
-                type: "button",
-                text: "negative"
-            }),
-            $positiveBtn = buttons.positive("<button>", {
-                type: "button",
-                text: "positive"
-            }),
-            $neutralBtn = buttons.neutral("<button>", {
-                type: "button",
-                text: "neutral"
-            }),
-            $saveBtn = buttons.save("<button>", {
-                type: "button",
-                text: "save"
-            }),
-            $negativeBtn2 = buttons.negative("<button>", {
-                type: "button",
-                text: "negative"
-            }),
-            $positiveBtn2 = buttons.positive("<button>", {
-                type: "button",
-                text: "positive"
-            }),
-            $neutralBtn2 = buttons.neutral("<button>", {
-                type: "button",
-                text: "neutral"
-            }),
-            $saveBtn2 = buttons.save("<button>", {
-                type: "button",
-                text: "save"
-            }),
+        var $negativeBtn = buttons.negativeButton({text: "negative"}),
+            $positiveBtn = buttons.positiveButton({text: "positive"}),
+            $neutralBtn = buttons.neutralButton({text: "neutral"}),
+            $saveBtn = buttons.saveButton({text: "save"}),
+            $negativeBtn2 = buttons.negativeButton({text: "negative"}),
+            $positiveBtn2 = buttons.positiveButton({text: "positive"}),
+            $neutralBtn2 = buttons.neutralButton({text: "neutral"}),
+            $saveBtn2 = buttons.saveButton({text: "save"}),
             $buttonsRow2 = buttons.container("<div>", {
                 id: "buttons-container-example"
             }, [

@@ -6,10 +6,7 @@ Imcms.define("imcms-keywords-builder",
     ["imcms-bem-builder", "imcms-texts-builder", "imcms-buttons-builder", "imcms-primitives-builder", "jquery"],
     function (BEM, texts, buttons, primitives, $) {
         function createRemoveKeywordButton() {
-            return buttons.close("<button>", {
-                type: "button",
-                click: removeKeyword
-            });
+            return buttons.closeButton({click: removeKeyword});
         }
 
         function addKeyword() {
@@ -64,8 +61,7 @@ Imcms.define("imcms-keywords-builder",
                         id: attributes["input-id"], // todo: it would be great to generate unique id if not specified
                         placeholder: attributes.placeholder
                     }, ["wide"]),
-                    $addKeywordButton = buttons.neutral("<button>", {
-                        type: "button",
+                    $addKeywordButton = buttons.neutralButton({
                         text: attributes["button-text"],
                         click: addKeyword
                     }),

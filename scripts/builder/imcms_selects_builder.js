@@ -54,6 +54,8 @@ Imcms.define("imcms-selects-builder",
                 itemValue = select.find(".imcms-drop-down-list__select-item-value").html(content)
             ;
 
+            // todo: implement labeling selected item by [selected] attribute
+
             select.removeClass("imcms-select__drop-down-list--active")
                 .find("input")
                 .val(content);
@@ -88,8 +90,9 @@ Imcms.define("imcms-selects-builder",
                     ], (attributes["class"] ? {"class": attributes["class"]} : {}))
                     .append($("<input>", {
                         type: "hidden",
-                        id: attributes.id
-                    }));
+                        id: attributes.id,
+                        name: attributes.name
+                    })); // todo: implement putting selected value into this input from [data-value] attribute
             },
             container: function (tag, attributes, options) {
                 var clas = (attributes && attributes["class"]) || "";

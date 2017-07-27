@@ -8,8 +8,7 @@ Imcms.define("imcms-choose-image-builder",
         var chooseImageBEM = new BEM({
             block: "imcms-choose-image",
             elements: {
-                "text-box": "imcms-text-box",
-                "button": "imcms-button"
+                "text-box": "imcms-text-box"
             }
         });
 

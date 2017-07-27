@@ -3,8 +3,8 @@
  * 26.07.17.
  */
 Imcms.define("imcms-texts-builder",
-    ["imcms-bem-builder", "imcms-primitives-builder", "jquery"],
-    function (BEM, primitives, $) {
+    ["imcms-bem-builder", "imcms-primitives-builder", "imcms-buttons-builder", "jquery"],
+    function (BEM, primitives, buttons, $) {
         function activateNumberBox() {
             var numberBox = $(this).closest(".imcms-number-box"),
                 numberBoxInput = numberBox.find(".imcms-number-box__input")
@@ -133,15 +133,8 @@ Imcms.define("imcms-texts-builder",
                         click: activateNumberBox
                     }).on('change keyup input click', validation),
 
-                    $buttonIncrement = numberBoxBEM.buildElement("button", "<button>", {
-                        type: "button",
-                        click: incrementNumberBoxValue
-                    }, ["increment"]),
-
-                    $buttonDecrement = numberBoxBEM.buildElement("button", "<button>", {
-                        type: "button",
-                        click: decrementNumberBoxValue
-                    }, ["decrement"]),
+                    $buttonIncrement = buttons.incrementButton({click: incrementNumberBoxValue}),
+                    $buttonDecrement = buttons.decrementButton({click: decrementNumberBoxValue}),
 
                     $numberInputBox = numberBoxBEM.buildBlock("<div>", [
                         {"input": $input},
