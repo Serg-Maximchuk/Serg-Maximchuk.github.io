@@ -3,8 +3,8 @@
  * 27.07.17.
  */
 Imcms.define("imcms-keywords-builder",
-    ["imcms-bem-builder", "imcms-texts-builder", "imcms-buttons-builder", "jquery"],
-    function (BEM, texts, buttons, $) {
+    ["imcms-bem-builder", "imcms-texts-builder", "imcms-buttons-builder", "imcms-primitives-builder", "jquery"],
+    function (BEM, texts, buttons, primitives, $) {
         function createRemoveKeywordButton() {
             return buttons.close("<button>", {
                 type: "button",
@@ -51,9 +51,7 @@ Imcms.define("imcms-keywords-builder",
             keywordsBoxBEM = new BEM({
                 block: "imcms-keyword",
                 elements: {
-                    "label": "imcms-label",
                     "input": "imcms-input",
-                    "button": "imcms-button",
                     "keywords": "",
                     "keyword": ""
                 }
@@ -62,10 +60,7 @@ Imcms.define("imcms-keywords-builder",
 
         return {
             keywordsBox: function (tag, attributes) {
-                var $label = keywordsBoxBEM.buildElement("label", "<label>", {
-                        "for": attributes["input-id"],
-                        text: attributes.title
-                    }),
+                var $label = primitives.labels.imcmsLabel(attributes["input-id"], attributes.title),
                     $input = keywordsBoxBEM.buildElement("input", "<input>", {
                         type: "text",
                         id: attributes["input-id"], // todo: it would be great to generate unique id if not specified
