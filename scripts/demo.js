@@ -3,8 +3,8 @@
  * 21.07.17.
  */
 Imcms.require(
-    ["imcms-date-picker", "imcms-time-picker", "imcms-keyword", "imcms-tests", "imcms-components-builder", "jquery"],
-    function (imcmsDatePicker, imcmsTimePicker, imcmsKeyword, tests, componentsBuilder, $) {
+    ["imcms-date-picker", "imcms-time-picker", "imcms-tests", "imcms-components-builder", "jquery"],
+    function (imcmsDatePicker, imcmsTimePicker, tests, componentsBuilder, $) {
         console.info("%c Tests loaded.", "color: green");
         Imcms.tests = tests;
 
@@ -313,9 +313,19 @@ Imcms.require(
 
         $("#space-around-input-example").append($pluralInoutBox);
 
+        // keywords
+
+        var $keywordsBox = componentsBuilder.keywords.keywordsBox("<div>", {
+            "input-id": "keyword",
+            title: "Keywords",
+            placeholder: "keyword",
+            "button-text": "ADD+"
+        });
+
+        $("#keywords-example").append($keywordsBox);
+
         imcmsDatePicker.init();
         imcmsTimePicker.init();
-        imcmsKeyword.init();
 
         console.timeEnd("imCMS JS loaded");
     }
