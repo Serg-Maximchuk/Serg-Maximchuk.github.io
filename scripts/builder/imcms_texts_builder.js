@@ -2,211 +2,198 @@
  * Created by Serhii Maksymchuk from Ubrainians for imCode
  * 26.07.17.
  */
-Imcms.define("imcms-texts-builder", ["imcms-bem-builder", "jquery"], function (BEM, $) {
-    function activateNumberBox() {
-        var numberBox = $(this).closest(".imcms-number-box"),
-            numberBoxInput = numberBox.find(".imcms-number-box__input")
-        ;
-        numberBox.addClass("imcms-number-box--active");
+Imcms.define("imcms-texts-builder",
+    ["imcms-bem-builder", "imcms-primitives-builder", "jquery"],
+    function (BEM, primitives, $) {
+        function activateNumberBox() {
+            var numberBox = $(this).closest(".imcms-number-box"),
+                numberBoxInput = numberBox.find(".imcms-number-box__input")
+            ;
+            numberBox.addClass("imcms-number-box--active");
 
-        if (numberBoxInput.val() === "") {
-            numberBoxInput.val(0)
+            if (numberBoxInput.val() === "") {
+                numberBoxInput.val(0)
+            }
         }
-    }
 
-    function validation() {
-        var $this = $(this),
-            value = $this.val()
-        ;
-
-        if (value.match(/[^0-9,-]/g)) {
-            $this.val(value.replace(/[^0-9,-]/g, ''));
-        }
-        if (value.length > 10) {
-            $this.val(value.substring(0, 10))
-        }
-    }
-
-    function incrementNumberBoxValue() {
-        changeValue.call(this, 1);
-    }
-
-    function decrementNumberBoxValue() {
-        changeValue.call(this, -1);
-    }
-
-    function changeValue(delta) {
-        var numberBoxInput = $(this).closest(".imcms-number-box").find(".imcms-number-box__input"),
-            value = (parseInt(numberBoxInput.val()) || 0) + delta
-        ;
-        return numberBoxInput.val(value);
-    }
-
-    function deactivateNumberBox(e) {
-        var $target = $(e.target);
-        if (
-            !$target.parent().children(".imcms-number-box__input").length
-            && !$target.hasClass("imcms-number-box__button")
-        ) {
-            e.stopPropagation();
-            $(".imcms-number-box__input").closest(".imcms-number-box")
-                .removeClass("imcms-number-box--active");
-        }
-    }
-
-    $(document).click(deactivateNumberBox);
-
-    var textBEM = new BEM({
-        block: "imcms-text-box",
-        elements: {
-            "label": "imcms-label",
-            "input": "imcms-input"
-        }
-    });
-
-    var textAreaBEM = new BEM({
-        block: "imcms-text-area",
-        elements: {
-            "label": "imcms-label",
-            "input": "imcms-input"
-        }
-    });
-
-    var numberBoxBEM = new BEM({
-        block: "imcms-number-box",
-        elements: {
-            "input": "imcms-input",
-            "button": "imcms-button"
-        }
-    });
-
-    var numberBEM = new BEM({
-        block: "imcms-number",
-        elements: {
-            "label": "imcms-label",
-            "number-box": "imcms-number-box",
-            "error-msg": "imcms-error-msg"
-        }
-    });
-
-    var pluralInputBEM = new BEM({
-        block: "imcms-space-around",
-        elements: {
-            "label": "imcms-label",
-            "input-box": "",
-            "input": "imcms-input"
-        }
-    });
-
-    return {
-        fixedSizeText: function (tag, attributes) {
-            var $label = textBEM.buildElement("label", "<label>", {
-                    "for": attributes.id,
-                    text: attributes.text
-                }),
-                $input = textBEM.buildElement("input", "<input>", {
-                    id: attributes.id,
-                    type: "text",
-                    name: attributes.name,
-                    placeholder: attributes.placeholder
-                })
+        function validation() {
+            var $this = $(this),
+                value = $this.val()
             ;
 
-            return textBEM.buildBlock("<div>", [
-                {"label": $label},
-                {"input": $input}
-            ]);
-        },
-        text: function (tag, attributes) {
-            return this.fixedSizeText.apply(this, arguments).addClass("imcms-field");
-        },
-        fixedSizeTextArea: function (tag, attributes) {
-            var $label = textAreaBEM.buildElement("label", "<label>", {
-                    "for": attributes.id,
-                    text: attributes.text
-                }),
-                $textArea = textAreaBEM.buildElement("input", "<textarea>", {
-                    id: attributes.id,
-                    name: attributes.name,
-                    placeholder: attributes.placeholder
-                })
+            if (value.match(/[^0-9,-]/g)) {
+                $this.val(value.replace(/[^0-9,-]/g, ''));
+            }
+            if (value.length > 10) {
+                $this.val(value.substring(0, 10))
+            }
+        }
+
+        function incrementNumberBoxValue() {
+            changeValue.call(this, 1);
+        }
+
+        function decrementNumberBoxValue() {
+            changeValue.call(this, -1);
+        }
+
+        function changeValue(delta) {
+            var numberBoxInput = $(this).closest(".imcms-number-box").find(".imcms-number-box__input"),
+                value = (parseInt(numberBoxInput.val()) || 0) + delta
             ;
+            return numberBoxInput.val(value);
+        }
 
-            return textAreaBEM.buildBlock("<div>", [
-                {"label": $label},
-                {"input": $textArea}
-            ]);
-        },
-        textArea: function (tag, attributes) {
-            return this.fixedSizeTextArea.apply(this, arguments).addClass("imcms-field");
-        },
-        fixedSizeTextNumber: function (tag, attributes) {
-            var $input = numberBoxBEM.buildElement("input", "<input>", {
-                    id: attributes.id,
-                    type: "text",
-                    name: attributes.name,
-                    placeholder: attributes.placeholder,
-                    click: activateNumberBox
-                }).on('change keyup input click', validation),
+        function deactivateNumberBox(e) {
+            var $target = $(e.target);
+            if (
+                !$target.parent().children(".imcms-number-box__input").length
+                && !$target.hasClass("imcms-number-box__button")
+            ) {
+                e.stopPropagation();
+                $(".imcms-number-box__input").closest(".imcms-number-box")
+                    .removeClass("imcms-number-box--active");
+            }
+        }
 
-                $buttonIncrement = numberBoxBEM.buildElement("button", "<button>", {
-                    type: "button",
-                    click: incrementNumberBoxValue
-                }, ["increment"]),
+        $(document).click(deactivateNumberBox);
 
-                $buttonDecrement = numberBoxBEM.buildElement("button", "<button>", {
-                    type: "button",
-                    click: decrementNumberBoxValue
-                }, ["decrement"]),
+        var textBEM = new BEM({
+            block: "imcms-text-box",
+            elements: {
+                "input": "imcms-input"
+            }
+        });
 
-                $numberInputBox = numberBoxBEM.buildBlock("<div>", [
-                    {"input": $input},
-                    {"button": $buttonIncrement},
-                    {"button": $buttonDecrement}
-                ]),
-                $label = numberBEM.buildElement("label", "<label>", {
-                    "for": attributes.id,
-                    text: attributes.text
-                }),
-                $error = numberBEM.buildElement("error-msg", "<div>", {text: attributes.error})
-            ;
-            return numberBEM.buildBlock("<div>", [
-                {"label": $label},
-                {"number-box": $numberInputBox},
-                {"error-msg": $error}
-            ]);
-        },
-        textNumber: function (tag, attributes) {
-            return this.fixedSizeTextNumber.apply(this, arguments).addClass("imcms-field");
-        },
-        pluralInput: function (tag, columns, attributes) {
-            var $label = pluralInputBEM.buildElement("label", "<label>", {
-                    id: columns[0].id,
-                    text: attributes.text
-                }),
-                inputs = columns.map(function (column) {
-                    return pluralInputBEM.buildBlockElement("input", "<input>", {
+        var textAreaBEM = new BEM({
+            block: "imcms-text-area",
+            elements: {
+                "input": "imcms-input"
+            }
+        });
+
+        var numberBoxBEM = new BEM({
+            block: "imcms-number-box",
+            elements: {
+                "input": "imcms-input",
+                "button": "imcms-button"
+            }
+        });
+
+        var numberBEM = new BEM({
+            block: "imcms-number",
+            elements: {
+                "number-box": "imcms-number-box",
+                "error-msg": "imcms-error-msg"
+            }
+        });
+
+        var pluralInputBEM = new BEM({
+            block: "imcms-space-around",
+            elements: {
+                "input-box": "",
+                "input": "imcms-input"
+            }
+        });
+
+        return {
+            fixedSizeText: function (tag, attributes) {
+                var $label = primitives.labels.imcmsLabel(attributes.id, attributes.text),
+                    $input = textBEM.buildElement("input", "<input>", {
+                        id: attributes.id,
                         type: "text",
-                        id: column.id,
-                        placeholder: column.placeholder,
-                        name: column.name
-                    });
-                }),
-                $inputBox = pluralInputBEM.buildElement("input-box", "<div>").append(inputs)
-            ;
-            return pluralInputBEM.buildBlock("<div>", [
-                {"label": $label},
-                {"input-box": $inputBox}
-            ]);
-        },
-        error: function (tag, text, attributes) {
-            return $(tag, (attributes || {})).addClass("imcms-error-msg").text(text);
-        },
-        info: function (tag, text, attributes) {
-            return $(tag, (attributes || {})).addClass("imcms-info-msg").text(text);
-        },
-        title: function (tag, text, attributes) {
-            return $(tag, (attributes || {})).addClass("imcms-title").text(text);
+                        name: attributes.name,
+                        placeholder: attributes.placeholder
+                    })
+                ;
+
+                return textBEM.buildBlock("<div>", [
+                    {"label": $label},
+                    {"input": $input}
+                ]);
+            },
+            text: function (tag, attributes) {
+                return this.fixedSizeText.apply(this, arguments).addClass("imcms-field");
+            },
+            fixedSizeTextArea: function (tag, attributes) {
+                var $label = primitives.labels.imcmsLabel(attributes.id, attributes.text),
+                    $textArea = textAreaBEM.buildElement("input", "<textarea>", {
+                        id: attributes.id,
+                        name: attributes.name,
+                        placeholder: attributes.placeholder
+                    })
+                ;
+
+                return textAreaBEM.buildBlock("<div>", [
+                    {"label": $label},
+                    {"input": $textArea}
+                ]);
+            },
+            textArea: function (tag, attributes) {
+                return this.fixedSizeTextArea.apply(this, arguments).addClass("imcms-field");
+            },
+            fixedSizeTextNumber: function (tag, attributes) {
+                var $input = numberBoxBEM.buildElement("input", "<input>", {
+                        id: attributes.id,
+                        type: "text",
+                        name: attributes.name,
+                        placeholder: attributes.placeholder,
+                        click: activateNumberBox
+                    }).on('change keyup input click', validation),
+
+                    $buttonIncrement = numberBoxBEM.buildElement("button", "<button>", {
+                        type: "button",
+                        click: incrementNumberBoxValue
+                    }, ["increment"]),
+
+                    $buttonDecrement = numberBoxBEM.buildElement("button", "<button>", {
+                        type: "button",
+                        click: decrementNumberBoxValue
+                    }, ["decrement"]),
+
+                    $numberInputBox = numberBoxBEM.buildBlock("<div>", [
+                        {"input": $input},
+                        {"button": $buttonIncrement},
+                        {"button": $buttonDecrement}
+                    ]),
+                    $label = primitives.labels.imcmsLabel(attributes.id, attributes.text),
+                    $error = numberBEM.buildElement("error-msg", "<div>", {text: attributes.error})
+                ;
+                return numberBEM.buildBlock("<div>", [
+                    {"label": $label},
+                    {"number-box": $numberInputBox},
+                    {"error-msg": $error}
+                ]);
+            },
+            textNumber: function (tag, attributes) {
+                return this.fixedSizeTextNumber.apply(this, arguments).addClass("imcms-field");
+            },
+            pluralInput: function (tag, columns, attributes) {
+                var $label = primitives.labels.imcmsLabel(columns[0].id, attributes.text),
+                    inputs = columns.map(function (column) {
+                        return pluralInputBEM.buildBlockElement("input", "<input>", {
+                            type: "text",
+                            id: column.id,
+                            placeholder: column.placeholder,
+                            name: column.name
+                        });
+                    }),
+                    $inputBox = pluralInputBEM.buildElement("input-box", "<div>").append(inputs)
+                ;
+                return pluralInputBEM.buildBlock("<div>", [
+                    {"label": $label},
+                    {"input-box": $inputBox}
+                ]);
+            },
+            error: function (tag, text, attributes) {
+                return $(tag, (attributes || {})).addClass("imcms-error-msg").text(text);
+            },
+            info: function (tag, text, attributes) {
+                return $(tag, (attributes || {})).addClass("imcms-info-msg").text(text);
+            },
+            title: function (tag, text, attributes) {
+                return $(tag, (attributes || {})).addClass("imcms-title").text(text);
+            }
         }
     }
-});
+);
