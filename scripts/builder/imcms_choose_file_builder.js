@@ -30,7 +30,9 @@ Imcms.define("imcms-choose-file-builder", ["imcms-bem-builder"], function (BEM) 
                     "for": attributes.id
                 }),
 
-                $fileName = chooseFileBEM.buildElement("file-name", "<span>");
+                $fileName = chooseFileBEM.buildElement("file-name", "<span>", {
+                    text: attributes.text
+                });
 
             return chooseFileBEM.buildBlock("<div>", [
                 {"button": $label},
