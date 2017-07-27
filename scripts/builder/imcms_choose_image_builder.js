@@ -23,7 +23,10 @@ Imcms.define("imcms-choose-image-builder",
                     }),
 
                     $chooseImageButton = buttons.neutral("<button>", {
-                        text: attributes["button-text"]
+                        text: attributes["button-text"],
+                        click: attributes.click || function () {
+                            console.info("%c Not implemented feature: open image choose window.", "color: red;");
+                        }
                     });
 
                 return chooseImageBEM.buildBlock("<div>", [
