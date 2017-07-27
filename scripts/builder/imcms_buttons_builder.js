@@ -10,17 +10,19 @@ Imcms.define("imcms-buttons-builder", ["imcms-bem-builder"], function (bemBuilde
         }
     });
 
-    function buttonBuilder(buttonType) {
-        return function (tag, attributesObj) {
-            return buttonsBEM.buildElement("button", tag, attributesObj, [buttonType]);
-        };
-    }
-
     return {
-        negative: buttonBuilder("negative"),
-        positive: buttonBuilder("positive"),
-        neutral: buttonBuilder("neutral"),
-        save: buttonBuilder("save"),
+        negative: function (tag, attributes) {
+            return buttonsBEM.buildElement("button", tag, attributes, ["negative"]);
+        },
+        positive: function (tag, attributes) {
+            return buttonsBEM.buildElement("button", tag, attributes, ["positive"]);
+        },
+        neutral: function (tag, attributes) {
+            return buttonsBEM.buildElement("button", tag, attributes, ["neutral"]);
+        },
+        save: function (tag, attributes) {
+            return buttonsBEM.buildElement("button", tag, attributes, ["save"]);
+        },
         container: function (tag, attributesObj, elements) {
             return buttonsBEM.buildBlock(tag, elements, attributesObj, "button");
         }
