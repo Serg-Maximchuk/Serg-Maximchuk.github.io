@@ -27,7 +27,7 @@ Imcms.define("imcms-radio-buttons-builder",
                     id: attributes.id,
                     checked: attributes.checked
                 });
-                var $label = primitives.labels.imcmsLabel({
+                var $label = primitives.labels.imcmsLabelFromObject({
                     "for": attributes.id,
                     text: attributes.text,
                     click: attributes.click
