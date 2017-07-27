@@ -289,6 +289,30 @@ Imcms.require(
 
         $("#choose-image-example").append($chooseImage);
 
+        // plural input
+
+        var $pluralInoutBox = componentsBuilder.texts.pluralInput("<div>", [
+            {
+                id: "input1",
+                name: "top",
+                placeholder: "top"
+            }, {
+                id: "input2",
+                name: "right",
+                placeholder: "right"
+            }, {
+                id: "input3",
+                name: "bottom",
+                placeholder: "bottom"
+            }, {
+                id: "input4",
+                name: "left",
+                placeholder: "left"
+            }
+        ], {text: "Plural columns input"});
+
+        $("#space-around-input-example").append($pluralInoutBox);
+
         imcmsDatePicker.init();
         imcmsTimePicker.init();
         imcmsKeyword.init();
