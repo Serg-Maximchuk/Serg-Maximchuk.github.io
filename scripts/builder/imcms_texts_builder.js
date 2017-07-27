@@ -198,6 +198,15 @@ Imcms.define("imcms-texts-builder", ["imcms-bem-builder", "jquery"], function (B
                 {"label": $label},
                 {"input-box": $inputBox}
             ]);
+        },
+        error: function (tag, text, attributes) {
+            return $(tag, attributes).addClass("imcms-error-msg").text(text);
+        },
+        info: function (tag, text, attributes) {
+            return $(tag, attributes).addClass("imcms-info-msg").text(text);
+        },
+        title: function (tag, text, attributes) {
+            return $(tag, attributes).addClass("imcms-title").text(text);
         }
     }
 });
