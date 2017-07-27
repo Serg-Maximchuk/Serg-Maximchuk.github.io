@@ -2,41 +2,35 @@
  * Created by Serhii Maksymchuk from Ubrainians for imCode
  * 26.07.17.
  */
-Imcms.define("imcms-choose-image-builder", ["imcms-bem-builder"], function (BEM) {
-    var buttonBEM = new BEM({
-        block: "imcms-button",
-        elements: {
-            "item": ""
-        }
-    });
+Imcms.define("imcms-choose-image-builder",
+    ["imcms-bem-builder", "imcms-texts-builder", "imcms-buttons-builder"],
+    function (BEM, texts, buttons) {
+        var chooseImageBEM = new BEM({
+            block: "imcms-choose-image",
+            elements: {
+                "text-box": "imcms-text-box",
+                "button": "imcms-button"
+            }
+        });
 
-    var chooseFileBEM = new BEM({
-        block: "imcms-choose-image",
-        elements: {
-            "button": "imcms-button",
-            "file-name": ""
-        }
-    });
+        return {
+            container: function (tag, attributes) {
+                var $textBox = texts.text("<div>", {
+                        id: attributes.id,
+                        name: attributes.name,
+                        text: attributes["label-text"],
+                        placeholder: attributes.placeholder
+                    }),
 
-    return {
-        container: function (tag, attributes) {
-            var $input = buttonBEM.buildElement("item", "<div>", {
-                    id: attributes.id,
-                    name: attributes.name,
-                    type: "file"
-                }, ["invisible"]),
+                    $chooseImageButton = buttons.neutral("<button>", {
+                        text: attributes["button-text"]
+                    });
 
-                $label = buttonBEM.buildBlock("<label>", [{"item": $input}], {
-                    "for": attributes.id,
-                    text: attributes.text
-                }),
-
-                $fileName = chooseFileBEM.buildElement("file-name", "<span>");
-
-            return chooseFileBEM.buildBlock("<div>", [
-                {"button": $label},
-                {"file-name": $fileName}
-            ]);
+                return chooseImageBEM.buildBlock("<div>", [
+                    {"text-box": $textBox},
+                    {"button": $chooseImageButton}
+                ]);
+            }
         }
     }
-});
+);
