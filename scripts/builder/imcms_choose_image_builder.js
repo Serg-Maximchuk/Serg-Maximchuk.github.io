@@ -2,7 +2,7 @@
  * Created by Serhii Maksymchuk from Ubrainians for imCode
  * 26.07.17.
  */
-Imcms.define("imcms-choose-file-builder", ["imcms-bem-builder"], function (BEM) {
+Imcms.define("imcms-choose-image-builder", ["imcms-bem-builder"], function (BEM) {
     var buttonBEM = new BEM({
         block: "imcms-button",
         elements: {
@@ -11,7 +11,7 @@ Imcms.define("imcms-choose-file-builder", ["imcms-bem-builder"], function (BEM) 
     });
 
     var chooseFileBEM = new BEM({
-        block: "imcms-choose-file",
+        block: "imcms-choose-image",
         elements: {
             "button": "imcms-button",
             "file-name": ""
@@ -27,12 +27,11 @@ Imcms.define("imcms-choose-file-builder", ["imcms-bem-builder"], function (BEM) 
                 }, ["invisible"]),
 
                 $label = buttonBEM.buildBlock("<label>", [{"item": $input}], {
-                    "for": attributes.id
+                    "for": attributes.id,
+                    text: attributes.text
                 }),
 
-                $fileName = chooseFileBEM.buildElement("file-name", "<span>", {
-                    text: attributes.text
-                });
+                $fileName = chooseFileBEM.buildElement("file-name", "<span>");
 
             return chooseFileBEM.buildBlock("<div>", [
                 {"button": $label},

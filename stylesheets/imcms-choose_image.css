@@ -5,7 +5,7 @@
     position: relative;
 }
 
-.imcms-button__item--invisible {
+.imcms-file-input--invisible {
     cursor: pointer;
     opacity: 0;
     position: absolute;
@@ -16,7 +16,7 @@
     z-index: -50;
 }
 
-.imcms-choose-file__file-name {
+.imcms-choose-image__file-name {
     color: #2f4047;
     font-family: 'Source Sans Pro', sans-serif;
     font-size: 15px;
@@ -24,6 +24,6 @@
     line-height: 18px;
 }
 
-.imcms-choose-file__button {
+.imcms-choose-image__button {
     display: inline-block;
 }
