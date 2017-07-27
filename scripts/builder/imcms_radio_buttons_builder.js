@@ -7,9 +7,7 @@ Imcms.define("imcms-radio-buttons-builder",
     function (bemBuilder, primitives) {
         var radioBEM = new bemBuilder({
                 block: "imcms-radio",
-                elements: {
-                    "input": "imcms-input"
-                }
+                elements: {}
             }),
             containerBEM = new bemBuilder({
                 block: "imcms-radios",
@@ -21,8 +19,7 @@ Imcms.define("imcms-radio-buttons-builder",
 
         return {
             radio: function (tag, attributes) {
-                var $input = radioBEM.buildElement("input", "<input>", {
-                    type: "radio",
+                var $input = primitives.imcmsInputRadio({
                     name: attributes.name,
                     id: attributes.id,
                     checked: attributes.checked

@@ -60,22 +60,17 @@ Imcms.define("imcms-texts-builder",
 
         var textBEM = new BEM({
             block: "imcms-text-box",
-            elements: {
-                "input": "imcms-input"
-            }
+            elements: {}
         });
 
         var textAreaBEM = new BEM({
             block: "imcms-text-area",
-            elements: {
-                "input": "imcms-input"
-            }
+            elements: {}
         });
 
         var numberBoxBEM = new BEM({
             block: "imcms-number-box",
             elements: {
-                "input": "imcms-input",
                 "button": "imcms-button"
             }
         });
@@ -91,17 +86,15 @@ Imcms.define("imcms-texts-builder",
         var pluralInputBEM = new BEM({
             block: "imcms-space-around",
             elements: {
-                "input-box": "",
-                "input": "imcms-input"
+                "input-box": ""
             }
         });
 
         return {
             fixedSizeText: function (tag, attributes) {
                 var $label = primitives.imcmsLabel(attributes.id, attributes.text),
-                    $input = textBEM.buildElement("input", "<input>", {
+                    $input = primitives.imcmsInputText({
                         id: attributes.id,
-                        type: "text",
                         name: attributes.name,
                         placeholder: attributes.placeholder
                     })
@@ -117,7 +110,7 @@ Imcms.define("imcms-texts-builder",
             },
             fixedSizeTextArea: function (tag, attributes) {
                 var $label = primitives.imcmsLabel(attributes.id, attributes.text),
-                    $textArea = textAreaBEM.buildElement("input", "<textarea>", {
+                    $textArea = primitives.imcmsInputTextArea({
                         id: attributes.id,
                         name: attributes.name,
                         placeholder: attributes.placeholder
@@ -133,9 +126,8 @@ Imcms.define("imcms-texts-builder",
                 return this.fixedSizeTextArea.apply(this, arguments).addClass("imcms-field");
             },
             fixedSizeTextNumber: function (tag, attributes) {
-                var $input = numberBoxBEM.buildElement("input", "<input>", {
+                var $input = primitives.imcmsInputText({
                         id: attributes.id,
-                        type: "text",
                         name: attributes.name,
                         placeholder: attributes.placeholder,
                         click: activateNumberBox

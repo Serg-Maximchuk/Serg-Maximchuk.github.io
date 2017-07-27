@@ -51,7 +51,6 @@ Imcms.define("imcms-keywords-builder",
             keywordsBoxBEM = new BEM({
                 block: "imcms-keyword",
                 elements: {
-                    "input": "imcms-input",
                     "keywords": "",
                     "keyword": ""
                 }
@@ -61,8 +60,7 @@ Imcms.define("imcms-keywords-builder",
         return {
             keywordsBox: function (tag, attributes) {
                 var $label = primitives.imcmsLabel(attributes["input-id"], attributes.title),
-                    $input = keywordsBoxBEM.buildElement("input", "<input>", {
-                        type: "text",
+                    $input = primitives.imcmsInputText({
                         id: attributes["input-id"], // todo: it would be great to generate unique id if not specified
                         placeholder: attributes.placeholder
                     }, ["wide"]),
