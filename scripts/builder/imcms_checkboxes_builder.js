@@ -2,15 +2,14 @@
  * Created by Serhii Maksymchuk from Ubrainians for imCode
  * 24.07.17.
  */
-Imcms.define("imcms-checkboxes-builder", ["imcms-bem-builder"], function (bemBuilder) {
-    var checkboxBEM = new bemBuilder({
+Imcms.define("imcms-checkboxes-builder", ["imcms-bem-builder", "imcms-primitives-builder"], function (BEM, primitives) {
+    var checkboxBEM = new BEM({
             block: "imcms-checkbox",
             elements: {
-                "label": "imcms-label",
                 "checkbox": ""
             }
         }),
-        containerBEM = new bemBuilder({
+        containerBEM = new BEM({
             block: "imcms-checkboxes",
             elements: {
                 "checkbox": "imcms-checkbox"
@@ -26,7 +25,7 @@ Imcms.define("imcms-checkboxes-builder", ["imcms-bem-builder"], function (bemBui
                 id: attributes.id,
                 checked: attributes.checked
             });
-            var $label = checkboxBEM.buildElement("label", "<label>", {
+            var $label = primitives.labels.imcmsLabel({
                 "for": attributes.id,
                 text: attributes.text,
                 click: attributes.click
