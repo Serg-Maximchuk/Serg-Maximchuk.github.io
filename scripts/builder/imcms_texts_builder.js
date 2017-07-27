@@ -89,6 +89,15 @@ Imcms.define("imcms-texts-builder", ["imcms-bem-builder", "jquery"], function (B
         }
     });
 
+    var pluralInputBEM = new BEM({
+        block: "imcms-space-around",
+        elements: {
+            "label": "imcms-label",
+            "input-box": "",
+            "input": "imcms-input"
+        }
+    });
+
     return {
         fixedSizeText: function (tag, attributes) {
             var $label = textBEM.buildElement("label", "<label>", {
@@ -165,10 +174,30 @@ Imcms.define("imcms-texts-builder", ["imcms-bem-builder", "jquery"], function (B
                 {"label": $label},
                 {"number-box": $numberInputBox},
                 {"error-msg": $error}
-            ])
+            ]);
         },
         textNumber: function (tag, attributes) {
             return this.fixedSizeTextNumber.apply(this, arguments).addClass("imcms-field");
+        },
+        pluralInput: function (tag, columns, attributes) {
+            var $label = pluralInputBEM.buildElement("label", "<label>", {
+                    id: columns[0].id,
+                    text: attributes.text
+                }),
+                inputs = columns.map(function (column) {
+                    return pluralInputBEM.buildBlockElement("input", "<input>", {
+                        type: "text",
+                        id: column.id,
+                        placeholder: column.placeholder,
+                        name: column.name
+                    });
+                }),
+                $inputBox = pluralInputBEM.buildElement("input-box", "<div>").append(inputs)
+            ;
+            return pluralInputBEM.buildBlock("<div>", [
+                {"label": $label},
+                {"input-box": $inputBox}
+            ]);
         }
     }
 });
