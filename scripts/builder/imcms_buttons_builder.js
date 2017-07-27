@@ -23,6 +23,9 @@ Imcms.define("imcms-buttons-builder", ["imcms-bem-builder"], function (bemBuilde
         save: function (tag, attributes) {
             return buttonsBEM.buildElement("button", tag, attributes, ["save"]);
         },
+        close: function (tag, attributes) {
+            return buttonsBEM.buildElement("button", tag, attributes, ["close"]);
+        },
         container: function (tag, attributesObj, elements) {
             return buttonsBEM.buildBlock(tag, elements, attributesObj, "button");
         }
