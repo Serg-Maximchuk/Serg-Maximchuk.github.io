@@ -324,6 +324,15 @@ Imcms.require(
 
         $("#keywords-example").append($keywordsBox);
 
+        // typography
+
+        var $errorText = componentsBuilder.texts.error("<span>", "Lorem ipsum dolor. "),
+            $infoText = componentsBuilder.texts.info("<span>", "Lorem ipsum dolor. "),
+            $titleText = componentsBuilder.texts.title("<span>", "Lorem ipsum dolor. ")
+        ;
+
+        $("#typography-example").append($errorText, $infoText, $titleText);
+
         imcmsDatePicker.init();
         imcmsTimePicker.init();
 
