@@ -4,7 +4,7 @@ Imcms.define("imcms-keyword", ["jquery"], function ($) {
         var $btn = $(this),
             keywordInput = $btn.parent().find(".imcms-text-box__input"),
             keywordInputVal = keywordInput.val(),
-            keywords = $btn.parent().find(".imcms-keyword__filters")
+            keywords = $btn.parent().find(".imcms-keyword__keywords")
         ;
 
         if (keywords.children().length === 0) {
@@ -21,7 +21,7 @@ Imcms.define("imcms-keyword", ["jquery"], function ($) {
 
         } else {
             $("<div>", {
-                "class": "imcms-keyword__filter",
+                "class": "imcms-keyword__keyword",
                 html: $("<button>", {
                     type: "button",
                     "class": "imcms-button imcms-button--close",
@@ -35,7 +35,7 @@ Imcms.define("imcms-keyword", ["jquery"], function ($) {
 
     function removeKeyword() {
         var $btn = $(this),
-            keyword = $btn.parents(".imcms-keyword__filter"),
+            keyword = $btn.parents(".imcms-keyword__keyword"),
             keywords = keyword.parent()
         ;
 

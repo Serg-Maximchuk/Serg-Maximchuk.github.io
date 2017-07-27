@@ -12,12 +12,12 @@
     display: inline-block;
 }
 
-.imcms-keyword__filters {
+.imcms-keyword__keywords {
     display: none;
     margin-top: 11px;
 }
 
-.imcms-keyword__filter {
+.imcms-keyword__keyword {
     color: #2f4047;
     background-color: #d0e9f9;
     -webkit-border-radius: 20px;
@@ -32,7 +32,7 @@
     padding: 6px 14px;
 }
 
-.imcms-keyword__filter:last-child {
+.imcms-keyword__keyword:last-child {
     margin-right: 0;
 }
 
