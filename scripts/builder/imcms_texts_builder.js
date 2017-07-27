@@ -98,7 +98,7 @@ Imcms.define("imcms-texts-builder",
 
         return {
             fixedSizeText: function (tag, attributes) {
-                var $label = primitives.labels.imcmsLabel(attributes.id, attributes.text),
+                var $label = primitives.imcmsLabel(attributes.id, attributes.text),
                     $input = textBEM.buildElement("input", "<input>", {
                         id: attributes.id,
                         type: "text",
@@ -116,7 +116,7 @@ Imcms.define("imcms-texts-builder",
                 return this.fixedSizeText.apply(this, arguments).addClass("imcms-field");
             },
             fixedSizeTextArea: function (tag, attributes) {
-                var $label = primitives.labels.imcmsLabel(attributes.id, attributes.text),
+                var $label = primitives.imcmsLabel(attributes.id, attributes.text),
                     $textArea = textAreaBEM.buildElement("input", "<textarea>", {
                         id: attributes.id,
                         name: attributes.name,
@@ -156,7 +156,7 @@ Imcms.define("imcms-texts-builder",
                         {"button": $buttonIncrement},
                         {"button": $buttonDecrement}
                     ]),
-                    $label = primitives.labels.imcmsLabel(attributes.id, attributes.text),
+                    $label = primitives.imcmsLabel(attributes.id, attributes.text),
                     $error = numberBEM.buildElement("error-msg", "<div>", {text: attributes.error})
                 ;
                 return numberBEM.buildBlock("<div>", [
@@ -169,7 +169,7 @@ Imcms.define("imcms-texts-builder",
                 return this.fixedSizeTextNumber.apply(this, arguments).addClass("imcms-field");
             },
             pluralInput: function (tag, columns, attributes) {
-                var $label = primitives.labels.imcmsLabel(columns[0].id, attributes.text),
+                var $label = primitives.imcmsLabel(columns[0].id, attributes.text),
                     inputs = columns.map(function (column) {
                         return pluralInputBEM.buildBlockElement("input", "<input>", {
                             type: "text",

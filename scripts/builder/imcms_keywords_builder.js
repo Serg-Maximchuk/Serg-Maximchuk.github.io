@@ -60,7 +60,7 @@ Imcms.define("imcms-keywords-builder",
 
         return {
             keywordsBox: function (tag, attributes) {
-                var $label = primitives.labels.imcmsLabel(attributes["input-id"], attributes.title),
+                var $label = primitives.imcmsLabel(attributes["input-id"], attributes.title),
                     $input = keywordsBoxBEM.buildElement("input", "<input>", {
                         type: "text",
                         id: attributes["input-id"], // todo: it would be great to generate unique id if not specified
