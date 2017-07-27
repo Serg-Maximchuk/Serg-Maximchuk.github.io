@@ -277,6 +277,18 @@ Imcms.require(
         $("#text-number-example").append($textNumberFixedSize);
         $("#text-number-field-example").append($textNumber);
 
+        // choose image
+
+        var $chooseImage = componentsBuilder.chooseImage.container("<div>", {
+            id: "path1",
+            name: "path",
+            placeholder: "Image path",
+            "label-text": "Image Path",
+            "button-text": "choose..."
+        });
+
+        $("#choose-image-example").append($chooseImage);
+
         imcmsDatePicker.init();
         imcmsTimePicker.init();
         imcmsKeyword.init();
