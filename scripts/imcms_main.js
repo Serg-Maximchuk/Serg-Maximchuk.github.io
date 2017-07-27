@@ -51,7 +51,8 @@ Imcms = {
             "imcms-radio-buttons-builder": "builder/imcms_radio_buttons_builder.js",
             "imcms-selects-builder": "builder/imcms_selects_builder.js",
             "imcms-texts-builder": "builder/imcms_texts_builder.js",
-            "imcms-choose-image-builder": "builder/imcms_choose_image_builder.js"
+            "imcms-choose-image-builder": "builder/imcms_choose_image_builder.js",
+            "imcms-keywords-builder": "builder/imcms_keywords_builder.js"
         }
     }
 };
