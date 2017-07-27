@@ -5,16 +5,17 @@
 Imcms.define("imcms-components-builder",
     [
         "imcms-buttons-builder", "imcms-flags-builder", "imcms-checkboxes-builder", "imcms-radio-buttons-builder",
-        "imcms-selects-builder", "imcms-texts-builder"
+        "imcms-selects-builder", "imcms-texts-builder", "imcms-choose-image-builder"
     ],
-    function (buttons, flags, checkboxes, radios, selects, texts) {
+    function (buttons, flags, checkboxes, radios, selects, texts, chooseImage) {
         return {
             buttons: buttons,
             flags: flags,
             checkboxes: checkboxes,
             radios: radios,
             selects: selects,
-            texts: texts
+            texts: texts,
+            chooseImage: chooseImage
         };
     }
 );
