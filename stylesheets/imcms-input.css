@@ -26,3 +26,8 @@
     right: 5px;
     z-index: 55;
 }
+
+.imcms-field .imcms-input.imcms-input--wide {
+    padding: 8px 15px;
+    width: 100%;
+}

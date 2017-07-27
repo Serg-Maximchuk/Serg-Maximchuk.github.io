@@ -1,5 +1,5 @@
-.imcms-keyword__label {
-    display: inline-block;
+.imcms-field__keywords-box .imcms-keyword__label {
+    display: block;
     margin-bottom: 12px;
 }
 
@@ -34,4 +34,9 @@
 
 .imcms-keyword__filter:last-child {
     margin-right: 0;
+}
+
+.imcms-field .imcms-keyword .imcms-input.imcms-input--wide {
+    width: 90%;
+    margin-right: 23px;
 }
