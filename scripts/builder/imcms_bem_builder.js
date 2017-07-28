@@ -36,17 +36,23 @@ Imcms.define("imcms-bem-builder", ["jquery"], function ($) {
             attributesObj["class"] = this.block + getOriginClass(attributesObj);
 
             elements = elements.map(function (element) {
-                var elementName, $element;
+                var elementName, $element, modifier = undefined;
 
                 if (blockNameForEach) {
                     elementName = blockNameForEach;
                     $element = element;
                 } else {
-                    elementName = Object.keys(element)[0];
+                    var elementKeys = Object.keys(element);
+                    elementName = elementKeys[0];
+                    modifier = elementKeys[1];
                     $element = element[elementName];
                 }
 
-                return $element.addClass(this.block + BLOCK_SEPARATOR + elementName);
+                var blockClass = this.block + BLOCK_SEPARATOR + elementName,
+                    modifierClass = (modifier ? " " + blockClass + MODIFIER_SEPARATOR + modifier : "")
+                ;
+
+                return $element.addClass(blockClass).addClass(modifierClass);
             }.bind(this));
 
             return $(tag, attributesObj).append(elements);
