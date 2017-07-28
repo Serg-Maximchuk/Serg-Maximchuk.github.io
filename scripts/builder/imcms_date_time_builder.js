@@ -22,26 +22,27 @@ Imcms.define("imcms-date-time-builder", ["imcms-bem-builder"], function (BEM) {
             }
         })
     ;
+
+    function createDateBox(attributes) {
+        var $dateInput = dateInputContainerBEM.buildElement("input", "<input>", attributes),
+            $dateInputContainer = dateInputContainerBEM.buildBlock("<div>", [
+                {"input": $dateInput}
+            ]),
+            $dateMainContainer = dateMainContainerBEM.buildBlock("<div>", [
+                {"current-date": $dateInputContainer}
+            ])
+        ;
+
+        return fieldWrapperBEM.buildBlock("<div>", [
+            {"date-picker": $dateMainContainer}
+        ]);
+    }
+
     return {
         dateBoxReadOnly: function (attributes) {
-            var $dateInput = dateInputContainerBEM.buildElement("input", "<input>", {
-                    type: "text",
-                    title: attributes.title,
-                    placeholder: attributes.placeholder,
-                    autocomplete: "off",
-                    readonly: "readonly"
-                }),
-                $dateInputContainer = dateInputContainerBEM.buildBlock("<div>", [
-                    {"input": $dateInput}
-                ]),
-                $dateMainContainer = dateMainContainerBEM.buildBlock("<div>", [
-                    {"current-date": $dateInputContainer}
-                ])
-            ;
-
-            return fieldWrapperBEM.buildBlock("<div>", [
-                {"date-picker": $dateMainContainer}
-            ]);
+            attributes = attributes || {};
+            attributes.readonly = "readonly";
+            return createDateBox(attributes);
         }
     };
 });
