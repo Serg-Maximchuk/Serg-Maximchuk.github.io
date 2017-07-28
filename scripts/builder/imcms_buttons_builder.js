@@ -42,10 +42,10 @@ Imcms.define("imcms-buttons-builder", ["imcms-bem-builder"], function (bemBuilde
         decrement: function (tag, attributes) {
             return buildButtonElement(tag, attributes, "decrement");
         },
-        prevButton: function (tag, attributes) {
+        prev: function (tag, attributes) {
             return buildButtonElement(tag, attributes, "prev");
         },
-        nextButton: function (tag, attributes) {
+        next: function (tag, attributes) {
             return buildButtonElement(tag, attributes, "next");
         },
         negativeButton: function (attributes) {
@@ -69,10 +69,10 @@ Imcms.define("imcms-buttons-builder", ["imcms-bem-builder"], function (bemBuilde
         decrementButton: function (attributes) {
             return this.decrement("<button>", setAttributesTypeButton(attributes));
         },
-        prevButtonButton: function (attributes) {
+        prevButton: function (attributes) {
             return this.prevButton("<button>", setAttributesTypeButton(attributes));
         },
-        nextButtonButton: function (attributes) {
+        nextButton: function (attributes) {
             return this.nextButton("<button>", setAttributesTypeButton(attributes));
         },
         container: function (tag, attributesObj, elements) {
