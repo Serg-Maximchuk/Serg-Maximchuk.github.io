@@ -43,6 +43,10 @@ Imcms.define("imcms-date-time-builder", ["imcms-bem-builder"], function (BEM) {
             attributes = attributes || {};
             attributes.readonly = "readonly";
             return createDateBox(attributes);
+        },
+        datePicker: function (attributes) {
+            // todo: activate date picker here
+            return createDateBox(attributes);
         }
     };
 });

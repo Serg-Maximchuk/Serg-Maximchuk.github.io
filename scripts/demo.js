@@ -317,6 +317,12 @@ Imcms.require(
 
         $("#date-example").append($date);
 
+        var $datePicker = componentsBuilder.dateTime.datePicker({
+            title: "Editable date"
+        });
+
+        $("#date-picker-example").append($datePicker);
+
         imcmsDatePicker.init();
         imcmsTimePicker.init();
 
