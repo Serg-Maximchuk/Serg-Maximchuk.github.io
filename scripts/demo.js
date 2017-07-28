@@ -312,8 +312,7 @@ Imcms.require(
         // date picker and calendar
 
         var $date = componentsBuilder.dateTime.dateBoxReadOnly("<div>", {
-            title: "Current date",
-            placeholder: "YYYY-MM-DD"
+            title: "Current date"
         });
 
         $("#date-example").append($date);
