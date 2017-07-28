@@ -55,7 +55,8 @@ Imcms = {
             "imcms-texts-builder": "builder/imcms_texts_builder.js",
             "imcms-choose-image-builder": "builder/imcms_choose_image_builder.js",
             "imcms-keywords-builder": "builder/imcms_keywords_builder.js",
-            "imcms-primitives-builder": "builder/imcms_primitives_builder.js"
+            "imcms-primitives-builder": "builder/imcms_primitives_builder.js",
+            "imcms-date-time-builder": "builder/imcms_date_time_builder.js"
         }
     }
 };
