@@ -119,9 +119,12 @@ Imcms.define("imcms-date-picker",
                     .on('blur', currentDateValidation)
                     .on('keyup change', currentValidationAndBuild)
                     .mask("0000-00-00");
+
                 $(document).click(closeCalendar);
 
-                datePicker.find(".imcms-calendar").find("[class^=imcms-calendar__button]").click(imcmsCalendar.chooseMonth);
+                datePicker.find(".imcms-calendar")
+                    .find(".imcms-calendar__button")
+                    .click(imcmsCalendar.chooseMonth);
             }
         }
     });

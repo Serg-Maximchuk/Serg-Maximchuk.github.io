@@ -168,24 +168,27 @@ Imcms.define("imcms-calendar", ["imcms", "jquery"], function (imcms, $) {
 
     return {
         init: function (datePicker) {
-            var curDateInput = datePicker.find(".imcms-current-date__input"),
-                calendar = datePicker.find(".imcms-calendar"),
-                curDate = curDateInput.val().split("-"),
-                year = parseInt(curDate[0]),
-                month = parseInt(curDate[1]),
-                date = parseInt(curDate[2])
+            var $curDateInput = datePicker.find(".imcms-current-date__input"),
+                $calendar = datePicker.find(".imcms-calendar"),
+                year, month, date
             ;
 
-            if (curDateInput.val() === "--") {
+            if ($curDateInput.val() === "--") {
                 var currentDate = new Date();
                 year = currentDate.getFullYear();
                 month = currentDate.getMonth() + 1;
                 date = currentDate.getDate();
+
+            } else {
+                var curDate = $curDateInput.val().split("-");
+                year = parseInt(curDate[0]);
+                month = parseInt(curDate[1]);
+                date = parseInt(curDate[2]);
             }
 
-            if (!datePicker.hasClass("imcms-date-picker--active") && datePicker.find(".imcms-calendar").length !== 0) {
+            if (!datePicker.hasClass("imcms-date-picker--active") && $calendar.length !== 0) {
                 datePicker.addClass("imcms-date-picker--active");
-                this.buildCalendar(year, month, date, calendar);
+                this.buildCalendar(year, month, date, $calendar);
             }
         },
         buildCalendar: buildCalendar,
