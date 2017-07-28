@@ -5,9 +5,10 @@
 Imcms.define("imcms-components-builder",
     [
         "imcms-buttons-builder", "imcms-flags-builder", "imcms-checkboxes-builder", "imcms-radio-buttons-builder",
-        "imcms-selects-builder", "imcms-texts-builder", "imcms-choose-image-builder", "imcms-keywords-builder"
+        "imcms-selects-builder", "imcms-texts-builder", "imcms-choose-image-builder", "imcms-keywords-builder",
+        "imcms-date-time-builder"
     ],
-    function (buttons, flags, checkboxes, radios, selects, texts, chooseImage, keywords) {
+    function (buttons, flags, checkboxes, radios, selects, texts, chooseImage, keywords, dateTime) {
         return {
             buttons: buttons,
             flags: flags,
@@ -16,7 +17,8 @@ Imcms.define("imcms-components-builder",
             selects: selects,
             texts: texts,
             chooseImage: chooseImage,
-            keywords: keywords
+            keywords: keywords,
+            dateTime: dateTime
         };
     }
 );
