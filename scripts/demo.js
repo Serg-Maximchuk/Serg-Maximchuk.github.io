@@ -312,7 +312,7 @@ Imcms.require(
         // date picker and calendar
 
         var $date = componentsBuilder.dateTime.dateBoxReadOnly({
-            title: "Current date"
+            title: "Current readonly date"
         });
 
         $("#date-example").append($date);
@@ -322,6 +322,12 @@ Imcms.require(
         });
 
         $("#date-picker-example").append($datePicker);
+
+        var $calendar = componentsBuilder.dateTime.datePickerCalendar({
+            title: "Editable date with calendar"
+        });
+
+        $("#date-picker-calendar-example").append($calendar);
 
         imcmsDatePicker.init();
         imcmsTimePicker.init();
