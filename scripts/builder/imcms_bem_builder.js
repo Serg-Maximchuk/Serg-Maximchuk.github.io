@@ -15,19 +15,32 @@ Imcms.define("imcms-bem-builder", ["jquery"], function ($) {
         return attributesObj["class"] ? " " + attributesObj["class"] : "";
     }
 
+    function getElementClassWithModifiers(elementClass, modifiersArr) {
+        var modifiers = "";
+
+        (modifiersArr || []).forEach(function (modifier) {
+            modifiers += " " + elementClass + MODIFIER_SEPARATOR + modifier;
+        });
+
+        return elementClass + modifiers;
+    }
+
     BemBuilder.prototype = {
+        makeBlockElement: function (elementName, $baseElement, modifiersArr) {
+            var modifiersClass = getElementClassWithModifiers(this.elements[elementName], modifiersArr),
+                blockClass = this.block + BLOCK_SEPARATOR + elementName
+            ;
+
+            return $baseElement.addClass(blockClass).addClass(modifiersClass);
+        },
         buildBlockElement: function (elementName, tag, attributesObj, modifiersArr) {
             return this.buildElement.apply(this, arguments).addClass(this.block + BLOCK_SEPARATOR + elementName);
         },
         buildElement: function (elementName, tag, attributesObj, modifiersArr) {
-            var modifiers = "";
-
-            (modifiersArr || []).forEach(function (modifier) {
-                modifiers += " " + this.elements[elementName] + MODIFIER_SEPARATOR + modifier;
-            }.bind(this));
+            var modifiersClass = getElementClassWithModifiers(this.elements[elementName], modifiersArr);
 
             attributesObj = attributesObj || {};
-            attributesObj["class"] = this.elements[elementName] + modifiers + getOriginClass(attributesObj);
+            attributesObj["class"] = modifiersClass + getOriginClass(attributesObj);
 
             return $(tag, attributesObj);
         },
@@ -36,7 +49,7 @@ Imcms.define("imcms-bem-builder", ["jquery"], function ($) {
             attributesObj["class"] = this.block + getOriginClass(attributesObj);
 
             elements = elements.map(function (element) {
-                var elementName, $element, modifier = undefined;
+                var elementName, $element;
 
                 if (blockNameForEach) {
                     elementName = blockNameForEach;
@@ -44,15 +57,11 @@ Imcms.define("imcms-bem-builder", ["jquery"], function ($) {
                 } else {
                     var elementKeys = Object.keys(element);
                     elementName = elementKeys[0];
-                    modifier = elementKeys[1];
                     $element = element[elementName];
                 }
 
-                var blockClass = this.block + BLOCK_SEPARATOR + elementName,
-                    modifierClass = (modifier ? " " + blockClass + MODIFIER_SEPARATOR + modifier : "")
-                ;
+                return $element.addClass(this.block + BLOCK_SEPARATOR + elementName);
 
-                return $element.addClass(blockClass).addClass(modifierClass);
             }.bind(this));
 
             return $(tag, attributesObj).append(elements);
