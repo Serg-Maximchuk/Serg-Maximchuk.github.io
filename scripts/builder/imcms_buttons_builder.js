@@ -70,10 +70,10 @@ Imcms.define("imcms-buttons-builder", ["imcms-bem-builder"], function (bemBuilde
             return this.decrement("<button>", setAttributesTypeButton(attributes));
         },
         prevButton: function (attributes) {
-            return this.prevButton("<button>", setAttributesTypeButton(attributes));
+            return this.prev("<button>", setAttributesTypeButton(attributes));
         },
         nextButton: function (attributes) {
-            return this.nextButton("<button>", setAttributesTypeButton(attributes));
+            return this.next("<button>", setAttributesTypeButton(attributes));
         },
         container: function (tag, attributesObj, elements) {
             return buttonsBEM.buildBlock(tag, elements, attributesObj, "button");
