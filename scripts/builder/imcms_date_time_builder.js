@@ -23,7 +23,7 @@ Imcms.define("imcms-date-time-builder", ["imcms-bem-builder"], function (BEM) {
         })
     ;
     return {
-        dateBoxReadOnly: function (tag, attributes) {
+        dateBoxReadOnly: function (attributes) {
             var $dateInput = dateInputContainerBEM.buildElement("input", "<input>", {
                     type: "text",
                     title: attributes.title,
