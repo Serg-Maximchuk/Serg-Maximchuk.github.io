@@ -16,27 +16,37 @@ Imcms.define("imcms-buttons-builder", ["imcms-bem-builder"], function (bemBuilde
         return attributes;
     }
 
+    function buildButtonElement(tag, attributes, modifier) {
+        return buttonsBEM.buildElement("button", tag, attributes, [modifier]);
+    }
+
     return {
         negative: function (tag, attributes) {
-            return buttonsBEM.buildElement("button", tag, attributes, ["negative"]);
+            return buildButtonElement(tag, attributes, "negative");
         },
         positive: function (tag, attributes) {
-            return buttonsBEM.buildElement("button", tag, attributes, ["positive"]);
+            return buildButtonElement(tag, attributes, "positive");
         },
         neutral: function (tag, attributes) {
-            return buttonsBEM.buildElement("button", tag, attributes, ["neutral"]);
+            return buildButtonElement(tag, attributes, "neutral");
         },
         save: function (tag, attributes) {
-            return buttonsBEM.buildElement("button", tag, attributes, ["save"]);
+            return buildButtonElement(tag, attributes, "save");
         },
         close: function (tag, attributes) {
-            return buttonsBEM.buildElement("button", tag, attributes, ["close"]);
+            return buildButtonElement(tag, attributes, "close");
         },
         increment: function (tag, attributes) {
-            return buttonsBEM.buildElement("button", tag, attributes, ["increment"]);
+            return buildButtonElement(tag, attributes, "increment");
         },
         decrement: function (tag, attributes) {
-            return buttonsBEM.buildElement("button", tag, attributes, ["decrement"]);
+            return buildButtonElement(tag, attributes, "decrement");
+        },
+        prevButton: function (tag, attributes) {
+            return buildButtonElement(tag, attributes, "prev");
+        },
+        nextButton: function (tag, attributes) {
+            return buildButtonElement(tag, attributes, "next");
         },
         negativeButton: function (attributes) {
             return this.negative("<button>", setAttributesTypeButton(attributes));
@@ -58,6 +68,12 @@ Imcms.define("imcms-buttons-builder", ["imcms-bem-builder"], function (bemBuilde
         },
         decrementButton: function (attributes) {
             return this.decrement("<button>", setAttributesTypeButton(attributes));
+        },
+        prevButtonButton: function (attributes) {
+            return this.prevButton("<button>", setAttributesTypeButton(attributes));
+        },
+        nextButtonButton: function (attributes) {
+            return this.nextButton("<button>", setAttributesTypeButton(attributes));
         },
         container: function (tag, attributesObj, elements) {
             return buttonsBEM.buildBlock(tag, elements, attributesObj, "button");
