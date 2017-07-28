@@ -2,36 +2,21 @@ Imcms.define("imcms-date-picker",
     ["imcms", "imcms-calendar", "jquery", "jquery-mask"],
     function (imcms, imcmsCalendar, $) {
         function openCalendar() {
-            var curdate = $(this),
-                datePicker = curdate.parents(".imcms-date-picker"),
-                calendar = datePicker.find(".imcms-calendar")
-            ;
-
-            // todo: is this needed?
-            // if (!datePicker.hasClass("imcms-date-picker--active")) {
-            //     datePicker.addClass("imcms-date-picker--active");
-            // }
-            imcmsCalendar.init(datePicker);
-
-            datePicker.css({"border-color": "#d3d8de"})
-                .find(".imcms-date-picker__error")
-                .css({"display": "none"});
+            imcmsCalendar.init($(this).parents(".imcms-date-picker"));
         }
 
         function closeCalendar(e) {
-            // todo: simplify condition
-            if (
-                !$(e.target).closest(".imcms-current-date__input").length
-                &&
-                (e.target.classList[1] !== "imcms-current-date__input"
-                ||
-                e.target.classList[1] !== ".imcms-date-picker__current-date")
-                &&
-                !$(e.target).parents(".imcms-calendar").length
+            var $target = $(e.target);
+            if ($target.closest(".imcms-current-date__input").length
+                || $target.hasClass("imcms-current-date__input")
+                || $target.hasClass(".imcms-date-picker__current-date")
+                || $target.parents(".imcms-calendar").length
             ) {
-                $(".imcms-date-picker").removeClass("imcms-date-picker--active");
-                e.stopPropagation();
+                return;
             }
+
+            $(".imcms-date-picker").removeClass("imcms-date-picker--active");
+            e.stopPropagation();
         }
 
         function getCurrentDate() {
@@ -41,90 +26,105 @@ Imcms.define("imcms-date-picker",
                 date = currentDate.getDate()
             ;
 
-            if (month < 10) month = "0" + month;
-            if (date < 10) date = "0" + date;
+            if (month < 10) {
+                month = "0" + month;
+            }
+            if (date < 10) {
+                date = "0" + date;
+            }
 
             return year + "-" + month + "-" + date;
         }
 
+        function isDateValid(year, month, day) {
+            var currentDate = new Date(year, month, day);
+
+            return ((currentDate.getFullYear() === year)
+                && (currentDate.getMonth() === month)
+                && (currentDate.getDate() === day)
+            );
+        }
+
         function currentDateValidation() {
             var currentDateInput = $(this),
-                carDate = currentDateInput.val().split('-'),
-                year, month, date,
-                calendar = currentDateInput.parents(".imcms-date-picker").find(".imcms-calendar")
+                currentDate = currentDateInput.val().split('-'),
+                year = parseInt(currentDate[0]),
+                month = parseInt(currentDate[1]) - 1,
+                day = parseInt(currentDate[2])
             ;
 
-            carDate[0] = parseInt(carDate[0]);
-            carDate[1] = parseInt(carDate[1]) - 1;
-            carDate[2] = parseInt(carDate[2]);
-            year = carDate[0];
-            month = carDate[1];
-            date = carDate[2];
-            //carDate[1] -= 1;
-            var currentDate = new Date(carDate[0], carDate[1], carDate[2]);
-            if ((currentDate.getFullYear() === carDate[0])
-                && (currentDate.getMonth() === carDate[1])
-                && (currentDate.getDate() === carDate[2])
-            ) {
-                imcmsCalendar.buildCalendar(year, month, date, calendar);
-                return true;
-
-            } else if (currentDateInput.val() === "") {
+            if (currentDateInput.val() === "") {
                 currentDateInput.val("--");
-                imcmsCalendar.buildCalendar(year, month, date, calendar);
-                return true;
+            }
 
-            } else if (currentDateInput.val() === "--") {
-                imcmsCalendar.buildCalendar(year, month, date, calendar);
-                return true;
+            if (isDateValid(year, month, day) || currentDateInput.val() === "--") {
+                var $calendar = currentDateInput.parents(".imcms-date-picker")
+                    .find(".imcms-calendar");
 
+                if ($calendar.length) {
+                    imcmsCalendar.buildCalendar(year, month, day, $calendar);
+                }
             } else {
                 var cd = getCurrentDate();
                 currentDateInput.val(cd);
-                return false;
             }
         }
 
-        function currentValidationAndBuild() {
-            var currentDateInput = $(this);
+        function rebuildCalendar() {
+            var currentDateInput = $(this),
+                $calendar = currentDateInput.parents(".imcms-date-picker").find(".imcms-calendar")
+            ;
+
+            if (!$calendar.length) {
+                return;
+            }
+
             var carDate = currentDateInput.val().split('-'),
                 year = carDate[0],
                 month = carDate[1],
-                date = carDate[2],
-                calendar = currentDateInput.parents(".imcms-date-picker").find(".imcms-calendar")
+                day = carDate[2]
             ;
-            imcmsCalendar.buildCalendar(year, month, date, calendar);
-            calendar.find(".imcms-calendar__day").each(function () {
-                if ($(this).html() === date) {
-                    $(this).addClass("imcms-day--today");
-                }
-                else {
-                    $(this).removeClass("imcms-day--today");
+
+            imcmsCalendar.buildCalendar(year, month, day, $calendar);
+            $calendar.find(".imcms-calendar__day").each(function () {
+                var $this = $(this);
+                if ($this.html() === day) {
+                    $this.addClass("imcms-day--today");
+
+                } else {
+                    $this.removeClass("imcms-day--today");
                 }
             });
         }
 
-        return {
-            init: function () {
-                var currentDate = getCurrentDate(),
-                    datePicker = $(".imcms-date-picker");
+        $(document).click(closeCalendar);
 
-                datePicker.find(".imcms-current-date__input")
-                    .val(currentDate)
-                    .end()
-                    .find(".imcms-date-picker__current-date")
+        var DatePicker = function ($dateBoxContainer) {
+            this.datePicker = $dateBoxContainer.find(".imcms-date-picker");
+
+            if (this.datePicker.find(".imcms-calendar").length) {
+                this.datePicker.find(".imcms-date-picker__current-date")
                     .click(openCalendar)
                     .end()
-                    .find(".imcms-current-date__input")
-                    .on('blur', currentDateValidation)
-                    .on('keyup change', currentValidationAndBuild)
-                    .mask("0000-00-00");
-
-                $(document).click(closeCalendar);
-
-                datePicker.find(".imcms-calendar")
                     .find(".imcms-calendar__button")
-                    .click(imcmsCalendar.chooseMonth);
+                    .click(imcmsCalendar.chooseMonth)
+                ;
             }
-        }
+
+            this.datePicker.find(".imcms-current-date__input")
+                .on('blur', currentDateValidation)
+                .on('keyup change', rebuildCalendar)
+                .mask("0000-00-00");
+        };
+        DatePicker.prototype = {
+            setDate: function (date) {
+                this.datePicker.find(".imcms-current-date__input").val(date);
+                return this;
+            }
+        };
+        DatePicker.init = function () {
+            new DatePicker(document).setDate(getCurrentDate());
+        };
+
+        return DatePicker
     });

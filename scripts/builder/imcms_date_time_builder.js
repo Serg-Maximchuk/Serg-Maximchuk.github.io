@@ -116,11 +116,9 @@ Imcms.define("imcms-date-time-builder", ["imcms-bem-builder", "imcms-buttons-bui
             return createDateBox(attributes);
         },
         datePicker: function (attributes) {
-            // todo: activate date picker here
             return createDateBox(attributes);
         },
         datePickerCalendar: function (attributes) {
-            // todo: activate date picker here
             return createDateBox(attributes, true);
         }
     };

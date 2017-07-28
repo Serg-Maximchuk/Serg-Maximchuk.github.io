@@ -4,7 +4,7 @@
  */
 Imcms.require(
     ["imcms-date-picker", "imcms-time-picker", "imcms-tests", "imcms-components-builder", "jquery"],
-    function (imcmsDatePicker, imcmsTimePicker, tests, componentsBuilder, $) {
+    function (DatePicker, imcmsTimePicker, tests, componentsBuilder, $) {
         console.info("%c Tests loaded.", "color: green");
         Imcms.tests = tests;
 
@@ -315,21 +315,42 @@ Imcms.require(
             title: "Current readonly date"
         });
 
-        $("#date-example").append($date);
+        var $dateExample = $("#date-example");
+        $dateExample.append($date);
 
         var $datePicker = componentsBuilder.dateTime.datePicker({
             title: "Editable date"
         });
 
-        $("#date-picker-example").append($datePicker);
+        var $datePickerExample = $("#date-picker-example");
+        $datePickerExample.append($datePicker);
 
         var $calendar = componentsBuilder.dateTime.datePickerCalendar({
             title: "Editable date with calendar"
         });
 
-        $("#date-picker-calendar-example").append($calendar);
+        var $datePickerCalendarExample = $("#date-picker-calendar-example");
+        $datePickerCalendarExample.append($calendar);
 
-        imcmsDatePicker.init();
+        function getCurrentDate() {
+            var currentDate = new Date(),
+                year = currentDate.getFullYear(),
+                month = currentDate.getMonth() + 1,
+                date = currentDate.getDate()
+            ;
+
+            if (month < 10) month = "0" + month;
+            if (date < 10) date = "0" + date;
+
+            return year + "-" + month + "-" + date;
+        }
+
+        var mockDateReceivedFromServer = getCurrentDate();
+
+        new DatePicker($dateExample).setDate(mockDateReceivedFromServer);
+        new DatePicker($datePickerExample).setDate(mockDateReceivedFromServer);
+        new DatePicker($datePickerCalendarExample).setDate(mockDateReceivedFromServer);
+
         imcmsTimePicker.init();
 
         console.timeEnd("imCMS JS loaded");
