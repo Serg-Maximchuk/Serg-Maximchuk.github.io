@@ -123,7 +123,7 @@ Imcms.define("imcms-date-picker",
             }
         };
         DatePicker.init = function () {
-            new DatePicker(document).setDate(getCurrentDate());
+            new DatePicker($(document)).setDate(getCurrentDate());
         };
 
         return DatePicker
