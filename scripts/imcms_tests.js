@@ -85,9 +85,11 @@ Imcms.define("imcms-tests", ["imcms", "jquery"], function (imcms, $) {
                     }
                 }
             });
-            Imcms.require("imcms-independent-define", function (test) {
-                test.test();
-            });
+            setTimeout(function () {
+                Imcms.require("imcms-independent-define", function (test) {
+                    test.test();
+                });
+            }, 300);
 
             return true;
         },
