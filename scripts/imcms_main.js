@@ -195,8 +195,7 @@ Function.prototype.applyAsync = function (args, context) {
 
         if (script.readyState) {  // IE support
             script.onreadystatechange = function () {
-                if (script.readyState === "loaded" ||
-                    script.readyState === "complete") {
+                if (script.readyState === "loaded" || script.readyState === "complete") {
                     script.onreadystatechange = null;
                     console.info('script ' + url + " appended successfully.");
                     callback && callback.call();
@@ -310,6 +309,7 @@ Function.prototype.applyAsync = function (args, context) {
             if (id) { // register only not anonymous modules
                 registerModule(id, module);
             }
+            setTimeout(runModuleLoader);
         });
     }
 
@@ -337,16 +337,11 @@ Function.prototype.applyAsync = function (args, context) {
         });
     }
 
-    function delayedAddToQueue(require) {
-        setTimeout(function () {
-            Imcms.requiresQueue.push(require);
-            setTimeout(runModuleLoader);
-        });
-    }
-
     var failsCount = 0;
 
     function runModuleLoader() {
+        var notSuccessRequiresBuffer = [];
+
         while (Imcms.requiresQueue.length) {
             var require = Imcms.requiresQueue.shift();
             var undefinedRequires = require.requires.filter(function (dependency) {
@@ -360,11 +355,12 @@ Function.prototype.applyAsync = function (args, context) {
 
                 if (undefinedRequires.length) {
                     undefinedRequires.forEach(loadDependencyById);
-                    delayedAddToQueue(require);
+                    notSuccessRequiresBuffer.push(require);
 
                 } else if (failsCount < 1000) {// dummy fail limit
+                    // means dependency is still loading script, we should add it to queue after the while cycle
                     failsCount++;
-                    delayedAddToQueue(require);
+                    notSuccessRequiresBuffer.push(require);
 
                 } else {
                     console.error("Failed to load dependency:");
@@ -376,10 +372,16 @@ Function.prototype.applyAsync = function (args, context) {
                 require.onLoad.applyAsync(dependencies);
             }
         }
+
+        setTimeout(function () {
+            notSuccessRequiresBuffer.forEach(function (require) {
+                Imcms.requiresQueue.push(require);
+            });
+        });
     }
 
     function getMainScriptPath() {
-        var imcmsMainScripts = Array.prototype.slice.apply(document.scripts).filter(function(script){
+        var imcmsMainScripts = Array.prototype.slice.apply(document.scripts).filter(function (script) {
             return script.attributes["data-name"] && script.attributes["data-name"].value === "imcms";
         });
 
