@@ -142,13 +142,13 @@ Imcms.define("imcms-date-time-builder", ["imcms-bem-builder", "imcms-buttons-bui
             emptyHours = createTimePickerBlockElements("hour", 6),
             $nextHourButton = timePickerBEM.makeBlockElement("button", buttons.decrementButton()),
             $hours = timePickerBEM.buildBlockElement("hours", "<div>").append(
-                [$prevHourButton].concat(emptyHours).push($nextHourButton)
+                [$prevHourButton].concat(emptyHours, $nextHourButton)
             ),
             $prevMinuteButton = timePickerBEM.makeBlockElement("button", buttons.incrementButton()),
             emptyMinutes = createTimePickerBlockElements("minute", 6),
             $nextMinuteButton = timePickerBEM.makeBlockElement("button", buttons.decrementButton()),
             $minutes = timePickerBEM.buildBlockElement("minutes", "<div>").append(
-                [$prevMinuteButton].concat(emptyMinutes).push($nextMinuteButton)
+                [$prevMinuteButton].concat(emptyMinutes, $nextMinuteButton)
             )
         ;
         return timePickerBEM.buildBlockElement("time", "<div>").append($hours, $minutes);
@@ -182,7 +182,7 @@ Imcms.define("imcms-date-time-builder", ["imcms-bem-builder", "imcms-buttons-bui
             return createDateBox(attributes, true);
         },
         timePickerClock: function (attributes) {
-            return createTimeBox(attributes);
+            return createTimeBox(attributes, true);
         }
     };
 });

@@ -4,7 +4,7 @@
  */
 Imcms.require(
     ["imcms-date-picker", "imcms-time-picker", "imcms-tests", "imcms-components-builder", "jquery"],
-    function (DatePicker, imcmsTimePicker, tests, componentsBuilder, $) {
+    function (DatePicker, TimePicker, tests, componentsBuilder, $) {
         console.info("%c Tests loaded.", "color: green");
         Imcms.tests = tests;
 
@@ -339,8 +339,12 @@ Imcms.require(
                 date = currentDate.getDate()
             ;
 
-            if (month < 10) month = "0" + month;
-            if (date < 10) date = "0" + date;
+            if (month < 10) {
+                month = "0" + month;
+            }
+            if (date < 10) {
+                date = "0" + date;
+            }
 
             return year + "-" + month + "-" + date;
         }
@@ -353,13 +357,31 @@ Imcms.require(
 
         // time picker
 
-        var $time = componentsBuilder.dateTime.timePickerClock({
-            title: "Time picker",
-            placeholder: "HH:MM"
-        });
-        $("#time-picker-example").append($time);
+        function getCurrentTime() {
+            var currentDate = new Date(),
+                hour = currentDate.getHours(),
+                minute = currentDate.getMinutes()
+            ;
 
-        imcmsTimePicker.init();
+            if (hour < 10) {
+                hour = "0" + hour;
+            }
+            if (minute < 10) {
+                minute = "0" + minute;
+            }
+
+            return hour + ":" + minute;
+        }
+
+        var mockTimeReceivedFromServer = getCurrentTime(),
+            $time = componentsBuilder.dateTime.timePickerClock({
+                title: "Time picker",
+                placeholder: "HH:MM"
+            }),
+            $timePickerExample = $("#time-picker-example").append($time)
+        ;
+
+        new TimePicker($timePickerExample).setTime(mockTimeReceivedFromServer);
 
         console.timeEnd("imCMS JS loaded");
     }

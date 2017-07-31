@@ -1,18 +1,19 @@
 Imcms.define("imcms-time-picker", ["imcms", "jquery"], function (imcms, $) {
 
-    function currentTime() {
+    function getCurrentTime() {
         var currentDate = new Date(),
             hour = currentDate.getHours(),
-            minute = currentDate.getMinutes(),
-            timePicker = $(".imcms-time-picker"),
-            currentTime = timePicker.find(".imcms-current-time__input")
+            minute = currentDate.getMinutes()
         ;
 
-        if (hour < 10) hour = "0" + hour;
-        if (minute < 10) minute = "0" + minute;
+        if (hour < 10) {
+            hour = "0" + hour;
+        }
+        if (minute < 10) {
+            minute = "0" + minute;
+        }
 
-        currentTime.val(hour + ":" + minute);
-        return currentTime.val();
+        return hour + ":" + minute;
     }
 
     function openPicker() {
@@ -186,33 +187,43 @@ Imcms.define("imcms-time-picker", ["imcms", "jquery"], function (imcms, $) {
     }
 
     function currentTimeValidation() {
-        var $this = $(this),
-            currentTimeInputVal = $this.val().split(":")
+        var currentTimeInputVal = $(this).val().split(":")
         ;
         currentTimeInputVal[0] = parseInt(currentTimeInputVal[0]);
         currentTimeInputVal[1] = parseInt(currentTimeInputVal[1]);
-        if (currentTimeInputVal[0] < 0 || currentTimeInputVal[0] > 23) {
-            currentTime(); // fixme: why twice?
-        }
-        if (currentTimeInputVal[1] < 0 || currentTimeInputVal[1] > 60) {
-            currentTime(); // fixme: why twice?
+
+        if ((currentTimeInputVal[0] < 0)
+            || (currentTimeInputVal[0] > 23)
+            || (currentTimeInputVal[1] < 0)
+            || (currentTimeInputVal[1] > 60)
+        ) {
+            // todo: do not overwrite valid hours/minutes if minutes/hours are not valid
+            $(this).val(getCurrentTime());
         }
     }
 
-    return {
-        init: function () {
-            currentTime();
-            $(document).click(closePicker);
-            $(".imcms-time-picker")
-                .find(".imcms-time-picker__current-time")
-                .click(openPicker)
-                .end()
-                .find(".imcms-time-picker__time .imcms-time-picker__button")
-                .click(chooseTime)
-                .end()
-                .find(".imcms-current-time__input")
-                .blur(currentTimeValidation)
-                .mask("00:00");
+    var TimePicker = function ($timePickerContainer) {
+        this.$timePicker = $timePickerContainer.find(".imcms-time-picker");
+        this.$timePicker.find(".imcms-time-picker__current-time")
+            .click(openPicker)
+            .end()
+            .find(".imcms-time-picker__time .imcms-time-picker__button")
+            .click(chooseTime)
+            .end()
+            .find(".imcms-current-time__input")
+            .blur(currentTimeValidation)
+            .mask("00:00");
+    };
+    TimePicker.prototype = {
+        setTime: function (setMeAsTime) {
+            this.$timePicker.find(".imcms-current-time__input").val(setMeAsTime);
         }
     };
+    TimePicker.init = function () {
+        new TimePicker($(document)).setTime(getCurrentTime());
+    };
+
+    $(document).click(closePicker);
+
+    return TimePicker;
 });
