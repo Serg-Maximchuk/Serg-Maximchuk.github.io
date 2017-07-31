@@ -17,7 +17,7 @@
     text-align: left;
 }
 
-.imcms-access-role__body {
+.imcms-access-role__row {
     display: block;
     overflow: hidden;
     padding: 3px 0;
