@@ -36,7 +36,25 @@ Imcms.define("imcms-date-time-builder", ["imcms-bem-builder", "imcms-buttons-bui
                 "day": "imcms-day"
             }
         }),
-        weekDays = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"]
+        weekDays = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"],
+        timePickerBEM = new BEM({
+            block: "imcms-time-picker",
+            elements: {
+                "current-time": "imcms-current-time",
+                "time": "",
+                "button": "",
+                "hours": "",
+                "hour": "",
+                "minutes": "",
+                "minute": ""
+            }
+        }),
+        timeInputBEM = new BEM({
+            block: "imcms-current-time",
+            elements: {
+                "input": ""
+            }
+        })
     ;
 
     function createEmptyDays(howManyDays) {
@@ -109,6 +127,48 @@ Imcms.define("imcms-date-time-builder", ["imcms-bem-builder", "imcms-buttons-bui
         ]);
     }
 
+    function createTimePickerBlockElements(elementName, howManyElements) {
+        var elements = [];
+
+        for (var i = 0; i < howManyElements; i++) {
+            elements.push(timePickerBEM.buildBlockElement(elementName, "<div>"));
+        }
+
+        return elements;
+    }
+
+    function createClock() {
+        var $prevHourButton = timePickerBEM.makeBlockElement("button", buttons.incrementButton()),
+            emptyHours = createTimePickerBlockElements("hour", 6),
+            $nextHourButton = timePickerBEM.makeBlockElement("button", buttons.decrementButton()),
+            $hours = timePickerBEM.buildBlockElement("hours", "<div>").append(
+                [$prevHourButton].concat(emptyHours).push($nextHourButton)
+            ),
+            $prevMinuteButton = timePickerBEM.makeBlockElement("button", buttons.incrementButton()),
+            emptyMinutes = createTimePickerBlockElements("minute", 6),
+            $nextMinuteButton = timePickerBEM.makeBlockElement("button", buttons.decrementButton()),
+            $minutes = timePickerBEM.buildBlockElement("minutes", "<div>").append(
+                [$prevMinuteButton].concat(emptyMinutes).push($nextMinuteButton)
+            )
+        ;
+        return timePickerBEM.buildBlockElement("time", "<div>").append($hours, $minutes);
+    }
+
+    function createTimeBox(attributes, withClock) {
+        var $timeInput = timeInputBEM.buildElement("input", "<input>", attributes),
+            $timeInputContainer = timeInputBEM.buildBlock("<div>", [
+                {"input": $timeInput}
+            ]),
+            timePickerElements = [{"current-time": $timeInputContainer}]
+        ;
+
+        if (withClock) {
+            timePickerElements.push({"time": createClock()});
+        }
+
+        return timePickerBEM.buildBlock("<div>", timePickerElements);
+    }
+
     return {
         dateBoxReadOnly: function (attributes) {
             attributes = attributes || {};
@@ -120,6 +180,9 @@ Imcms.define("imcms-date-time-builder", ["imcms-bem-builder", "imcms-buttons-bui
         },
         datePickerCalendar: function (attributes) {
             return createDateBox(attributes, true);
+        },
+        timePickerClock: function (attributes) {
+            return createTimeBox(attributes);
         }
     };
 });

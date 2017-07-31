@@ -351,6 +351,14 @@ Imcms.require(
         new DatePicker($datePickerExample).setDate(mockDateReceivedFromServer);
         new DatePicker($datePickerCalendarExample).setDate(mockDateReceivedFromServer);
 
+        // time picker
+
+        var $time = componentsBuilder.dateTime.timePickerClock({
+            title: "Time picker",
+            placeholder: "HH:MM"
+        });
+        $("#time-picker-example").append($time);
+
         imcmsTimePicker.init();
 
         console.timeEnd("imCMS JS loaded");
