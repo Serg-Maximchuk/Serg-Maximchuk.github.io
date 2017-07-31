@@ -1,9 +1,9 @@
 Imcms.define("imcms-time-picker", ["imcms", "jquery"], function (imcms, $) {
 
     function currentTime() {
-        var t = new Date(),
-            hour = t.getHours(),
-            minute = t.getMinutes(),
+        var currentDate = new Date(),
+            hour = currentDate.getHours(),
+            minute = currentDate.getMinutes(),
             timePicker = $(".imcms-time-picker"),
             currentTime = timePicker.find(".imcms-current-time__input")
         ;
@@ -213,16 +213,17 @@ Imcms.define("imcms-time-picker", ["imcms", "jquery"], function (imcms, $) {
     return {
         init: function () {
             currentTime();
-            $(".imcms-time-picker .imcms-current-time__input")
+            $(document).click(closePicker);
+            $(".imcms-time-picker")
+                .find(".imcms-time-picker__current-time")
+                .click(openPicker)
+                .end()
+                .find(".imcms-time-picker__time .imcms-time-picker__button")
+                .click(chooseTime)
+                .end()
+                .find(".imcms-current-time__input")
                 .blur(currentTimeValidation)
                 .mask("00:00");
-
-            $(".imcms-time-picker .imcms-time-picker__current-time")
-                .click(openPicker);
-
-            $(document).click(closePicker);
-            $(".imcms-time-picker .imcms-time-picker__time .imcms-time-picker__button")
-                .click(chooseTime);
         }
     };
 });
