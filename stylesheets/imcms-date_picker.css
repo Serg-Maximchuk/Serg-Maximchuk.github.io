@@ -75,3 +75,9 @@
 .imcms-date-picker__error {
     display: none;
 }
+
+.imcms-date-time__date-picker.imcms-date-picker {
+    border: 0;
+    padding: 0;
+    max-width: 150px;
+}

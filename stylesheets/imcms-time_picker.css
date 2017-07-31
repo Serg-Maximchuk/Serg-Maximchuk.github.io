@@ -166,3 +166,9 @@
     left: -o-calc(50% - 3px);
     left: calc(50% - 3px);
 }
+
+.imcms-date-time__time-picker.imcms-time-picker {
+    border: 0;
+    padding: 0;
+    max-width: 150px;
+}
