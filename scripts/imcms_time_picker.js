@@ -67,19 +67,17 @@ Imcms.define("imcms-time-picker", ["imcms", "jquery"], function (imcms, $) {
     }
 
     function closePicker(e) {
-        if (
-            !$(e.target).closest(".imcms-current-time__input").length
-            &&
-            (e.target.classList[1] !== "imcms-current-time__input"
-            ||
-            e.target.classList[1] !== ".imcms-time-picker__current-time")
-            &&
-            !$(e.target).parents(".imcms-time-picker__time").length
+        var $target = $(e.target);
+        if (($target.closest(".imcms-current-time__input").length
+                || $target.hasClass("imcms-current-time__input")
+                || $target.hasClass("imcms-time-picker__current-time")
+                || $target.parents(".imcms-time-picker__time").length)
         ) {
-
-            $(".imcms-time-picker").removeClass("imcms-time-picker--active");
-            e.stopPropagation();
+            return;
         }
+
+        $(".imcms-time-picker").removeClass("imcms-time-picker--active");
+        e.stopPropagation();
     }
 
     function chooseTime(event) {
@@ -97,7 +95,7 @@ Imcms.define("imcms-time-picker", ["imcms", "jquery"], function (imcms, $) {
             hours = $btn.parent();
             hour = hours.find(".imcms-time-picker__hour");
 
-            if ($btn.hasClass("imcms-time-picker__prev-hour") && curHour > 0) {
+            if ($btn.hasClass("imcms-button--increment") && curHour > 0) {
                 curHour -= 1;
                 hour.each(function () {
                     $(this).html(curHour);
@@ -107,12 +105,8 @@ Imcms.define("imcms-time-picker", ["imcms", "jquery"], function (imcms, $) {
                 if (curHour < 10) curHour = "0" + curHour;
                 if (curMinute < 10) curMinute = "0" + curMinute;
                 currentTimeInput.val(curHour + ":" + curMinute);
-            }
-            else {
-                event.preventDefault();
-            }
 
-            if ($btn.hasClass("imcms-time-picker__next-hour") && parseInt(hour.last().html()) < 23) {
+            } else if ($btn.hasClass("imcms-button--decrement") && parseInt(hour.last().html()) < 23) {
                 curHour += 1;
                 hour.each(function () {
                     $(this).html(curHour);
@@ -122,16 +116,15 @@ Imcms.define("imcms-time-picker", ["imcms", "jquery"], function (imcms, $) {
                 if (curHour < 10) curHour = "0" + curHour;
                 if (curMinute < 10) curMinute = "0" + curMinute;
                 currentTimeInput.val(curHour + ":" + curMinute);
-            }
-            else {
+
+            } else {
                 event.preventDefault();
             }
-        }
-        if ($btn.parent(".imcms-time-picker__minutes").length !== 0) {
+        } else if ($btn.parent(".imcms-time-picker__minutes").length !== 0) {
             minutes = $btn.parent();
             minute = minutes.find(".imcms-time-picker__minute");
 
-            if ($btn.hasClass("imcms-time-picker__prev-minute") && curMinute > 0) {
+            if ($btn.hasClass("imcms-button--increment") && curMinute > 0) {
                 curMinute -= 1;
                 minute.each(function () {
                     $(this).html(curMinute);
@@ -141,12 +134,8 @@ Imcms.define("imcms-time-picker", ["imcms", "jquery"], function (imcms, $) {
                 if (curHour < 10) curHour = "0" + curHour;
                 if (curMinute < 10) curMinute = "0" + curMinute;
                 currentTimeInput.val(curHour + ":" + curMinute);
-            }
-            else {
-                event.preventDefault();
-            }
 
-            if ($btn.hasClass("imcms-time-picker__next-minute") && parseInt(minute.last().html()) < 60) {
+            } else if ($btn.hasClass("imcms-button--decrement") && parseInt(minute.last().html()) < 60) {
                 curMinute += 1;
                 minute.each(function () {
                     $(this).html(curMinute);
@@ -156,8 +145,8 @@ Imcms.define("imcms-time-picker", ["imcms", "jquery"], function (imcms, $) {
                 if (curHour < 10) curHour = "0" + curHour;
                 if (curMinute < 10) curMinute = "0" + curMinute;
                 currentTimeInput.val(curHour + ":" + curMinute);
-            }
-            else {
+
+            } else {
                 event.preventDefault();
             }
         }
