@@ -187,15 +187,16 @@ Imcms.define("imcms-time-picker", ["imcms", "jquery"], function (imcms, $) {
     }
 
     function currentTimeValidation() {
-        var currentTimeInputVal = $(this).val().split(":")
+        var currentTimeInputVal = $(this).val().split(":"),
+            hours = parseInt(currentTimeInputVal[0]),
+            minutes = parseInt(currentTimeInputVal[1])
         ;
-        currentTimeInputVal[0] = parseInt(currentTimeInputVal[0]);
-        currentTimeInputVal[1] = parseInt(currentTimeInputVal[1]);
 
-        if ((currentTimeInputVal[0] < 0)
-            || (currentTimeInputVal[0] > 23)
-            || (currentTimeInputVal[1] < 0)
-            || (currentTimeInputVal[1] > 60)
+        if ((hours < 0)
+            || (hours > 23)
+            || (minutes < 0)
+            || (minutes > 60)
+            || (currentTimeInputVal[1].length !== 2)
         ) {
             // todo: do not overwrite valid hours/minutes if minutes/hours are not valid
             $(this).val(getCurrentTime());
