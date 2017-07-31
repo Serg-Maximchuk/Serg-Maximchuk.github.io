@@ -116,7 +116,6 @@ Imcms.require(
         var $radio1 = componentsBuilder.radios.radio("<div>", {
             id: "radio1",
             name: "radio-name",
-            checked: "checked",
             text: "item 1",
             click: function () {
                 console.log("radio1 checked");

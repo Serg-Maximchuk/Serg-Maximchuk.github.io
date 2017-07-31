@@ -23,8 +23,13 @@ Imcms.define("imcms-checkboxes-builder", ["imcms-bem-builder", "imcms-primitives
                 type: "checkbox",
                 name: attributes.name,
                 id: attributes.id,
-                checked: attributes.checked
+                value: attributes.value
             });
+
+            if (attributes.checked) {
+                $input.prop("checked", "checked");
+            }
+
             var $label = primitives.imcmsLabelFromObject({
                 "for": attributes.id,
                 text: attributes.text,
