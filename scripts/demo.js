@@ -267,7 +267,7 @@ Imcms.require(
 
         // plural input
 
-        var $pluralInoutBox = componentsBuilder.texts.pluralInput("<div>", [
+        var $pluralInputBox = componentsBuilder.texts.pluralInput("<div>", [
             {
                 id: "input1",
                 name: "top",
@@ -287,7 +287,7 @@ Imcms.require(
             }
         ], {text: "Plural columns input"});
 
-        $("#space-around-input-example").append($pluralInoutBox);
+        $("#space-around-input-example").append($pluralInputBox);
 
         // keywords
 
