@@ -72,6 +72,7 @@
     width: -o-calc(100% + 2px);
     width: calc(100% + 2px);
     z-index: 50;
+    min-width: 50px;
 }
 
 .imcms-time-picker__hours {

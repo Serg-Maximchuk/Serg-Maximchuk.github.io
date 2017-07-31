@@ -382,6 +382,16 @@ Imcms.require(
 
         new TimePicker($timePickerExample).setTime(mockTimeReceivedFromServer);
 
+        // time and date
+
+        var $dateTime = componentsBuilder.dateTime.dateTimePicker({
+                title: "Date and time picker in one input"
+            }),
+            $dateTimeExample = $("#date-time-example").append($dateTime)
+        ;
+        new DatePicker($dateTimeExample).setDate(mockDateReceivedFromServer);
+        new TimePicker($dateTimeExample).setTime(mockTimeReceivedFromServer);
+
         console.timeEnd("imCMS JS loaded");
     }
 );
