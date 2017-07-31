@@ -109,6 +109,8 @@ Imcms.define("imcms-date-time-builder", ["imcms-bem-builder", "imcms-buttons-bui
     }
 
     function createDateBox(attributes, withCalendar) {
+        attributes = attributes || {};
+        attributes.placeholder = attributes.placeholder || "yyyy-MM-dd";
         var $dateInput = dateInputContainerBEM.buildElement("input", "<input>", attributes),
             $dateInputContainer = dateInputContainerBEM.buildBlock("<div>", [
                 {"input": $dateInput}
@@ -155,6 +157,8 @@ Imcms.define("imcms-date-time-builder", ["imcms-bem-builder", "imcms-buttons-bui
     }
 
     function createTimeBox(attributes, withClock) {
+        attributes = attributes || {};
+        attributes.placeholder = attributes.placeholder || "HH:mm";
         var $timeInput = timeInputBEM.buildElement("input", "<input>", attributes),
             $timeInputContainer = timeInputBEM.buildBlock("<div>", [
                 {"input": $timeInput}

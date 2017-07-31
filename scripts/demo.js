@@ -375,8 +375,7 @@ Imcms.require(
 
         var mockTimeReceivedFromServer = getCurrentTime(),
             $time = componentsBuilder.dateTime.timePickerClock({
-                title: "Time picker",
-                placeholder: "HH:MM"
+                title: "Time picker"
             }),
             $timePickerExample = $("#time-picker-example").append($time)
         ;
