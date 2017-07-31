@@ -28,14 +28,18 @@
     background-color: #d0e9f9;
 }
 
-.imcms-access-role__body .imcms-access-role__column {
-    text-align: center;
+.imcms-access-role__body .imcms-access-role__column,
+.imcms-access-role__body .imcms-access-role__column-title {
     display: block;
     float: left;
     width: 19%;
 }
 
-.imcms-access-role__body .imcms-access-role__column:first-child {
+.imcms-access-role__body .imcms-access-role__column {
+    text-align: center;
+}
+
+.imcms-access-role__body .imcms-access-role__column-title {
     text-align: left;
 }
 
