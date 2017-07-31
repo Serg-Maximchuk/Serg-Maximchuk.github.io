@@ -131,7 +131,7 @@
     background-color: #d3d8de;
 }
 
-.imcms-time-picker__prev-hour {
+.imcms-time-picker__hours .imcms-time-picker__button.imcms-button--increment {
     top: 0;
     left: -webkit-calc(50% - 3px);
     left: -moz-calc(50% - 3px);
@@ -140,7 +140,7 @@
     left: calc(50% - 3px);
 }
 
-.imcms-time-picker__next-hour {
+.imcms-time-picker__hours .imcms-time-picker__button.imcms-button--decrement {
     bottom: 0;
     left: -webkit-calc(50% - 3px);
     left: -moz-calc(50% - 3px);
@@ -149,7 +149,7 @@
     left: calc(50% - 3px);
 }
 
-.imcms-time-picker__prev-minute {
+.imcms-time-picker__minutes .imcms-time-picker__button.imcms-button--increment {
     top: 0;
     left: -webkit-calc(50% - 3px);
     left: -moz-calc(50% - 3px);
@@ -158,7 +158,7 @@
     left: calc(50% - 3px);
 }
 
-.imcms-time-picker__next-minute {
+.imcms-time-picker__minutes .imcms-time-picker__button.imcms-button--decrement {
     bottom: 0;
     left: -webkit-calc(50% - 3px);
     left: -moz-calc(50% - 3px);
