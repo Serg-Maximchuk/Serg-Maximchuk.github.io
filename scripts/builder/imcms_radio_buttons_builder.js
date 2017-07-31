@@ -22,8 +22,13 @@ Imcms.define("imcms-radio-buttons-builder",
                 var $input = primitives.imcmsInputRadio({
                     name: attributes.name,
                     id: attributes.id,
-                    checked: attributes.checked
+                    value: attributes.value
                 });
+
+                if (attributes.checked) {
+                    $input.prop("checked", "checked");
+                }
+
                 var $label = primitives.imcmsLabelFromObject({
                     "for": attributes.id,
                     text: attributes.text,
