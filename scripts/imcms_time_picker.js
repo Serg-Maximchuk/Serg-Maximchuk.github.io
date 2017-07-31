@@ -68,10 +68,10 @@ Imcms.define("imcms-time-picker", ["imcms", "jquery"], function (imcms, $) {
 
     function closePicker(e) {
         var $target = $(e.target);
-        if (($target.closest(".imcms-current-time__input").length
-                || $target.hasClass("imcms-current-time__input")
-                || $target.hasClass("imcms-time-picker__current-time")
-                || $target.parents(".imcms-time-picker__time").length)
+        if ($target.closest(".imcms-current-time__input").length
+            || $target.hasClass("imcms-current-time__input")
+            || $target.hasClass("imcms-time-picker__current-time")
+            || $target.parents(".imcms-time-picker__time").length
         ) {
             return;
         }
