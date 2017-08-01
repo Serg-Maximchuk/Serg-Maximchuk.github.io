@@ -81,7 +81,7 @@ Imcms.define("imcms-selects-builder",
                         {"select-item": $selectItem},
                         {"items": $itemsContainer}
                     ]),
-                    $label = primitives.imcmsLabel(attributes.id, attributes.text) // add opening select on label click
+                    $label = primitives.imcmsLabel(attributes.id, attributes.text, {click: toggleSelect})
                 ;
 
                 return selectBEM.buildBlock("<div>", [
