@@ -48,6 +48,9 @@ Imcms.define("imcms-buttons-builder", ["imcms-bem-builder"], function (bemBuilde
         next: function (tag, attributes) {
             return buildButtonElement(tag, attributes, "next");
         },
+        dropDown: function (attributes) {
+            return buildButtonElement(tag, attributes, "drop-down");
+        },
         negativeButton: function (attributes) {
             return this.negative("<button>", setAttributesTypeButton(attributes));
         },
@@ -74,6 +77,9 @@ Imcms.define("imcms-buttons-builder", ["imcms-bem-builder"], function (bemBuilde
         },
         nextButton: function (attributes) {
             return this.next("<button>", setAttributesTypeButton(attributes));
+        },
+        dropDownButton: function (attributes) {
+            return this.dropDown("<button>", setAttributesTypeButton(attributes));
         },
         container: function (tag, attributesObj, elements) {
             return buttonsBEM.buildBlock(tag, elements, attributesObj, "button");
