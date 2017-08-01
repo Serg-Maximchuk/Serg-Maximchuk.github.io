@@ -149,34 +149,42 @@
 <hr>
 <h2>Page Info Example: appearance - form</h2>
 <hr>
+<div id="page-info-appearance-example"><!-- content builds on JS side --></div>
 <div class="imcms-form" data-window-id="1">
-    <div class="imcms-form__field imcms-field imcms-flags">
-        <div class="imcms-flags__flag imcms-flag imcms-flag--en imcms-flag--active"></div>
-        <div class="imcms-flags__flag imcms-flag imcms-flag--sw"></div>
-    </div>
-    <div class="imcms-form__field imcms-field imcms-checkbox">
-        <input type="checkbox" id="checkbox03" class="imcms-checkbox__checkbox" name="checkbox03">
-        <label for="checkbox03" class="imcms-checkbox__label imcms-label">English</label>
+    <div class="imcms-form__field imcms-field">
+        <div class="imcms-field__flags imcms-flags">
+            <div class="imcms-flags__flag imcms-flag imcms-flag--en imcms-flag--active"></div>
+            <div class="imcms-flags__flag imcms-flag imcms-flag--sw"></div>
+        </div>
     </div>
     <div class="imcms-form__field imcms-field">
-        <label for="text2" class="imcms-text-box__label imcms-label">Title</label>
-        <input type="text" id="text2" class="imcms-text-box__input imcms-input" name="text" placeholder="Start Page">
-    </div>
-    <div class="imcms-field">
-        <label for="text-area1" class="imcms-text-area__label imcms-label">Menu text</label>
-        <textarea name="textArea" id="text-area1" class="imcms-text-area__input imcms-input"
-                  placeholder=""></textarea>
-    </div>
-    <div class="imcms-form__field imcms-field imcms-choose-image">
-        <div class="imcms-text-box imcms-choose-image__text-box">
-            <label for="path" class="imcms-text-box__label imcms-label">Link to image</label>
-            <input type="text" id="path" class="imcms-text-box__input imcms-input" name="text" placeholder="Text">
+        <div class="imcms-field__checkboxes imcms-checkbox">
+            <input type="checkbox" id="checkbox03" class="imcms-checkbox__checkbox" name="checkbox03">
+            <label for="checkbox03" class="imcms-checkbox__label imcms-label">English</label>
         </div>
-        <label for="file1" class="imcms-number__label imcms-button imcms-button--neutral">
-            choose...
-            <input id="file1" type="file" class="imcms-button__item--invisible">
-        </label>
-        <span class="imcms-choose-image__file-name">File.path</span>
+    </div>
+    <div class="imcms-form__field imcms-field">
+        <div class="imcms-field__text-box imcms-text-box">
+            <label for="text2" class="imcms-text-box__label imcms-label">Title</label>
+            <input type="text" id="text2" class="imcms-text-box__input imcms-input" name="text"
+                   placeholder="Start Page">
+        </div>
+    </div>
+    <div class="imcms-form__field imcms-field">
+        <div class="imcms-field__text-area imcms-text-area">
+            <label for="text-area1" class="imcms-text-area__label imcms-label">Menu text</label>
+            <textarea name="textArea" id="text-area1" class="imcms-text-area__input imcms-input"
+                      placeholder=""></textarea>
+        </div>
+    </div>
+    <div class="imcms-form__field imcms-field">
+        <div class="imcms-field__choose-image imcms-choose-image">
+            <div class="imcms-text-box imcms-choose-image__text-box">
+                <label for="path" class="imcms-text-box__label imcms-label">Link to image</label>
+                <input type="text" id="path" class="imcms-text-box__input imcms-input" name="text" placeholder="Text">
+            </div>
+            <span class="imcms-choose-image__button imcms-button imcms-button--neutral">File.path</span>
+        </div>
     </div>
     <div class="imcms-form__field imcms-field">
         <div class="imcms-select imcms-field__select">
@@ -197,8 +205,11 @@
         </div>
     </div>
     <div class="imcms-form__field imcms-field">
-        <label for="text3" class="imcms-text-box__label imcms-label">Document Alias</label>
-        <input type="text" id="text3" class="imcms-text-box__input imcms-input" name="text" placeholder="Start Page">
+        <div class="imcms-field__text-box imcms-text-box">
+            <label for="text3" class="imcms-text-box__label imcms-label">Document Alias</label>
+            <input type="text" id="text3" class="imcms-text-box__input imcms-input" name="text"
+                   placeholder="Start Page">
+        </div>
     </div>
 </div>
 <hr>
