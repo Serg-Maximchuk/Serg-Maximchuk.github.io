@@ -17,12 +17,43 @@ Imcms.define("imcms-checkboxes-builder", ["imcms-bem-builder", "imcms-primitives
         })
     ;
 
+    var hexValues = [
+        '0', '1', '2', '3',
+        '4', '5', '6', '7',
+        '8', '9', 'a', 'b',
+        'c', 'd', 'e', 'f'
+    ];
+
+    function getRandomHex() {
+        return hexValues[Math.round(Math.random() * 15)];
+    }
+
+    function getRandomHexes(howMany) {
+        var hexes = [];
+        for (var i = 0; i < howMany; i++) {
+            hexes.push(getRandomHex());
+        }
+        return hexes;
+    }
+
+    function generateUUID() {
+        var first8 = getRandomHexes(8),
+            second4 = getRandomHexes(4),
+            third4 = getRandomHexes(4),
+            fourth4 = getRandomHexes(4),
+            last12 = getRandomHexes(12)
+        ;
+        // result is something like 550e8400-e29b-41d4-a716-446655440f00
+        return [].concat(first8, "-", second4, "-", third4, "-", fourth4, "-", last12);
+    }
+
     return {
         checkbox: function (tag, attributes) {
+            var id = attributes.id || generateUUID();
             var $input = checkboxBEM.buildElement("checkbox", "<input>", {
                 type: "checkbox",
                 name: attributes.name,
-                id: attributes.id,
+                id: id,
                 value: attributes.value
             });
 
@@ -31,7 +62,7 @@ Imcms.define("imcms-checkboxes-builder", ["imcms-bem-builder", "imcms-primitives
             }
 
             var $label = primitives.imcmsLabelFromObject({
-                "for": attributes.id,
+                "for": id,
                 text: attributes.text,
                 click: attributes.click
             });
