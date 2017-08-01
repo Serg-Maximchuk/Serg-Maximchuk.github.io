@@ -539,5 +539,51 @@ Imcms.require(
             ])
         ;
         $("#imcms-roles").append($rolesTable);
+
+        // add role
+
+        var addRoleContainerBEM = new BEM({
+                block: "imcms-field",
+                elements: {
+                    "access-role": "imcms-access-addrole"
+                }
+            }),
+            addRoleInnerBEM = new BEM({
+                block: "imcms-access-addrole",
+                elements: {
+                    "select": "imcms-select",
+                    "button": "imcms-button"
+                }
+            })
+        ;
+
+        var $addRoleSelect = componentsBuilder.selects.select("<div>", {
+                id: "select3"
+            }, [{
+                text: "role1",
+                "data-value": 1
+            }, {
+                text: "role2",
+                "data-value": 2
+            }, {
+                text: "role3",
+                "data-value": 3
+            }, {
+                text: "role4",
+                "data-value": 4
+            }]),
+            $addRoleButton = buttons.neutralButton({
+                text: "Add role",
+                click: function () {
+                    console.log("%c Not implemented feature: add role.", "color: red;")
+                }
+            }),
+            $addRoleInnerBlock = addRoleInnerBEM.buildBlock("<div>", [
+                {"select": $addRoleSelect},
+                {"button": $addRoleButton}
+            ]),
+            $addRoleContainer = addRoleContainerBEM.buildBlock("<div>", [{"access-role": $addRoleInnerBlock}])
+        ;
+        $("#add-role-example").append($addRoleContainer);
     }
 );
