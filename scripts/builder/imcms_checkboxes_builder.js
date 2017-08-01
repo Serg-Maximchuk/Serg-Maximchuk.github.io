@@ -40,7 +40,7 @@ Imcms.define("imcms-checkboxes-builder", ["imcms-bem-builder", "imcms-primitives
                 {"label": $label}
             ]);
         },
-        container: function (tag, attributesObj, elements) {
+        container: function (tag, elements, attributesObj) {
             return containerBEM.buildBlock(tag, elements, attributesObj, "checkbox");
         }
     }

@@ -39,7 +39,7 @@ Imcms.define("imcms-radio-buttons-builder",
                     {"label": $label}
                 ]);
             },
-            container: function (tag, attributesObj, elements) {
+            container: function (tag, elements, attributesObj) {
                 return containerBEM.buildBlock(tag, elements, attributesObj, "radio");
             }
         }

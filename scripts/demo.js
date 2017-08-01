@@ -75,12 +75,12 @@ Imcms.require(
         var flags = componentsBuilder.flags,
             $engFlag = flags.eng("<div>", true),
             $sweFlag = flags.swe("<div>"),
-            $flagsRow = flags.container("<div>", {
-                id: "flags-container-example"
-            }, [
+            $flagsRow = flags.container("<div>", [
                 flags.eng("<div>"),
                 flags.swe("<div>", true)
-            ])
+            ], {
+                id: "flags-container-example"
+            })
         ;
 
         $("#flags-example").append($engFlag)
@@ -111,10 +111,11 @@ Imcms.require(
             }
         });
 
-        var $checkboxes = componentsBuilder.checkboxes.container("<div>", {"class": "checkboxes-class-example"}, [
-            $checkbox1,
-            $checkbox2
-        ]);
+        var $checkboxes = componentsBuilder.checkboxes.container("<div>", [
+                $checkbox1,
+                $checkbox2
+            ], {"class": "checkboxes-class-example"}
+        );
 
         $("#checkboxes-example").append($checkboxes);
 
@@ -139,12 +140,11 @@ Imcms.require(
             }
         });
 
-        var $radios = componentsBuilder.radios.container("<div>", {
-            "class": "radios-class-example"
-        }, [
-            $radio1,
-            $radio2
-        ]);
+        var $radios = componentsBuilder.radios.container("<div>", [
+                $radio1,
+                $radio2
+            ], {"class": "radios-class-example"}
+        );
 
         $("#radio-buttons-example").append($radios);
 
