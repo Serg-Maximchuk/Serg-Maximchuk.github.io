@@ -3,7 +3,8 @@
     padding-top: 10px;
 }
 
-.imcms-field__select {
+.imcms-field__select,
+.imcms-field .imcms-select__drop-down-list {
     display: block;
     width: 100%;
 }
