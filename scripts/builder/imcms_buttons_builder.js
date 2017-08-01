@@ -48,7 +48,7 @@ Imcms.define("imcms-buttons-builder", ["imcms-bem-builder"], function (bemBuilde
         next: function (tag, attributes) {
             return buildButtonElement(tag, attributes, "next");
         },
-        dropDown: function (attributes) {
+        dropDown: function (tag, attributes) {
             return buildButtonElement(tag, attributes, "drop-down");
         },
         negativeButton: function (attributes) {
