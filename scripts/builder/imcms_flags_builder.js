@@ -38,21 +38,21 @@ Imcms.define("imcms-flags-builder", ["imcms-bem-builder", "jquery"], function (b
         }
     }
 
-    function flagsBuilder(lang) {
-        return function (tag, isActive, attributesObj) {
-            var modifiers = [lang];
+    function buildFlag(tag, attributesObj, modifiers, isActive) {
+        if (isActive) {
+            modifiers.push("active");
+        }
 
-            if (isActive) {
-                modifiers.push("active");
-            }
-
-            return flagsBEM.buildElement("flag", tag, attributesObj, modifiers).click(onFlagClick);
-        };
+        return flagsBEM.buildElement("flag", tag, attributesObj, modifiers).click(onFlagClick);
     }
 
     return {
-        eng: flagsBuilder("en"),
-        swe: flagsBuilder("sw"),
+        eng: function (tag, isActive, attributesObj) {
+            return buildFlag(tag, attributesObj, ["en"], isActive);
+        },
+        swe: function (tag, isActive, attributesObj) {
+            return buildFlag(tag, attributesObj, ["sw"], isActive);
+        },
         container: function (tag, attributesObj, elements) {
             return flagsBEM.buildBlock(tag, elements, attributesObj, "flag");
         }
