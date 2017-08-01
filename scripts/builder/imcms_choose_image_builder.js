@@ -14,7 +14,7 @@ Imcms.define("imcms-choose-image-builder",
 
         return {
             container: function (tag, attributes) {
-                var $textBox = texts.text("<div>", {
+                var $textBox = texts.textField("<div>", {
                         id: attributes.id,
                         name: attributes.name,
                         text: attributes["label-text"],

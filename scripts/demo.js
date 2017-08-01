@@ -90,7 +90,7 @@ Imcms.require(
 
         var $checkbox1 = componentsBuilder.checkboxes.checkbox("<div>", {
             id: "checkbox01",
-            name: "checkbox",
+            name: "checkbox1",
             text: "item 1",
             click: function () {
                 setTimeout(function () {
@@ -100,7 +100,7 @@ Imcms.require(
         });
         var $checkbox2 = componentsBuilder.checkboxes.checkbox("<div>", {
             id: "checkbox02",
-            name: "checkbox",
+            name: "checkbox2",
             checked: "checked",
             text: "item 2 (checked by default)",
             click: function () {
@@ -195,14 +195,14 @@ Imcms.require(
 
         // text input
 
-        var $textInputFixedSize = componentsBuilder.texts.fixedSizeText("<div>", {
+        var $textInputFixedSize = componentsBuilder.texts.textBox("<div>", {
                 id: "text1",
                 text: "Text 1",
                 name: "text",
                 placeholder: "Text 1 placeholder"
             }).addClass("text-example-fixed-size"),
 
-            $textInput = componentsBuilder.texts.text("<div>", {
+            $textInput = componentsBuilder.texts.textField("<div>", {
                 id: "text2",
                 text: "Text 2",
                 name: "text",
@@ -215,14 +215,14 @@ Imcms.require(
 
         // text area
 
-        var $textAreaFixedSize = componentsBuilder.texts.fixedSizeTextArea("<div>", {
+        var $textAreaFixedSize = componentsBuilder.texts.textArea("<div>", {
                 id: "textArea1",
                 text: "Text area 1",
                 name: "textArea",
                 placeholder: "Text area 1 placeholder"
             }).addClass("text-area-example-fixed-size"),
 
-            $textArea = componentsBuilder.texts.textArea("<div>", {
+            $textArea = componentsBuilder.texts.textAreaField("<div>", {
                 id: "textArea2",
                 text: "Text area 2",
                 name: "textArea",
@@ -235,7 +235,7 @@ Imcms.require(
 
         // text number input
 
-        var $textNumberFixedSize = componentsBuilder.texts.fixedSizeTextNumber("<div>", {
+        var $textNumberFixedSize = componentsBuilder.texts.textNumber("<div>", {
                 id: "number1",
                 text: "Number 1",
                 name: "number",
@@ -243,7 +243,7 @@ Imcms.require(
                 error: "Special info - Error"
             }).addClass("number-input-example-fixed-size"),
 
-            $textNumber = componentsBuilder.texts.textNumber("<div>", {
+            $textNumber = componentsBuilder.texts.textNumberField("<div>", {
                 id: "number2",
                 text: "Number 2",
                 name: "number",

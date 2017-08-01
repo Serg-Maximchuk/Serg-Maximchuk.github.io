@@ -91,7 +91,7 @@ Imcms.define("imcms-texts-builder",
         });
 
         return {
-            fixedSizeText: function (tag, attributes) {
+            textBox: function (tag, attributes) {
                 var $label = primitives.imcmsLabel(attributes.id, attributes.text),
                     $input = primitives.imcmsInputText({
                         id: attributes.id,
@@ -105,10 +105,10 @@ Imcms.define("imcms-texts-builder",
                     {"input": $input}
                 ]);
             },
-            text: function (tag, attributes) {
-                return this.fixedSizeText.apply(this, arguments).addClass("imcms-field");
+            textField: function (tag, attributes) {
+                return this.textBox.apply(this, arguments).addClass("imcms-field");
             },
-            fixedSizeTextArea: function (tag, attributes) {
+            textArea: function (tag, attributes) {
                 var $label = primitives.imcmsLabel(attributes.id, attributes.text),
                     $textArea = primitives.imcmsInputTextArea({
                         id: attributes.id,
@@ -122,10 +122,10 @@ Imcms.define("imcms-texts-builder",
                     {"input": $textArea}
                 ]);
             },
-            textArea: function (tag, attributes) {
-                return this.fixedSizeTextArea.apply(this, arguments).addClass("imcms-field");
+            textAreaField: function (tag, attributes) {
+                return this.textArea.apply(this, arguments).addClass("imcms-field");
             },
-            fixedSizeTextNumber: function (tag, attributes) {
+            textNumber: function (tag, attributes) {
                 var $input = primitives.imcmsInputText({
                         id: attributes.id,
                         name: attributes.name,
@@ -150,8 +150,8 @@ Imcms.define("imcms-texts-builder",
                     {"error-msg": $error}
                 ]);
             },
-            textNumber: function (tag, attributes) {
-                return this.fixedSizeTextNumber.apply(this, arguments).addClass("imcms-field");
+            textNumberField: function (tag, attributes) {
+                return this.textNumber.apply(this, arguments).addClass("imcms-field");
             },
             pluralInput: function (tag, columns, attributes) {
                 var $label = primitives.imcmsLabel(columns[0].id, attributes.text),
