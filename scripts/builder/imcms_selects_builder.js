@@ -3,8 +3,8 @@
  * 25.07.17.
  */
 Imcms.define("imcms-selects-builder",
-    ["imcms-bem-builder", "imcms-primitives-builder", "jquery"],
-    function (BEM, primitives, $) {
+    ["imcms-bem-builder", "imcms-primitives-builder", "imcms-buttons-builder", "jquery"],
+    function (BEM, primitives, buttons, $) {
         var fieldBEM = new BEM({
                 block: "imcms-field",
                 elements: {
@@ -70,7 +70,7 @@ Imcms.define("imcms-selects-builder",
                     }),
                     $itemsContainer = dropDownListBEM.buildElement("items", "<div>").append($itemsArr),
 
-                    $button = dropDownListBEM.buildBlockElement("button", "<button>", {type: "button"}, ["drop-down"]),
+                    $button = dropDownListBEM.makeBlockElement("button", buttons.dropDownButton()),
                     $selectedValue = dropDownListBEM.buildBlockElement("select-item-value", "<span>", {
                         text: (options[0] && options[0].text) || ""
                     }),
