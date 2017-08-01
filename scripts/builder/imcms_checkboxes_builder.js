@@ -44,7 +44,10 @@ Imcms.define("imcms-checkboxes-builder", ["imcms-bem-builder", "imcms-primitives
             last12 = getRandomHexes(12)
         ;
         // result is something like 550e8400-e29b-41d4-a716-446655440f00
-        return [].concat(first8, "-", second4, "-", third4, "-", fourth4, "-", last12);
+        return [].concat(first8, "-", second4, "-", third4, "-", fourth4, "-", last12)
+            .reduce(function (str, hex) {
+                return str + hex;
+            }, "");
     }
 
     return {
