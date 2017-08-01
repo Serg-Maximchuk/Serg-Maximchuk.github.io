@@ -39,6 +39,7 @@ Imcms = {
             "imcms-folders": "choose_img/imcms_folders.js",
             "imcms-choose-image": "choose_img/imcms_choose_img.js",
             "imcms-content-manager": "choose_img/imcms_content_manager.js",
+            "imcms-uuid-generator": "imcms_uuid_generator.js",
             // editors
             "imcms-image-editor-crop": "image_editor/imcms_image_editor_crop.js",
             "imcms-image-editor-bottom-panel": "image_editor/imcms_image_editor_bottom_panel.js",
