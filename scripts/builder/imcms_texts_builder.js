@@ -3,8 +3,8 @@
  * 26.07.17.
  */
 Imcms.define("imcms-texts-builder",
-    ["imcms-bem-builder", "imcms-primitives-builder", "imcms-buttons-builder", "jquery"],
-    function (BEM, primitives, buttons, $) {
+    ["imcms-bem-builder", "imcms-primitives-builder", "imcms-buttons-builder", "imcms-uuid-generator", "jquery"],
+    function (BEM, primitives, buttons, uuidGenerator, $) {
         function activateNumberBox() {
             var numberBox = $(this).closest(".imcms-number-box"),
                 numberBoxInput = numberBox.find(".imcms-number-box__input")
@@ -46,14 +46,16 @@ Imcms.define("imcms-texts-builder",
 
         function deactivateNumberBox(e) {
             var $target = $(e.target);
-            if (
-                !$target.parent().children(".imcms-number-box__input").length
-                && !$target.hasClass("imcms-number-box__button")
+
+            if ($target.hasClass("imcms-number-box__button")
+                || $target.parent().children(".imcms-number-box__input").length
             ) {
-                e.stopPropagation();
-                $(".imcms-number-box__input").closest(".imcms-number-box")
-                    .removeClass("imcms-number-box--active");
+                return;
             }
+
+            e.stopPropagation();
+            $(".imcms-number-box__input").closest(".imcms-number-box")
+                .removeClass("imcms-number-box--active");
         }
 
         $(document).click(deactivateNumberBox);
@@ -90,44 +92,39 @@ Imcms.define("imcms-texts-builder",
             }
         });
 
+        function generateTextFromBEM(attributes, structureBEM, factory) {
+            var id = attributes.id || uuidGenerator.generateUUID(),
+                $label = primitives.imcmsLabel(id, attributes.text),
+                $input = factory({
+                    id: id,
+                    name: attributes.name,
+                    placeholder: attributes.placeholder
+                })
+            ;
+
+            return structureBEM.buildBlock("<div>", [
+                {"label": $label},
+                {"input": $input}
+            ]);
+        }
+
         return {
             textBox: function (tag, attributes) {
-                var $label = primitives.imcmsLabel(attributes.id, attributes.text),
-                    $input = primitives.imcmsInputText({
-                        id: attributes.id,
-                        name: attributes.name,
-                        placeholder: attributes.placeholder
-                    })
-                ;
-
-                return textBEM.buildBlock("<div>", [
-                    {"label": $label},
-                    {"input": $input}
-                ]);
+                return generateTextFromBEM(attributes, textBEM, primitives.imcmsInputText);
             },
             textField: function (tag, attributes) {
                 return this.textBox.apply(this, arguments).addClass("imcms-field");
             },
             textArea: function (tag, attributes) {
-                var $label = primitives.imcmsLabel(attributes.id, attributes.text),
-                    $textArea = primitives.imcmsInputTextArea({
-                        id: attributes.id,
-                        name: attributes.name,
-                        placeholder: attributes.placeholder
-                    })
-                ;
-
-                return textAreaBEM.buildBlock("<div>", [
-                    {"label": $label},
-                    {"input": $textArea}
-                ]);
+                return generateTextFromBEM(attributes, textAreaBEM, primitives.imcmsInputTextArea);
             },
             textAreaField: function (tag, attributes) {
                 return this.textArea.apply(this, arguments).addClass("imcms-field");
             },
             textNumber: function (tag, attributes) {
-                var $input = primitives.imcmsInputText({
-                        id: attributes.id,
+                var id = attributes.id || uuidGenerator.generateUUID(),
+                    $input = primitives.imcmsInputText({
+                        id: id,
                         name: attributes.name,
                         placeholder: attributes.placeholder,
                         click: activateNumberBox
@@ -141,7 +138,7 @@ Imcms.define("imcms-texts-builder",
                         {"button": $buttonIncrement},
                         {"button": $buttonDecrement}
                     ]),
-                    $label = primitives.imcmsLabel(attributes.id, attributes.text),
+                    $label = primitives.imcmsLabel(id, attributes.text),
                     $error = numberBEM.buildElement("error-msg", "<div>", {text: attributes.error})
                 ;
                 return numberBEM.buildBlock("<div>", [
@@ -154,7 +151,8 @@ Imcms.define("imcms-texts-builder",
                 return this.textNumber.apply(this, arguments).addClass("imcms-field");
             },
             pluralInput: function (tag, columns, attributes) {
-                var $label = primitives.imcmsLabel(columns[0].id, attributes.text),
+                var id = columns[0].id || uuidGenerator.generateUUID(),
+                    $label = primitives.imcmsLabel(id, attributes.text),
                     inputs = columns.map(function (column) {
                         return pluralInputBEM.buildBlockElement("input", "<input>", {
                             type: "text",

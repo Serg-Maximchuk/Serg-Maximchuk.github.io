@@ -94,7 +94,7 @@ Imcms.define("imcms-selects-builder",
                         name: attributes.name
                     })); // todo: implement putting selected value into this input from [data-value] attribute
             },
-            container: function (tag, attributes, options) {
+            selectContainer: function (tag, attributes, options) {
                 var clas = (attributes && attributes["class"]) || "";
 
                 if (clas) {

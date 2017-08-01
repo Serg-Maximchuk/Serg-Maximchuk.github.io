@@ -81,7 +81,7 @@ Imcms.define("imcms-buttons-builder", ["imcms-bem-builder"], function (bemBuilde
         dropDownButton: function (attributes) {
             return this.dropDown("<button>", setAttributesTypeButton(attributes));
         },
-        container: function (tag, elements, attributes) {
+        buttonsContainer: function (tag, elements, attributes) {
             return buttonsBEM.buildBlock(tag, elements, attributes, "button");
         }
     }

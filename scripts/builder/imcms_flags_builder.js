@@ -53,7 +53,7 @@ Imcms.define("imcms-flags-builder", ["imcms-bem-builder", "jquery"], function (b
         swe: function (tag, isActive, attributes) {
             return buildFlag(tag, attributes, ["sw"], isActive);
         },
-        container: function (tag, elements, attributes) {
+        flagsContainer: function (tag, elements, attributes) {
             return flagsBEM.buildBlock(tag, elements, attributes, "flag");
         }
     }

@@ -54,7 +54,7 @@ Imcms.require(
             $positiveBtn2 = buttons.positiveButton({text: "positive"}),
             $neutralBtn2 = buttons.neutralButton({text: "neutral"}),
             $saveBtn2 = buttons.saveButton({text: "save"}),
-            $buttonsRow2 = buttons.container("<div>", [
+            $buttonsRow2 = buttons.buttonsContainer("<div>", [
                     $negativeBtn2,
                     $positiveBtn2,
                     $neutralBtn2,
@@ -74,7 +74,7 @@ Imcms.require(
         var flags = componentsBuilder.flags,
             $engFlag = flags.eng("<div>", true),
             $sweFlag = flags.swe("<div>"),
-            $flagsRow = flags.container("<div>", [
+            $flagsRow = flags.flagsContainer("<div>", [
                 flags.eng("<div>"),
                 flags.swe("<div>", true)
             ], {
@@ -110,7 +110,7 @@ Imcms.require(
             }
         });
 
-        var $checkboxes = componentsBuilder.checkboxes.container("<div>", [
+        var $checkboxes = componentsBuilder.checkboxes.checkboxContainer("<div>", [
                 $checkbox1,
                 $checkbox2
             ], {"class": "checkboxes-class-example"}
@@ -139,7 +139,7 @@ Imcms.require(
             }
         });
 
-        var $radios = componentsBuilder.radios.container("<div>", [
+        var $radios = componentsBuilder.radios.radioContainer("<div>", [
                 $radio1,
                 $radio2
             ], {"class": "radios-class-example"}
@@ -171,7 +171,7 @@ Imcms.require(
 
         $("#select-example").append($select);
 
-        var $selectContainer = componentsBuilder.selects.container("<div>", {
+        var $selectContainer = componentsBuilder.selects.selectContainer("<div>", {
             id: "select2",
             "class": "selects-field-example-class",
             text: "Select in Field"
