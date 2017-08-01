@@ -54,14 +54,13 @@ Imcms.require(
             $positiveBtn2 = buttons.positiveButton({text: "positive"}),
             $neutralBtn2 = buttons.neutralButton({text: "neutral"}),
             $saveBtn2 = buttons.saveButton({text: "save"}),
-            $buttonsRow2 = buttons.container("<div>", {
-                id: "buttons-container-example"
-            }, [
-                $negativeBtn2,
-                $positiveBtn2,
-                $neutralBtn2,
-                $saveBtn2
-            ])
+            $buttonsRow2 = buttons.container("<div>", [
+                    $negativeBtn2,
+                    $positiveBtn2,
+                    $neutralBtn2,
+                    $saveBtn2
+                ], {id: "buttons-container-example"}
+            )
         ;
 
         $("#buttons-example").append($negativeBtn)

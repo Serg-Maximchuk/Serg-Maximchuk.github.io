@@ -38,23 +38,23 @@ Imcms.define("imcms-flags-builder", ["imcms-bem-builder", "jquery"], function (b
         }
     }
 
-    function buildFlag(tag, attributesObj, modifiers, isActive) {
+    function buildFlag(tag, attributes, modifiers, isActive) {
         if (isActive) {
             modifiers.push("active");
         }
 
-        return flagsBEM.buildElement("flag", tag, attributesObj, modifiers).click(onFlagClick);
+        return flagsBEM.buildElement("flag", tag, attributes, modifiers).click(onFlagClick);
     }
 
     return {
-        eng: function (tag, isActive, attributesObj) {
-            return buildFlag(tag, attributesObj, ["en"], isActive);
+        eng: function (tag, isActive, attributes) {
+            return buildFlag(tag, attributes, ["en"], isActive);
         },
-        swe: function (tag, isActive, attributesObj) {
-            return buildFlag(tag, attributesObj, ["sw"], isActive);
+        swe: function (tag, isActive, attributes) {
+            return buildFlag(tag, attributes, ["sw"], isActive);
         },
-        container: function (tag, elements, attributesObj) {
-            return flagsBEM.buildBlock(tag, elements, attributesObj, "flag");
+        container: function (tag, elements, attributes) {
+            return flagsBEM.buildBlock(tag, elements, attributes, "flag");
         }
     }
 });
