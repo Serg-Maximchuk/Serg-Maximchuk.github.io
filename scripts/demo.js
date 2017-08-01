@@ -584,5 +584,93 @@ Imcms.require(
             $addRoleContainer = addRoleContainerBEM.buildBlock("<div>", [{"access-role": $addRoleInnerBlock}])
         ;
         $("#add-role-example").append($addRoleContainer);
+
+        // page info appearance tab
+
+        var pageInfoContainerBEM = new BEM({
+                block: "imcms-form",
+                elements: {
+                    "field": "imcms-field"
+                }
+            }),
+            pageInfoInnerStructureBEM = new BEM({
+                block: "imcms-field",
+                elements: {
+                    "flags": "imcms-flags",
+                    "checkboxes": "imcms-checkboxes",
+                    "text-box": "imcms-text-box",
+                    "text-area": "imcms-text-area",
+                    "choose-image": "imcms-choose-image",
+                    "select": "imcms-select"
+                }
+            })
+        ;
+
+        var $pageInfoFlags = componentsBuilder.flags.flagsContainer("<div>", [
+                componentsBuilder.flags.eng("<div>", true),
+                componentsBuilder.flags.swe("<div>")
+            ]),
+            $pageInfoFlagsContainer = pageInfoInnerStructureBEM.buildBlock("<div>", [{"flags": $pageInfoFlags}]),
+            $engCheckbox = componentsBuilder.checkboxes.checkbox("<div>", {
+                name: "english",
+                text: "English",
+                checked: "checked"
+            }),
+            $engCheckboxWrapper = componentsBuilder.checkboxes.checkboxContainer("<div>", [$engCheckbox]),
+            $engCheckboxContainer = pageInfoInnerStructureBEM.buildBlock("<div>", [{"checkboxes": $engCheckboxWrapper}]),
+            $pageTitle = componentsBuilder.texts.textBox("<div>", {
+                name: "title",
+                text: "Title",
+                placeholder: "Start page"
+            }),
+            $pageTitleContainer = pageInfoInnerStructureBEM.buildBlock("<div>", [{"text-box": $pageTitle}]),
+            $menuText = componentsBuilder.texts.textArea("<div>", {
+                text: "Menu text",
+                name: "menu-text"
+            }),
+            $menuTextContainer = pageInfoInnerStructureBEM.buildBlock("<div>", [{"text-area": $menuText}]),
+            $linkToImage = componentsBuilder.chooseImage.container("<div>", {
+                id: "path-to-image",
+                name: "image",
+                placeholder: "Image path",
+                "label-text": "Link to image",
+                "button-text": "choose..."
+            }),
+            $linkToImageContainer = pageInfoInnerStructureBEM.buildBlock("<div>", [{"choose-image": $linkToImage}]),
+            $showIn = componentsBuilder.selects.select("<div>", {
+                id: "show-in",
+                "class": "selects-example-class",
+                text: "Show in",
+                name: "show-in"
+            }, [{
+                text: "Same frame",
+                "data-value": "_self"
+            }, {
+                text: "New window",
+                "data-value": "_blank"
+            }, {
+                text: "Replace all",
+                "data-value": "_top"
+            }]),
+            $showInContainer = pageInfoInnerStructureBEM.buildBlock("<div>", [{"select": $showIn}]),
+            $documentAlias = componentsBuilder.texts.textBox("<div>", {
+                name: "alias",
+                text: "Document Alias",
+                placeholder: "alias-example"
+            }),
+            $documentAliasContainer = pageInfoInnerStructureBEM.buildBlock("<div>", [{"text-box": $documentAlias}]),
+            $pageInfoContainer = pageInfoContainerBEM.buildBlock("<div>", [
+                    {"field": $pageInfoFlagsContainer},
+                    {"field": $engCheckboxContainer},
+                    {"field": $pageTitleContainer},
+                    {"field": $menuTextContainer},
+                    {"field": $linkToImageContainer},
+                    {"field": $showInContainer},
+                    {"field": $documentAliasContainer}
+                ],
+                {"data-window-id": "1"}
+            )
+        ;
+        $("#page-info-appearance-example").append($pageInfoContainer);
     }
 );
