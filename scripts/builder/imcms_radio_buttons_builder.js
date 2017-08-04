@@ -3,8 +3,8 @@
  * 25.07.17.
  */
 Imcms.define("imcms-radio-buttons-builder",
-    ["imcms-bem-builder", "imcms-primitives-builder"],
-    function (bemBuilder, primitives) {
+    ["imcms-bem-builder", "imcms-primitives-builder", "imcms-uuid-generator"],
+    function (bemBuilder, primitives, uuidGenerator) {
         var radioBEM = new bemBuilder({
                 block: "imcms-radio",
                 elements: {}
@@ -19,18 +19,19 @@ Imcms.define("imcms-radio-buttons-builder",
 
         return {
             radio: function (tag, attributes) {
-                var $input = primitives.imcmsInputRadio({
-                    name: attributes.name,
-                    id: attributes.id,
-                    value: attributes.value
-                });
+                var id = attributes.id || uuidGenerator.generateUUID(),
+                    $input = primitives.imcmsInputRadio({
+                        name: attributes.name,
+                        id: id,
+                        value: attributes.value
+                    });
 
                 if (attributes.checked) {
                     $input.prop("checked", "checked");
                 }
 
                 var $label = primitives.imcmsLabelFromObject({
-                    "for": attributes.id,
+                    "for": id,
                     text: attributes.text,
                     click: attributes.click
                 });
