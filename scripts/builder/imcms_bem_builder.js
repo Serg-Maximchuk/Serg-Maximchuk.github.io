@@ -16,13 +16,17 @@ Imcms.define("imcms-bem-builder", ["jquery"], function ($) {
     }
 
     function getElementClassWithModifiers(elementClass, modifiersArr) {
+        return elementClass + getModifiersClass(elementClass, modifiersArr);
+    }
+
+    function getModifiersClass(baseClass, modifiersArr) {
         var modifiers = "";
 
         (modifiersArr || []).forEach(function (modifier) {
-            modifiers += " " + elementClass + MODIFIER_SEPARATOR + modifier;
+            modifiers += " " + baseClass + MODIFIER_SEPARATOR + modifier;
         });
 
-        return elementClass + modifiers;
+        return modifiers;
     }
 
     BemBuilder.prototype = {
@@ -60,7 +64,14 @@ Imcms.define("imcms-bem-builder", ["jquery"], function ($) {
                     $element = element[elementName];
                 }
 
-                return $element.addClass(this.block + BLOCK_SEPARATOR + elementName);
+                var blockClass = this.block + BLOCK_SEPARATOR + elementName;
+
+                if (element.modifiers) {
+                    var modifiersClass = getModifiersClass(blockClass, element.modifiers);
+                    $element.addClass(modifiersClass);
+                }
+
+                return $element.addClass(blockClass);
 
             }.bind(this));
 
