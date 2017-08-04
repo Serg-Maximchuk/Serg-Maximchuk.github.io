@@ -397,9 +397,6 @@ Imcms.require(
         new DatePicker($dateTimeExample).setDate(mockDateReceivedFromServer);
         new TimePicker($dateTimeExample).setTime(mockTimeReceivedFromServer);
 
-        console.timeEnd("imCMS JS loaded");
-
-
         /////////////////////////////////////////////////////////////////////
         // page info window components                                     //
         /////////////////////////////////////////////////////////////////////
@@ -639,7 +636,6 @@ Imcms.require(
             $linkToImageContainer = pageInfoInnerStructureBEM.buildBlock("<div>", [{"choose-image": $linkToImage}]),
             $showIn = componentsBuilder.selects.select("<div>", {
                 id: "show-in",
-                "class": "selects-example-class",
                 text: "Show in",
                 name: "show-in"
             }, [{
@@ -672,5 +668,295 @@ Imcms.require(
             )
         ;
         $("#page-info-appearance-example").append($pageInfoContainer);
+
+        // page info - life cycle tab
+
+        var lifeCycleContainerBEM = new BEM({
+                block: "imcms-form",
+                elements: {
+                    "field": "imcms-field"
+                }
+            }),
+            lifeCycleInnerStructureBEM = new BEM({
+                block: "imcms-field",
+                elements: {
+                    "select": "imcms-select",
+                    "title": "imcms-title",
+                    "item": ""
+                }
+            }),
+            itemModifiers = ["float-l"]
+        ;
+
+        function onTimeNowButtonClick() {
+            console.log("%c Not implemented feature: set time.", "color: red;")
+        }
+
+        function onTimeClearButtonClick() {
+            console.log("%c Not implemented feature: clear time.", "color: red;")
+        }
+
+        var $docStatusSelect = componentsBuilder.selects.select("<div>", {
+                id: "doc-status",
+                text: "Status",
+                name: "status"
+            }, [{
+                text: "In Process",
+                "data-value": "0"
+            }, {
+                text: "Disapproved",
+                "data-value": "1"
+            }, {
+                text: "Approved",
+                "data-value": "2"
+            }]),
+            $docStatusSelectContainer = lifeCycleInnerStructureBEM.buildBlock("<div>", [{"select": $docStatusSelect}]),
+
+            // published date-time row
+
+            $publishedTitle = lifeCycleInnerStructureBEM.buildElement("title", "<div>", {text: "Published"}),
+            $publishDate = componentsBuilder.dateTime.datePickerCalendar({title: "Set published date"}),
+            $publishTime = componentsBuilder.dateTime.timePickerClock({title: "Set published time"}),
+
+            $setPublishTimeNowBtn = componentsBuilder.buttons.neutralButton({
+                text: "Now",
+                click: onTimeNowButtonClick
+            }),
+            $setPublishTimeNowContainer = componentsBuilder.buttons.buttonsContainer("<div>", [$setPublishTimeNowBtn]),
+
+            $setPublishDateTime = componentsBuilder.dateTime.dateTimeReadOnly({title: "Saved publish date-time"}),
+
+            $clearPublishTimeBtn = componentsBuilder.buttons.neutralButton({
+                text: "Clear",
+                click: onTimeClearButtonClick
+            }),
+            $clearPublishTimeContainer = componentsBuilder.buttons.buttonsContainer("<div>", [$clearPublishTimeBtn]),
+
+            $publishedDateTimeContainer = lifeCycleInnerStructureBEM.buildBlock("<div>", [
+                {"title": $publishedTitle},
+                {
+                    "item": $publishDate,
+                    modifiers: itemModifiers
+                },
+                {
+                    "item": $publishTime,
+                    modifiers: itemModifiers
+                },
+                {
+                    "item": $setPublishTimeNowContainer,
+                    modifiers: itemModifiers
+                },
+                {
+                    "item": $setPublishDateTime,
+                    modifiers: itemModifiers
+                },
+                {
+                    "item": $clearPublishTimeContainer,
+                    modifiers: itemModifiers
+                }
+            ]),
+
+            // archived date-time row
+
+            $archivedTitle = lifeCycleInnerStructureBEM.buildElement("title", "<div>", {text: "Archived"}),
+            $archivedDate = componentsBuilder.dateTime.datePickerCalendar({title: "Set archived date"}),
+            $archivedTime = componentsBuilder.dateTime.timePickerClock({title: "Set archived time"}),
+
+            $setArchivedTimeNowBtn = componentsBuilder.buttons.neutralButton({
+                text: "Now",
+                click: onTimeNowButtonClick
+            }),
+            $setArchivedTimeNowContainer = componentsBuilder.buttons.buttonsContainer("<div>", [$setArchivedTimeNowBtn]),
+
+            $setArchivedDateTime = componentsBuilder.dateTime.dateTimeReadOnly({title: "Saved archived date-time"}),
+
+            $clearArchivedTimeBtn = componentsBuilder.buttons.neutralButton({
+                text: "Clear",
+                click: onTimeClearButtonClick
+            }),
+            $clearArchivedTimeContainer = componentsBuilder.buttons.buttonsContainer("<div>", [$clearArchivedTimeBtn]),
+
+            $archivedDateTimeContainer = lifeCycleInnerStructureBEM.buildBlock("<div>", [
+                {"title": $archivedTitle},
+                {
+                    "item": $archivedDate,
+                    modifiers: itemModifiers
+                },
+                {
+                    "item": $archivedTime,
+                    modifiers: itemModifiers
+                },
+                {
+                    "item": $setArchivedTimeNowContainer,
+                    modifiers: itemModifiers
+                },
+                {
+                    "item": $setArchivedDateTime,
+                    modifiers: itemModifiers
+                },
+                {
+                    "item": $clearArchivedTimeContainer,
+                    modifiers: itemModifiers
+                }
+            ]),
+
+            // publication date-time row
+
+            $publishEndTitle = lifeCycleInnerStructureBEM.buildElement("title", "<div>", {text: "Publication end"}),
+            $publishEndDate = componentsBuilder.dateTime.datePickerCalendar({title: "Set publication end date"}),
+            $publishEndTime = componentsBuilder.dateTime.timePickerClock({title: "Set publication end time"}),
+
+            $setPublishEndTimeNowBtn = componentsBuilder.buttons.neutralButton({
+                text: "Now",
+                click: onTimeNowButtonClick
+            }),
+            $setPublishEndTimeNowContainer = componentsBuilder.buttons.buttonsContainer("<div>", [$setPublishEndTimeNowBtn]),
+
+            $setPublishEndDateTime = componentsBuilder.dateTime.dateTimeReadOnly({
+                title: "Saved publication end date-time"
+            }),
+
+            $clearPublishEndTimeBtn = componentsBuilder.buttons.neutralButton({
+                text: "Clear",
+                click: onTimeClearButtonClick
+            }),
+            $clearPublishEndTimeContainer = componentsBuilder.buttons.buttonsContainer("<div>", [$clearPublishEndTimeBtn]),
+
+            $publishEndDateTimeContainer = lifeCycleInnerStructureBEM.buildBlock("<div>", [
+                {"title": $publishEndTitle},
+                {
+                    "item": $publishEndDate,
+                    modifiers: itemModifiers
+                },
+                {
+                    "item": $publishEndTime,
+                    modifiers: itemModifiers
+                },
+                {
+                    "item": $setPublishEndTimeNowContainer,
+                    modifiers: itemModifiers
+                },
+                {
+                    "item": $setPublishEndDateTime,
+                    modifiers: itemModifiers
+                },
+                {
+                    "item": $clearPublishEndTimeContainer,
+                    modifiers: itemModifiers
+                }
+            ]),
+
+            // publisher select row
+
+            $publisherSelect = componentsBuilder.selects.select("<div>", {
+                id: "doc-publisher",
+                text: "Publisher",
+                name: "publisher"
+            }, [{
+                text: "Admin",
+                "data-value": "0"
+            }, {
+                text: "User1",
+                "data-value": "1"
+            }, {
+                text: "User2",
+                "data-value": "2"
+            }]),
+            $publisherSelectContainer = lifeCycleInnerStructureBEM.buildBlock("<div>", [{"select": $publisherSelect}]),
+
+            // languages row
+
+            $languagesTitle = lifeCycleInnerStructureBEM.buildElement("title", "<div>", {
+                text: "If requested language is missing:"
+            }),
+            $showDefaultLang = componentsBuilder.radios.radio("<div>", {
+                text: "Show in default language if enabled",
+                name: "langSetting",
+                value: "SHOW_DEFAULT",
+                checked: "checked"
+            }),
+            $doNotShow = componentsBuilder.radios.radio("<div>", {
+                text: "Don't show at all",
+                name: "langSetting",
+                value: "DO_NOT_SHOW"
+            }),
+            $languagesContainer = lifeCycleInnerStructureBEM.buildBlock("<div>", [
+                {"item": $languagesTitle},
+                {"item": $showDefaultLang},
+                {"item": $doNotShow}
+            ]),
+
+            // current version row
+
+            $currentVersionRowTitle = lifeCycleInnerStructureBEM.buildElement("title", "<div>", {
+                text: "Current version:"
+            }),
+            $currentVersionNumber = componentsBuilder.texts.textInput({
+                id: "document-version",
+                readonly: "readonly",
+                value: "31"
+            }),
+            $docVersionSaveDateTime = componentsBuilder.dateTime.dateTimeReadOnly(),
+            $docVersionContainer = lifeCycleInnerStructureBEM.buildBlock("<div>", [
+                {"title": $currentVersionRowTitle},
+                {
+                    "item": $currentVersionNumber,
+                    modifiers: itemModifiers
+                },
+                {
+                    "item": $docVersionSaveDateTime,
+                    modifiers: itemModifiers
+                }
+            ]),
+
+            // doc versions info row
+
+            $offlineVersionInfo = componentsBuilder.texts.info("<div>", "This offline version has changes."),
+            $savingVersionInfo = componentsBuilder.texts.info("<div>",
+                "Please press \"Save and publish this version\" to publish as: version 32.", {
+                    id: "save-as-new-version-message"
+                }),
+            $docVersionsInfoContainer = lifeCycleInnerStructureBEM.buildBlock("<div>", [
+                {"item": $offlineVersionInfo},
+                {"item": $savingVersionInfo}
+            ]),
+
+            $lifeCycleContainer = lifeCycleContainerBEM.buildBlock("<div>", [
+                    {"field": $docStatusSelectContainer},
+                    {"field": $publishedDateTimeContainer},
+                    {"field": $archivedDateTimeContainer},
+                    {"field": $publishEndDateTimeContainer},
+                    {"field": $publisherSelectContainer},
+                    {"field": $languagesContainer},
+                    {"field": $docVersionContainer},
+                    {"field": $docVersionsInfoContainer}
+                ],
+                {"data-window-id": "2"}
+            )
+        ;
+        new DatePicker($publishDate).setDate(mockDateReceivedFromServer);
+        new TimePicker($publishTime).setTime(mockTimeReceivedFromServer);
+
+        new DatePicker($setPublishDateTime).setDate(mockDateReceivedFromServer);
+        new TimePicker($setPublishDateTime).setTime(mockTimeReceivedFromServer);
+
+        new DatePicker($archivedDate).setDate(mockDateReceivedFromServer);
+        new TimePicker($archivedTime).setTime(mockTimeReceivedFromServer);
+
+        new DatePicker($setArchivedDateTime).setDate(mockDateReceivedFromServer);
+        new TimePicker($setArchivedDateTime).setTime(mockTimeReceivedFromServer);
+
+        new DatePicker($publishEndDate).setDate(mockDateReceivedFromServer);
+        new TimePicker($publishEndTime).setTime(mockTimeReceivedFromServer);
+
+        new DatePicker($setPublishEndDateTime).setDate(mockDateReceivedFromServer);
+        new TimePicker($setPublishEndDateTime).setTime(mockTimeReceivedFromServer);
+
+        new DatePicker($docVersionSaveDateTime).setDate(mockDateReceivedFromServer);
+        new TimePicker($docVersionSaveDateTime).setTime(mockTimeReceivedFromServer);
+
+        $("#page-info-life-cycle-example").append($lifeCycleContainer);
+
+        console.timeEnd("imCMS JS loaded");
     }
 );
