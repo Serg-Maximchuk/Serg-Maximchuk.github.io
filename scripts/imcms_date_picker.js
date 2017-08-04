@@ -1,8 +1,13 @@
 Imcms.define("imcms-date-picker",
     ["imcms", "imcms-calendar", "jquery", "jquery-mask"],
     function (imcms, imcmsCalendar, $) {
+        var DATE_PICKER_CLASS = "imcms-date-picker",
+            DATE_PICKER_CLASS_SELECTOR = ".imcms-date-picker"
+
+        ;
+
         function openCalendar() {
-            imcmsCalendar.init($(this).parents(".imcms-date-picker"));
+            imcmsCalendar.init($(this).parents(DATE_PICKER_CLASS_SELECTOR));
         }
 
         function closeCalendar(e) {
@@ -15,7 +20,7 @@ Imcms.define("imcms-date-picker",
                 return;
             }
 
-            $(".imcms-date-picker").removeClass("imcms-date-picker--active");
+            $(DATE_PICKER_CLASS_SELECTOR).removeClass("imcms-date-picker--active");
             e.stopPropagation();
         }
 
@@ -58,7 +63,7 @@ Imcms.define("imcms-date-picker",
             }
 
             if (isDateValid(year, month, day) || currentDateInput.val() === "--") {
-                var $calendar = currentDateInput.parents(".imcms-date-picker")
+                var $calendar = currentDateInput.parents(DATE_PICKER_CLASS_SELECTOR)
                     .find(".imcms-calendar");
 
                 if ($calendar.length) {
@@ -72,7 +77,7 @@ Imcms.define("imcms-date-picker",
 
         function rebuildCalendar() {
             var currentDateInput = $(this),
-                $calendar = currentDateInput.parents(".imcms-date-picker").find(".imcms-calendar")
+                $calendar = currentDateInput.parents(DATE_PICKER_CLASS_SELECTOR).find(".imcms-calendar")
             ;
 
             if (!$calendar.length) {
@@ -100,7 +105,9 @@ Imcms.define("imcms-date-picker",
         $(document).click(closeCalendar);
 
         var DatePicker = function ($dateBoxContainer) {
-            this.datePicker = $dateBoxContainer.find(".imcms-date-picker");
+            this.datePicker = $dateBoxContainer.hasClass(DATE_PICKER_CLASS)
+                ? $dateBoxContainer
+                : $dateBoxContainer.find(DATE_PICKER_CLASS_SELECTOR);
 
             if (this.datePicker.find(".imcms-calendar").length) {
                 this.datePicker.find(".imcms-date-picker__current-date")

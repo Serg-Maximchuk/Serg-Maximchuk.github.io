@@ -1,4 +1,7 @@
 Imcms.define("imcms-time-picker", ["imcms", "jquery"], function (imcms, $) {
+    var TIME_PICKER_CLASS = "imcms-time-picker",
+        TIME_PICKER_CLASS_SELECTOR = ".imcms-time-picker"
+    ;
 
     function getCurrentTime() {
         var currentDate = new Date(),
@@ -18,7 +21,7 @@ Imcms.define("imcms-time-picker", ["imcms", "jquery"], function (imcms, $) {
 
     function openPicker() {
         var curTime = $(this),
-            timePicker = curTime.parents(".imcms-time-picker"),
+            timePicker = curTime.parents(TIME_PICKER_CLASS_SELECTOR),
             hour = timePicker.find(".imcms-time-picker__hour"),
             minute = timePicker.find(".imcms-time-picker__minute"),
             picker = timePicker.find(".imcms-time-picker__time"),
@@ -39,29 +42,33 @@ Imcms.define("imcms-time-picker", ["imcms", "jquery"], function (imcms, $) {
             curMinute = parseInt(currentTimeInputVal[1]);
         }
 
-        if (!timePicker.hasClass("imcms-time-picker--active") && timePicker.find(".imcms-time-picker__time").length !== 0) {
+        if (!timePicker.hasClass("imcms-time-picker--active")
+            && timePicker.find(".imcms-time-picker__time").length !== 0
+        ) {
             timePicker.addClass("imcms-time-picker--active")
         }
 
         hour.each(function () {
-            $(this).click(setSelectTime);
-            $(this).html(curHour);
-            if ($(this).hasClass("imcms-time-picker__hour--choose") && $(this).html() !== currentTimeInputVal[0]) {
-                $(this).removeClass("imcms-time-picker__hour--choose");
+            var $this = $(this);
+            $this.click(setSelectTime);
+            $this.html(curHour);
+            if ($this.hasClass("imcms-time-picker__hour--choose") && $this.html() !== currentTimeInputVal[0]) {
+                $this.removeClass("imcms-time-picker__hour--choose");
             }
-            if ($(this).html() === currentTimeInputVal[0]) {
-                $(this).addClass("imcms-time-picker__hour--choose");
+            if ($this.html() === currentTimeInputVal[0]) {
+                $this.addClass("imcms-time-picker__hour--choose");
             }
             curHour++
         });
         minute.each(function () {
-            $(this).click(setSelectTime);
-            $(this).html(curMinute);
-            if ($(this).hasClass("imcms-time-picker__minute--choose") && $(this).html() !== currentTimeInputVal[1]) {
-                $(this).removeClass("imcms-time-picker__minute--choose");
+            var $this = $(this);
+            $this.click(setSelectTime);
+            $this.html(curMinute);
+            if ($this.hasClass("imcms-time-picker__minute--choose") && $this.html() !== currentTimeInputVal[1]) {
+                $this.removeClass("imcms-time-picker__minute--choose");
             }
-            if ($(this).html() === currentTimeInputVal[1]) {
-                $(this).addClass("imcms-time-picker__minute--choose");
+            if ($this.html() === currentTimeInputVal[1]) {
+                $this.addClass("imcms-time-picker__minute--choose");
             }
             curMinute++;
         });
@@ -77,14 +84,14 @@ Imcms.define("imcms-time-picker", ["imcms", "jquery"], function (imcms, $) {
             return;
         }
 
-        $(".imcms-time-picker").removeClass("imcms-time-picker--active");
+        $(TIME_PICKER_CLASS_SELECTOR).removeClass("imcms-time-picker--active");
         e.stopPropagation();
     }
 
     function chooseTime(event) {
         var $btn = $(this),
             hours, hour, minutes, minute, curHour, curMinute,
-            timePicker = $btn.parents(".imcms-time-picker"),
+            timePicker = $btn.parents(TIME_PICKER_CLASS_SELECTOR),
             currentTimeInput = timePicker.find(".imcms-current-time__input"),
             currentTimeInputVal = currentTimeInput.val().split(":")
         ;
@@ -156,7 +163,7 @@ Imcms.define("imcms-time-picker", ["imcms", "jquery"], function (imcms, $) {
     function setSelectTime() {
         var $this = $(this),
             hour, minute,
-            currentTimeInput = $this.parents(".imcms-time-picker").find(".imcms-current-time__input"),
+            currentTimeInput = $this.parents(TIME_PICKER_CLASS_SELECTOR).find(".imcms-current-time__input"),
             currentTimeInputVal = currentTimeInput.val().split(":")
         ;
 
@@ -204,7 +211,10 @@ Imcms.define("imcms-time-picker", ["imcms", "jquery"], function (imcms, $) {
     }
 
     var TimePicker = function ($timePickerContainer) {
-        this.$timePicker = $timePickerContainer.find(".imcms-time-picker");
+        this.$timePicker = $timePickerContainer.hasClass(TIME_PICKER_CLASS)
+            ? $timePickerContainer
+            : $timePickerContainer.find(TIME_PICKER_CLASS_SELECTOR);
+
         this.$timePicker.find(".imcms-time-picker__current-time")
             .click(openPicker)
             .end()
