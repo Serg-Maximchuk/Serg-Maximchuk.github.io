@@ -62,7 +62,9 @@ Imcms.define("imcms-texts-builder",
 
         var textBEM = new BEM({
             block: "imcms-text-box",
-            elements: {}
+            elements: {
+                "input": "imcms-input"
+            }
         });
 
         var textAreaBEM = new BEM({
@@ -109,6 +111,9 @@ Imcms.define("imcms-texts-builder",
         }
 
         return {
+            textInput: function (attributes) {
+                return textBEM.makeBlockElement("input", primitives.imcmsInputText(attributes));
+            },
             textBox: function (tag, attributes) {
                 return generateTextFromBEM(attributes, textBEM, primitives.imcmsInputText);
             },
