@@ -88,11 +88,41 @@ Imcms.define("imcms-page-info-builder",
         }
 
         function buildPageInfoPanels() {
-            return $("<div>"); // todo: finish implementing
+            return pageInfoBEM.buildElement("right-side", "<div>");
+            // todo: finish implementing
         }
 
         function buildPageInfoFooter() {
-            return $("<div>"); // todo: finish implementing
+            function closePageInfo() {
+                $(this).parents(".imcms-pop-up-modal").css({"display": "none"});
+                $(".modal").css({"display": "none"});
+            }
+
+            var $saveBtn = componentsBuilder.buttons.positiveButton({
+                text: "ok",
+                click: function () {
+                    // todo: save things
+                    closePageInfo.call(this);
+                }
+            });
+
+            var $cancelBtn = componentsBuilder.buttons.negativeButton({
+                text: "cancel",
+                click: function () {
+                    // todo: cancel things
+                    closePageInfo.call(this);
+                }
+            });
+
+            var $saveAndPublishBtn = componentsBuilder.buttons.saveButton({
+                text: "save and publish this version",
+                click: function () {
+                    // todo: save and publish
+                    closePageInfo.call(this);
+                }
+            });
+
+            return pageInfoBEM.buildElement("footer", "<div>").append($saveAndPublishBtn, $cancelBtn, $saveBtn);
         }
 
         return {
