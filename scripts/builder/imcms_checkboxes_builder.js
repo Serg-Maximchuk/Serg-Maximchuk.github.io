@@ -20,7 +20,7 @@ Imcms.define("imcms-checkboxes-builder",
         ;
 
         return {
-            checkbox: function (tag, attributes) {
+            imcmsCheckbox: function (tag, attributes) {
                 var id = attributes.id || uuidGenerator.generateUUID();
                 var $input = checkboxBEM.buildElement("checkbox", "<input>", {
                     type: "checkbox",

@@ -18,7 +18,7 @@ Imcms.define("imcms-radio-buttons-builder",
         ;
 
         return {
-            radio: function (tag, attributes) {
+            imcmsRadio: function (tag, attributes) {
                 var id = attributes.id || uuidGenerator.generateUUID(),
                     $input = primitives.imcmsInputRadio({
                         name: attributes.name,

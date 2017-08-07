@@ -88,7 +88,7 @@ Imcms.require(
 
         // checkboxes
 
-        var $checkbox1 = componentsBuilder.checkboxes.checkbox("<div>", {
+        var $checkbox1 = componentsBuilder.checkboxes.imcmsCheckbox("<div>", {
             id: "checkbox01",
             name: "checkbox1",
             text: "item 1",
@@ -98,7 +98,7 @@ Imcms.require(
                 }.bind(this));
             }
         });
-        var $checkbox2 = componentsBuilder.checkboxes.checkbox("<div>", {
+        var $checkbox2 = componentsBuilder.checkboxes.imcmsCheckbox("<div>", {
             id: "checkbox02",
             name: "checkbox2",
             checked: "checked",
@@ -120,7 +120,7 @@ Imcms.require(
 
         // radio
 
-        var $radio1 = componentsBuilder.radios.radio("<div>", {
+        var $radio1 = componentsBuilder.radios.imcmsRadio("<div>", {
             id: "radio1",
             name: "radio-name",
             text: "item 1",
@@ -129,7 +129,7 @@ Imcms.require(
             }
         });
 
-        var $radio2 = componentsBuilder.radios.radio("<div>", {
+        var $radio2 = componentsBuilder.radios.imcmsRadio("<div>", {
             id: "radio2",
             name: "radio-name",
             checked: "checked",
@@ -149,7 +149,7 @@ Imcms.require(
 
         // selects
 
-        var $select = componentsBuilder.selects.select("<div>", {
+        var $select = componentsBuilder.selects.imcmsSelect("<div>", {
             id: "select1",
             "class": "selects-example-class",
             text: "Select"
@@ -307,9 +307,9 @@ Imcms.require(
 
         // typography
 
-        var $errorText = componentsBuilder.texts.error("<span>", "Lorem ipsum dolor. "),
-            $infoText = componentsBuilder.texts.info("<span>", "Lorem ipsum dolor. "),
-            $titleText = componentsBuilder.texts.title("<span>", "Lorem ipsum dolor. ")
+        var $errorText = componentsBuilder.texts.errorText("<span>", "Lorem ipsum dolor. "),
+            $infoText = componentsBuilder.texts.infoText("<span>", "Lorem ipsum dolor. "),
+            $titleText = componentsBuilder.texts.titleText("<span>", "Lorem ipsum dolor. ")
         ;
 
         $("#typography-example").append($errorText, $infoText, $titleText);
@@ -430,20 +430,20 @@ Imcms.require(
             ]),
             $userAdminTitle = rolesBEM.buildBlockElement("column-title", "<div>", {text: "Useradmin"}),
             userAdminRadioName = "useradmin0",
-            $userAdminView = rolesBEM.makeBlockElement("column", componentsBuilder.radios.radio("<div>", {
+            $userAdminView = rolesBEM.makeBlockElement("column", componentsBuilder.radios.imcmsRadio("<div>", {
                 id: "view01",
                 name: userAdminRadioName,
                 checked: "checked"
             })),
-            $userAdminEdit = rolesBEM.makeBlockElement("column", componentsBuilder.radios.radio("<div>", {
+            $userAdminEdit = rolesBEM.makeBlockElement("column", componentsBuilder.radios.imcmsRadio("<div>", {
                 id: "edit01",
                 name: userAdminRadioName
             })),
-            $userAdminRestricted1 = rolesBEM.makeBlockElement("column", componentsBuilder.radios.radio("<div>", {
+            $userAdminRestricted1 = rolesBEM.makeBlockElement("column", componentsBuilder.radios.imcmsRadio("<div>", {
                 id: "restricted011",
                 name: userAdminRadioName
             })),
-            $userAdminRestricted2 = rolesBEM.makeBlockElement("column", componentsBuilder.radios.radio("<div>", {
+            $userAdminRestricted2 = rolesBEM.makeBlockElement("column", componentsBuilder.radios.imcmsRadio("<div>", {
                 id: "restricted021",
                 name: userAdminRadioName
             })),
@@ -462,20 +462,20 @@ Imcms.require(
             ]),
             $userTitle = rolesBEM.buildBlockElement("column-title", "<div>", {text: "Users"}),
             usersRadioName = "users0",
-            $userView = rolesBEM.makeBlockElement("column", componentsBuilder.radios.radio("<div>", {
+            $userView = rolesBEM.makeBlockElement("column", componentsBuilder.radios.imcmsRadio("<div>", {
                 id: "view02",
                 name: usersRadioName,
                 checked: "checked"
             })),
-            $userEdit = rolesBEM.makeBlockElement("column", componentsBuilder.radios.radio("<div>", {
+            $userEdit = rolesBEM.makeBlockElement("column", componentsBuilder.radios.imcmsRadio("<div>", {
                 id: "edit02",
                 name: usersRadioName
             })),
-            $userRestricted1 = rolesBEM.makeBlockElement("column", componentsBuilder.radios.radio("<div>", {
+            $userRestricted1 = rolesBEM.makeBlockElement("column", componentsBuilder.radios.imcmsRadio("<div>", {
                 id: "restricted012",
                 name: usersRadioName
             })),
-            $userRestricted2 = rolesBEM.makeBlockElement("column", componentsBuilder.radios.radio("<div>", {
+            $userRestricted2 = rolesBEM.makeBlockElement("column", componentsBuilder.radios.imcmsRadio("<div>", {
                 id: "restricted022",
                 name: usersRadioName
             })),
@@ -494,20 +494,20 @@ Imcms.require(
             ]),
             $testRoleTitle = rolesBEM.buildBlockElement("column-title", "<div>", {text: "Test role"}),
             testRoleRadioName = "testrole0",
-            $testRoleView = rolesBEM.makeBlockElement("column", componentsBuilder.radios.radio("<div>", {
+            $testRoleView = rolesBEM.makeBlockElement("column", componentsBuilder.radios.imcmsRadio("<div>", {
                 id: "view03",
                 name: testRoleRadioName,
                 checked: "checked"
             })),
-            $testRoleEdit = rolesBEM.makeBlockElement("column", componentsBuilder.radios.radio("<div>", {
+            $testRoleEdit = rolesBEM.makeBlockElement("column", componentsBuilder.radios.imcmsRadio("<div>", {
                 id: "edit03",
                 name: testRoleRadioName
             })),
-            $testRoleRestricted1 = rolesBEM.makeBlockElement("column", componentsBuilder.radios.radio("<div>", {
+            $testRoleRestricted1 = rolesBEM.makeBlockElement("column", componentsBuilder.radios.imcmsRadio("<div>", {
                 id: "restricted013",
                 name: testRoleRadioName
             })),
-            $testRoleRestricted2 = rolesBEM.makeBlockElement("column", componentsBuilder.radios.radio("<div>", {
+            $testRoleRestricted2 = rolesBEM.makeBlockElement("column", componentsBuilder.radios.imcmsRadio("<div>", {
                 id: "restricted023",
                 name: testRoleRadioName
             })),
@@ -553,7 +553,7 @@ Imcms.require(
             })
         ;
 
-        var $addRoleSelect = componentsBuilder.selects.select("<div>", {
+        var $addRoleSelect = componentsBuilder.selects.imcmsSelect("<div>", {
                 id: "select3"
             }, [{
                 text: "role1",
@@ -608,7 +608,7 @@ Imcms.require(
                 componentsBuilder.flags.swe("<div>")
             ]),
             $pageInfoFlagsContainer = pageInfoInnerStructureBEM.buildBlock("<div>", [{"flags": $pageInfoFlags}]),
-            $engCheckbox = componentsBuilder.checkboxes.checkbox("<div>", {
+            $engCheckbox = componentsBuilder.checkboxes.imcmsCheckbox("<div>", {
                 name: "english",
                 text: "English",
                 checked: "checked"
@@ -634,7 +634,7 @@ Imcms.require(
                 "button-text": "choose..."
             }),
             $linkToImageContainer = pageInfoInnerStructureBEM.buildBlock("<div>", [{"choose-image": $linkToImage}]),
-            $showIn = componentsBuilder.selects.select("<div>", {
+            $showIn = componentsBuilder.selects.imcmsSelect("<div>", {
                 id: "show-in",
                 text: "Show in",
                 name: "show-in"
@@ -696,7 +696,7 @@ Imcms.require(
             console.log("%c Not implemented feature: clear time.", "color: red;")
         }
 
-        var $docStatusSelect = componentsBuilder.selects.select("<div>", {
+        var $docStatusSelect = componentsBuilder.selects.imcmsSelect("<div>", {
                 id: "doc-status",
                 text: "Status",
                 name: "status"
@@ -848,7 +848,7 @@ Imcms.require(
 
             // publisher select row
 
-            $publisherSelect = componentsBuilder.selects.select("<div>", {
+            $publisherSelect = componentsBuilder.selects.imcmsSelect("<div>", {
                 id: "doc-publisher",
                 text: "Publisher",
                 name: "publisher"
@@ -869,13 +869,13 @@ Imcms.require(
             $languagesTitle = lifeCycleInnerStructureBEM.buildElement("title", "<div>", {
                 text: "If requested language is missing:"
             }),
-            $showDefaultLang = componentsBuilder.radios.radio("<div>", {
+            $showDefaultLang = componentsBuilder.radios.imcmsRadio("<div>", {
                 text: "Show in default language if enabled",
                 name: "langSetting",
                 value: "SHOW_DEFAULT",
                 checked: "checked"
             }),
-            $doNotShow = componentsBuilder.radios.radio("<div>", {
+            $doNotShow = componentsBuilder.radios.imcmsRadio("<div>", {
                 text: "Don't show at all",
                 name: "langSetting",
                 value: "DO_NOT_SHOW"
@@ -911,8 +911,8 @@ Imcms.require(
 
             // doc versions info row
 
-            $offlineVersionInfo = componentsBuilder.texts.info("<div>", "This offline version has changes."),
-            $savingVersionInfo = componentsBuilder.texts.info("<div>",
+            $offlineVersionInfo = componentsBuilder.texts.infoText("<div>", "This offline version has changes."),
+            $savingVersionInfo = componentsBuilder.texts.infoText("<div>",
                 "Please press \"Save and publish this version\" to publish as: version 32.", {
                     id: "save-as-new-version-message"
                 }),

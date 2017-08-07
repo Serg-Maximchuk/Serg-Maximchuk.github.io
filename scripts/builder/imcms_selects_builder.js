@@ -64,7 +64,7 @@ Imcms.define("imcms-selects-builder",
         }
 
         return {
-            select: function (tag, attributes, options) {
+            imcmsSelect: function (tag, attributes, options) {
                 var $itemsArr = options.map(function (option) {
                         return dropDownListBEM.buildBlockElement("item", "<div>", option);
                     }),
