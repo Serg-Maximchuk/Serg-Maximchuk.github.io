@@ -1,5 +1,6 @@
 console.time("imCMS JS loaded");
 Imcms = {
+    version: "imCMS 6.0.0-alpha109-SNAPSHOT", // todo: receive current version from server
     loadedDependencies: {},
     dependencyTree: {
         imcms: []
@@ -57,7 +58,9 @@ Imcms = {
             "imcms-choose-image-builder": "builder/imcms_choose_image_builder.js",
             "imcms-keywords-builder": "builder/imcms_keywords_builder.js",
             "imcms-primitives-builder": "builder/imcms_primitives_builder.js",
-            "imcms-date-time-builder": "builder/imcms_date_time_builder.js"
+            "imcms-date-time-builder": "builder/imcms_date_time_builder.js",
+            "imcms-admin-panel-builder": "builder/imcms_admin_panel_builder.js",
+            "imcms-page-info-builder": "builder/imcms_page_info_builder.js"
         }
     }
 };
