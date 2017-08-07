@@ -1,4 +1,4 @@
-.imcms-tab {
+.imcms-tabs__tab {
     border-top: 1px solid transparent;
     border-bottom: 1px solid transparent;
     cursor: pointer;
@@ -9,11 +9,11 @@
 
 }
 
-.imcms-tab:hover {
+.imcms-tabs__tab:hover {
     border-color: #ebedef;
 }
 
-.imcms-tab:hover:after {
+.imcms-tabs__tab:hover:after {
     content: "";
     background-color: #389ecf;
     display: block;
@@ -28,11 +28,11 @@
     height: calc(100% + 2px);
 }
 
-.imcms-tab--active {
+.imcms-tabs__tab--active {
     border-color: #ebedef;
 }
 
-.imcms-tab--active:after {
+.imcms-tabs__tab--active:after {
     content: "";
     background-color: #389ecf;
     display: block;
