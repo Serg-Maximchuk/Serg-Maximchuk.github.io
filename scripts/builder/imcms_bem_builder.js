@@ -4,11 +4,7 @@
  */
 Imcms.define("imcms-bem-builder", ["jquery"], function ($) {
     var MODIFIER_SEPARATOR = "--",
-        BLOCK_SEPARATOR = "__",
-        BemBuilder = function (options) {
-            this.elements = options.elements;
-            this.block = options.block;
-        }
+        BLOCK_SEPARATOR = "__"
     ;
 
     function getOriginClass(attributesObj) {
@@ -28,6 +24,11 @@ Imcms.define("imcms-bem-builder", ["jquery"], function ($) {
 
         return modifiers;
     }
+
+    var BemBuilder = function (options) {
+        this.elements = options.elements;
+        this.block = options.block;
+    };
 
     BemBuilder.prototype = {
         makeBlockElement: function (elementName, $baseElement, modifiersArr) {
@@ -58,6 +59,7 @@ Imcms.define("imcms-bem-builder", ["jquery"], function ($) {
                 if (blockNameForEach) {
                     elementName = blockNameForEach;
                     $element = element;
+
                 } else {
                     var elementKeys = Object.keys(element);
                     elementName = elementKeys[0];

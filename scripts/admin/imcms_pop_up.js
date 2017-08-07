@@ -57,7 +57,7 @@ Imcms.define("imcms-pop-up", ["jquery"], function ($) {
     return {
         init: function (currentPopUp) {
             openPopUp(currentPopUp);
-            currentPopUp && currentPopUp.find(".imcms-button--negative").click(closePopUp)
+            currentPopUp && currentPopUp.find(".imcms-button--negative").click(closePopUp);
         }
     };
 });
