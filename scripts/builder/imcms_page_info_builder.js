@@ -531,7 +531,7 @@ Imcms.define("imcms-page-info-builder",
 
         function buildPageInfoPanels() {
             var $forms = tabsData.map(function (tabData, index) {
-                return tabData.build(index);
+                return tabData.build(index).css("display", (index === 0 ? "block" : "none"));
             });
 
             return pageInfoBEM.buildElement("right-side", "<div>").append($forms);
