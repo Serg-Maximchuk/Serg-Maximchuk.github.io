@@ -60,7 +60,8 @@ Imcms = {
             "imcms-primitives-builder": "builder/imcms_primitives_builder.js",
             "imcms-date-time-builder": "builder/imcms_date_time_builder.js",
             "imcms-admin-panel-builder": "builder/imcms_admin_panel_builder.js",
-            "imcms-page-info-builder": "builder/imcms_page_info_builder.js"
+            "imcms-page-info-builder": "builder/imcms_page_info_builder.js",
+            "imcms-editors-builder": "builder/imcms_editors_builder.js"
         }
     }
 };

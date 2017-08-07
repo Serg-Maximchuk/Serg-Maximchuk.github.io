@@ -3,7 +3,7 @@
  * 07.08.17.
  */
 Imcms.define("imcms-admin-panel-builder",
-    ["imcms-bem-builder", "imcms-components-builder", "imcms-page-info-builder", "jquery"],
+    ["imcms-bem-builder", "imcms-components-builder", "imcms-editors-builder", "jquery"],
     function (BEM, componentsBuilder, pageInfoBuilder, $) {
         var adminPanelBEM = new BEM({
             block: "imcms-admin-panel",
@@ -27,7 +27,7 @@ Imcms.define("imcms-admin-panel-builder",
         }
 
         function buildPageInfoWindow() {
-            return pageInfoBuilder.buildPageInfo();
+            return pageInfoBuilder.buildPageInfo().appendTo("body");
         }
 
         function showPageInfo() {
