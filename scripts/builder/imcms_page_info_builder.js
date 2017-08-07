@@ -32,7 +32,27 @@ Imcms.define("imcms-page-info-builder",
             ]);
         }
 
+        function showPanel(index) {
+            $(".imcms-form[data-window-id=" + index + "]").css({"display": "block"});
+        }
+
         function buildPageInfoTabs() {
+            function getOnTabClick(index) {
+                return function () {
+                    $("[data-menu=pageInfo]").find(".imcms-title--active").removeClass("imcms-title--active");
+                    $(this).addClass("imcms-title--active");
+                    $(".imcms-form").css("display", "none");
+                    showPanel(index);
+                }
+            }
+
+            var pageInfoLeftSideTabsBEM = new BEM({
+                block: "imcms-left-side",
+                elements: {
+                    "tabs": "imcms-tabs"
+                }
+            });
+
             var pageInfoTabsBEM = new BEM({
                 block: "imcms-tabs",
                 elements: {
@@ -55,13 +75,16 @@ Imcms.define("imcms-page-info-builder",
                 return pageInfoTabsBEM.buildElement("tab", "<div>",
                     {
                         "data-window-id": index,
-                        text: tabName
+                        text: tabName,
+                        click: getOnTabClick(index)
                     },
                     (index === 0 ? ["active"] : [])
                 );
             });
 
-            return pageInfoTabsBEM.buildBlock("<div>", $tabs, {}, "tab");
+            var $tabsContainer = pageInfoTabsBEM.buildBlock("<div>", $tabs, {}, "tab");
+
+            return pageInfoLeftSideTabsBEM.buildBlock("<div>", [{"tabs": $tabsContainer}]);
         }
 
         function buildPageInfoPanels() {
