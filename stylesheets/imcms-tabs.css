@@ -28,11 +28,11 @@
     height: calc(100% + 2px);
 }
 
-.imcms-tabs__tab--active {
+.imcms-title--active {
     border-color: #ebedef;
 }
 
-.imcms-tabs__tab--active:after {
+.imcms-title--active:after {
     content: "";
     background-color: #389ecf;
     display: block;
