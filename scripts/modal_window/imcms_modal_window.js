@@ -1,11 +1,6 @@
 Imcms.define("imcms-modal-window", ["jquery"], function ($) {
     function createModalWindow(question) {
-        var modal, head, body,
-            footer, btnYes, btnNo,
-            layout = $("<div>", {
-                "class": "imcms-modal-layout"
-            })
-        ;
+        var modal, head, body, footer, btnYes, btnNo;
 
         modal = $("<div>", {
             "id": "imcmsModalWindow",
@@ -18,7 +13,7 @@ Imcms.define("imcms-modal-window", ["jquery"], function ($) {
                 "class": "imcms-modal-head__title imcms-title",
                 text: "Modal Window"
             })
-        }).appendTo(modal);
+        });
 
         body = $("<div>", {
             "class": "imcms-modal-window__modal-body",
@@ -26,34 +21,40 @@ Imcms.define("imcms-modal-window", ["jquery"], function ($) {
                 "class": "imcms-modal-body__text imcms-info-msg",
                 text: question
             })
-        }).appendTo(modal);
+        });
 
         footer = $("<div>", {
             "class": "imcms-modal-window__modal-footer"
-        }).appendTo(modal);
+        });
 
         btnYes = $("<button>", {
             "type": "button",
             "id": "imcmsButtonTrue",
             "class": "imcms-modal-footer__button imcms-button imcms-button--positive",
             text: "Yes"
-        }).appendTo(footer);
+        });
 
         btnNo = $("<button>", {
             "type": "button",
             "id": "imcmsButtonFalse",
             "class": "imcms-modal-footer__button imcms-button imcms-button--negative",
             text: "No"
-        }).appendTo(footer);
+        });
 
-        return [modal, layout];
+        footer.append(btnYes).append(btnNo);
+        return modal.append(head).append(body).append(footer);
+    }
+
+    function createLayout() {
+        return $("<div>", {
+            "class": "imcms-modal-layout"
+        });
     }
 
     return {
         showModalWindow: function (question, callback) {
-            var modalWindow = createModalWindow(question);
-            var modal = modalWindow[0];
-            var modalLayout = modalWindow[1];
+            var modal = createModalWindow(question);
+            var modalLayout = createLayout();
 
             $("body").append(modalLayout).append(modal);
 
