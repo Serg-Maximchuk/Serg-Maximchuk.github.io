@@ -8,8 +8,6 @@ Imcms.define("imcms-editors-builder", ["imcms-page-info-builder"], function (pag
     }
 
     return {
-        buildPageInfo: function () {
-            return buildByStrategy(pageInfoBuilder);
-        }
+        buildPageInfo: buildByStrategy.bindArgs(pageInfoBuilder)
     }
 });
