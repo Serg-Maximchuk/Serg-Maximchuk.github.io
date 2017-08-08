@@ -449,7 +449,7 @@ Imcms.define("imcms-page-info-builder",
                     name: "isSearchDisabled",
                     text: "Disable search"
                 });
-                var $checkboxField = componentsBuilder.checkboxes.checkboxContainer("<div>", [$searchDisableCheckbox]);
+                var $checkboxField = componentsBuilder.checkboxes.checkboxContainerField("<div>", [$searchDisableCheckbox]);
 
                 return buildFormBlock([$keywordsBox, $checkboxField], index);
             }
