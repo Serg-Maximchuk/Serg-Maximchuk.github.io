@@ -99,7 +99,8 @@ Imcms.define("imcms-texts-builder",
                 $input = factory({
                     id: id,
                     name: attributes.name,
-                    placeholder: attributes.placeholder
+                    placeholder: attributes.placeholder,
+                    value: attributes.value
                 }),
                 blockElements = [{"input": $input}]
             ;
