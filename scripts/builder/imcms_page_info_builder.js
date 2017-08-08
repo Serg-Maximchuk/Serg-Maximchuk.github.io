@@ -92,7 +92,6 @@ Imcms.define("imcms-page-info-builder",
                 var pageInfoInnerStructureBEM = new BEM({
                     block: "imcms-field",
                     elements: {
-                        "flags": "imcms-flags",
                         "checkboxes": "imcms-checkboxes",
                         "text-box": "imcms-text-box",
                         "text-area": "imcms-text-area",
@@ -101,18 +100,15 @@ Imcms.define("imcms-page-info-builder",
                     }
                 });
 
-                var $pageInfoFlags = componentsBuilder.flags.flagsContainer("<div>", [
-                        componentsBuilder.flags.eng("<div>", true),
-                        componentsBuilder.flags.swe("<div>")
-                    ]),
-                    $pageInfoFlagsContainer = pageInfoInnerStructureBEM.buildBlock("<div>", [{"flags": $pageInfoFlags}]),
-                    $engCheckbox = componentsBuilder.checkboxes.imcmsCheckbox("<div>", {
+                var $engCheckbox = componentsBuilder.checkboxes.imcmsCheckbox("<div>", {
                         name: "english",
                         text: "English",
                         checked: "checked"
                     }),
                     $engCheckboxWrapper = componentsBuilder.checkboxes.checkboxContainer("<div>", [$engCheckbox]),
-                    $engCheckboxContainer = pageInfoInnerStructureBEM.buildBlock("<div>", [{"checkboxes": $engCheckboxWrapper}]),
+                    $engCheckboxContainer = pageInfoInnerStructureBEM.buildBlock("<div>", [{
+                        "checkboxes": $engCheckboxWrapper
+                    }]),
                     $pageTitle = componentsBuilder.texts.textBox("<div>", {
                         name: "title",
                         text: "Title",
@@ -131,7 +127,43 @@ Imcms.define("imcms-page-info-builder",
                         "label-text": "Link to image",
                         "button-text": "choose..."
                     }),
-                    $linkToImageContainer = pageInfoInnerStructureBEM.buildBlock("<div>", [{"choose-image": $linkToImage}]),
+                    $linkToImageContainer = pageInfoInnerStructureBEM.buildBlock("<div>", [{
+                        "choose-image": $linkToImage
+                    }]),
+                    $sweCheckbox = componentsBuilder.checkboxes.imcmsCheckbox("<div>", {
+                        name: "swedish",
+                        text: "Swedish",
+                        checked: "checked"
+                    }),
+                    $sweCheckboxWrapper = componentsBuilder.checkboxes.checkboxContainer("<div>", [$sweCheckbox]),
+                    $sweCheckboxContainer = pageInfoInnerStructureBEM.buildBlock("<div>", [{
+                        "checkboxes": $sweCheckboxWrapper
+                    }]),
+                    $pageTitleSwe = componentsBuilder.texts.textBox("<div>", {
+                        name: "title",
+                        text: "Title",
+                        placeholder: "Startsida"
+                    }),
+                    $pageTitleSweContainer = pageInfoInnerStructureBEM.buildBlock("<div>", [{
+                        "text-box": $pageTitleSwe
+                    }]),
+                    $menuTextSwe = componentsBuilder.texts.textArea("<div>", {
+                        text: "Menu text",
+                        name: "menu-text"
+                    }),
+                    $menuTextSweContainer = pageInfoInnerStructureBEM.buildBlock("<div>", [{
+                        "text-area": $menuTextSwe
+                    }]),
+                    $linkToImageSwe = componentsBuilder.chooseImage.container("<div>", {
+                        id: "path-to-image-swe",
+                        name: "image",
+                        placeholder: "Image path",
+                        "label-text": "Link to image",
+                        "button-text": "choose..."
+                    }),
+                    $linkToImageSweContainer = pageInfoInnerStructureBEM.buildBlock("<div>", [{
+                        "choose-image": $linkToImageSwe
+                    }]),
                     $showIn = componentsBuilder.selects.imcmsSelect("<div>", {
                         id: "show-in",
                         text: "Show in",
@@ -156,11 +188,14 @@ Imcms.define("imcms-page-info-builder",
                 ;
 
                 var tabElements = [
-                    $pageInfoFlagsContainer,
                     $engCheckboxContainer,
                     $pageTitleContainer,
                     $menuTextContainer,
                     $linkToImageContainer,
+                    $sweCheckboxContainer,
+                    $pageTitleSweContainer,
+                    $menuTextSweContainer,
+                    $linkToImageSweContainer,
                     $showInContainer,
                     $documentAliasContainer
                 ];
