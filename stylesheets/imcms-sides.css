@@ -18,7 +18,7 @@
     display: block;
     float: left;
     overflow-y: auto;
-    padding: 27px;
+    padding: 0 27px;
     width: 75%;
     height: 80%;
 }
