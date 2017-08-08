@@ -881,7 +881,7 @@ Imcms.require(
                 value: "DO_NOT_SHOW"
             }),
             $languagesContainer = lifeCycleInnerStructureBEM.buildBlock("<div>", [
-                {"item": $languagesTitle},
+                {"title": $languagesTitle},
                 {"item": $showDefaultLang},
                 {"item": $doNotShow}
             ]),
@@ -891,7 +891,7 @@ Imcms.require(
             $currentVersionRowTitle = lifeCycleInnerStructureBEM.buildElement("title", "<div>", {
                 text: "Current version:"
             }),
-            $currentVersionNumber = componentsBuilder.texts.textInput({
+            $currentVersionNumber = componentsBuilder.texts.textBox("<div>", {
                 id: "document-version",
                 readonly: "readonly",
                 value: "31"
@@ -901,7 +901,7 @@ Imcms.require(
                 {"title": $currentVersionRowTitle},
                 {
                     "item": $currentVersionNumber,
-                    modifiers: itemModifiers
+                    modifiers: itemModifiers.concat("short")
                 },
                 {
                     "item": $docVersionSaveDateTime,

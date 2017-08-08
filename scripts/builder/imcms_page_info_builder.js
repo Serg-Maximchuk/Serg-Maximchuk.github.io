@@ -322,7 +322,7 @@ Imcms.define("imcms-page-info-builder",
                         value: "DO_NOT_SHOW"
                     }),
                     $languagesContainer = lifeCycleInnerStructureBEM.buildBlock("<div>", [
-                        {"item": $languagesTitle},
+                        {"title": $languagesTitle},
                         {"item": $showDefaultLang},
                         {"item": $doNotShow}
                     ]),

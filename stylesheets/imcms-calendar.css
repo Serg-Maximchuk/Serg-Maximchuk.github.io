@@ -16,6 +16,7 @@
     width: -o-calc(100% + 2px);
     width: calc(100% + 2px);
     max-width: 130px;
+    min-width: 120px;
     z-index: 50;
 }
 
