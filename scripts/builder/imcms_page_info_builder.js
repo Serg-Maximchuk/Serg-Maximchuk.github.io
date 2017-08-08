@@ -695,9 +695,8 @@ Imcms.define("imcms-page-info-builder",
                     ]),
                     $addRoleContainer = addRoleContainerBEM.buildBlock("<div>", [{"access-role": $addRoleInnerBlock}])
                 ;
-                var blockElements = [$rolesField, $addRoleContainer];
 
-                return buildFormBlock(blockElements, index);
+                return buildFormBlock([$rolesField, $addRoleContainer], index);
             }
         }, {
             name: "permissions",
@@ -766,15 +765,37 @@ Imcms.define("imcms-page-info-builder",
         }, {
             name: "templates",
             build: function (index) {
-                return buildFormBlock([], index);
+                var templates = [{
+                    text: "demo",
+                    value: "demo"
+                }, {
+                    text: "test",
+                    value: "test"
+                }, {
+                    text: "imageArchive",
+                    value: "imageArchive"
+                }, {
+                    text: "demoold",
+                    value: "demoold"
+                }];
+                var $template = componentsBuilder.selects.selectContainer("<div>", {
+                    name: "template",
+                    text: "Template"
+                }, templates);
+
+                var $defaultChildTemplate = componentsBuilder.selects.selectContainer("<div>", {
+                    name: "categoryTest2",
+                    text: "Test category type 2"
+                }, templates);
+
+                return buildFormBlock([$template, $defaultChildTemplate], index);
             }
         }, {
             name: "status",
             build: function (index) {
                 return buildFormBlock([], index);
             }
-        }
-        ];
+        }];
 
         function buildPageInfoTabs() {
             function getOnTabClick(index) {
