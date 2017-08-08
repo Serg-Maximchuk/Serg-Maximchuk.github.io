@@ -46,3 +46,13 @@
     height: -o-calc(100% + 2px);
     height: calc(100% + 2px);
 }
+
+.imcms-title--col-3 {
+    display: inline-block;
+    width: 30%;
+}
+
+.imcms-title--col-2-3 {
+    display: inline-block;
+    width: 60%;
+}
