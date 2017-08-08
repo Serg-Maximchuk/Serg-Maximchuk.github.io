@@ -36,7 +36,10 @@
     margin-bottom: 10px;
 }
 
-.imcms-form__field .imcms-field__item.imcms-text-box__input {
-    width: 60px;
+.imcms-form__field .imcms-field__item .imcms-text-box__input {
     height: 43px;
+}
+
+.imcms-form__field .imcms-field__item.imcms-field__item--short {
+    width: 60px;
 }

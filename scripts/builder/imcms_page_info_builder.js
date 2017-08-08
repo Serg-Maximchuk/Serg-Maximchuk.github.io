@@ -332,7 +332,7 @@ Imcms.define("imcms-page-info-builder",
                     $currentVersionRowTitle = lifeCycleInnerStructureBEM.buildElement("title", "<div>", {
                         text: "Current version:"
                     }),
-                    $currentVersionNumber = componentsBuilder.texts.textInput({
+                    $currentVersionNumber = componentsBuilder.texts.textBox("<div>", {
                         id: "document-version",
                         readonly: "readonly",
                         value: "31"
@@ -342,7 +342,7 @@ Imcms.define("imcms-page-info-builder",
                         {"title": $currentVersionRowTitle},
                         {
                             "item": $currentVersionNumber,
-                            modifiers: itemModifiers
+                            modifiers: itemModifiers.concat("short")
                         }, {
                             "item": $docVersionSaveDateTime,
                             modifiers: itemModifiers
@@ -793,7 +793,228 @@ Imcms.define("imcms-page-info-builder",
         }, {
             name: "status",
             build: function (index) {
-                return buildFormBlock([], index);
+                var statusFieldBEM = new BEM({
+                        block: "imcms-field",
+                        elements: {"item": "imcms-item"}
+                    }),
+                    statusItemBEM = new BEM({
+                        block: "imcms-item",
+                        elements: {
+                            "label": "imcms-label",
+                            "input": ""
+                        }
+                    });
+                var boxModifiers = ["float-l"];
+
+                // created by
+
+                var $createdTimeTitle = statusItemBEM.buildElement("label", "<div>", {text: "Created"});
+                var $createdDate = componentsBuilder.dateTime.dateBoxReadOnly({id: "createdDate"});
+                var $createdTime = componentsBuilder.dateTime.timeBoxReadOnly({id: "createdTime"});
+
+                var $createdDateTimeField = statusItemBEM.buildBlock("<div>", [{
+                    "label": $createdTimeTitle
+                }, {
+                    "input": $createdDate,
+                    modifiers: boxModifiers
+                }, {
+                    "input": $createdTime,
+                    modifiers: boxModifiers
+                }]);
+
+                var $createdByTitle = statusItemBEM.buildElement("label", "<div>", {text: "By"});
+                var $createdBy = componentsBuilder.texts.textBox("<div>", {
+                    id: "createdBy",
+                    value: "Admin"
+                });
+
+                var $createdByField = statusItemBEM.buildBlock("<div>", [{
+                        "label": $createdByTitle
+                    }, {
+                        "input": $createdBy,
+                        modifiers: boxModifiers
+                    }]
+                );
+
+                var $created = statusFieldBEM.buildBlock("<div>", [
+                    {
+                        "item": $createdDateTimeField,
+                        modifiers: ["col-3", "float-l"]
+                    }, {
+                        "item": $createdByField,
+                        modifiers: ["col-2-3", "float-l"]
+                    }]
+                );
+
+                // modified by
+
+                var $modifiedTimeTitle = statusItemBEM.buildElement("label", "<div>", {text: "Modified"});
+                var $modifiedDate = componentsBuilder.dateTime.dateBoxReadOnly({id: "modifiedDate"});
+                var $modifiedTime = componentsBuilder.dateTime.timeBoxReadOnly({id: "modifiedTime"});
+
+                var $modifiedDateTimeField = statusItemBEM.buildBlock("<div>", [{
+                    "label": $modifiedTimeTitle
+                }, {
+                    "input": $modifiedDate,
+                    modifiers: boxModifiers
+                }, {
+                    "input": $modifiedTime,
+                    modifiers: boxModifiers
+                }]);
+
+                var $modifiedByTitle = statusItemBEM.buildElement("label", "<div>", {text: "By"});
+                var $modifiedBy = componentsBuilder.texts.textBox("<div>", {
+                    id: "modifiedBy",
+                    value: "Admin"
+                });
+
+                var $modifiedByField = statusItemBEM.buildBlock("<div>", [{
+                        "label": $modifiedByTitle
+                    }, {
+                        "input": $modifiedBy,
+                        modifiers: boxModifiers
+                    }]
+                );
+
+                var $modified = statusFieldBEM.buildBlock("<div>", [
+                    {
+                        "item": $modifiedDateTimeField,
+                        modifiers: ["col-3", "float-l"]
+                    }, {
+                        "item": $modifiedByField,
+                        modifiers: ["col-2-3", "float-l"]
+                    }]
+                );
+
+                // archived
+
+                var $archivedTimeTitle = statusItemBEM.buildElement("label", "<div>", {text: "Archived"});
+                var $archivedDate = componentsBuilder.dateTime.dateBoxReadOnly({id: "archivedDate"});
+                var $archivedTime = componentsBuilder.dateTime.timeBoxReadOnly({id: "archivedTime"});
+
+                var $archivedDateTimeField = statusItemBEM.buildBlock("<div>", [{
+                    "label": $archivedTimeTitle
+                }, {
+                    "input": $archivedDate,
+                    modifiers: boxModifiers
+                }, {
+                    "input": $archivedTime,
+                    modifiers: boxModifiers
+                }]);
+
+                var $archivedByTitle = statusItemBEM.buildElement("label", "<div>", {text: "By"});
+                var $archivedBy = componentsBuilder.texts.textBox("<div>", {
+                    id: "archivedBy",
+                    value: "Admin"
+                });
+
+                var $archivedByField = statusItemBEM.buildBlock("<div>", [{
+                        "label": $archivedByTitle
+                    }, {
+                        "input": $archivedBy,
+                        modifiers: boxModifiers
+                    }]
+                );
+
+                var $archived = statusFieldBEM.buildBlock("<div>", [
+                    {
+                        "item": $archivedDateTimeField,
+                        modifiers: ["col-3", "float-l"]
+                    }, {
+                        "item": $archivedByField,
+                        modifiers: ["col-2-3", "float-l"]
+                    }]
+                );
+
+                // published
+
+                var $publishedTimeTitle = statusItemBEM.buildElement("label", "<div>", {text: "Published"});
+                var $publishedDate = componentsBuilder.dateTime.dateBoxReadOnly({id: "publishedDate"});
+                var $publishedTime = componentsBuilder.dateTime.timeBoxReadOnly({id: "publishedTime"});
+
+                var $publishedDateTimeField = statusItemBEM.buildBlock("<div>", [{
+                    "label": $publishedTimeTitle
+                }, {
+                    "input": $publishedDate,
+                    modifiers: boxModifiers
+                }, {
+                    "input": $publishedTime,
+                    modifiers: boxModifiers
+                }]);
+
+                var $publishedByTitle = statusItemBEM.buildElement("label", "<div>", {text: "By"});
+                var $publishedBy = componentsBuilder.texts.textBox("<div>", {
+                    id: "publishedBy",
+                    value: "Admin"
+                });
+
+                var $publishedByField = statusItemBEM.buildBlock("<div>", [{
+                        "label": $publishedByTitle
+                    }, {
+                        "input": $publishedBy,
+                        modifiers: boxModifiers
+                    }]
+                );
+
+                var $published = statusFieldBEM.buildBlock("<div>", [
+                    {
+                        "item": $publishedDateTimeField,
+                        modifiers: ["col-3", "float-l"]
+                    }, {
+                        "item": $publishedByField,
+                        modifiers: ["col-2-3", "float-l"]
+                    }]
+                );
+
+                // publish end
+
+                var $publishEndTimeTitle = statusItemBEM.buildElement("label", "<div>", {text: "Publish end"});
+                var $publishEndDate = componentsBuilder.dateTime.dateBoxReadOnly({id: "publishEndDate"});
+                var $publishEndTime = componentsBuilder.dateTime.timeBoxReadOnly({id: "publishEndTime"});
+
+                var $publishEndDateTimeField = statusItemBEM.buildBlock("<div>", [{
+                    "label": $publishEndTimeTitle
+                }, {
+                    "input": $publishEndDate,
+                    modifiers: boxModifiers
+                }, {
+                    "input": $publishEndTime,
+                    modifiers: boxModifiers
+                }]);
+
+                var $publishEndByTitle = statusItemBEM.buildElement("label", "<div>", {text: "By"});
+                var $publishEndBy = componentsBuilder.texts.textBox("<div>", {
+                    id: "publishEndBy",
+                    value: "Admin"
+                });
+
+                var $publishEndByField = statusItemBEM.buildBlock("<div>", [{
+                        "label": $publishEndByTitle
+                    }, {
+                        "input": $publishEndBy,
+                        modifiers: boxModifiers
+                    }]
+                );
+
+                var $publishEnd = statusFieldBEM.buildBlock("<div>", [
+                    {
+                        "item": $publishEndDateTimeField,
+                        modifiers: ["col-3", "float-l"]
+                    }, {
+                        "item": $publishEndByField,
+                        modifiers: ["col-2-3", "float-l"]
+                    }]
+                );
+
+                var blockElements = [
+                    $created,
+                    $modified,
+                    $archived,
+                    $published,
+                    $publishEnd
+                ];
+
+                return buildFormBlock(blockElements, index);
             }
         }];
 
