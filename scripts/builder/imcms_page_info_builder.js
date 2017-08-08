@@ -441,7 +441,19 @@ Imcms.define("imcms-page-info-builder",
             {
                 name: "keywords",
                 build: function (index) {
-                    return buildFormBlock([], index);
+                    var $keywordsBox = componentsBuilder.keywords.keywordsBox("<div>", {
+                        "input-id": "keyword",
+                        title: "Keywords",
+                        placeholder: "keyword",
+                        "button-text": "ADD+"
+                    });
+                    var $searchDisableCheckbox = componentsBuilder.checkboxes.imcmsCheckbox("<div>", {
+                        id: "isSearchDisabled",
+                        name: "isSearchDisabled",
+                        text: "Disable search"
+                    });
+
+                    return buildFormBlock([$keywordsBox, $searchDisableCheckbox], index);
                 }
             },
             {
