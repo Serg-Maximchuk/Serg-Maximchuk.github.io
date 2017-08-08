@@ -96,18 +96,20 @@ Imcms.define("imcms-texts-builder",
 
         function generateTextFromBEM(attributes, structureBEM, factory) {
             var id = attributes.id || uuidGenerator.generateUUID(),
-                $label = primitives.imcmsLabel(id, attributes.text),
                 $input = factory({
                     id: id,
                     name: attributes.name,
                     placeholder: attributes.placeholder
-                })
+                }),
+                blockElements = [{"input": $input}]
             ;
 
-            return structureBEM.buildBlock("<div>", [
-                {"label": $label},
-                {"input": $input}
-            ]);
+            if (attributes.text) {
+                var $label = primitives.imcmsLabel(id, attributes.text);
+                blockElements.unshift({"label": $label});
+            }
+
+            return structureBEM.buildBlock("<div>", blockElements);
         }
 
         return {
