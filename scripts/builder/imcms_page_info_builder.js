@@ -521,7 +521,191 @@ Imcms.define("imcms-page-info-builder",
         }, {
             name: "access",
             build: function (index) {
-                return buildFormBlock([], index);
+                var rolesBEM = new BEM({
+                        block: "imcms-access-role",
+                        elements: {
+                            "head": "",
+                            "title": "imcms-title",
+                            "body": "",
+                            "row": "",
+                            "column-title": "imcms-title",
+                            "column": "imcms-radio",
+                            "button": "imcms-button"
+                        }
+                    }),
+                    rolesContainerBEM = new BEM({
+                        block: "imcms-field",
+                        elements: {
+                            "access-role": "imcms-access-role"
+                        }
+                    })
+                ;
+
+                var $titleRole = rolesBEM.buildBlockElement("title", "<div>", {text: "role"}),
+                    $titleView = rolesBEM.buildBlockElement("title", "<div>", {text: "view"}),
+                    $titleEdit = rolesBEM.buildBlockElement("title", "<div>", {text: "edit"}),
+                    $titleRestricted1 = rolesBEM.buildBlockElement("title", "<div>", {text: "restricted 1"}),
+                    $titleRestricted2 = rolesBEM.buildBlockElement("title", "<div>", {text: "restricted 2"}),
+                    $rolesHead = rolesBEM.buildElement("head", "<div>").append([
+                        $titleRole,
+                        $titleView,
+                        $titleEdit,
+                        $titleRestricted1,
+                        $titleRestricted2
+                    ]),
+                    $userAdminTitle = rolesBEM.buildBlockElement("column-title", "<div>", {text: "Useradmin"}),
+                    userAdminRadioName = "useradmin0",
+                    $userAdminView = rolesBEM.makeBlockElement("column", componentsBuilder.radios.imcmsRadio("<div>", {
+                        id: "view01",
+                        name: userAdminRadioName,
+                        checked: "checked"
+                    })),
+                    $userAdminEdit = rolesBEM.makeBlockElement("column", componentsBuilder.radios.imcmsRadio("<div>", {
+                        id: "edit01",
+                        name: userAdminRadioName
+                    })),
+                    $userAdminRestricted1 = rolesBEM.makeBlockElement("column", componentsBuilder.radios.imcmsRadio("<div>", {
+                        id: "restricted011",
+                        name: userAdminRadioName
+                    })),
+                    $userAdminRestricted2 = rolesBEM.makeBlockElement("column", componentsBuilder.radios.imcmsRadio("<div>", {
+                        id: "restricted021",
+                        name: userAdminRadioName
+                    })),
+                    $userAdminDeleteRoleButton = rolesBEM.makeBlockElement("button", componentsBuilder.buttons.closeButton({
+                        click: function () {
+                            console.log("%c Not implemented feature: delete role.", "color: red;")
+                        }
+                    })),
+                    $userAdminRow = rolesBEM.buildBlockElement("row", "<div>").append([
+                        $userAdminTitle,
+                        $userAdminView,
+                        $userAdminEdit,
+                        $userAdminRestricted1,
+                        $userAdminRestricted2,
+                        $userAdminDeleteRoleButton
+                    ]),
+                    $userTitle = rolesBEM.buildBlockElement("column-title", "<div>", {text: "Users"}),
+                    usersRadioName = "users0",
+                    $userView = rolesBEM.makeBlockElement("column", componentsBuilder.radios.imcmsRadio("<div>", {
+                        id: "view02",
+                        name: usersRadioName,
+                        checked: "checked"
+                    })),
+                    $userEdit = rolesBEM.makeBlockElement("column", componentsBuilder.radios.imcmsRadio("<div>", {
+                        id: "edit02",
+                        name: usersRadioName
+                    })),
+                    $userRestricted1 = rolesBEM.makeBlockElement("column", componentsBuilder.radios.imcmsRadio("<div>", {
+                        id: "restricted012",
+                        name: usersRadioName
+                    })),
+                    $userRestricted2 = rolesBEM.makeBlockElement("column", componentsBuilder.radios.imcmsRadio("<div>", {
+                        id: "restricted022",
+                        name: usersRadioName
+                    })),
+                    $userDeleteRoleButton = rolesBEM.makeBlockElement("button", componentsBuilder.buttons.closeButton({
+                        click: function () {
+                            console.log("%c Not implemented feature: delete role.", "color: red;")
+                        }
+                    })),
+                    $userRow = rolesBEM.buildBlockElement("row", "<div>").append([
+                        $userTitle,
+                        $userView,
+                        $userEdit,
+                        $userRestricted1,
+                        $userRestricted2,
+                        $userDeleteRoleButton
+                    ]),
+                    $testRoleTitle = rolesBEM.buildBlockElement("column-title", "<div>", {text: "Test role"}),
+                    testRoleRadioName = "testrole0",
+                    $testRoleView = rolesBEM.makeBlockElement("column", componentsBuilder.radios.imcmsRadio("<div>", {
+                        id: "view03",
+                        name: testRoleRadioName,
+                        checked: "checked"
+                    })),
+                    $testRoleEdit = rolesBEM.makeBlockElement("column", componentsBuilder.radios.imcmsRadio("<div>", {
+                        id: "edit03",
+                        name: testRoleRadioName
+                    })),
+                    $testRoleRestricted1 = rolesBEM.makeBlockElement("column", componentsBuilder.radios.imcmsRadio("<div>", {
+                        id: "restricted013",
+                        name: testRoleRadioName
+                    })),
+                    $testRoleRestricted2 = rolesBEM.makeBlockElement("column", componentsBuilder.radios.imcmsRadio("<div>", {
+                        id: "restricted023",
+                        name: testRoleRadioName
+                    })),
+                    $testRoleDeleteRoleButton = rolesBEM.makeBlockElement("button", componentsBuilder.buttons.closeButton({
+                        click: function () {
+                            console.log("%c Not implemented feature: delete role.", "color: red;")
+                        }
+                    })),
+                    $testRoleRow = rolesBEM.buildBlockElement("row", "<div>").append([
+                        $testRoleTitle,
+                        $testRoleView,
+                        $testRoleEdit,
+                        $testRoleRestricted1,
+                        $testRoleRestricted2,
+                        $testRoleDeleteRoleButton
+                    ]),
+                    $rolesBody = rolesBEM.buildElement("body", "<div>").append([
+                        $userAdminRow,
+                        $userRow,
+                        $testRoleRow
+                    ]),
+                    $rolesTable = rolesBEM.buildBlock("<div>", [
+                        {"head": $rolesHead},
+                        {"body": $rolesBody}
+                    ]),
+                    $rolesField = rolesContainerBEM.buildBlock("<div>", [{"access-role": $rolesTable}])
+                ;
+                // add role
+
+                var addRoleContainerBEM = new BEM({
+                        block: "imcms-field",
+                        elements: {
+                            "access-role": "imcms-access-addrole"
+                        }
+                    }),
+                    addRoleInnerBEM = new BEM({
+                        block: "imcms-access-addrole",
+                        elements: {
+                            "select": "imcms-select",
+                            "button": "imcms-button"
+                        }
+                    })
+                ;
+                var $addRoleSelect = componentsBuilder.selects.imcmsSelect("<div>", {
+                        id: "select3"
+                    }, [{
+                        text: "role1",
+                        "data-value": 1
+                    }, {
+                        text: "role2",
+                        "data-value": 2
+                    }, {
+                        text: "role3",
+                        "data-value": 3
+                    }, {
+                        text: "role4",
+                        "data-value": 4
+                    }]),
+                    $addRoleButton = componentsBuilder.buttons.neutralButton({
+                        text: "Add role",
+                        click: function () {
+                            console.log("%c Not implemented feature: add role.", "color: red;")
+                        }
+                    }),
+                    $addRoleInnerBlock = addRoleInnerBEM.buildBlock("<div>", [
+                        {"select": $addRoleSelect},
+                        {"button": $addRoleButton}
+                    ]),
+                    $addRoleContainer = addRoleContainerBEM.buildBlock("<div>", [{"access-role": $addRoleInnerBlock}])
+                ;
+                var blockElements = [$rolesField, $addRoleContainer];
+
+                return buildFormBlock(blockElements, index);
             }
         }, {
             name: "permissions",
