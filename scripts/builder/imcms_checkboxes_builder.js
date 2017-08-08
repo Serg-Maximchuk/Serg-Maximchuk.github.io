@@ -51,6 +51,7 @@ Imcms.define("imcms-checkboxes-builder",
 
                 if (attributes && attributes.title) {
                     var $title = containerBEM.buildElement("title", "<div>", {text: attributes.title});
+                    delete attributes.title;
                     elements.unshift({"title": $title});
                 }
 
