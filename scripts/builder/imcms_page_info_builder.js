@@ -702,7 +702,66 @@ Imcms.define("imcms-page-info-builder",
         }, {
             name: "permissions",
             build: function (index) {
-                return buildFormBlock([], index);
+                function buildTestCheckboxes(attributesArr) {
+                    return attributesArr.map(function (attributes) {
+                        return componentsBuilder.checkboxes.imcmsCheckbox("<div>", attributes);
+                    });
+                }
+
+                var fieldItemBEM = new BEM({
+                    block: "imcms-field",
+                    elements: {
+                        "item": "imcms-col-3"
+                    }
+                });
+
+                var $checkboxes1 = buildTestCheckboxes([{
+                    name: "editText1",
+                    text: "Edit text"
+                }, {
+                    name: "editMenu1",
+                    text: "Edit menu"
+                }, {
+                    name: "editImage1",
+                    text: "Edit image"
+                }, {
+                    name: "editLoop1",
+                    text: "Edit loop"
+                }, {
+                    name: "editDocInfo1",
+                    text: "Edit doc info"
+                }]);
+                var $restrictedRole1Rights = componentsBuilder.checkboxes
+                    .checkboxContainer("<div>", $checkboxes1, {title: "Restricted 1"});
+
+                var $checkboxes2 = buildTestCheckboxes([{
+                    name: "editText2",
+                    text: "Edit text"
+                }, {
+                    name: "editMenu2",
+                    text: "Edit menu"
+                }, {
+                    name: "editImage2",
+                    text: "Edit image"
+                }, {
+                    name: "editLoop2",
+                    text: "Edit loop"
+                }, {
+                    name: "editDocInfo2",
+                    text: "Edit doc info"
+                }]);
+                var $restrictedRole2Rights = componentsBuilder.checkboxes
+                    .checkboxContainer("<div>", $checkboxes2, {title: "Restricted 2"});
+
+                var $permissionsWrapper = fieldItemBEM.buildBlock("<div>", [{
+                    "item": $restrictedRole1Rights,
+                    modifiers: ["float-l", "col-3"]
+                }, {
+                    "item": $restrictedRole2Rights,
+                    modifiers: ["float-l", "col-3"]
+                }]);
+
+                return buildFormBlock([$permissionsWrapper], index);
             }
         }, {
             name: "templates",
