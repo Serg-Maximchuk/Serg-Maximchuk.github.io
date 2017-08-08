@@ -192,20 +192,16 @@ Imcms.define("imcms-page-info-builder",
                             {
                                 "item": $publishDate,
                                 modifiers: itemModifiers
-                            },
-                            {
+                            }, {
                                 "item": $publishTime,
                                 modifiers: itemModifiers
-                            },
-                            {
+                            }, {
                                 "item": $setPublishTimeNowContainer,
                                 modifiers: itemModifiers
-                            },
-                            {
+                            }, {
                                 "item": $setPublishDateTime,
                                 modifiers: itemModifiers
-                            },
-                            {
+                            }, {
                                 "item": $clearPublishTimeContainer,
                                 modifiers: itemModifiers
                             }
@@ -236,20 +232,16 @@ Imcms.define("imcms-page-info-builder",
                             {
                                 "item": $archivedDate,
                                 modifiers: itemModifiers
-                            },
-                            {
+                            }, {
                                 "item": $archivedTime,
                                 modifiers: itemModifiers
-                            },
-                            {
+                            }, {
                                 "item": $setArchivedTimeNowContainer,
                                 modifiers: itemModifiers
-                            },
-                            {
+                            }, {
                                 "item": $setArchivedDateTime,
                                 modifiers: itemModifiers
-                            },
-                            {
+                            }, {
                                 "item": $clearArchivedTimeContainer,
                                 modifiers: itemModifiers
                             }
@@ -282,20 +274,16 @@ Imcms.define("imcms-page-info-builder",
                             {
                                 "item": $publishEndDate,
                                 modifiers: itemModifiers
-                            },
-                            {
+                            }, {
                                 "item": $publishEndTime,
                                 modifiers: itemModifiers
-                            },
-                            {
+                            }, {
                                 "item": $setPublishEndTimeNowContainer,
                                 modifiers: itemModifiers
-                            },
-                            {
+                            }, {
                                 "item": $setPublishEndDateTime,
                                 modifiers: itemModifiers
-                            },
-                            {
+                            }, {
                                 "item": $clearPublishEndTimeContainer,
                                 modifiers: itemModifiers
                             }
@@ -357,8 +345,7 @@ Imcms.define("imcms-page-info-builder",
                             {
                                 "item": $currentVersionNumber,
                                 modifiers: itemModifiers
-                            },
-                            {
+                            }, {
                                 "item": $docVersionSaveDateTime,
                                 modifiers: itemModifiers
                             }
