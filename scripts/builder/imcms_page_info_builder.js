@@ -478,13 +478,6 @@ Imcms.define("imcms-page-info-builder",
                     value: "1"
                 }]);
 
-                var checkboxesFieldBEM = new BEM({
-                    block: "imcms-field",
-                    elements: {
-                        "checkboxes": "imcms-checkboxes"
-                    }
-                });
-
                 var $checkbox1 = componentsBuilder.checkboxes.imcmsCheckbox("<div>", {
                     id: "checkbox01",
                     name: "checkbox1",
@@ -501,14 +494,13 @@ Imcms.define("imcms-page-info-builder",
                     name: "checkbox3",
                     text: "White"
                 });
-                var $checkboxContainer = componentsBuilder.checkboxes.checkboxContainer("<div>", [
+                var $testCategoryType3 = componentsBuilder.checkboxes.checkboxContainerField("<div>", [
                         $checkbox1,
                         $checkbox2,
                         $checkbox3
                     ],
                     {title: "Car"}
                 );
-                var $testCategoryType3 = checkboxesFieldBEM.buildBlock("<div>", [$checkboxContainer], {}, "checkboxes");
 
                 var blockElements = [
                     $testCategoryType1,
