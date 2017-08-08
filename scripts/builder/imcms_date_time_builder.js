@@ -195,7 +195,7 @@ Imcms.define("imcms-date-time-builder", ["imcms-bem-builder", "imcms-buttons-bui
         timePickerClock: function (attributes) {
             return createTimeBox(attributes, true);
         },
-        timeBoxReadonly: function (attributes) {
+        timeBoxReadOnly: function (attributes) {
             attributes = attributes || {};
             attributes.readonly = "readonly";
             return createTimeBox(attributes);
