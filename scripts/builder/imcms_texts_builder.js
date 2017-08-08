@@ -100,7 +100,8 @@ Imcms.define("imcms-texts-builder",
                     id: id,
                     name: attributes.name,
                     placeholder: attributes.placeholder,
-                    value: attributes.value
+                    value: attributes.value,
+                    readonly: attributes.readonly
                 }),
                 blockElements = [{"input": $input}]
             ;

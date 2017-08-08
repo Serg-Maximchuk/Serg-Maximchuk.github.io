@@ -5,6 +5,45 @@
 Imcms.define("imcms-page-info-builder",
     ["imcms-date-picker", "imcms-time-picker", "imcms-bem-builder", "imcms-components-builder", "jquery"],
     function (DatePicker, TimePicker, BEM, componentsBuilder, $) {
+
+        // todo: receive date and time from server
+
+        function getCurrentTime() {
+            var currentDate = new Date(),
+                hour = currentDate.getHours(),
+                minute = currentDate.getMinutes()
+            ;
+
+            if (hour < 10) {
+                hour = "0" + hour;
+            }
+            if (minute < 10) {
+                minute = "0" + minute;
+            }
+
+            return hour + ":" + minute;
+        }
+
+        function getCurrentDate() {
+            var currentDate = new Date(),
+                year = currentDate.getFullYear(),
+                month = currentDate.getMonth() + 1,
+                date = currentDate.getDate()
+            ;
+
+            if (month < 10) {
+                month = "0" + month;
+            }
+            if (date < 10) {
+                date = "0" + date;
+            }
+
+            return year + "-" + month + "-" + date;
+        }
+
+        var mockTimeReceivedFromServer = getCurrentTime();
+        var mockDateReceivedFromServer = getCurrentDate();
+
         var pageInfoBEM = new BEM({
             block: "imcms-pop-up-modal",
             elements: {
@@ -361,45 +400,6 @@ Imcms.define("imcms-page-info-builder",
                         {"item": $savingVersionInfo}
                     ])
                 ;
-
-                // todo: receive date and time from server
-
-                function getCurrentTime() {
-                    var currentDate = new Date(),
-                        hour = currentDate.getHours(),
-                        minute = currentDate.getMinutes()
-                    ;
-
-                    if (hour < 10) {
-                        hour = "0" + hour;
-                    }
-                    if (minute < 10) {
-                        minute = "0" + minute;
-                    }
-
-                    return hour + ":" + minute;
-                }
-
-                var mockTimeReceivedFromServer = getCurrentTime();
-
-                function getCurrentDate() {
-                    var currentDate = new Date(),
-                        year = currentDate.getFullYear(),
-                        month = currentDate.getMonth() + 1,
-                        date = currentDate.getDate()
-                    ;
-
-                    if (month < 10) {
-                        month = "0" + month;
-                    }
-                    if (date < 10) {
-                        date = "0" + date;
-                    }
-
-                    return year + "-" + month + "-" + date;
-                }
-
-                var mockDateReceivedFromServer = getCurrentDate();
 
                 new DatePicker($publishDate).setDate(mockDateReceivedFromServer);
                 new TimePicker($publishTime).setTime(mockTimeReceivedFromServer);
@@ -825,7 +825,8 @@ Imcms.define("imcms-page-info-builder",
                 var $createdByTitle = statusItemBEM.buildElement("label", "<div>", {text: "By"});
                 var $createdBy = componentsBuilder.texts.textBox("<div>", {
                     id: "createdBy",
-                    value: "Admin"
+                    value: "Admin",
+                    readonly: "readonly"
                 });
 
                 var $createdByField = statusItemBEM.buildBlock("<div>", [{
@@ -865,7 +866,8 @@ Imcms.define("imcms-page-info-builder",
                 var $modifiedByTitle = statusItemBEM.buildElement("label", "<div>", {text: "By"});
                 var $modifiedBy = componentsBuilder.texts.textBox("<div>", {
                     id: "modifiedBy",
-                    value: "Admin"
+                    value: "Admin",
+                    readonly: "readonly"
                 });
 
                 var $modifiedByField = statusItemBEM.buildBlock("<div>", [{
@@ -905,7 +907,8 @@ Imcms.define("imcms-page-info-builder",
                 var $archivedByTitle = statusItemBEM.buildElement("label", "<div>", {text: "By"});
                 var $archivedBy = componentsBuilder.texts.textBox("<div>", {
                     id: "archivedBy",
-                    value: "Admin"
+                    value: "Admin",
+                    readonly: "readonly"
                 });
 
                 var $archivedByField = statusItemBEM.buildBlock("<div>", [{
@@ -945,7 +948,8 @@ Imcms.define("imcms-page-info-builder",
                 var $publishedByTitle = statusItemBEM.buildElement("label", "<div>", {text: "By"});
                 var $publishedBy = componentsBuilder.texts.textBox("<div>", {
                     id: "publishedBy",
-                    value: "Admin"
+                    value: "Admin",
+                    readonly: "readonly"
                 });
 
                 var $publishedByField = statusItemBEM.buildBlock("<div>", [{
@@ -985,7 +989,8 @@ Imcms.define("imcms-page-info-builder",
                 var $publishEndByTitle = statusItemBEM.buildElement("label", "<div>", {text: "By"});
                 var $publishEndBy = componentsBuilder.texts.textBox("<div>", {
                     id: "publishEndBy",
-                    value: "Admin"
+                    value: "Admin",
+                    readonly: "readonly"
                 });
 
                 var $publishEndByField = statusItemBEM.buildBlock("<div>", [{
@@ -1005,6 +1010,15 @@ Imcms.define("imcms-page-info-builder",
                         modifiers: ["col-2-3", "float-l"]
                     }]
                 );
+
+                new DatePicker($createdDate).setDate(mockDateReceivedFromServer);
+                new TimePicker($createdTime).setTime(mockTimeReceivedFromServer);
+
+                new DatePicker($modifiedDate).setDate(mockDateReceivedFromServer);
+                new TimePicker($modifiedTime).setTime(mockTimeReceivedFromServer);
+
+                new DatePicker($publishedDate).setDate(mockDateReceivedFromServer);
+                new TimePicker($publishedTime).setTime(mockTimeReceivedFromServer);
 
                 var blockElements = [
                     $created,
