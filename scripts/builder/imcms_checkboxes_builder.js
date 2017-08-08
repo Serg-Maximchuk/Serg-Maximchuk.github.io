@@ -14,7 +14,8 @@ Imcms.define("imcms-checkboxes-builder",
             containerBEM = new BEM({
                 block: "imcms-checkboxes",
                 elements: {
-                    "checkbox": "imcms-checkbox"
+                    "checkbox": "imcms-checkbox",
+                    "title": "imcms-title"
                 }
             })
         ;
@@ -44,7 +45,16 @@ Imcms.define("imcms-checkboxes-builder",
                 ]);
             },
             checkboxContainer: function (tag, elements, attributes) {
-                return containerBEM.buildBlock(tag, elements, attributes, "checkbox");
+                elements = elements.map(function (element) {
+                    return {"checkbox": element};
+                });
+
+                if (attributes && attributes.title) {
+                    var $title = containerBEM.buildElement("title", "<div>", {text: attributes.title});
+                    elements.unshift({"title": $title});
+                }
+
+                return containerBEM.buildBlock(tag, elements, attributes);
             }
         }
     }
