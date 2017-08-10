@@ -27,7 +27,7 @@ Imcms.define("imcms-admin-panel-builder",
         }
 
         function buildPageInfoWindow() {
-            return pageInfoBuilder.buildPageInfo().appendTo("body");
+            return pageInfoBuilder.buildPageInfo();
         }
 
         function showPageInfo() {

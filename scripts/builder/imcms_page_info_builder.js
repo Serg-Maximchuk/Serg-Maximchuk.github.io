@@ -88,7 +88,7 @@ Imcms.define("imcms-page-info-builder",
 
         var tabsData = [{
             name: "appearance",
-            build: function (index) {
+            buildTab: function (index) {
                 var pageInfoInnerStructureBEM = new BEM({
                     block: "imcms-field",
                     elements: {
@@ -204,7 +204,7 @@ Imcms.define("imcms-page-info-builder",
             }
         }, {
             name: "life cycle",
-            build: function (index) {
+            buildTab: function (index) {
                 var lifeCycleInnerStructureBEM = new BEM({
                         block: "imcms-field",
                         elements: {
@@ -472,7 +472,7 @@ Imcms.define("imcms-page-info-builder",
             }
         }, {
             name: "keywords",
-            build: function (index) {
+            buildTab: function (index) {
                 var $keywordsBox = componentsBuilder.keywords.keywordsBox("<div>", {
                     "input-id": "keyword",
                     title: "Keywords",
@@ -490,7 +490,7 @@ Imcms.define("imcms-page-info-builder",
             }
         }, {
             name: "categories",
-            build: function (index) {
+            buildTab: function (index) {
                 var $testCategoryType1 = componentsBuilder.selects.selectContainer("<div>", {
                     name: "categoryTest1",
                     text: "Test category type 1"
@@ -547,7 +547,7 @@ Imcms.define("imcms-page-info-builder",
             }
         }, {
             name: "access",
-            build: function (index) {
+            buildTab: function (index) {
                 var rolesBEM = new BEM({
                         block: "imcms-access-role",
                         elements: {
@@ -735,7 +735,7 @@ Imcms.define("imcms-page-info-builder",
             }
         }, {
             name: "permissions",
-            build: function (index) {
+            buildTab: function (index) {
                 function buildTestCheckboxes(attributesArr) {
                     return attributesArr.map(function (attributes) {
                         return componentsBuilder.checkboxes.imcmsCheckbox("<div>", attributes);
@@ -799,7 +799,7 @@ Imcms.define("imcms-page-info-builder",
             }
         }, {
             name: "templates",
-            build: function (index) {
+            buildTab: function (index) {
                 var templates = [{
                     text: "demo",
                     value: "demo"
@@ -827,7 +827,7 @@ Imcms.define("imcms-page-info-builder",
             }
         }, {
             name: "status",
-            build: function (index) {
+            buildTab: function (index) {
                 var statusFieldBEM = new BEM({
                         block: "imcms-field",
                         elements: {"item": "imcms-item"}
@@ -1109,7 +1109,7 @@ Imcms.define("imcms-page-info-builder",
 
         function buildPageInfoPanels() {
             var $forms = tabsData.map(function (tabData, index) {
-                return tabData.build(index).css("display", (index === 0 ? "block" : "none"));
+                return tabData.buildTab(index).css("display", (index === 0 ? "block" : "none"));
             });
 
             return pageInfoBEM.buildElement("right-side", "<div>").append($forms);
@@ -1148,8 +1148,33 @@ Imcms.define("imcms-page-info-builder",
             return pageInfoBEM.buildElement("footer", "<div>").append($saveAndPublishBtn, $cancelBtn, $saveBtn);
         }
 
+        function buildShadow() {
+            var $modal = $(".modal");
+
+            if ($modal.length) {
+                $modal.css("display", "block");
+                return;
+            }
+
+            $modal = $("<div>", {
+                "class": "modal"
+            }).css({
+                "position": "absolute",
+                "top": 0,
+                "left": 0,
+                "z-index": 50,
+                "display": "block",
+                "width": "100vw",
+                "height": "100vh",
+                "background-color": "rgba(42, 42, 42, 0.8)"
+            });
+
+            $modal.appendTo("body");
+        }
+
         return {
             build: function () {
+                buildShadow();
                 var $head = buildPageInfoHead(),
                     $tabs = buildPageInfoTabs(),
                     $panels = buildPageInfoPanels(),
@@ -1162,7 +1187,7 @@ Imcms.define("imcms-page-info-builder",
                         {"footer": $footer}
                     ],
                     {"data-menu": "pageInfo"}
-                );
+                ).appendTo("body");
             }
         }
     }
