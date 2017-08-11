@@ -19,7 +19,8 @@
     border-bottom: 1px solid #d3d8de;
 }
 
-.imcms-menu-list__title {
+.imcms-menu-list__title,
+.imcms-menu-list-titles__title {
     color: #2e3f47;
     font-family: 'Source Sans Pro', sans-serif;
     font-size: 13px;
@@ -43,4 +44,10 @@
     height: -ms-calc(100% - 25px);
     height: -o-calc(100% - 25px);
     height: calc(100% - 25px);
+}
+
+.imcms-menu-list__titles:after {
+    content: "";
+    display: block;
+    clear: both;
 }
