@@ -81,13 +81,15 @@ Imcms.define("imcms-selects-builder",
                         {"select-item": $selectItem},
                         {"items": $itemsContainer}
                     ]),
-                    $label = primitives.imcmsLabel(attributes.id, attributes.text, {click: toggleSelect})
+                    blockElements = [{"drop-down-list": $dropDownList}]
                 ;
 
-                return selectBEM.buildBlock("<div>", [
-                        {"label": $label},
-                        {"drop-down-list": $dropDownList}
-                    ], (attributes["class"] ? {"class": attributes["class"]} : {}))
+                if (attributes.text) {
+                    var $label = primitives.imcmsLabel(attributes.id, attributes.text, {click: toggleSelect});
+                    blockElements.unshift({"label": $label});
+                }
+
+                return selectBEM.buildBlock("<div>", blockElements, (attributes["class"] ? {"class": attributes["class"]} : {}))
                     .append($("<input>", {
                         type: "hidden",
                         id: attributes.id,
