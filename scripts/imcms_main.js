@@ -61,7 +61,8 @@ Imcms = {
             "imcms-admin-panel-builder": "builder/imcms_admin_panel_builder.js",
             "imcms-page-info-builder": "builder/imcms_page_info_builder.js",
             "imcms-editors-builder": "builder/imcms_editors_builder.js",
-            "imcms-menu-editor-builder": "builder/imcms_menu_editor_builder.js"
+            "imcms-menu-editor-builder": "builder/imcms_menu_editor_builder.js",
+            "imcms-document-editor-builder": "builder/imcms_document_editor_builder.js"
         }
     }
 };
