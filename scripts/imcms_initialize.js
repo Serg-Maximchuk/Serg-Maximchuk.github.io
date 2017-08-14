@@ -1,11 +1,10 @@
 Imcms.define("imcms-initialize",
     [
         "imcms-flags", "imcms-date-picker", "imcms-time-picker", "imcms-select", "imcms-numberbox", "imcms-keyword",
-        "imcms-folders", "imcms-admin-panel", "imcms-choose-image", "imcms-content-manager", "imcms-image-editor",
-        "imcms-menu-editor"
+        "imcms-folders", "imcms-admin-panel", "imcms-choose-image", "imcms-content-manager", "imcms-image-editor"
     ],
     function (imcmsFlags, imcmsDatePicker, imcmsTimePicker, imcmsSelect, imcmsNumberbox, imcmsKeyword,
-              imcmsFolders, imcmsAdminPanel, imcmsChooseImg, imcmsContentManager, imcmsImageEditor, imcmsMenuEditor) {
+              imcmsFolders, imcmsAdminPanel, imcmsChooseImg, imcmsContentManager, imcmsImageEditor) {
         return {
             init: function () {
                 imcmsFlags.init();
@@ -19,7 +18,6 @@ Imcms.define("imcms-initialize",
                 imcmsChooseImg.init();
                 imcmsContentManager.init();
                 imcmsImageEditor.init();
-                imcmsMenuEditor.init();
             }
         };
     }
