@@ -3,8 +3,8 @@
  * 10.08.17.
  */
 Imcms.define("imcms-menu-editor-builder",
-    ["imcms-bem-builder", "imcms-components-builder", "imcms-modal-window", "jquery"],
-    function (BEM, components, imcmsModalWindow, $) {
+    ["imcms-bem-builder", "imcms-components-builder", "imcms-document-editor-builder", "imcms-modal-window", "jquery"],
+    function (BEM, components, documentEditorBuilder, imcmsModalWindow, $) {
         var menuEditorBEM = new BEM({
             block: "imcms-menu-editor",
             elements: {
@@ -14,7 +14,7 @@ Imcms.define("imcms-menu-editor-builder",
             }
         });
 
-        var $menuElementsContainer;
+        var $menuElementsContainer, $documentsContainer;
 
         function closeMenuEditor() {
             $("#imcms-menu-editor").css("display", "none");
@@ -53,7 +53,7 @@ Imcms.define("imcms-menu-editor-builder",
             });
 
             $menuElementsContainer = bodyBEM.buildElement("left-side", "<div>");
-            var $documentsContainer = bodyBEM.buildElement("right-side", "<div>"); // todo: should be document editor
+            $documentsContainer = bodyBEM.buildElement("right-side", "<div>");
 
             return bodyBEM.buildBlock("<div>", [
                 {"left-side": $menuElementsContainer},
@@ -335,6 +335,9 @@ Imcms.define("imcms-menu-editor-builder",
                 var menuElementsTree = getMenuElementsTree(); // mock elements, later receive real data from server
                 var $menuElementsTree = buildMenuEditorContent(menuElementsTree);
                 $menuElementsContainer.append($menuElementsTree);
+
+                var $documentEditor = documentEditorBuilder.buildBody();
+                $documentsContainer.append($documentEditor);
             }
         };
     }
