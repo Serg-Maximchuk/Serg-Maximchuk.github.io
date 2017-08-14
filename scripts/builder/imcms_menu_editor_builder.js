@@ -52,8 +52,7 @@ Imcms.define("imcms-menu-editor-builder",
                 }
             });
 
-            // var $menuList = buildMenuList();
-            $menuElementsContainer = bodyBEM.buildElement("left-side", "<div>");//.append($menuList);
+            $menuElementsContainer = bodyBEM.buildElement("left-side", "<div>");
             var $documentsContainer = bodyBEM.buildElement("right-side", "<div>"); // todo: should be document editor
 
             return bodyBEM.buildBlock("<div>", [
