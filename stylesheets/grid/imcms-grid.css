@@ -8,6 +8,9 @@
     clear: both;
 }
 
+.imcms-document-editor-head-tools__tool--grid-col-2,
+.imcms-document-editor-head-tools__tool--grid-col-3,
+.imcms-document-editor-head-tools__tool--grid-col-4,
 .imcms-grid-coll-1,
 .imcms-grid-coll-2,
 .imcms-grid-coll-3,
@@ -27,14 +30,17 @@
     width: 8.33%;
 }
 
+.imcms-document-editor-head-tools__tool--grid-col-2,
 .imcms-grid-coll-2 {
     width: 16.66%;
 }
 
+.imcms-document-editor-head-tools__tool--grid-col-3,
 .imcms-grid-coll-3 {
     width: 25%;
 }
 
+.imcms-document-editor-head-tools__tool--grid-col-4,
 .imcms-grid-coll-4 {
     width: 33.33%;
 }
