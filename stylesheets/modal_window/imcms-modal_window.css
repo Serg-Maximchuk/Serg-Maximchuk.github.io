@@ -6,14 +6,13 @@
     top: 0;
     width: 100%;
     height: 100%;
-    z-index: 50;
+    z-index: 10001;
 }
 
 .imcms-modal-window {
     -webkit-box-shadow: 0 0 29px 13px rgba(0, 0, 0, 0.07);
     -moz-box-shadow: 0 0 29px 13px rgba(0, 0, 0, 0.07);
     box-shadow: 0 0 29px 13px rgba(0, 0, 0, 0.07);
-    /*display: none;*/
     overflow: hidden;
     position: absolute;
     top: -webkit-calc(50% - 100px);
@@ -28,7 +27,7 @@
     left: calc(50% - 130px);
     height: 200px;
     width: 260px;
-    z-index: 700;
+    z-index: 10003;
 }
 
 .imcms-modal-window__modal-head {

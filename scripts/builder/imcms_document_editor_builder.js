@@ -3,8 +3,8 @@
  * 14.08.17.
  */
 Imcms.define("imcms-document-editor-builder",
-    ["imcms-bem-builder", "imcms-components-builder", "imcms-primitives-builder"],
-    function (BEM, components, primitives) {
+    ["imcms-bem-builder", "imcms-page-info-builder", "imcms-components-builder", "imcms-primitives-builder"],
+    function (BEM, pageInfoBuilder, components, primitives) {
         function buildBodyHead() {
             var bodyHeadBEM = new BEM({
                 block: "imcms-document-editor-head",
@@ -30,10 +30,7 @@ Imcms.define("imcms-document-editor-builder",
 
             var $createNewDocButton = components.buttons.negativeButton({
                 text: "New",
-                click: function () {
-                    console.log("%c Not implemented feature: create new doc", "color: red");
-                    // todo: implement doc creation dialog
-                }
+                click: pageInfoBuilder.build
             });
 
             var $newDocButtonContainer = toolBEM.buildBlock("<div>", [{"button": $createNewDocButton}]);
