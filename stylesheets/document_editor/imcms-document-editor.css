@@ -132,18 +132,6 @@
     float: right;
 }
 
-.imcms-document-item__controls .imcms-control--move {
-    background-image: url(../../img/controls/icon_folder_controll_reverse_move.png);
-}
-
-.imcms-document-item__controls .imcms-control--remove {
-    background-image: url(../../img/controls/icon_folder_controll_reverse_remove.png);
-}
-
-.imcms-document-item__controls .imcms-control--rename {
-    background-image: url(../../img/controls/icon_folder_controll_reverse_edit.png);
-}
-
 .imcms-document-item:hover {
     background: #d0e9f9;
 }

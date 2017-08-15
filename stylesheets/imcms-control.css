@@ -7,45 +7,41 @@
 }
 
 .imcms-control--move {
-    background-image: url("../img/controls/icon_folder_controll_move.png");
+    background-image: url("../img/controls/icon_folder_controll_move_hover.png");
+    opacity: 0.5;
 }
 
 .imcms-control--create {
-    background-image: url("../img/controls/icon_folder_controll_create.png");
+    background-image: url("../img/controls/icon_folder_controll_create_hover.png");
+    opacity: 0.5;
 }
 
 .imcms-control--rename {
-    background-image: url("../img/controls/icon_folder_controll_edit.png");
+    background-image: url("../img/controls/icon_folder_controll_edit_hover.png");
+    opacity: 0.5;
 }
 
 .imcms-control--remove {
-    background-image: url("../img/controls/icon_folder_controll_remove.png");
-}
-
-.imcms-menu-item__controls .imcms-control--move {
-    background-image: url("../img/controls/icon_folder_controll_reverse_move.png");
-}
-
-.imcms-menu-item__controls .imcms-control--rename {
-    background-image: url("../img/controls/icon_folder_controll_reverse_edit.png");
-}
-
-.imcms-menu-item__controls .imcms-control--remove {
-    background-image: url("../img/controls/icon_folder_controll_reverse_remove.png");
+    background-image: url("../img/controls/icon_folder_controll_remove_hover.png");
+    opacity: 0.5;
 }
 
 .imcms-control--move:hover {
     background-image: url("../img/controls/icon_folder_controll_move_hover.png");
+    opacity: 1;
 }
 
 .imcms-control--create:hover {
     background-image: url("../img/controls/icon_folder_controll_create_hover.png");
+    opacity: 1;
 }
 
 .imcms-control--rename:hover {
     background-image: url("../img/controls/icon_folder_controll_edit_hover.png");
+    opacity: 1;
 }
 
 .imcms-control--remove:hover {
     background-image: url("../img/controls/icon_folder_controll_remove_hover.png");
+    opacity: 1;
 }
