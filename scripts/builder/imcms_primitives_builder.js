@@ -26,6 +26,9 @@ Imcms.define("imcms-primitives-builder", ["imcms-bem-builder"], function (BEM) {
         imcmsLabelFromObject: function (attributes) {
             return primitivesBEM.buildElement("label", "<label>", attributes);
         },
+        imcmsInput: function (attributes) {
+            return primitivesBEM.buildElement("input", "<input>", attributes);
+        },
         imcmsInputText: function (attributes, modifiersArr) {
             attributes = attributes || {};
             attributes.type = "text";

@@ -6,10 +6,11 @@ Imcms.define("imcms-components-builder",
     [
         "imcms-buttons-builder", "imcms-flags-builder", "imcms-checkboxes-builder", "imcms-radio-buttons-builder",
         "imcms-selects-builder", "imcms-texts-builder", "imcms-choose-image-builder", "imcms-keywords-builder",
-        "imcms-date-time-builder"
+        "imcms-date-time-builder", "imcms-switch-builder"
     ],
-    function (buttons, flags, checkboxes, radios, selects, texts, chooseImage, keywords, dateTime) {
+    function (buttons, flags, checkboxes, radios, selects, texts, chooseImage, keywords, dateTime, switches) {
         return {
+            switches: switches,
             buttons: buttons,
             flags: flags,
             checkboxes: checkboxes,

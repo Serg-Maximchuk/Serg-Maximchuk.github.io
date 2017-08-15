@@ -86,6 +86,29 @@ Imcms.require(
             .append($sweFlag)
             .append($flagsRow);
 
+        // switches
+
+        var $switch1 = componentsBuilder.switches.imcmsSwitch("<div>", {
+            id: "switch1",
+            name: "switch1",
+            checked: "checked"
+        });
+
+        var $switch2 = componentsBuilder.switches.imcmsSwitch("<div>", {
+            id: "switch2",
+            name: "switch2"
+        });
+
+        var $switch3 = componentsBuilder.switches.imcmsSwitch("<div>", {
+            id: "switch3",
+            name: "switc3",
+            checked: "checked"
+        });
+
+        var $switchBlock = componentsBuilder.switches.switchBlock("<div>", [$switch2, $switch3]);
+
+        $("#switch-example").append($switch1, $switchBlock);
+
         // checkboxes
 
         var $checkbox1 = componentsBuilder.checkboxes.imcmsCheckbox("<div>", {
