@@ -8,7 +8,7 @@
 }
 
 .imcms-right-side::-webkit-scrollbar-thumb {
-    background-color: #dfe2e6;
+    background-color: #abacad;
 }
 
 .imcms-left-side::-webkit-scrollbar-track {
@@ -21,7 +21,7 @@
 }
 
 .imcms-left-side::-webkit-scrollbar-thumb {
-    background-color: #dfe2e6;
+    background-color: #abacad;
 }
 
 .imcms-content-manager__left-side::-webkit-scrollbar-thumb {
@@ -44,7 +44,7 @@
 }
 
 .imcms-text-area__input::-webkit-scrollbar-thumb {
-    background-color: #dfe2e6;
+    background-color: #abacad;
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
@@ -75,7 +75,7 @@
 }
 
 .imcms-editable-controls-area::-webkit-scrollbar-thumb {
-    background-color: #dfe2e6;
+    background-color: #abacad;
 }
 
 .imcms-menu-list__items::-webkit-scrollbar-track {
@@ -89,7 +89,7 @@
 }
 
 .imcms-menu-list__items::-webkit-scrollbar-thumb {
-    background-color: #dfe2e6;
+    background-color: #abacad;
 }
 
 .imcms-document-list__items::-webkit-scrollbar-track {
@@ -103,5 +103,5 @@
 }
 
 .imcms-document-list__items::-webkit-scrollbar-thumb {
-    background-color: #dfe2e6;
+    background-color: #abacad;
 }
