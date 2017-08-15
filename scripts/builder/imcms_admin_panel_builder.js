@@ -26,14 +26,8 @@ Imcms.define("imcms-admin-panel-builder",
             console.log("%c Not implemented feature: " + feature, "color: red;");
         }
 
-        function buildPageInfoWindow() {
-            return pageInfoBuilder.buildPageInfo();
-        }
-
         function showPageInfo() {
-            var $pageInfoWindow = $(".imcms-pop-up-modal[data-menu=pageInfo]");
-            (($pageInfoWindow.length) ? $pageInfoWindow : buildPageInfoWindow()).css({"display": "block"});
-            $(".imcms-modal-layout").css({"display": "block"});
+            pageInfoBuilder.buildPageInfo();
         }
 
         function createAdminPanel() {

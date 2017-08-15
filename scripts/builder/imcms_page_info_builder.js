@@ -1153,30 +1153,40 @@ Imcms.define("imcms-page-info-builder",
 
             if ($modal.length) {
                 $modal.css("display", "block");
-                return;
+                return $modal;
             }
 
-            $modal = $("<div>", {"class": "imcms-modal-layout"});
+            return $("<div>", {"class": "imcms-modal-layout"}).appendTo("body");
+        }
 
-            $modal.appendTo("body");
+        var $pageInfo;
+        var $shadow;
+
+        function buildPageInfo() {
+            var $head = buildPageInfoHead(),
+                $tabs = buildPageInfoTabs(),
+                $panels = buildPageInfoPanels(),
+                $footer = buildPageInfoFooter();
+
+            return pageInfoBEM.buildBlock("<div>", [
+                    {"head": $head},
+                    {"left-side": $tabs},
+                    {"right-side": $panels},
+                    {"footer": $footer}
+                ],
+                {"data-menu": "pageInfo"}
+            );
         }
 
         return {
             build: function () {
-                buildShadow();
-                var $head = buildPageInfoHead(),
-                    $tabs = buildPageInfoTabs(),
-                    $panels = buildPageInfoPanels(),
-                    $footer = buildPageInfoFooter();
+                $shadow = buildShadow();
 
-                return pageInfoBEM.buildBlock("<div>", [
-                        {"head": $head},
-                        {"left-side": $tabs},
-                        {"right-side": $panels},
-                        {"footer": $footer}
-                    ],
-                    {"data-menu": "pageInfo"}
-                ).appendTo("body");
+                if (!$pageInfo) {
+                    $pageInfo = buildPageInfo().appendTo("body");
+                }
+
+                $pageInfo.css({"display": "block"});
             }
         }
     }
