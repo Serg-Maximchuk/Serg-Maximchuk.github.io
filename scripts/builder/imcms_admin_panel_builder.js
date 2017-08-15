@@ -22,6 +22,8 @@ Imcms.define("imcms-admin-panel-builder",
             }
         });
 
+        var $panel;
+
         function logNotImplementedFeature(feature) {
             console.log("%c Not implemented feature: " + feature, "color: red;");
         }
@@ -169,19 +171,19 @@ Imcms.define("imcms-admin-panel-builder",
         }
 
         function setAdminPanelTop(px) {
-            $(".imcms-admin").css({"top": "" + px + "px"});
+            $panel.css({"top": "" + px + "px"});
         }
-
-        setShowPanelRule();
-        setHidePanelRule();
 
         return {
             buildPanel: function () {
-                var $panelWrap = $("<div>", {
+                $panel = $("<div>", {
                     "class": "imcms-admin",
                     html: createAdminPanel()
                 });
-                $("body").prepend($panelWrap);
+
+                setShowPanelRule();
+                setHidePanelRule();
+                $("body").prepend($panel);
             }
         }
     }
