@@ -1,3 +1,58 @@
+.imcms-document-editor {
+    display: block;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 10000;
+}
+
+.imcms-document-editor:after {
+    content: "";
+    display: block;
+    clear: both;
+}
+
+.imcms-document-editor__head {
+    background-color: #fff;
+    -webkit-box-shadow: 0 0 31px 4px rgba(47, 58, 144, 0.16);
+    -moz-box-shadow: 0 0 31px 4px rgba(47, 58, 144, 0.16);
+    box-shadow: 0 0 31px 4px rgba(47, 58, 144, 0.16);
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 20;
+}
+
+.imcms-document-editor__head button {
+    position: absolute;
+    top: 13px;
+    right: 13px;
+}
+
+.imcms-document-editor__head .imcms-head__title {
+    color: #0b94d8;
+}
+
+.imcms-document-editor__head span {
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.imcms-document-editor-body {
+    height: 100%;
+}
+
+.imcms-document-editor__body {
+    background-color: #f3f3fc;
+    overflow: hidden;
+    padding-top: 62px;
+    width: 100%;
+    height: 95%;
+}
+
 .imcms-document-list__titles {
     padding: 0 27px 0 70px;
     width: 100%;
@@ -119,4 +174,47 @@
     height: -ms-calc(100% - 25px);
     height: -o-calc(100% - 25px);
     height: calc(100% - 25px);
+}
+
+.imcms-document-editor__footer {
+    background-color: #f3f3fc;
+    width: 100%;
+    height: 5%;
+    border-top: 1px solid #d3d8de;
+}
+
+@media screen and (max-width: 1200px) {
+    .imcms-document-editor {
+        min-width: 1200px;
+    }
+}
+
+@media screen and (max-height: 800px) {
+    .imcms-document-editor__footer {
+        padding: 15px 27px;
+    }
+}
+
+@media screen and (max-height: 650px) {
+    .imcms-document-editor__footer {
+        padding: 10px 27px;
+    }
+}
+
+@media screen and (max-height: 570px) {
+    .imcms-document-editor__footer {
+        padding: 5px 27px;
+    }
+}
+
+@media screen and (max-height: 515px) {
+    .imcms-document-editor__footer {
+        padding: 0 27px;
+    }
+}
+
+@media screen and (max-height: 460px) {
+    .imcms-document-editor {
+        min-height: 460px;
+    }
 }

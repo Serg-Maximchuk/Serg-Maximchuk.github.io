@@ -56,8 +56,8 @@
 @import url("image_editor/imcms-image-editor-MEDIA.css");
 @import url("modal_window/imcms-modal_window.css");
 @import url("menu_editor/imcms-menu_editor.css");
-@import url("menu_editor/imcms-document-editor-head.css");
 @import url("menu_editor/imcms-menu_items.css");
 @import url("menu_editor/imcms-menu_item.css");
 @import url("menu_editor/imcms-menu_list.css");
 @import url("document_editor/imcms-document-editor.css");
+@import url("document_editor/imcms-document-editor-head.css");
