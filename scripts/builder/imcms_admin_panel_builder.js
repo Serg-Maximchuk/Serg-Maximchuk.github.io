@@ -4,7 +4,7 @@
  */
 Imcms.define("imcms-admin-panel-builder",
     ["imcms-bem-builder", "imcms-components-builder", "imcms-editors-builder", "jquery"],
-    function (BEM, componentsBuilder, pageInfoBuilder, $) {
+    function (BEM, componentsBuilder, editors, $) {
         var adminPanelBEM = new BEM({
             block: "imcms-admin-panel",
             elements: {
@@ -27,7 +27,11 @@ Imcms.define("imcms-admin-panel-builder",
         }
 
         function showPageInfo() {
-            pageInfoBuilder.buildPageInfo();
+            editors.buildPageInfo();
+        }
+
+        function initDocumentEditor() {
+            editors.buildDocumentEditor();
         }
 
         function createAdminPanel() {
@@ -88,18 +92,12 @@ Imcms.define("imcms-admin-panel-builder",
 
             var $pageInfoButton = panelButtonsBEM.buildBlockElement("item", "<li>", {
                 text: "page info",
-                click: function (e) {
-                    e.preventDefault();
-                    showPageInfo();
-                }
+                click: showPageInfo
             }, ["page-info"]);
 
             var $openDocumentEditorButton = panelButtonsBEM.buildBlockElement("item", "<li>", {
                 text: "document",
-                click: function (e) {
-                    e.preventDefault();
-                    logNotImplementedFeature("document editor click");
-                }
+                click: initDocumentEditor
             }, ["document"]);
 
             var $adminPageButton = panelButtonsBEM.buildBlockElement("item", "<li>", {
