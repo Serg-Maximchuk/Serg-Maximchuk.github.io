@@ -1118,7 +1118,7 @@ Imcms.define("imcms-page-info-builder",
         function buildPageInfoFooter() {
             function closePageInfo() {
                 $(this).parents(".imcms-pop-up-modal").css({"display": "none"});
-                $(".modal").css({"display": "none"});
+                $(".imcms-modal-layout").css({"display": "none"});
             }
 
             var $saveBtn = componentsBuilder.buttons.positiveButton({
@@ -1149,25 +1149,14 @@ Imcms.define("imcms-page-info-builder",
         }
 
         function buildShadow() {
-            var $modal = $(".modal");
+            var $modal = $(".imcms-modal-layout");
 
             if ($modal.length) {
                 $modal.css("display", "block");
                 return;
             }
 
-            $modal = $("<div>", {
-                "class": "modal"
-            }).css({
-                "position": "absolute",
-                "top": 0,
-                "left": 0,
-                "z-index": 50,
-                "display": "block",
-                "width": "100vw",
-                "height": "100vh",
-                "background-color": "rgba(42, 42, 42, 0.8)"
-            });
+            $modal = $("<div>", {"class": "imcms-modal-layout"});
 
             $modal.appendTo("body");
         }
