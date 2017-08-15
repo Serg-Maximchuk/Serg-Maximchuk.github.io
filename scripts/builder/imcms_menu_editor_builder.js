@@ -17,7 +17,7 @@ Imcms.define("imcms-menu-editor-builder",
         var $menuElementsContainer, $documentsContainer;
 
         function closeMenuEditor() {
-            $("#imcms-menu-editor").css("display", "none");
+            $menuEditor.css("display", "none");
         }
 
         function buildHead() {
@@ -321,6 +321,7 @@ Imcms.define("imcms-menu-editor-builder",
 
                 var $documentEditor = documentEditorBuilder.buildBody();
                 $documentsContainer.append($documentEditor);
+                documentEditorBuilder.loadDocumentEditorContent();
             }
 
             var $head = buildHead(),
