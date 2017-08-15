@@ -311,33 +311,45 @@ Imcms.define("imcms-menu-editor-builder",
             ]);
         }
 
-        return {
-            build: function () {
-                var $head = buildHead(),
-                    $body = buildBody(),
-                    $footer = buildFooter();
+        var $menuEditor;
 
-                var docId = 1001;  // receive correct doc id
-                var menuId = 1;  // receive correct menu id
-
-                menuEditorBEM.buildBlock("<div>", [
-                        {"head": $head},
-                        {"body": $body},
-                        {"footer": $footer}
-                    ],
-                    {
-                        id: "imcms-menu-editor",
-                        "data-document-id": docId, // receive correct doc id
-                        "data-menu-id": menuId // receive correct menu id
-                    }
-                ).appendTo("body");
-
+        function buildMenuEditor() {
+            function loadMenuEditorContent() {
                 var menuElementsTree = getMenuElementsTree(); // mock elements, later receive real data from server
                 var $menuElementsTree = buildMenuEditorContent(menuElementsTree);
                 $menuElementsContainer.append($menuElementsTree);
 
                 var $documentEditor = documentEditorBuilder.buildBody();
                 $documentsContainer.append($documentEditor);
+            }
+
+            var $head = buildHead(),
+                $body = buildBody(),
+                $footer = buildFooter();
+
+            var docId = 1001;  // receive correct doc id
+            var menuId = 1;  // receive correct menu id
+
+            setTimeout(loadMenuEditorContent);
+
+            return menuEditorBEM.buildBlock("<div>", [
+                {"head": $head},
+                {"body": $body},
+                {"footer": $footer}
+            ], {
+                id: "imcms-menu-editor",
+                "data-document-id": docId, // receive correct doc id
+                "data-menu-id": menuId // receive correct menu id
+            });
+        }
+
+        return {
+            build: function () {
+                if (!$menuEditor) {
+                    $menuEditor = buildMenuEditor().appendTo("body");
+                }
+
+                $menuEditor.css("display", "block");
             }
         };
     }
