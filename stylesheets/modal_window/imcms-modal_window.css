@@ -1,12 +1,12 @@
 .imcms-modal-layout {
     background-color: rgba(42, 42, 42, 0.8);
     display: block;
-    position: absolute;
+    position: fixed;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
-    z-index: 500;
+    z-index: 50;
 }
 
 .imcms-modal-window {
