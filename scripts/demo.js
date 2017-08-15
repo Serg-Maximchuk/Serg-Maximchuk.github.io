@@ -5,11 +5,13 @@
 Imcms.require(
     [
         "imcms-date-picker", "imcms-time-picker", "imcms-tests", "imcms-components-builder", "imcms-bem-builder",
-        "imcms-editors-builder", "jquery"
+        "imcms-editors-builder", "imcms-admin-panel-builder", "jquery"
     ],
-    function (DatePicker, TimePicker, tests, componentsBuilder, BEM, editors, $) {
-        console.info("%c Tests loaded.", "color: green");
+    function (DatePicker, TimePicker, tests, componentsBuilder, BEM, editors, panelBuilder, $) {
         Imcms.tests = tests;
+        console.info("%c Tests loaded.", "color: green");
+
+        panelBuilder.buildPanel();
 
         /////////////////////////////////////////////////////////////////////
         // basic elements                                                  //
@@ -17,11 +19,7 @@ Imcms.require(
 
         var buttons = componentsBuilder.buttons;
 
-        var $homeEditLink = buttons.neutral("<a>", {
-                href: "home_edit.html",
-                text: "home + edit"
-            }),
-            $chooseImgLink = buttons.neutral("<a>", {
+        var $chooseImgLink = buttons.neutral("<a>", {
                 href: "choose_img.html",
                 text: "choose image"
             }),
@@ -36,7 +34,6 @@ Imcms.require(
         ;
 
         $("#links-as-buttons").append(
-            $homeEditLink,
             $chooseImgLink,
             $imageEditorLink,
             $MenuEditorBtn
