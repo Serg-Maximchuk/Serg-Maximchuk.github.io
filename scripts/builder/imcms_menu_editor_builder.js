@@ -226,8 +226,8 @@ Imcms.define("imcms-menu-editor-builder",
 
                 var $menuItemRowComponents = [
                     {
-                        "info": $menuItemId,
-                        modifiers: ["id"]
+                        "info": $menuItemId//,
+                        // modifiers: ["id"]
                     },
                     // {"info": $menuItemTitle},
                     {"controls": $controls}
