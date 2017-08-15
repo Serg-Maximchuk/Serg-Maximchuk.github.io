@@ -314,13 +314,15 @@ Function.prototype.applyAsync = function (args, context) {
             addToDependencyTree(id, dependencies);
         }
 
-        Imcms.require(dependencies, function () {
+        var onDependenciesLoad = function () {
             var module = factory.apply(null, arguments);
             if (id) { // register only not anonymous modules
                 registerModule(id, module);
             }
             setTimeout(runModuleLoader);
-        });
+        };
+
+        Imcms.require(dependencies, onDependenciesLoad);
     }
 
     function registerRequires(id, onLoad) {
