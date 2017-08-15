@@ -33,7 +33,7 @@ Imcms.define("imcms-admin-panel-builder",
         function showPageInfo() {
             var $pageInfoWindow = $(".imcms-pop-up-modal[data-menu=pageInfo]");
             (($pageInfoWindow.length) ? $pageInfoWindow : buildPageInfoWindow()).css({"display": "block"});
-            $(".modal").css({"display": "block"});
+            $(".imcms-modal-layout").css({"display": "block"});
         }
 
         function createAdminPanel() {
