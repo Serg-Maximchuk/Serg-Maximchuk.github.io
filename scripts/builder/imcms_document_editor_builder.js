@@ -338,16 +338,92 @@ Imcms.define("imcms-document-editor-builder",
             }];
         }
 
-        return {
-            buildBody: function () {
-                var $head = buildBodyHead();
-                var documentList = getDocuments(); //todo: mock elements for now, implement receiving from server
-                var $body = buildEditorBody(documentList);
+        var $documentEditor, $documentsContainer;
 
-                return [$head, $body];
-            },
+        function closeEditor() {
+            $documentEditor.css("display", "none");
+        }
+
+        function buildHead() {
+            var headBEM = new BEM({
+                block: "imcms-head",
+                elements: {
+                    "title": "imcms-title",
+                    "button": ""
+                }
+            });
+
+            var $title = headBEM.buildElement("title", "<div>", {text: "Document editor"});
+
+            var $closeBtn = components.buttons.closeButton({
+                click: closeEditor
+            });
+
+            return headBEM.buildBlock("<div>", [
+                {"title": $title},
+                {"button": $closeBtn}
+            ]);
+        }
+
+        function buildFooter() {
+            var footerBEM = new BEM({
+                block: "imcms-footer",
+                elements: {}
+            });
+
+            return footerBEM.buildBlock("<div>");
+        }
+
+        function buildBody() {
+            var bodyBEM = new BEM({
+                block: "imcms-document-editor-body",
+                elements: {"body-head": "imcms-body-head"}
+            });
+
+            var $head = buildBodyHead();
+            $documentsContainer = bodyBEM.buildBlock("<div>", [{"body-head": $head}]);
+
+            return $documentsContainer;
+        }
+
+        function loadDocumentEditorContent() {
+            var documentList = getDocuments(); //todo: mock elements for now, implement receiving from server
+            var $editorBody = buildEditorBody(documentList);
+            $documentsContainer.append($editorBody);
+        }
+
+        function buildDocumentEditor() {
+            var documentEditorBEM = new BEM({
+                block: "imcms-document-editor",
+                elements: {
+                    "head": "imcms-head",
+                    "body": "imcms-document-editor-body",
+                    "footer": "imcms-footer"
+                }
+            });
+
+            var $head = buildHead(),
+                $body = buildBody(),
+                $footer = buildFooter();
+
+            setTimeout(loadDocumentEditorContent);
+
+            return documentEditorBEM.buildBlock("<div>", [
+                {"head": $head},
+                {"body": $body},
+                {"footer": $footer}
+            ], {id: "imcms-document-editor"});
+        }
+
+        return {
+            buildBody: buildBody,
+            loadDocumentEditorContent: loadDocumentEditorContent,
             build: function () {
-                var $body = this.buildBody();
+                if (!$documentEditor) {
+                    $documentEditor = buildDocumentEditor().appendTo("body");
+                }
+
+                $documentEditor.css("display", "block");
             }
         };
     }
