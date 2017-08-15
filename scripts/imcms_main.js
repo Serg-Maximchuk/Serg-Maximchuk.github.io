@@ -24,6 +24,7 @@ Imcms = {
                 addon: "jquery-ui"
             },
             // todo: support local modules without defining their paths directly!
+            // components (old)
             "imcms-flags": "imcms_flags.js",
             "imcms-date-picker": "imcms_date_picker.js",
             "imcms-calendar": "imcms_calendar.js",
@@ -39,11 +40,12 @@ Imcms = {
             "imcms-choose-image": "choose_img/imcms_choose_img.js",
             "imcms-content-manager": "choose_img/imcms_content_manager.js",
             "imcms-uuid-generator": "imcms_uuid_generator.js",
-            // editors
+            // editors (old)
             "imcms-image-editor-crop": "image_editor/imcms_image_editor_crop.js",
             "imcms-image-editor-bottom-panel": "image_editor/imcms_image_editor_bottom_panel.js",
             "imcms-image-editor": "image_editor/imcms_image_editor.js",
             // builders
+            // components
             "imcms-components-builder": "imcms_components_builder.js",
             "imcms-buttons-builder": "builder/imcms_buttons_builder.js",
             "imcms-flags-builder": "builder/imcms_flags_builder.js",
@@ -57,8 +59,11 @@ Imcms = {
             "imcms-keywords-builder": "builder/imcms_keywords_builder.js",
             "imcms-primitives-builder": "builder/imcms_primitives_builder.js",
             "imcms-date-time-builder": "builder/imcms_date_time_builder.js",
+            // admin panel
             "imcms-admin-panel-builder": "builder/imcms_admin_panel_builder.js",
+            // page info
             "imcms-page-info-builder": "builder/imcms_page_info_builder.js",
+            // editors
             "imcms-editors-builder": "builder/imcms_editors_builder.js",
             "imcms-menu-editor-builder": "builder/imcms_menu_editor_builder.js",
             "imcms-document-editor-builder": "builder/imcms_document_editor_builder.js"
