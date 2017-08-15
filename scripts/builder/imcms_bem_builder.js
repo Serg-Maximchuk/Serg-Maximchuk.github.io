@@ -53,7 +53,7 @@ Imcms.define("imcms-bem-builder", ["jquery"], function ($) {
             attributesObj = attributesObj || {};
             attributesObj["class"] = this.block + getOriginClass(attributesObj);
 
-            elements = elements.map(function (element) {
+            elements = (elements || []).map(function (element) {
                 var elementName, $element;
 
                 if (blockNameForEach) {
