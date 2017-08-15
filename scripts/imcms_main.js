@@ -35,8 +35,6 @@ Imcms = {
             "imcms-keyword": "imcms_keyword.js",
             "imcms-rest": "imcms_rest.js",
             "imcms-modal-window": "modal_window/imcms_modal_window.js",
-            "imcms-admin-panel": "admin/imcms_admin_panel.js",
-            "imcms-pop-up": "admin/imcms_pop_up.js",
             "imcms-folders": "choose_img/imcms_folders.js",
             "imcms-choose-image": "choose_img/imcms_choose_img.js",
             "imcms-content-manager": "choose_img/imcms_content_manager.js",
