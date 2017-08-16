@@ -14,13 +14,17 @@
     width: 25%;
 }
 
+.imcms-content-manager .imcms-right-side {
+    height: 85%;
+}
+
 .imcms-right-side {
     display: block;
     float: left;
     overflow-y: auto;
     padding: 0 27px;
     width: 75%;
-    height: 85%;
+    height: 80%;
 }
 
 .imcms-footer {

@@ -349,12 +349,7 @@ Imcms.define("imcms-document-editor-builder",
         }
 
         function buildFooter() {
-            var footerBEM = new BEM({
-                block: "imcms-footer",
-                elements: {}
-            });
-
-            return footerBEM.buildBlock("<div>");
+            return windowComponents.buildFooter();
         }
 
         function buildBody() {
