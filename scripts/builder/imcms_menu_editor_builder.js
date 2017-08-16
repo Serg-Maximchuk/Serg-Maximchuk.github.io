@@ -3,8 +3,11 @@
  * 10.08.17.
  */
 Imcms.define("imcms-menu-editor-builder",
-    ["imcms-bem-builder", "imcms-components-builder", "imcms-document-editor-builder", "imcms-modal-window", "jquery"],
-    function (BEM, components, documentEditorBuilder, imcmsModalWindow, $) {
+    [
+        "imcms-bem-builder", "imcms-components-builder", "imcms-document-editor-builder", "imcms-modal-window",
+        "imcms-window-components-builder", "jquery"
+    ],
+    function (BEM, components, documentEditorBuilder, imcmsModalWindow, windowComponents, $) {
         var menuEditorBEM = new BEM({
             block: "imcms-menu-editor",
             elements: {
@@ -20,27 +23,8 @@ Imcms.define("imcms-menu-editor-builder",
             $menuEditor.css("display", "none");
         }
 
-        function buildHead() {
-            var headBEM = new BEM({
-                block: "imcms-head",
-                elements: {
-                    "title": "imcms-title",
-                    "button": ""
-                }
-            });
-
-            var $title = headBEM.buildElement("title", "<div>", {
-                text: "menu editor: "
-            }).append($("<span>", {text: "1001-1"})); // 1001 doc, 1st menu; todo: receive correct values
-
-            var $closeBtn = components.buttons.closeButton({
-                click: closeMenuEditor
-            });
-
-            return headBEM.buildBlock("<div>", [
-                {"title": $title},
-                {"button": $closeBtn}
-            ]);
+        function buildHead() { // 1001 doc, 1st menu; todo: receive correct values
+            return windowComponents.buildHead("menu editor: 1001-1", closeMenuEditor);
         }
 
         function buildBody() {
