@@ -6,6 +6,9 @@ Imcms.define("imcms-content-manager-builder",
     ["imcms-bem-builder", "imcms-window-components-builder", "imcms-components-builder", "jquery"],
     function (BEM, windowComponents, components, $) {
         var $contentManager;
+        var $folders;
+        var $images;
+        var $footer;
 
         function buildContentManager() {
             function closeWindow() {
@@ -25,17 +28,33 @@ Imcms.define("imcms-content-manager-builder",
             }
 
             function buildFooter() {
-                var footerBEM = new BEM({
-                    block: "imcms-footer",
-                    elements: {
-                        "buttons": "imcms-buttons"
+                function openCloseFolders() {
+                    var $btn = $(this);
+                    var btnText, btnState, imagesAndFooterLeft, foldersLeft;
+
+                    if ($btn.attr("data-state") === "close") {
+                        foldersLeft = 0;
+                        imagesAndFooterLeft = "400px";
+                        btnState = "open";
+                        btnText = "hide folders";
+
+                    } else {
+                        foldersLeft = "-400px";
+                        imagesAndFooterLeft = 0;
+                        btnState = "close";
+                        btnText = "show folders";
                     }
-                });
+
+                    $folders.animate({"left": foldersLeft}, 600);
+                    $images.add($footer).animate({"left": imagesAndFooterLeft}, 600);
+                    $btn.attr("data-state", btnState).text(btnText);
+                }
 
                 var $showHideFolders = components.buttons.neutralButton({
                     id: "openCloseFolders",
                     text: "Show folders",
-                    "data-state": "close"
+                    "data-state": "close",
+                    click: openCloseFolders
                 });
 
                 var $uploadNewImage = components.buttons.positiveButton({
@@ -50,11 +69,7 @@ Imcms.define("imcms-content-manager-builder",
                     click: closeWindow // fixme: just closing now, should be save and close
                 });
 
-                var $buttons = footerBEM.makeBlockElement("buttons",
-                    components.buttons.buttonsContainer("<div>", [$showHideFolders, $uploadNewImage, $saveAndClose])
-                );
-
-                return footerBEM.buildBlock("<div>", [{"buttons": $buttons}]);
+                return windowComponents.buildFooter([$showHideFolders, $uploadNewImage, $saveAndClose]);
             }
 
             var contentManagerBEM = new BEM({
@@ -68,9 +83,9 @@ Imcms.define("imcms-content-manager-builder",
             });
 
             var $head = buildHead();
-            var $folders = buildFolders();
-            var $images = buildImages();
-            var $footer = buildFooter();
+            $folders = buildFolders();
+            $images = buildImages();
+            $footer = buildFooter();
 
             return contentManagerBEM.buildBlock("<div>", [
                 {"head": $head},
