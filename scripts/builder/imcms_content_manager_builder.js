@@ -3,8 +3,8 @@
  * 16.08.17.
  */
 Imcms.define("imcms-content-manager-builder",
-    ["imcms-bem-builder", "imcms-window-components-builder", "imcms-components-builder", "jquery"],
-    function (BEM, windowComponents, components, $) {
+    ["imcms-bem-builder", "imcms-window-components-builder", "imcms-components-builder", "imcms-folders-rest-api", "jquery"],
+    function (BEM, windowComponents, components, foldersREST, $) {
         var $contentManager;
         var $folders;
         var $images;
@@ -52,20 +52,11 @@ Imcms.define("imcms-content-manager-builder",
                 return controlsBEM.buildBlock("<div>", [
                     {"control-close": $closeFoldersBtn},
                     {"control": $createFolderBtn}
-                ])
+                ]);
             }
 
             function buildFolders() {
-                var leftSideBEM = new BEM({
-                    block: "imcms-left-side",
-                    elements: {
-                        "controls": "imcms-main-folders-controls",
-                        "folders": "imcms-folders"
-                    }
-                });
-
                 $controls = buildControls();
-
                 return leftSideBEM.buildBlock("<div>", [{"controls": $controls}]);
             }
 
@@ -141,10 +132,32 @@ Imcms.define("imcms-content-manager-builder",
             ]);
         }
 
+        var leftSideBEM = new BEM({
+            block: "imcms-left-side",
+            elements: {
+                "controls": "imcms-main-folders-controls",
+                "folders": "imcms-folders"
+            }
+        });
+
+        function buildFoldersTrees() {
+            return [];
+        }
+
+        function buildFolders(folders) {
+            var $foldersTrees = buildFoldersTrees(folders);
+            $folders.append($foldersTrees);
+        }
+
+        function loadFoldersContent() {
+            foldersREST.read("/", buildFolders);
+        }
+
         return {
             build: function () {
                 if (!$contentManager) {
                     $contentManager = buildContentManager().appendTo("body");
+                    setTimeout(loadFoldersContent);
                 }
 
                 $contentManager.css("display", "block");
