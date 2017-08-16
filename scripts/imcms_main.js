@@ -72,7 +72,9 @@ Imcms = {
             // content manager
             "imcms-content-manager-builder": "builder/imcms_content_manager_builder.js",
             // rest api
-            "imcms-folders-rest-api": "rest/imcms_folders_rest_api.js"
+            "imcms-folders-rest-api": "rest/imcms_folders_rest_api.js",
+            // loaders
+            "imcms-image-content-loader": "loaders/imcms_image_content_loader.js"
         }
     }
 };
