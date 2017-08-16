@@ -7,8 +7,12 @@ Imcms.define("imcms-content-manager-builder", ["imcms-bem-builder", "imcms-windo
         var $contentManager;
 
         function buildContentManager() {
+            function closeWindow() {
+                $contentManager.css("display", "none");
+            }
+
             function buildHead() {
-                return $("<div>");
+                return windowComponents.buildHead("Content manager", closeWindow);
             }
 
             function buildFolders() {
