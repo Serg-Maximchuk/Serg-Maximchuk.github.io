@@ -66,7 +66,9 @@ Imcms = {
             // editors
             "imcms-editors-builder": "builder/imcms_editors_builder.js",
             "imcms-menu-editor-builder": "builder/imcms_menu_editor_builder.js",
-            "imcms-document-editor-builder": "builder/imcms_document_editor_builder.js"
+            "imcms-document-editor-builder": "builder/imcms_document_editor_builder.js",
+            // content manager
+            "imcms-content-manager-builder": "builder/imcms_content_manager_builder.js"
         }
     }
 };
