@@ -3,11 +3,14 @@
  * 16.08.17.
  */
 Imcms.define("imcms-content-manager-builder",
-    ["imcms-bem-builder", "imcms-window-components-builder", "imcms-components-builder", "imcms-folders-rest-api", "jquery"],
-    function (BEM, windowComponents, components, foldersREST, $) {
+    [
+        "imcms-bem-builder", "imcms-window-components-builder", "imcms-components-builder",
+        "imcms-image-content-loader", "jquery"
+    ],
+    function (BEM, windowComponents, components, imageContentLoader, $) {
         var $contentManager;
-        var $folders;
-        var $images;
+        var $foldersContainer;
+        var $imagesContainer;
         var $footer;
         var $showHideFolders;
         var $controls;
@@ -55,13 +58,9 @@ Imcms.define("imcms-content-manager-builder",
                 ]);
             }
 
-            function buildFolders() {
+            function buildFoldersContainer() {
                 $controls = buildControls();
                 return leftSideBEM.buildBlock("<div>", [{"controls": $controls}]);
-            }
-
-            function buildImages() {
-                return $("<div>");
             }
 
             function buildFooter() {
@@ -82,8 +81,8 @@ Imcms.define("imcms-content-manager-builder",
                         btnText = "show folders";
                     }
 
-                    $folders.animate({"left": foldersLeft}, 600);
-                    $images.add($footer).animate({"left": imagesAndFooterLeft}, 600);
+                    $foldersContainer.animate({"left": foldersLeft}, 600);
+                    $imagesContainer.add($footer).animate({"left": imagesAndFooterLeft}, 600);
                     $btn.attr("data-state", btnState).text(btnText);
                 }
 
@@ -120,14 +119,14 @@ Imcms.define("imcms-content-manager-builder",
             });
 
             var $head = buildHead();
-            $folders = buildFolders();
-            $images = buildImages();
+            $foldersContainer = buildFoldersContainer();
+            $imagesContainer = contentManagerBEM.buildElement("right-side", "<div>");
             $footer = buildFooter();
 
             return contentManagerBEM.buildBlock("<div>", [
                 {"head": $head},
-                {"left-side": $folders},
-                {"right-side": $images},
+                {"left-side": $foldersContainer},
+                {"right-side": $imagesContainer},
                 {"footer": $footer}
             ]);
         }
@@ -140,24 +139,24 @@ Imcms.define("imcms-content-manager-builder",
             }
         });
 
-        function buildFoldersTrees() {
-            return [];
-        }
-
-        function buildFolders(folders) {
-            var $foldersTrees = buildFoldersTrees(folders);
-            $folders.append($foldersTrees);
-        }
-
-        function loadFoldersContent() {
-            foldersREST.read("/", buildFolders);
+        function buildContent() {
+            imageContentLoader.loadContent({
+                foldersContainer: $foldersContainer,
+                imagesContainer: $imagesContainer
+            });
+            // imageLoader.getImageFolders(function (foldersTree) {
+            //     var $foldersTree = foldersBuilder.buildFolders(foldersTree);
+            //     $foldersContainer.append($foldersTree);
+            //     imageLoader.getRootFolder();
+            //     imageLoader.getImages()
+            // });
         }
 
         return {
             build: function () {
                 if (!$contentManager) {
                     $contentManager = buildContentManager().appendTo("body");
-                    setTimeout(loadFoldersContent);
+                    setTimeout(buildContent);
                 }
 
                 $contentManager.css("display", "block");
