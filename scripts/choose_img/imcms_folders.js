@@ -85,7 +85,7 @@ Imcms.define("imcms-folders", ["imcms-rest", "imcms-modal-window", "jquery"], fu
     /*builderFolder functions*/
     function createFolderWrap(level) {
         return $("<div>", {
-            "class": (level === 1) ? "imcms-left-side__folders imcms-folders" : "imcms-folders",
+            "class": (level === 1) ? "imcms-left-side__folders imcms-folders" : "imcms-folders imcms-subfolders--close",
             "data-folders-lvl": level
         });
     }
@@ -418,42 +418,36 @@ Imcms.define("imcms-folders", ["imcms-rest", "imcms-modal-window", "jquery"], fu
         $currentFolder.find(".imcms-control--create").unbind("click");
     }
 
+    function buildFoldersFromTree(folders) {
+        return folders.map(buildFolderWrap);
+    }
+
     return {
         init: function () {
             viewModel = {
                 foldersArea: $(document).find(".imcms-content-manager__left-side"),
                 folders: getFolders(),
-                controls: [
-                    {
-                        name: "create",
-                        click: createNewLowLevelFolder
-                    },
-                    {
-                        name: "rename",
-                        click: renameFolder
-                    },
-                    {
-                        name: "remove",
-                        click: removeFolder
-                    },
-                    {
-                        name: "move",
-                        click: moveFolder
-                    }
-                ]
+                controls: [{
+                    name: "create",
+                    click: createNewLowLevelFolder
+                }, {
+                    name: "rename",
+                    click: renameFolder
+                }, {
+                    name: "remove",
+                    click: removeFolder
+                }, {
+                    name: "move",
+                    click: moveFolder
+                }]
             };
 
             folderBuilder(viewModel.folders);
 
             $(function () {
                 $(".imcms-main-folders-controls .imcms-control--create").click(createNewFirstLevelFolder);
-                $(".imcms-content-manager__left-side").find(".imcms-folders")
-                    .each(function () {
-                        if ($(this).attr("data-folders-lvl") !== "1") {
-                            $(this).addClass("imcms-subfolders--close");
-                        }
-                    });
             });
-        }
+        },
+        buildFolders: buildFoldersFromTree
     };
 });

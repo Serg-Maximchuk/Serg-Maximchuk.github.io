@@ -144,12 +144,6 @@ Imcms.define("imcms-content-manager-builder",
                 foldersContainer: $foldersContainer,
                 imagesContainer: $imagesContainer
             });
-            // imageLoader.getImageFolders(function (foldersTree) {
-            //     var $foldersTree = foldersBuilder.buildFolders(foldersTree);
-            //     $foldersContainer.append($foldersTree);
-            //     imageLoader.getRootFolder();
-            //     imageLoader.getImages()
-            // });
         }
 
         return {
