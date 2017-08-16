@@ -59,7 +59,7 @@ Imcms = {
             "imcms-keywords-builder": "builder/imcms_keywords_builder.js",
             "imcms-primitives-builder": "builder/imcms_primitives_builder.js",
             "imcms-date-time-builder": "builder/imcms_date_time_builder.js",
-            "imcms-window-builder": "builder/imcms_window_builder.js",
+            "imcms-window-components-builder": "builder/imcms_window_components_builder.js",
             // admin panel
             "imcms-admin-panel-builder": "builder/imcms_admin_panel_builder.js",
             // page info
