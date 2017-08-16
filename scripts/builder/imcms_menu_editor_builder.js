@@ -46,25 +46,12 @@ Imcms.define("imcms-menu-editor-builder",
         }
 
         function buildFooter() {
-            var footerBEM = new BEM({
-                block: "imcms-footer",
-                elements: {
-                    "buttons": "imcms-buttons"
-                }
-            });
-
             var $saveAndClose = components.buttons.saveButton({
                 text: "Save and close",
                 click: closeMenuEditor // fixme: just closing now, should be save and close
             });
 
-            var $buttons = footerBEM.makeBlockElement("buttons",
-                components.buttons.buttonsContainer("<div>", [$saveAndClose])
-            );
-
-            return footerBEM.buildBlock("<div>", [
-                {"buttons": $buttons}
-            ]);
+            return windowComponents.buildFooter([$saveAndClose]);
         }
 
         function getMenuElementsTree() {

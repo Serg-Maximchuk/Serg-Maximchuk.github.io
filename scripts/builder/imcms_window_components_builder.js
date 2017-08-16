@@ -20,6 +20,23 @@ Imcms.define("imcms-window-components-builder", ["imcms-bem-builder", "imcms-com
                 {"title": $title},
                 {"button": $closeBtn}
             ]);
+        },
+        buildFooter: function (buttons) {
+            var footerBEM = new BEM({
+                block: "imcms-footer",
+                elements: {
+                    "buttons": "imcms-buttons"
+                }
+            });
+
+            var elements = [];
+
+            if (buttons) {
+                var $buttons = components.buttons.buttonsContainer("<div>", buttons);
+                elements = [{"buttons": $buttons}];
+            }
+
+            return footerBEM.buildBlock("<div>", elements);
         }
     };
 });
