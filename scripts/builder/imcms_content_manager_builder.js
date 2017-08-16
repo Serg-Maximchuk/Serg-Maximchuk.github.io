@@ -2,8 +2,9 @@
  * Created by Serhii Maksymchuk from Ubrainians for imCode
  * 16.08.17.
  */
-Imcms.define("imcms-content-manager-builder", ["imcms-bem-builder", "imcms-window-components-builder", "jquery"],
-    function (BEM, windowComponents, $) {
+Imcms.define("imcms-content-manager-builder",
+    ["imcms-bem-builder", "imcms-window-components-builder", "imcms-components-builder", "jquery"],
+    function (BEM, windowComponents, components, $) {
         var $contentManager;
 
         function buildContentManager() {
@@ -24,7 +25,36 @@ Imcms.define("imcms-content-manager-builder", ["imcms-bem-builder", "imcms-windo
             }
 
             function buildFooter() {
-                return $("<div>");
+                var footerBEM = new BEM({
+                    block: "imcms-footer",
+                    elements: {
+                        "buttons": "imcms-buttons"
+                    }
+                });
+
+                var $showHideFolders = components.buttons.neutralButton({
+                    id: "openCloseFolders",
+                    text: "Show folders",
+                    "data-state": "close"
+                });
+
+                var $uploadNewImage = components.buttons.positiveButton({
+                    text: "Upload",
+                    click: function () {
+                        console.log("%c Not implemented feature: upload new image", "color: red;");
+                    }
+                });
+
+                var $saveAndClose = components.buttons.saveButton({
+                    text: "Save and close",
+                    click: closeWindow // fixme: just closing now, should be save and close
+                });
+
+                var $buttons = footerBEM.makeBlockElement("buttons",
+                    components.buttons.buttonsContainer("<div>", [$showHideFolders, $uploadNewImage, $saveAndClose])
+                );
+
+                return footerBEM.buildBlock("<div>", [{"buttons": $buttons}]);
             }
 
             var contentManagerBEM = new BEM({
