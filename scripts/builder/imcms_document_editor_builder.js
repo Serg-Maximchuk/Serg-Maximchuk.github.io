@@ -3,8 +3,11 @@
  * 14.08.17.
  */
 Imcms.define("imcms-document-editor-builder",
-    ["imcms-bem-builder", "imcms-page-info-builder", "imcms-components-builder", "imcms-primitives-builder"],
-    function (BEM, pageInfoBuilder, components, primitives) {
+    [
+        "imcms-bem-builder", "imcms-page-info-builder", "imcms-components-builder", "imcms-primitives-builder",
+        "imcms-window-components-builder"
+    ],
+    function (BEM, pageInfoBuilder, components, primitives, windowComponents) {
         function buildBodyHead() {
             var bodyHeadBEM = new BEM({
                 block: "imcms-document-editor-head",
@@ -342,24 +345,7 @@ Imcms.define("imcms-document-editor-builder",
         }
 
         function buildHead() {
-            var headBEM = new BEM({
-                block: "imcms-head",
-                elements: {
-                    "title": "imcms-title",
-                    "button": ""
-                }
-            });
-
-            var $title = headBEM.buildElement("title", "<div>", {text: "Document editor"});
-
-            var $closeBtn = components.buttons.closeButton({
-                click: closeEditor
-            });
-
-            return headBEM.buildBlock("<div>", [
-                {"title": $title},
-                {"button": $closeBtn}
-            ]);
+            return windowComponents.buildHead("Document editor", closeEditor);
         }
 
         function buildFooter() {
