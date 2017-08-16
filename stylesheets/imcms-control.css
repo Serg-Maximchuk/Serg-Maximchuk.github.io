@@ -7,23 +7,19 @@
 }
 
 .imcms-control--move {
-    background-image: url("../img/controls/icon_folder_controll_move_hover.png");
-    opacity: 0.5;
+    background-image: url("../img/controls/icon_folder_controll_reverse_move.png");
 }
 
 .imcms-control--create {
-    background-image: url("../img/controls/icon_folder_controll_create_hover.png");
-    opacity: 0.5;
+    background-image: url("../img/controls/icon_folder_controll_create.png");
 }
 
 .imcms-control--rename {
-    background-image: url("../img/controls/icon_folder_controll_edit_hover.png");
-    opacity: 0.5;
+    background-image: url("../img/controls/icon_folder_controll_reverse_edit.png");
 }
 
 .imcms-control--remove {
-    background-image: url("../img/controls/icon_folder_controll_remove_hover.png");
-    opacity: 0.5;
+    background-image: url("../img/controls/icon_folder_controll_reverse_remove.png");
 }
 
 .imcms-folder__controls .imcms-control--move {
@@ -44,20 +40,16 @@
 
 .imcms-control--move:hover {
     background-image: url("../img/controls/icon_folder_controll_move_hover.png");
-    opacity: 1;
 }
 
 .imcms-control--create:hover {
     background-image: url("../img/controls/icon_folder_controll_create_hover.png");
-    opacity: 1;
 }
 
 .imcms-control--rename:hover {
     background-image: url("../img/controls/icon_folder_controll_edit_hover.png");
-    opacity: 1;
 }
 
 .imcms-control--remove:hover {
     background-image: url("../img/controls/icon_folder_controll_remove_hover.png");
-    opacity: 1;
 }
