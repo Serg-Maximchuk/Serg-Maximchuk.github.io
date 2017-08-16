@@ -3,5 +3,9 @@
  * 16.08.17.
  */
 Imcms.define("imcms-content-manager-builder", [], function () {
-    return {};
+    return {
+        build: function () {
+
+        }
+    };
 });
