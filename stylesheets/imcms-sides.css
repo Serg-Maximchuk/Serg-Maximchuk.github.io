@@ -20,7 +20,7 @@
     overflow-y: auto;
     padding: 0 27px;
     width: 75%;
-    height: 80%;
+    height: 85%;
 }
 
 .imcms-footer {
@@ -28,7 +28,7 @@
     float: left;
     padding: 27px;
     width: 75%;
-    height: 20%;
+    height: 15%;
 }
 
 .imcms-footer button {
