@@ -7,7 +7,7 @@ Imcms.define("imcms-folders-rest-api", [], function () {
         create: function (data, callback) {
             callback.call();
         },
-        read: function (callback) {
+        read: function (path, callback) {
             var mockData = [
                 "/srv/www/tomcat/instance/182/virt/webapp/WEB-INF/images",
                 "/srv/www/tomcat/instance/182/virt/webapp/WEB-INF/images/images_2019",
