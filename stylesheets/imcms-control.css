@@ -26,6 +26,22 @@
     opacity: 0.5;
 }
 
+.imcms-folder__controls .imcms-control--move {
+    background-image: url("../img/controls/icon_folder_controll_move.png");
+}
+
+.imcms-folder__controls .imcms-control--create {
+    background-image: url("../img/controls/icon_folder_controll_create.png");
+}
+
+.imcms-folder__controls .imcms-control--rename {
+    background-image: url("../img/controls/icon_folder_controll_edit.png");
+}
+
+.imcms-folder__controls .imcms-control--remove {
+    background-image: url("../img/controls/icon_folder_controll_remove.png");
+}
+
 .imcms-control--move:hover {
     background-image: url("../img/controls/icon_folder_controll_move_hover.png");
     opacity: 1;
