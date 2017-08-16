@@ -20,7 +20,15 @@ Imcms.define("imcms-content-manager-builder",
             }
 
             function buildFolders() {
-                return $("<div>");
+                var leftSideBEM = new BEM({
+                    block: "imcms-left-side",
+                    elements: {
+                        "controls": "imcms-main-folders-controls",
+                        "folders": "imcms-folders"
+                    }
+                });
+
+                return leftSideBEM.buildBlock("<div>", []);
             }
 
             function buildImages() {
