@@ -74,7 +74,9 @@ Imcms = {
             // rest api
             "imcms-folders-rest-api": "rest/imcms_folders_rest_api.js",
             // loaders
-            "imcms-image-content-loader": "loaders/imcms_image_content_loader.js"
+            "imcms-image-content-loader": "loaders/imcms_image_content_loader.js",
+            // components
+            "imcms-folders-tree-parser": "components/imcms_folders_tree_parser.js"
         }
     }
 };
