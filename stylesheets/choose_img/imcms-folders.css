@@ -10,7 +10,8 @@
     clear: both;
 }
 
-.imcms-subfolders--close {
+.imcms-folders--close,
+.imcms-folders__subfolder {
     display: none;
 }
 

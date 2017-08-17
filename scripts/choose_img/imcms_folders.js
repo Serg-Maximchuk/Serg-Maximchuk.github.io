@@ -85,7 +85,7 @@ Imcms.define("imcms-folders", ["imcms-rest", "imcms-modal-window", "jquery"], fu
     /*builderFolder functions*/
     function createFolderWrap(level) {
         return $("<div>", {
-            "class": (level === 1) ? "imcms-left-side__folders imcms-folders" : "imcms-folders imcms-subfolders--close",
+            "class": (level === 1) ? "imcms-left-side__folders imcms-folders" : "imcms-folders imcms-folders--close",
             "data-folders-lvl": level
         });
     }
@@ -332,7 +332,7 @@ Imcms.define("imcms-folders", ["imcms-rest", "imcms-modal-window", "jquery"], fu
 
             var newFolderClass = ($folderButton.hasClass("imcms-folder-btn--open"))
                 ? ""
-                : "imcms-subfolders--close";
+                : "imcms-folders--close";
 
             var $newFolder = createFolderWrap(newFolder.level)
                 .addClass(newFolderClass)
