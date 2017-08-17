@@ -69,13 +69,6 @@ Imcms.define("imcms-files-rest-api", [], function () {
                         path: "images/images_2018",
                         files: [
                             {
-                                name: "sample2",
-                                path: "img/choose_img/img2.png",
-                                format: "PNG",
-                                uploaded: "16.02.2017",
-                                resolution: "635x120",
-                                size: "35kB"
-                            }, {
                                 name: "sample3",
                                 path: "img/choose_img/img3.png",
                                 format: "BMP",
