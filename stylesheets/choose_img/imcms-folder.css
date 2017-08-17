@@ -17,6 +17,10 @@
     background-color: #f3f3fc;
 }
 
+.imcms-folder.imcms-folder--active:hover {
+    background-color: #b4b4bd;
+}
+
 .imcms-folder--active .imcms-folder__name {
     color: #2f4047;
 }
