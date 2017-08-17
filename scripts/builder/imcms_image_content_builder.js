@@ -3,8 +3,8 @@
  * 16.08.17.
  */
 Imcms.define("imcms-image-content-builder",
-    ["imcms-files-rest-api", "imcms-bem-builder"],
-    function (fileREST, BEM) {
+    ["imcms-files-rest-api", "imcms-bem-builder", "jquery"],
+    function (fileREST, BEM, $) {
         var $foldersContainer, $imagesContainer;
 
         var viewModel = {
@@ -77,7 +77,17 @@ Imcms.define("imcms-image-content-builder",
         }
 
         function openSubFolders() {
-            // todo: implement
+            var $button = $(this);
+            var $subFolder = $button.toggleClass("imcms-folder-btn--open")
+                .parent()
+                .next(".imcms-folders__subfolder");
+
+            var isOpen = $button.hasClass("imcms-folder-btn--open");
+
+            while ($subFolder.length) {
+                $subFolder.css("display", isOpen ? "block" : "none");
+                $subFolder = $subFolder.next(".imcms-folders__subfolder");
+            }
         }
 
         function buildFolder(subfolder) {
