@@ -15,21 +15,21 @@ Imcms.define("imcms-files-rest-api", [], function () {
                     {
                         name: "sample1",
                         path: "img/choose_img/img1.png",
-                        format: "JPG",
+                        format: "jpg",
                         uploaded: "15.02.2017",
                         resolution: "635x120",
                         size: "37kB"
                     }, {
                         name: "sample3",
                         path: "img/choose_img/img3.png",
-                        format: "BMP",
+                        format: "bmp",
                         uploaded: "17.02.2017",
                         resolution: "635x120",
                         size: "34kB"
                     }, {
                         name: "sample4",
                         path: "img/choose_img/img4.png",
-                        format: "GIF",
+                        format: "gif",
                         uploaded: "18.02.2017",
                         resolution: "64x64",
                         size: "16kB"
@@ -43,21 +43,21 @@ Imcms.define("imcms-files-rest-api", [], function () {
                             {
                                 name: "sample1",
                                 path: "img/choose_img/img1.png",
-                                format: "JPG",
+                                format: "jpg",
                                 uploaded: "15.02.2017",
                                 resolution: "635x120",
                                 size: "37kB"
                             }, {
                                 name: "sample2",
                                 path: "img/choose_img/img2.png",
-                                format: "PNG",
+                                format: "png",
                                 uploaded: "16.02.2017",
                                 resolution: "635x120",
                                 size: "35kB"
                             }, {
                                 name: "sample4",
                                 path: "img/choose_img/img4.png",
-                                format: "GIF",
+                                format: "gif",
                                 uploaded: "18.02.2017",
                                 resolution: "64x64",
                                 size: "16kB"
@@ -71,14 +71,14 @@ Imcms.define("imcms-files-rest-api", [], function () {
                             {
                                 name: "sample3",
                                 path: "img/choose_img/img3.png",
-                                format: "BMP",
+                                format: "bmp",
                                 uploaded: "17.02.2017",
                                 resolution: "635x120",
                                 size: "34kB"
                             }, {
                                 name: "sample4",
                                 path: "img/choose_img/img4.png",
-                                format: "GIF",
+                                format: "gif",
                                 uploaded: "18.02.2017",
                                 resolution: "64x64",
                                 size: "16kB"
@@ -92,21 +92,21 @@ Imcms.define("imcms-files-rest-api", [], function () {
                                     {
                                         name: "sample1",
                                         path: "img/choose_img/img1.png",
-                                        format: "JPG",
+                                        format: "jpg",
                                         uploaded: "15.02.2017",
                                         resolution: "635x120",
                                         size: "37kB"
                                     }, {
                                         name: "sample2",
                                         path: "img/choose_img/img2.png",
-                                        format: "PNG",
+                                        format: "png",
                                         uploaded: "16.02.2017",
                                         resolution: "635x120",
                                         size: "35kB"
                                     }, {
                                         name: "sample3",
                                         path: "img/choose_img/img3.png",
-                                        format: "BMP",
+                                        format: "bmp",
                                         uploaded: "17.02.2017",
                                         resolution: "635x120",
                                         size: "34kB"
@@ -120,21 +120,21 @@ Imcms.define("imcms-files-rest-api", [], function () {
                                             {
                                                 name: "sample1",
                                                 path: "img/choose_img/img1.png",
-                                                format: "JPG",
+                                                format: "jpg",
                                                 uploaded: "15.02.2017",
                                                 resolution: "635x120",
                                                 size: "37kB"
                                             }, {
                                                 name: "sample2",
                                                 path: "img/choose_img/img2.png",
-                                                format: "PNG",
+                                                format: "png",
                                                 uploaded: "16.02.2017",
                                                 resolution: "635x120",
                                                 size: "35kB"
                                             }, {
                                                 name: "sample4",
                                                 path: "img/choose_img/img4.png",
-                                                format: "GIF",
+                                                format: "gif",
                                                 uploaded: "18.02.2017",
                                                 resolution: "64x64",
                                                 size: "16kB"
@@ -148,28 +148,28 @@ Imcms.define("imcms-files-rest-api", [], function () {
                                             {
                                                 name: "sample1",
                                                 path: "img/choose_img/img1.png",
-                                                format: "JPG",
+                                                format: "jpg",
                                                 uploaded: "15.02.2017",
                                                 resolution: "635x120",
                                                 size: "37kB"
                                             }, {
                                                 name: "sample2",
                                                 path: "img/choose_img/img2.png",
-                                                format: "PNG",
+                                                format: "png",
                                                 uploaded: "16.02.2017",
                                                 resolution: "635x120",
                                                 size: "35kB"
                                             }, {
                                                 name: "sample3",
                                                 path: "img/choose_img/img3.png",
-                                                format: "BMP",
+                                                format: "bmp",
                                                 uploaded: "17.02.2017",
                                                 resolution: "635x120",
                                                 size: "34kB"
                                             }, {
                                                 name: "sample4",
                                                 path: "img/choose_img/img4.png",
-                                                format: "GIF",
+                                                format: "gif",
                                                 uploaded: "18.02.2017",
                                                 resolution: "64x64",
                                                 size: "16kB"
@@ -182,21 +182,21 @@ Imcms.define("imcms-files-rest-api", [], function () {
                                                 {
                                                     name: "sample1",
                                                     path: "img/choose_img/img1.png",
-                                                    format: "JPG",
+                                                    format: "jpg",
                                                     uploaded: "15.02.2017",
                                                     resolution: "635x120",
                                                     size: "37kB"
                                                 }, {
                                                     name: "sample2",
                                                     path: "img/choose_img/img2.png",
-                                                    format: "PNG",
+                                                    format: "png",
                                                     uploaded: "16.02.2017",
                                                     resolution: "635x120",
                                                     size: "35kB"
                                                 }, {
                                                     name: "sample3",
                                                     path: "img/choose_img/img3.png",
-                                                    format: "BMP",
+                                                    format: "bmp",
                                                     uploaded: "17.02.2017",
                                                     resolution: "635x120",
                                                     size: "34kB"
@@ -215,21 +215,21 @@ Imcms.define("imcms-files-rest-api", [], function () {
                             {
                                 name: "sample2",
                                 path: "img/choose_img/img2.png",
-                                format: "PNG",
+                                format: "png",
                                 uploaded: "16.02.2017",
                                 resolution: "635x120",
                                 size: "35kB"
                             }, {
                                 name: "sample3",
                                 path: "img/choose_img/img3.png",
-                                format: "BMP",
+                                format: "bmp",
                                 uploaded: "17.02.2017",
                                 resolution: "635x120",
                                 size: "34kB"
                             }, {
                                 name: "sample4",
                                 path: "img/choose_img/img4.png",
-                                format: "GIF",
+                                format: "gif",
                                 uploaded: "18.02.2017",
                                 resolution: "64x64",
                                 size: "16kB"
@@ -243,14 +243,14 @@ Imcms.define("imcms-files-rest-api", [], function () {
                                     {
                                         name: "sample1",
                                         path: "img/choose_img/img1.png",
-                                        format: "JPG",
+                                        format: "jpg",
                                         uploaded: "15.02.2017",
                                         resolution: "635x120",
                                         size: "37kB"
                                     }, {
                                         name: "sample4",
                                         path: "img/choose_img/img4.png",
-                                        format: "GIF",
+                                        format: "gif",
                                         uploaded: "18.02.2017",
                                         resolution: "64x64",
                                         size: "16kB"
@@ -264,7 +264,7 @@ Imcms.define("imcms-files-rest-api", [], function () {
                                             {
                                                 name: "sample1",
                                                 path: "img/choose_img/img1.png",
-                                                format: "JPG",
+                                                format: "jpg",
                                                 uploaded: "15.02.2017",
                                                 resolution: "635x120",
                                                 size: "37kB"
@@ -278,28 +278,28 @@ Imcms.define("imcms-files-rest-api", [], function () {
                                             {
                                                 name: "sample1",
                                                 path: "img/choose_img/img1.png",
-                                                format: "JPG",
+                                                format: "jpg",
                                                 uploaded: "15.02.2017",
                                                 resolution: "635x120",
                                                 size: "37kB"
                                             }, {
                                                 name: "sample2",
                                                 path: "img/choose_img/img2.png",
-                                                format: "PNG",
+                                                format: "png",
                                                 uploaded: "16.02.2017",
                                                 resolution: "635x120",
                                                 size: "35kB"
                                             }, {
                                                 name: "sample3",
                                                 path: "img/choose_img/img3.png",
-                                                format: "BMP",
+                                                format: "bmp",
                                                 uploaded: "17.02.2017",
                                                 resolution: "635x120",
                                                 size: "34kB"
                                             }, {
                                                 name: "sample4",
                                                 path: "img/choose_img/img4.png",
-                                                format: "GIF",
+                                                format: "gif",
                                                 uploaded: "18.02.2017",
                                                 resolution: "64x64",
                                                 size: "16kB"
@@ -312,14 +312,14 @@ Imcms.define("imcms-files-rest-api", [], function () {
                                                 {
                                                     name: "sample2",
                                                     path: "img/choose_img/img2.png",
-                                                    format: "PNG",
+                                                    format: "png",
                                                     uploaded: "16.02.2017",
                                                     resolution: "635x120",
                                                     size: "35kB"
                                                 }, {
                                                     name: "sample3",
                                                     path: "img/choose_img/img3.png",
-                                                    format: "BMP",
+                                                    format: "bmp",
                                                     uploaded: "17.02.2017",
                                                     resolution: "635x120",
                                                     size: "34kB"
@@ -336,21 +336,21 @@ Imcms.define("imcms-files-rest-api", [], function () {
                                     {
                                         name: "sample1",
                                         path: "img/choose_img/img1.png",
-                                        format: "JPG",
+                                        format: "jpg",
                                         uploaded: "15.02.2017",
                                         resolution: "635x120",
                                         size: "37kB"
                                     }, {
                                         name: "sample3",
                                         path: "img/choose_img/img3.png",
-                                        format: "BMP",
+                                        format: "bmp",
                                         uploaded: "17.02.2017",
                                         resolution: "635x120",
                                         size: "34kB"
                                     }, {
                                         name: "sample4",
                                         path: "img/choose_img/img4.png",
-                                        format: "GIF",
+                                        format: "gif",
                                         uploaded: "18.02.2017",
                                         resolution: "64x64",
                                         size: "16kB"
@@ -366,14 +366,14 @@ Imcms.define("imcms-files-rest-api", [], function () {
                             {
                                 name: "sample1",
                                 path: "img/choose_img/img1.png",
-                                format: "JPG",
+                                format: "jpg",
                                 uploaded: "15.02.2017",
                                 resolution: "635x120",
                                 size: "37kB"
                             }, {
                                 name: "sample4",
                                 path: "img/choose_img/img4.png",
-                                format: "GIF",
+                                format: "gif",
                                 uploaded: "18.02.2017",
                                 resolution: "64x64",
                                 size: "16kB"
@@ -387,14 +387,14 @@ Imcms.define("imcms-files-rest-api", [], function () {
                                     {
                                         name: "sample1",
                                         path: "img/choose_img/img1.png",
-                                        format: "JPG",
+                                        format: "jpg",
                                         uploaded: "15.02.2017",
                                         resolution: "635x120",
                                         size: "37kB"
                                     }, {
                                         name: "sample2",
                                         path: "img/choose_img/img2.png",
-                                        format: "PNG",
+                                        format: "png",
                                         uploaded: "16.02.2017",
                                         resolution: "635x120",
                                         size: "35kB"
@@ -408,21 +408,21 @@ Imcms.define("imcms-files-rest-api", [], function () {
                                             {
                                                 name: "sample2",
                                                 path: "img/choose_img/img2.png",
-                                                format: "PNG",
+                                                format: "png",
                                                 uploaded: "16.02.2017",
                                                 resolution: "635x120",
                                                 size: "35kB"
                                             }, {
                                                 name: "sample3",
                                                 path: "img/choose_img/img3.png",
-                                                format: "BMP",
+                                                format: "bmp",
                                                 uploaded: "17.02.2017",
                                                 resolution: "635x120",
                                                 size: "34kB"
                                             }, {
                                                 name: "sample4",
                                                 path: "img/choose_img/img4.png",
-                                                format: "GIF",
+                                                format: "gif",
                                                 uploaded: "18.02.2017",
                                                 resolution: "64x64",
                                                 size: "16kB"
@@ -436,14 +436,14 @@ Imcms.define("imcms-files-rest-api", [], function () {
                                             {
                                                 name: "sample2",
                                                 path: "img/choose_img/img2.png",
-                                                format: "PNG",
+                                                format: "png",
                                                 uploaded: "16.02.2017",
                                                 resolution: "635x120",
                                                 size: "35kB"
                                             }, {
                                                 name: "sample4",
                                                 path: "img/choose_img/img4.png",
-                                                format: "GIF",
+                                                format: "gif",
                                                 uploaded: "18.02.2017",
                                                 resolution: "64x64",
                                                 size: "16kB"
@@ -456,28 +456,28 @@ Imcms.define("imcms-files-rest-api", [], function () {
                                                 {
                                                     name: "sample1",
                                                     path: "img/choose_img/img1.png",
-                                                    format: "JPG",
+                                                    format: "jpg",
                                                     uploaded: "15.02.2017",
                                                     resolution: "635x120",
                                                     size: "37kB"
                                                 }, {
                                                     name: "sample2",
                                                     path: "img/choose_img/img2.png",
-                                                    format: "PNG",
+                                                    format: "png",
                                                     uploaded: "16.02.2017",
                                                     resolution: "635x120",
                                                     size: "35kB"
                                                 }, {
                                                     name: "sample3",
                                                     path: "img/choose_img/img3.png",
-                                                    format: "BMP",
+                                                    format: "bmp",
                                                     uploaded: "17.02.2017",
                                                     resolution: "635x120",
                                                     size: "34kB"
                                                 }, {
                                                     name: "sample4",
                                                     path: "img/choose_img/img4.png",
-                                                    format: "GIF",
+                                                    format: "gif",
                                                     uploaded: "18.02.2017",
                                                     resolution: "64x64",
                                                     size: "16kB"
@@ -494,7 +494,7 @@ Imcms.define("imcms-files-rest-api", [], function () {
                                     {
                                         name: "sample1",
                                         path: "img/choose_img/img1.png",
-                                        format: "JPG",
+                                        format: "jpg",
                                         uploaded: "15.02.2017",
                                         resolution: "635x120",
                                         size: "37kB"
@@ -508,21 +508,21 @@ Imcms.define("imcms-files-rest-api", [], function () {
                                     {
                                         name: "sample1",
                                         path: "img/choose_img/img1.png",
-                                        format: "JPG",
+                                        format: "jpg",
                                         uploaded: "15.02.2017",
                                         resolution: "635x120",
                                         size: "37kB"
                                     }, {
                                         name: "sample3",
                                         path: "img/choose_img/img3.png",
-                                        format: "BMP",
+                                        format: "bmp",
                                         uploaded: "17.02.2017",
                                         resolution: "635x120",
                                         size: "34kB"
                                     }, {
                                         name: "sample4",
                                         path: "img/choose_img/img4.png",
-                                        format: "GIF",
+                                        format: "gif",
                                         uploaded: "18.02.2017",
                                         resolution: "64x64",
                                         size: "16kB"
