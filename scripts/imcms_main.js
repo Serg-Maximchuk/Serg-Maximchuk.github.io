@@ -60,7 +60,7 @@ Imcms = {
             "imcms-primitives-builder": "builder/imcms_primitives_builder.js",
             "imcms-date-time-builder": "builder/imcms_date_time_builder.js",
             "imcms-window-components-builder": "builder/imcms_window_components_builder.js",
-            "imcms-folders-builder": "builder/imcms_folders_builder.js",
+            "imcms-image-content-builder": "builder/imcms_image_content_builder.js",
             // admin panel
             "imcms-admin-panel-builder": "builder/imcms_admin_panel_builder.js",
             // page info
@@ -72,12 +72,7 @@ Imcms = {
             // content manager
             "imcms-content-manager-builder": "builder/imcms_content_manager_builder.js",
             // rest api
-            "imcms-folders-rest-api": "rest/imcms_folders_rest_api.js",
-            "imcms-files-rest-api": "rest/imcms_files_rest_api.js",
-            // loaders
-            "imcms-image-content-loader": "loaders/imcms_image_content_loader.js",
-            // components
-            "imcms-folders-tree-parser": "components/imcms_folders_tree_parser.js"
+            "imcms-files-rest-api": "rest/imcms_files_rest_api.js"
         }
     }
 };

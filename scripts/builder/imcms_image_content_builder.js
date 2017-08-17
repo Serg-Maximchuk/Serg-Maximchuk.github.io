@@ -2,7 +2,7 @@
  * Created by Serhii Maksymchuk from Ubrainians for imCode
  * 16.08.17.
  */
-Imcms.define("imcms-image-content-loader", //todo: rename to images content builder and move
+Imcms.define("imcms-image-content-builder",
     ["imcms-files-rest-api", "imcms-bem-builder"],
     function (fileREST, BEM) {
         var $foldersContainer, $imagesContainer;
@@ -60,7 +60,7 @@ Imcms.define("imcms-image-content-loader", //todo: rename to images content buil
         }
 
         return {
-            loadContent: function (options) {
+            loadAndBuildContent: function (options) {
                 $foldersContainer = options.foldersContainer;
                 $imagesContainer = options.imagesContainer;
 

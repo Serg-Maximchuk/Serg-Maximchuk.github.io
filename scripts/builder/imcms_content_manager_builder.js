@@ -5,9 +5,9 @@
 Imcms.define("imcms-content-manager-builder",
     [
         "imcms-bem-builder", "imcms-window-components-builder", "imcms-components-builder",
-        "imcms-image-content-loader", "jquery"
+        "imcms-image-content-builder", "jquery"
     ],
-    function (BEM, windowComponents, components, imageContentLoader, $) {
+    function (BEM, windowComponents, components, imageContentBuilder, $) {
         var $contentManager;
         var $foldersContainer;
         var $imagesContainer;
@@ -126,7 +126,7 @@ Imcms.define("imcms-content-manager-builder",
         });
 
         function buildContent() {
-            imageContentLoader.loadContent({
+            imageContentBuilder.loadAndBuildContent({
                 foldersContainer: $foldersContainer,
                 imagesContainer: $imagesContainer
             });
