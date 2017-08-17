@@ -41,6 +41,8 @@
 }
 
 .imcms-content-manager__left-side .imcms-button--close {
+    position: absolute;
+    margin: 25px 0 0 40px;
     display: none;
     float: left;
 }

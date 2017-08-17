@@ -13,7 +13,6 @@ Imcms.define("imcms-content-manager-builder",
         var $imagesContainer;
         var $footer;
         var $showHideFolders;
-        var $controls;
 
         function buildContentManager() {
             function closeWindow() {
@@ -24,43 +23,29 @@ Imcms.define("imcms-content-manager-builder",
                 return windowComponents.buildHead("Content manager", closeWindow);
             }
 
-            function createNewFolder($currentFolder) {
-                // todo: implement this!
-            }
-
-            function createNewFirstLevelFolder() {
-                createNewFolder($controls);
-            }
-
             function buildControls() {
                 var controlsBEM = new BEM({
                     block: "imcms-main-folders-controls",
-                    elements: {
-                        "control": "imcms-control",
-                        "control-close": ""
-                    }
-                });
-
-                var $closeFoldersBtn = components.buttons.closeButton({
-                    id: "closeFolders",
-                    click: function () {
-                        $showHideFolders.click();
-                    }
+                    elements: {"control": "imcms-control"}
                 });
 
                 var $createFolderBtn = controlsBEM.buildElement("control", "<div>", {
                     click: createNewFirstLevelFolder
                 }, ["create"]);
 
-                return controlsBEM.buildBlock("<div>", [
-                    {"control-close": $closeFoldersBtn},
-                    {"control": $createFolderBtn}
-                ]);
+                return controlsBEM.buildBlock("<div>", [{"control": $createFolderBtn}]);
             }
 
             function buildFoldersContainer() {
-                $controls = buildControls();
-                return leftSideBEM.buildBlock("<div>", [{"controls": $controls}]);
+                // var $controls = buildControls();
+                // return leftSideBEM.buildBlock("<div>", [{"controls": $controls}]);
+                var $closeFoldersBtn = components.buttons.closeButton({
+                    id: "closeFolders",
+                    click: function () {
+                        $showHideFolders.click();
+                    }
+                });
+                return leftSideBEM.buildBlock("<div>", [{"close-button": $closeFoldersBtn}]);
             }
 
             function buildFooter() {
@@ -134,6 +119,7 @@ Imcms.define("imcms-content-manager-builder",
         var leftSideBEM = new BEM({
             block: "imcms-left-side",
             elements: {
+                "close-button": "",
                 "controls": "imcms-main-folders-controls",
                 "folders": "imcms-folders"
             }
