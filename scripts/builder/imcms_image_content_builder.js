@@ -3,8 +3,8 @@
  * 16.08.17.
  */
 Imcms.define("imcms-image-content-builder",
-    ["imcms-files-rest-api", "imcms-bem-builder", "jquery"],
-    function (fileREST, BEM, $) {
+    ["imcms-files-rest-api", "imcms-bem-builder", "imcms-components-builder", "jquery"],
+    function (fileREST, BEM, components, $) {
         var OPENED_FOLDER_BTN_CLASS = "imcms-folder-btn--open";
         var SUBFOLDER_CLASS = "imcms-folders__subfolder";
         var ACTIVE_FOLDER_CLASS = "imcms-folder--active";
@@ -169,6 +169,40 @@ Imcms.define("imcms-image-content-builder",
             });
         }
 
+        function onImageDelete(imageFile) {
+            fileREST.remove(imageFile.path, function () {
+                $(this).parent().parent().detach();
+            }.bind(this));
+        }
+
+        function buildImageDescription(imageFile) {
+            var descriptionBEM = new BEM({
+                block: "imcms-choose-img-description",
+                elements: {
+                    "date": "",
+                    "button": "",
+                    "img-title": "imcms-title",
+                    "img-size": ""
+                }
+            });
+
+            var $date = descriptionBEM.buildElement("date", "<div>", {text: imageFile.uploaded});
+            var $btnDelete = components.buttons.closeButton({
+                click: function () {
+                    onImageDelete.call(this, imageFile);
+                }
+            });
+            var $title = descriptionBEM.buildElement("img-title", "<div>", {text: imageFile.name + "." + imageFile.format});
+            var $size = descriptionBEM.buildElement("img-size", "<div>", {text: imageFile.resolution + imageFile.size});
+
+            return descriptionBEM.buildBlock("<div>", [
+                {"date": $date},
+                {"button": $btnDelete},
+                {"img-title": $title},
+                {"img-size": $size}
+            ]);
+        }
+
         function buildImage(imageFile) {
             var imageWrapBEM = new BEM({
                 block: "imcms-choose-img-wrap",
@@ -182,8 +216,11 @@ Imcms.define("imcms-image-content-builder",
                 "background-image": "url(" + imageFile.path + ")"
             });
 
+            var $description = buildImageDescription(imageFile);
+
             return imageWrapBEM.buildBlock("<div>", [
-                {"img": $image}
+                {"img": $image},
+                {"description": $description}
             ], {
                 style: "display: none"
             });
