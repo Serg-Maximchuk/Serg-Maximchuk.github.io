@@ -94,9 +94,16 @@ Imcms.define("imcms-image-content-builder",
             }
         }
 
-        function onFolderClick() {
+        function onFolderClick(folder) {
             $("." + ACTIVE_FOLDER_CLASS).removeClass(ACTIVE_FOLDER_CLASS);
             $(this).addClass(ACTIVE_FOLDER_CLASS);
+
+            viewModel.$images.forEach(function ($image) {
+                $image.css("display", "none");
+            });
+            folder.$images.forEach(function ($image) {
+                $image.css("display", "block");
+            });
         }
 
         function buildFolder(subfolder) {
@@ -123,7 +130,9 @@ Imcms.define("imcms-image-content-builder",
 
             return folderBEM.buildBlock("<div>", folderElements, {
                 "data-folder-path": subfolder.path,
-                click: onFolderClick
+                click: function () {
+                    onFolderClick.call(this, subfolder);
+                }
             });
         }
 
@@ -160,14 +169,37 @@ Imcms.define("imcms-image-content-builder",
             });
         }
 
+        function buildImage(imageFile) {
+            var imageWrapBEM = new BEM({
+                block: "imcms-choose-img-wrap",
+                elements: {
+                    "img": "imcms-choose-img",
+                    "description": "imcms-choose-img-description"
+                }
+            });
+
+            var $image = imageWrapBEM.buildElement("img", "<div>").css({
+                "background-image": "url(" + imageFile.path + ")"
+            });
+
+            return imageWrapBEM.buildBlock("<div>", [
+                {"img": $image}
+            ], {
+                style: "display: none"
+            });
+        }
+
         function buildImages(folder) {
-            return [];
+            folder.$images = folder.files.map(buildImage);
+            viewModel.$images = viewModel.$images.concat(folder.$images);
+            (folder.folders || []).forEach(buildImages);
         }
 
         function loadImageFoldersContent(folders) {
             var rootFolderLevel = 1;
 
             viewModel.root = folders[0];
+            buildImages(viewModel.root);
             viewModel.$folders.push(buildRootFolder());
 
             var $subfolders = buildSubFolders(viewModel.root, rootFolderLevel).map(function ($subfolder) {
@@ -175,10 +207,12 @@ Imcms.define("imcms-image-content-builder",
             });
 
             viewModel.$folders = viewModel.$folders.concat($subfolders);
-            viewModel.$images.unshift(buildImages(viewModel.root));
 
             $foldersContainer.append(viewModel.$folders);
             $imagesContainer.append(viewModel.$images);
+            viewModel.root.$images.forEach(function ($image) {
+                $image.css("display", "block");
+            });
         }
 
         return {
