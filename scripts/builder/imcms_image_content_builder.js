@@ -5,6 +5,10 @@
 Imcms.define("imcms-image-content-builder",
     ["imcms-files-rest-api", "imcms-bem-builder", "jquery"],
     function (fileREST, BEM, $) {
+        var OPENED_FOLDER_BTN_CLASS = "imcms-folder-btn--open";
+        var SUBFOLDER_CLASS = "imcms-folders__subfolder";
+        var ACTIVE_FOLDER_CLASS = "imcms-folder--active";
+
         var $foldersContainer, $imagesContainer;
 
         var viewModel = {
@@ -78,16 +82,21 @@ Imcms.define("imcms-image-content-builder",
 
         function openSubFolders() {
             var $button = $(this);
-            var $subFolder = $button.toggleClass("imcms-folder-btn--open")
+            var $subFolder = $button.toggleClass(OPENED_FOLDER_BTN_CLASS)
                 .parent()
-                .next(".imcms-folders__subfolder");
+                .next("." + SUBFOLDER_CLASS);
 
-            var isOpen = $button.hasClass("imcms-folder-btn--open");
+            var isOpen = $button.hasClass(OPENED_FOLDER_BTN_CLASS);
 
             while ($subFolder.length) {
                 $subFolder.css("display", isOpen ? "block" : "none");
-                $subFolder = $subFolder.next(".imcms-folders__subfolder");
+                $subFolder = $subFolder.next("." + SUBFOLDER_CLASS);
             }
+        }
+
+        function onFolderClick() {
+            $("." + ACTIVE_FOLDER_CLASS).removeClass(ACTIVE_FOLDER_CLASS);
+            $(this).addClass(ACTIVE_FOLDER_CLASS);
         }
 
         function buildFolder(subfolder) {
@@ -112,7 +121,10 @@ Imcms.define("imcms-image-content-builder",
                 folderElements.unshift({"btn": $openSubfoldersBtn});
             }
 
-            return folderBEM.buildBlock("<div>", folderElements, {"data-folder-path": subfolder.path});
+            return folderBEM.buildBlock("<div>", folderElements, {
+                "data-folder-path": subfolder.path,
+                click: onFolderClick
+            });
         }
 
         function buildSubFolder(subfolder, level) {
