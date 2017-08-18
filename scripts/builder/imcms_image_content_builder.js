@@ -8,12 +8,13 @@ Imcms.define("imcms-image-content-builder",
         var OPENED_FOLDER_BTN_CLASS = "imcms-folder-btn--open";
         var SUBFOLDER_CLASS = "imcms-folders__subfolder";
         var ACTIVE_FOLDER_CLASS = "imcms-folder--active";
+        var ROOT_FOLDER_LEVEL = 0;
 
         var $foldersContainer, $imagesContainer;
 
         var viewModel = {
             root: {},
-            $folders: [],
+            $folder: [],
             $images: []
         };
 
@@ -27,7 +28,40 @@ Imcms.define("imcms-image-content-builder",
 
         function onFolderCreated(response) {
             console.log(response);
+            response.$images = [];
+            response.$folder = buildSubFolder(response, this.parentLevel + 1)
+                .addClass(SUBFOLDER_CLASS)
+                .css("display", "block")
+            ;
+
+            this.$block.replaceWith(response.$folder);
         }
+
+        var controlsBuilder = (function () {
+            var controlsBEM = new BEM({
+                block: "",
+                elements: {"control": "imcms-control"}
+            });
+
+            function buildControl(modifier, onClick) {
+                return controlsBEM.buildElement("control", "<div>", {click: onClick}, [modifier]);
+            }
+
+            return {
+                move: function (folder) {
+                    return buildControl("move", moveFolder.bind(folder));
+                },
+                remove: function (folder) {
+                    return buildControl("remove", removeFolder.bind(folder));
+                },
+                rename: function (folder) {
+                    return buildControl("rename", renameFolder.bind(folder));
+                },
+                create: function (folder, level) {
+                    return buildControl("create", showFolderCreationBlock.bind(folder, level));
+                }
+            };
+        })();
 
         function buildRootControls(rootFile) {
             var rootFolderControlsBEM = new BEM({
@@ -35,15 +69,13 @@ Imcms.define("imcms-image-content-builder",
                 elements: {"control": "imcms-control"}
             });
 
-            var $createFolderControl = rootFolderControlsBEM.buildElement("control", "<div>", {
-                click: createFolder.bind(null, rootFile)
-            }, ["create"]);
+            var $createFolderControl = controlsBuilder.create(rootFile, ROOT_FOLDER_LEVEL);
 
             return rootFolderControlsBEM.buildBlock("<div>", [{"control": $createFolderControl}]);
         }
 
         function buildRootFolder(rootFile) {
-            rootFile.$folders = $foldersContainer;
+            rootFile.$folder = $foldersContainer;
             var $rootControls = buildRootControls(rootFile);
 
             return rootFolderBEM.makeBlockElement("controls", $rootControls);
@@ -61,7 +93,10 @@ Imcms.define("imcms-image-content-builder",
             // todo: implement!
         }
 
-        function createFolder(parentFile) {
+        function buildFolderCreationBlock(parentFolder, level) {
+            folderCreationBlockId = "imcms-folder-create-block";
+            $("#" + folderCreationBlockId).detach();
+
             var folderCreationBEM = new BEM({
                 block: "imcms-panel-named",
                 elements: {
@@ -70,43 +105,59 @@ Imcms.define("imcms-image-content-builder",
                 }
             });
 
-            var $folderNameInput = primitives.imcmsInput();
+            var $folderNameInput = primitives.imcmsInput({placeholder: "New folder name"});
             var $confirmBtn = components.buttons.neutralButton({
                 text: "add+",
                 click: function () {
                     var folderName = $folderNameInput.val();
+                    $folderNameInput.val('');
 
                     if (!folderName) {
                         return;
                     }
 
-                    fileREST.create({
-                        path: parentFile.path,
+                    fileREST.create.call({
+                        parentLevel: level,
+                        $block: $folderCreationBlock
+                    }, {
+                        path: parentFolder.path,
                         name: folderName
                     }, onFolderCreated);
                 }
             });
 
-            var $createFolderBlock = folderCreationBEM.buildBlock("<div>", [
+            var $folderCreationBlock = folderCreationBEM.buildBlock("<div>", [
                 {"input": $folderNameInput},
                 {"button": $confirmBtn}
-            ]);
+            ], {id: folderCreationBlockId});
 
-            console.log(parentFile);
-            parentFile.$folders.find(".imcms-folders").eq(0).before($createFolderBlock);
+            return $folderCreationBlock;
         }
 
-        function buildControls(subfolder) {
+        function showFolderCreationBlock(level) {
+            var parentFolder = this; // manually specified context
+            var $createFolderBlock = buildFolderCreationBlock(parentFolder, level);
+            var $subFolders = parentFolder.$folder.find(".imcms-folders");
+
+            if ($subFolders.length) {
+                $subFolders.eq(0).before($createFolderBlock);
+                return;
+            }
+
+            parentFolder.$folder.append($createFolderBlock);
+        }
+
+        function buildControls(subfolder, level) {
             var controlsBEM = new BEM({
                 block: "imcms-controls",
                 elements: {"control": "imcms-control"}
             });
 
             var controlsElements = [
-                controlsBEM.buildElement("control", "<div>", {click: moveFolder.bind(null, subfolder)}, ["move"]),
-                controlsBEM.buildElement("control", "<div>", {click: removeFolder.bind(null, subfolder)}, ["remove"]),
-                controlsBEM.buildElement("control", "<div>", {click: renameFolder.bind(null, subfolder)}, ["rename"]),
-                controlsBEM.buildElement("control", "<div>", {click: createFolder.bind(null, subfolder)}, ["create"])
+                controlsBuilder.move(subfolder),
+                controlsBuilder.remove(subfolder),
+                controlsBuilder.rename(subfolder),
+                controlsBuilder.create(subfolder, level)
             ];
 
             return controlsBEM.buildBlock("<div>", controlsElements, {}, "control");
@@ -138,7 +189,7 @@ Imcms.define("imcms-image-content-builder",
             });
         }
 
-        function buildFolder(subfolder) {
+        function buildFolder(subfolder, level) {
             var folderBEM = new BEM({
                 block: "imcms-folder",
                 elements: {
@@ -148,7 +199,7 @@ Imcms.define("imcms-image-content-builder",
                 }
             });
 
-            var $controls = buildControls(subfolder);
+            var $controls = buildControls(subfolder, level);
             var $name = folderBEM.buildElement("name", "<div>", {text: subfolder.name});
             var folderElements = [
                 {"name": $name},
@@ -178,7 +229,7 @@ Imcms.define("imcms-image-content-builder",
             });
 
             var isSubLevel = (level > 1);
-            var blockElements = [{"folder": buildFolder(subfolder)}];
+            var blockElements = [{"folder": buildFolder(subfolder, level)}];
 
             if (subfolder.folders && subfolder.folders.length) {
                 buildSubFolders(subfolder, level + 1).forEach(function ($subfolder) {
@@ -197,7 +248,7 @@ Imcms.define("imcms-image-content-builder",
 
         function buildSubFolders(folder, level) {
             return folder.folders.map(function (subfolder) {
-                return subfolder.$folders = buildSubFolder(subfolder, level);
+                return subfolder.$folder = buildSubFolder(subfolder, level);
             });
         }
 
@@ -265,19 +316,17 @@ Imcms.define("imcms-image-content-builder",
         }
 
         function loadImageFoldersContent(folders) {
-            var rootFolderLevel = 1;
-
             viewModel.root = folders[0];
             buildImages(viewModel.root);
-            viewModel.$folders.push(buildRootFolder(viewModel.root));
+            viewModel.$folder.push(buildRootFolder(viewModel.root));
 
-            var $subfolders = buildSubFolders(viewModel.root, rootFolderLevel).map(function ($subfolder) {
+            var $subfolders = buildSubFolders(viewModel.root, ROOT_FOLDER_LEVEL + 1).map(function ($subfolder) {
                 return rootFolderBEM.makeBlockElement("folders", $subfolder);
             });
 
-            viewModel.$folders = viewModel.$folders.concat($subfolders);
+            viewModel.$folder = viewModel.$folder.concat($subfolders);
 
-            $foldersContainer.append(viewModel.$folders);
+            $foldersContainer.append(viewModel.$folder);
             $imagesContainer.append(viewModel.$images);
             viewModel.root.$images.forEach(function ($image) {
                 $image.css("display", "block");
