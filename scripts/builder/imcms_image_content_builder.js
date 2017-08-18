@@ -29,7 +29,39 @@ Imcms.define("imcms-image-content-builder",
             console.log(response);
         }
 
-        function createNewFolder(parentFile) {
+        function buildRootControls(rootFile) {
+            var rootFolderControlsBEM = new BEM({
+                block: "imcms-main-folders-controls",
+                elements: {"control": "imcms-control"}
+            });
+
+            var $createFolderControl = rootFolderControlsBEM.buildElement("control", "<div>", {
+                click: createFolder.bind(null, rootFile)
+            }, ["create"]);
+
+            return rootFolderControlsBEM.buildBlock("<div>", [{"control": $createFolderControl}]);
+        }
+
+        function buildRootFolder(rootFile) {
+            rootFile.$folders = $foldersContainer;
+            var $rootControls = buildRootControls(rootFile);
+
+            return rootFolderBEM.makeBlockElement("controls", $rootControls);
+        }
+
+        function moveFolder() {
+            // todo: implement!
+        }
+
+        function removeFolder() {
+            // todo: implement!
+        }
+
+        function renameFolder() {
+            // todo: implement!
+        }
+
+        function createFolder(parentFile) {
             var folderCreationBEM = new BEM({
                 block: "imcms-panel-named",
                 elements: {
@@ -64,42 +96,6 @@ Imcms.define("imcms-image-content-builder",
             parentFile.$folders.find(".imcms-folders").eq(0).before($createFolderBlock);
         }
 
-        function buildRootControls(rootFile) {
-            var rootFolderControlsBEM = new BEM({
-                block: "imcms-main-folders-controls",
-                elements: {"control": "imcms-control"}
-            });
-
-            var $createFolderControl = rootFolderControlsBEM.buildElement("control", "<div>", {
-                click: createNewFolder.bind(null, rootFile)
-            }, ["create"]);
-
-            return rootFolderControlsBEM.buildBlock("<div>", [{"control": $createFolderControl}]);
-        }
-
-        function buildRootFolder(rootFile) {
-            rootFile.$folders = $foldersContainer;
-            var $rootControls = buildRootControls(rootFile);
-
-            return rootFolderBEM.makeBlockElement("controls", $rootControls);
-        }
-
-        function moveFolder() {
-            // todo: implement!
-        }
-
-        function removeFolder() {
-            // todo: implement!
-        }
-
-        function renameFolder() {
-            // todo: implement!
-        }
-
-        function createFolder() {
-            // todo: implement!
-        }
-
         function buildControls(subfolder) {
             var controlsBEM = new BEM({
                 block: "imcms-controls",
@@ -107,10 +103,10 @@ Imcms.define("imcms-image-content-builder",
             });
 
             var controlsElements = [
-                controlsBEM.buildElement("control", "<div>", {click: moveFolder}, ["move"]),
-                controlsBEM.buildElement("control", "<div>", {click: removeFolder}, ["remove"]),
-                controlsBEM.buildElement("control", "<div>", {click: renameFolder}, ["rename"]),
-                controlsBEM.buildElement("control", "<div>", {click: createFolder}, ["create"])
+                controlsBEM.buildElement("control", "<div>", {click: moveFolder.bind(null, subfolder)}, ["move"]),
+                controlsBEM.buildElement("control", "<div>", {click: removeFolder.bind(null, subfolder)}, ["remove"]),
+                controlsBEM.buildElement("control", "<div>", {click: renameFolder.bind(null, subfolder)}, ["rename"]),
+                controlsBEM.buildElement("control", "<div>", {click: createFolder.bind(null, subfolder)}, ["create"])
             ];
 
             return controlsBEM.buildBlock("<div>", controlsElements, {}, "control");
