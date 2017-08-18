@@ -25,7 +25,7 @@ Imcms.define("imcms-image-content-builder",
             }
         });
 
-        function onFileCreated(response) {
+        function onFolderCreated(response) {
             console.log(response);
         }
 
@@ -51,7 +51,7 @@ Imcms.define("imcms-image-content-builder",
                     fileREST.create({
                         path: parentFile.path,
                         name: folderName
-                    }, onFileCreated);
+                    }, onFolderCreated);
                 }
             });
 
