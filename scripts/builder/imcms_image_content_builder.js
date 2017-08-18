@@ -43,6 +43,11 @@ Imcms.define("imcms-image-content-builder",
                 text: "add+",
                 click: function () {
                     var folderName = $folderNameInput.val();
+
+                    if (!folderName) {
+                        return;
+                    }
+
                     fileREST.create({
                         path: parentFile.path,
                         name: folderName
