@@ -5,9 +5,13 @@
 Imcms.define("imcms-files-rest-api", [], function () {
     return {
         create: function (data, callback) {
+            console.log("%c Creating new file: ", "color: blue;");
+            console.log(data);
             callback.call();
         },
-        read: function (data, callback) {
+        read: function (path, callback) {
+            console.log("%c Reading files: ", "color: blue;");
+            console.log(path);
             var mockResponse = [{
                 name: "images",
                 path: "images",
@@ -537,9 +541,12 @@ Imcms.define("imcms-files-rest-api", [], function () {
             callback.call(null, mockResponse);
         },
         update: function (data, callback) {
+            console.log("%c Updating file: ", "color: blue;");
+            console.log(data);
             callback.call();
         },
-        remove: function (data, callback) {
+        remove: function (path, callback) {
+            console.log("%c " + path + " was removed (not really)", "color: blue;");
             callback.call();
         }
     };
