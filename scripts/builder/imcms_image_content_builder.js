@@ -3,8 +3,11 @@
  * 16.08.17.
  */
 Imcms.define("imcms-image-content-builder",
-    ["imcms-files-rest-api", "imcms-bem-builder", "imcms-components-builder", "imcms-primitives-builder", "jquery"],
-    function (fileREST, BEM, components, primitives, $) {
+    [
+        "imcms-files-rest-api", "imcms-bem-builder", "imcms-components-builder", "imcms-primitives-builder",
+        "imcms-controls-builder", "jquery"
+    ],
+    function (fileREST, BEM, components, primitives, controlsBuilder, $) {
         var OPENED_FOLDER_BTN_CLASS = "imcms-folder-btn--open";
         var SUBFOLDER_CLASS = "imcms-folders__subfolder";
         var ACTIVE_FOLDER_CLASS = "imcms-folder--active";
@@ -37,31 +40,20 @@ Imcms.define("imcms-image-content-builder",
             this.$block.replaceWith(response.$folder);
         }
 
-        var controlsBuilder = (function () {
-            var controlsBEM = new BEM({
-                block: "",
-                elements: {"control": "imcms-control"}
-            });
-
-            function buildControl(modifier, onClick) {
-                return controlsBEM.buildElement("control", "<div>", {click: onClick}, [modifier]);
+        var folderControlsBuilder = {
+            move: function (folder) {
+                return controlsBuilder.move(moveFolder.bind(folder));
+            },
+            remove: function (folder) {
+                return controlsBuilder.remove(removeFolder.bind(folder));
+            },
+            rename: function (folder) {
+                return controlsBuilder.rename(renameFolder.bind(folder));
+            },
+            create: function (folder, level) {
+                return controlsBuilder.create(showFolderCreationBlock.bind(folder, level));
             }
-
-            return {
-                move: function (folder) {
-                    return buildControl("move", moveFolder.bind(folder));
-                },
-                remove: function (folder) {
-                    return buildControl("remove", removeFolder.bind(folder));
-                },
-                rename: function (folder) {
-                    return buildControl("rename", renameFolder.bind(folder));
-                },
-                create: function (folder, level) {
-                    return buildControl("create", showFolderCreationBlock.bind(folder, level));
-                }
-            };
-        })();
+        };
 
         function buildRootControls(rootFile) {
             var rootFolderControlsBEM = new BEM({
@@ -69,7 +61,7 @@ Imcms.define("imcms-image-content-builder",
                 elements: {"control": "imcms-control"}
             });
 
-            var $createFolderControl = controlsBuilder.create(rootFile, ROOT_FOLDER_LEVEL);
+            var $createFolderControl = folderControlsBuilder.create(rootFile, ROOT_FOLDER_LEVEL);
 
             return rootFolderControlsBEM.buildBlock("<div>", [{"control": $createFolderControl}]);
         }
@@ -154,10 +146,10 @@ Imcms.define("imcms-image-content-builder",
             });
 
             var controlsElements = [
-                controlsBuilder.move(subfolder),
-                controlsBuilder.remove(subfolder),
-                controlsBuilder.rename(subfolder),
-                controlsBuilder.create(subfolder, level)
+                folderControlsBuilder.move(subfolder),
+                folderControlsBuilder.remove(subfolder),
+                folderControlsBuilder.rename(subfolder),
+                folderControlsBuilder.create(subfolder, level)
             ];
 
             return controlsBEM.buildBlock("<div>", controlsElements, {}, "control");
