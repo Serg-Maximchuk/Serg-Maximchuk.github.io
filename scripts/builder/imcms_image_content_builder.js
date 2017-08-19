@@ -74,7 +74,10 @@ Imcms.define("imcms-image-content-builder",
                 }
             });
 
-            var $rootFolderTitle = rootFolderControlsBEM.buildElement("name", "<div>", {text: rootFile.name});
+            var $rootFolderTitle = rootFolderControlsBEM.buildElement("name", "<div>", {
+                text: rootFile.name,
+                click: onFolderClick.bindArgs(rootFile)
+            });
             var $createFolderControl = folderControlsBuilder.create(rootFile, ROOT_FOLDER_LEVEL);
 
             return rootFolderControlsBEM.buildBlock("<div>", [
