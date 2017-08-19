@@ -292,7 +292,9 @@ Imcms.define("imcms-menu-editor-builder",
 
                 var $documentEditor = documentEditorBuilder.buildBody();
                 $documentsContainer.append($documentEditor);
-                documentEditorBuilder.loadDocumentEditorContent();
+                documentEditorBuilder.loadDocumentEditorContent({
+                    moveEnable: true
+                });
             }
 
             var $head = buildHead(),
