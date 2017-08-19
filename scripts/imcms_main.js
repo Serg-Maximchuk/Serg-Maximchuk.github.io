@@ -61,6 +61,7 @@ Imcms = {
             "imcms-date-time-builder": "builder/imcms_date_time_builder.js",
             "imcms-window-components-builder": "builder/imcms_window_components_builder.js",
             "imcms-image-content-builder": "builder/imcms_image_content_builder.js",
+            "imcms-controls-builder": "builder/imcms_controls_builder.js",
             // admin panel
             "imcms-admin-panel-builder": "builder/imcms_admin_panel_builder.js",
             // page info
