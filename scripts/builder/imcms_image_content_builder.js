@@ -30,6 +30,7 @@ Imcms.define("imcms-image-content-builder",
         });
 
         function onFolderCreated(response) {
+            console.log("Created folder: ");
             console.log(response);
             response.$images = [];
             response.$folder = buildSubFolder(response, this.parentLevel + 1)
@@ -38,6 +39,15 @@ Imcms.define("imcms-image-content-builder",
             ;
 
             this.$block.replaceWith(response.$folder);
+
+            var $parent = response.$folder.prev();
+            if ($parent.hasClass("imcms-folder") && !$parent.children(".imcms-folder__btn").length) {
+                $("<div>", {
+                        "class": "imcms-folder__btn imcms-folder-btn--open",
+                        click: openSubFolders
+                    }
+                ).prependTo($parent);
+            }
         }
 
         var folderControlsBuilder = {
