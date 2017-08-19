@@ -148,10 +148,23 @@ Imcms.define("imcms-document-editor-builder",
                 elements: {"control": "imcms-control"}
             });
 
-            var controls = [];
+            var $controlRemove = docControlsBEM.buildElement("control", "<div>", {
+                click: function () {
+                    removeDocument.call(this, documentId);
+                }
+            }, ["remove"]);
+
+            var $controlRename = docControlsBEM.buildElement("control", "<div>", {
+                click: pageInfoBuilder.build
+            }, ["rename"]); //todo implement it,fix "rename" to more appropriate in general case e.g. "edit"
+
+            var controls = [
+                {"control": $controlRemove},
+                {"control": $controlRename}
+            ];
 
             if (opts && opts.moveEnable) {
-                controls.push({
+                controls.unshift({
                     "control": docControlsBEM.buildElement("control", "<div>", {
                         click: function () {
                             console.log("%c Not implemented feature: move doc", "color: red;");
@@ -159,21 +172,6 @@ Imcms.define("imcms-document-editor-builder",
                     }, ["move"])
                 });
             }
-
-            controls.push({
-                "control": docControlsBEM.buildElement("control", "<div>", {
-                    click: function () {
-                        removeDocument.call(this, documentId);
-                    }
-                }, ["remove"])
-            });
-
-            //todo impement it,fix "rename" to more appropriate in general case e.g. "edit"
-            controls.push({
-                "control": docControlsBEM.buildElement("control", "<div>", {
-                    click: pageInfoBuilder.build
-                }, ["rename"])
-            });
 
             return docControlsBEM.buildBlock("<div>", controls);
         }
