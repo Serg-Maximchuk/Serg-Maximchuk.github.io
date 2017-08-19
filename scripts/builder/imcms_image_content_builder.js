@@ -24,6 +24,7 @@ Imcms.define("imcms-image-content-builder",
         var rootFolderBEM = new BEM({
             block: "imcms-left-side",
             elements: {
+                "name": "imcms-title",
                 "controls": "imcms-main-folders-controls",
                 "folders": "imcms-folders"
             }
@@ -61,20 +62,7 @@ Imcms.define("imcms-image-content-builder",
                 return controlsBuilder.rename(renameFolder.bind(folder));
             },
             create: function (folder, level) {
-                var onClick = function () {
-                    showFolderCreationBlock(folder, level);
-
-                    var $openFolderBtn = $(this).parent()
-                        .parent()
-                        .children(".imcms-folder__btn");
-
-                    if ($openFolderBtn.hasClass("imcms-folder-btn--open")) {
-                        return;
-                    }
-
-                    openSubFolders.call($openFolderBtn[0]);
-                };
-                return controlsBuilder.create(onClick);
+                return controlsBuilder.create(setCreateFolder(folder, level));
             }
         };
 
@@ -108,9 +96,20 @@ Imcms.define("imcms-image-content-builder",
             // todo: implement!
         }
 
-        function createFolder() {
-            openSubFolders.call();
+        function setCreateFolder(folder, level) {
+            return function createFolder() {
+                showFolderCreationBlock(folder, level);
 
+                var $openFolderBtn = $(this).parent()
+                    .parent()
+                    .children(".imcms-folder__btn");
+
+                if ($openFolderBtn.hasClass("imcms-folder-btn--open")) {
+                    return;
+                }
+
+                openSubFolders.call($openFolderBtn[0]);
+            }
         }
 
         function buildFolderCreationBlock(parentFolder, level) {
@@ -136,13 +135,13 @@ Imcms.define("imcms-image-content-builder",
                         return;
                     }
 
-                    fileREST.create.call({
-                        parentLevel: level,
-                        $block: $folderCreationBlock
-                    }, {
+                    fileREST.create({
                         path: parentFolder.path,
                         name: folderName
-                    }, onFolderCreated);
+                    }, onFolderCreated.bind({
+                        parentLevel: level,
+                        $block: $folderCreationBlock
+                    }));
                 }
             });
 

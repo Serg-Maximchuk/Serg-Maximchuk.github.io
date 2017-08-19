@@ -7,7 +7,7 @@ Imcms.define("imcms-files-rest-api", [], function () {
         create: function (data, callback) {
             console.log("%c Creating new file: ", "color: blue;");
             console.log(data);
-            callback.call(this, { // mock response object - empty folder
+            callback({ // mock response object - empty folder
                 name: data.name,
                 path: data.path,
                 files: [],
@@ -543,7 +543,7 @@ Imcms.define("imcms-files-rest-api", [], function () {
                     }
                 ]
             }];
-            callback.call(this, mockResponse);
+            callback(mockResponse);
         },
         update: function (data, callback) {
             console.log("%c Updating file: ", "color: blue;");
