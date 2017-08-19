@@ -61,3 +61,12 @@
 .imcms-panel-named__button:hover {
     color: #0b94d8;
 }
+
+.imcms-main-folders-controls__name {
+    padding-left: 45px;
+    color: #fff;
+    cursor: pointer;
+    text-transform: uppercase;
+    text-align: left;
+    float: left;
+}

@@ -24,7 +24,6 @@ Imcms.define("imcms-image-content-builder",
         var rootFolderBEM = new BEM({
             block: "imcms-left-side",
             elements: {
-                "name": "imcms-title",
                 "controls": "imcms-main-folders-controls",
                 "folders": "imcms-folders"
             }
@@ -69,12 +68,19 @@ Imcms.define("imcms-image-content-builder",
         function buildRootControls(rootFile) {
             var rootFolderControlsBEM = new BEM({
                 block: "imcms-main-folders-controls",
-                elements: {"control": "imcms-control"}
+                elements: {
+                    "name": "imcms-title",
+                    "control": "imcms-control"
+                }
             });
 
+            var $rootFolderTitle = rootFolderControlsBEM.buildElement("name", "<div>", {text: rootFile.name});
             var $createFolderControl = folderControlsBuilder.create(rootFile, ROOT_FOLDER_LEVEL);
 
-            return rootFolderControlsBEM.buildBlock("<div>", [{"control": $createFolderControl}]);
+            return rootFolderControlsBEM.buildBlock("<div>", [
+                {"name": $rootFolderTitle},
+                {"control": $createFolderControl}
+            ]);
         }
 
         function buildRootFolder(rootFile) {
