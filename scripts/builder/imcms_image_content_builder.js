@@ -63,8 +63,16 @@ Imcms.define("imcms-image-content-builder",
             create: function (folder, level) {
                 var onClick = function () {
                     showFolderCreationBlock(folder, level);
-                    var openFolderBtn = $(this).parent().parent().children(".imcms-folder__btn")[0];
-                    openSubFolders.call(openFolderBtn);
+
+                    var $openFolderBtn = $(this).parent()
+                        .parent()
+                        .children(".imcms-folder__btn");
+
+                    if ($openFolderBtn.hasClass("imcms-folder-btn--open")) {
+                        return;
+                    }
+
+                    openSubFolders.call($openFolderBtn[0]);
                 };
                 return controlsBuilder.create(onClick);
             }
