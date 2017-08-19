@@ -5,9 +5,9 @@
 Imcms.define("imcms-document-editor-builder",
     [
         "imcms-bem-builder", "imcms-page-info-builder", "imcms-components-builder", "imcms-primitives-builder",
-        "imcms-window-components-builder", "imcms-documents-rest-api"
+        "imcms-window-components-builder", "imcms-documents-rest-api", "imcms-controls-builder"
     ],
-    function (BEM, pageInfoBuilder, components, primitives, windowComponents, docRestApi) {
+    function (BEM, pageInfoBuilder, components, primitives, windowComponents, docRestApi, controlsBuilder) {
         function buildBodyHead() {
             var bodyHeadBEM = new BEM({
                 block: "imcms-document-editor-head",
@@ -148,15 +148,12 @@ Imcms.define("imcms-document-editor-builder",
                 elements: {"control": "imcms-control"}
             });
 
-            var $controlRemove = docControlsBEM.buildElement("control", "<div>", {
-                click: function () {
-                    removeDocument.call(this, documentId);
-                }
-            }, ["remove"]);
+            var $controlRemove = controlsBuilder.remove(function () {
+                removeDocument.call(this, documentId);
+            });
 
-            var $controlRename = docControlsBEM.buildElement("control", "<div>", {
-                click: pageInfoBuilder.build
-            }, ["rename"]); //todo implement it,fix "rename" to more appropriate in general case e.g. "edit"
+            //todo implement it,fix "rename" to more appropriate name in general case e.g. "edit"
+            var $controlRename = controlsBuilder.rename(pageInfoBuilder.build);
 
             var controls = [
                 {"control": $controlRemove},
@@ -164,13 +161,10 @@ Imcms.define("imcms-document-editor-builder",
             ];
 
             if (opts && opts.moveEnable) {
-                controls.unshift({
-                    "control": docControlsBEM.buildElement("control", "<div>", {
-                        click: function () {
-                            console.log("%c Not implemented feature: move doc", "color: red;");
-                        }
-                    }, ["move"])
+                var $controlMove = controlsBuilder.move(function () {
+                    console.log("%c Not implemented feature: move doc", "color: red;");
                 });
+                controls.unshift({"control": $controlMove});
             }
 
             return docControlsBEM.buildBlock("<div>", controls);
