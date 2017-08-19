@@ -135,7 +135,7 @@ Imcms.define("imcms-content-manager-builder",
         return {
             build: function () {
                 if (!$contentManager) {
-                    $contentManager = buildContentManager().appendTo("body");
+                    $contentManager = buildContentManager().prependTo("body");
                     setTimeout(buildContent);
                 }
 

@@ -165,15 +165,15 @@ Imcms.define("imcms-image-content-builder",
 
         function openSubFolders() {
             var $button = $(this);
-            var $subFolder = $button.toggleClass(OPENED_FOLDER_BTN_CLASS)
+            var $subFolders = $button.toggleClass(OPENED_FOLDER_BTN_CLASS)
+                .parent() // fixme: bad idea!
                 .parent()
-                .next("." + SUBFOLDER_CLASS);
+                .children("." + SUBFOLDER_CLASS);
 
             var isOpen = $button.hasClass(OPENED_FOLDER_BTN_CLASS);
 
-            while ($subFolder.length) {
-                $subFolder.css("display", isOpen ? "block" : "none");
-                $subFolder = $subFolder.next("." + SUBFOLDER_CLASS);
+            if ($subFolders.length) {
+                $subFolders.css("display", isOpen ? "block" : "none");
             }
         }
 

@@ -3,7 +3,6 @@ Imcms.define("imcms-date-picker",
     function (imcms, imcmsCalendar, $) {
         var DATE_PICKER_CLASS = "imcms-date-picker",
             DATE_PICKER_CLASS_SELECTOR = ".imcms-date-picker"
-
         ;
 
         function openCalendar() {
