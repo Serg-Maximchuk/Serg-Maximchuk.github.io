@@ -52,7 +52,6 @@ Imcms.define("imcms-image-content-builder",
             },
             create: function (folder, level) {
                 var onClick = function () {
-                    console.log(this);
                     showFolderCreationBlock(folder, level);
                     var openFolderBtn = $(this).parent().parent().children(".imcms-folder__btn")[0];
                     openSubFolders.call(openFolderBtn);
