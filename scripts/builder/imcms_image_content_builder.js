@@ -51,7 +51,13 @@ Imcms.define("imcms-image-content-builder",
                 return controlsBuilder.rename(renameFolder.bind(folder));
             },
             create: function (folder, level) {
-                return controlsBuilder.create(showFolderCreationBlock.bind(folder, level));
+                var onClick = function () {
+                    console.log(this);
+                    showFolderCreationBlock(folder, level);
+                    var openFolderBtn = $(this).parent().parent().children(".imcms-folder__btn")[0];
+                    openSubFolders.call(openFolderBtn);
+                };
+                return controlsBuilder.create(onClick);
             }
         };
 
@@ -83,6 +89,11 @@ Imcms.define("imcms-image-content-builder",
 
         function renameFolder() {
             // todo: implement!
+        }
+
+        function createFolder() {
+            openSubFolders.call();
+
         }
 
         function buildFolderCreationBlock(parentFolder, level) {
@@ -126,8 +137,7 @@ Imcms.define("imcms-image-content-builder",
             return $folderCreationBlock;
         }
 
-        function showFolderCreationBlock(level) {
-            var parentFolder = this; // manually specified context
+        function showFolderCreationBlock(parentFolder, level) {
             var $createFolderBlock = buildFolderCreationBlock(parentFolder, level);
             var $subFolders = parentFolder.$folder.find(".imcms-folders");
 
