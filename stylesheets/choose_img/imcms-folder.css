@@ -17,10 +17,6 @@
     background-color: #f3f3fc;
 }
 
-.imcms-folder.imcms-folder--active:hover {
-    background-color: #b4b4bd;
-}
-
 .imcms-folder--active .imcms-folder__name {
     color: #2f4047;
 }
@@ -65,7 +61,7 @@
     display: block;
 }
 
-.imcms-folder--active:hover .imcms-folder-btn--open {
+.imcms-folder--active:hover .imcms-folder__btn.imcms-folder-btn--open {
     background-image: url("../../img/controls/icon_sub_open.png");
 }
 
