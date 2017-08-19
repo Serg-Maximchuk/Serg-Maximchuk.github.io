@@ -107,7 +107,6 @@ Imcms.require(
         // checkboxes
 
         var $checkbox1 = componentsBuilder.checkboxes.imcmsCheckbox("<div>", {
-            id: "checkbox01",
             name: "checkbox1",
             text: "item 1",
             click: function () {
@@ -117,7 +116,6 @@ Imcms.require(
             }
         });
         var $checkbox2 = componentsBuilder.checkboxes.imcmsCheckbox("<div>", {
-            id: "checkbox02",
             name: "checkbox2",
             checked: "checked",
             text: "item 2 (checked by default)",
@@ -139,7 +137,6 @@ Imcms.require(
         // radio
 
         var $radio1 = componentsBuilder.radios.imcmsRadio("<div>", {
-            id: "radio1",
             name: "radio-name",
             text: "item 1",
             click: function () {
@@ -148,7 +145,6 @@ Imcms.require(
         });
 
         var $radio2 = componentsBuilder.radios.imcmsRadio("<div>", {
-            id: "radio2",
             name: "radio-name",
             checked: "checked",
             text: "item 2 (checked by default)",
@@ -449,20 +445,16 @@ Imcms.require(
             $userAdminTitle = rolesBEM.buildBlockElement("column-title", "<div>", {text: "Useradmin"}),
             userAdminRadioName = "useradmin0",
             $userAdminView = rolesBEM.makeBlockElement("column", componentsBuilder.radios.imcmsRadio("<div>", {
-                id: "view01",
                 name: userAdminRadioName,
                 checked: "checked"
             })),
             $userAdminEdit = rolesBEM.makeBlockElement("column", componentsBuilder.radios.imcmsRadio("<div>", {
-                id: "edit01",
                 name: userAdminRadioName
             })),
             $userAdminRestricted1 = rolesBEM.makeBlockElement("column", componentsBuilder.radios.imcmsRadio("<div>", {
-                id: "restricted011",
                 name: userAdminRadioName
             })),
             $userAdminRestricted2 = rolesBEM.makeBlockElement("column", componentsBuilder.radios.imcmsRadio("<div>", {
-                id: "restricted021",
                 name: userAdminRadioName
             })),
             $userAdminDeleteRoleButton = rolesBEM.makeBlockElement("button", buttons.closeButton({
@@ -481,20 +473,16 @@ Imcms.require(
             $userTitle = rolesBEM.buildBlockElement("column-title", "<div>", {text: "Users"}),
             usersRadioName = "users0",
             $userView = rolesBEM.makeBlockElement("column", componentsBuilder.radios.imcmsRadio("<div>", {
-                id: "view02",
                 name: usersRadioName,
                 checked: "checked"
             })),
             $userEdit = rolesBEM.makeBlockElement("column", componentsBuilder.radios.imcmsRadio("<div>", {
-                id: "edit02",
                 name: usersRadioName
             })),
             $userRestricted1 = rolesBEM.makeBlockElement("column", componentsBuilder.radios.imcmsRadio("<div>", {
-                id: "restricted012",
                 name: usersRadioName
             })),
             $userRestricted2 = rolesBEM.makeBlockElement("column", componentsBuilder.radios.imcmsRadio("<div>", {
-                id: "restricted022",
                 name: usersRadioName
             })),
             $userDeleteRoleButton = rolesBEM.makeBlockElement("button", buttons.closeButton({
@@ -513,20 +501,16 @@ Imcms.require(
             $testRoleTitle = rolesBEM.buildBlockElement("column-title", "<div>", {text: "Test role"}),
             testRoleRadioName = "testrole0",
             $testRoleView = rolesBEM.makeBlockElement("column", componentsBuilder.radios.imcmsRadio("<div>", {
-                id: "view03",
                 name: testRoleRadioName,
                 checked: "checked"
             })),
             $testRoleEdit = rolesBEM.makeBlockElement("column", componentsBuilder.radios.imcmsRadio("<div>", {
-                id: "edit03",
                 name: testRoleRadioName
             })),
             $testRoleRestricted1 = rolesBEM.makeBlockElement("column", componentsBuilder.radios.imcmsRadio("<div>", {
-                id: "restricted013",
                 name: testRoleRadioName
             })),
             $testRoleRestricted2 = rolesBEM.makeBlockElement("column", componentsBuilder.radios.imcmsRadio("<div>", {
-                id: "restricted023",
                 name: testRoleRadioName
             })),
             $testRoleDeleteRoleButton = rolesBEM.makeBlockElement("button", buttons.closeButton({
