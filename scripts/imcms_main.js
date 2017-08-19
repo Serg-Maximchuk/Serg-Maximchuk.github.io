@@ -72,7 +72,8 @@ Imcms = {
             // content manager
             "imcms-content-manager-builder": "builder/imcms_content_manager_builder.js",
             // rest api
-            "imcms-files-rest-api": "rest/imcms_files_rest_api.js"
+            "imcms-files-rest-api": "rest/imcms_files_rest_api.js",
+            "imcms-documents-rest-api": "rest/imcms_documents_rest_api.js"
         }
     }
 };

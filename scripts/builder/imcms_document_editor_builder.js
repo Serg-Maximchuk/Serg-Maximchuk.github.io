@@ -5,9 +5,9 @@
 Imcms.define("imcms-document-editor-builder",
     [
         "imcms-bem-builder", "imcms-page-info-builder", "imcms-components-builder", "imcms-primitives-builder",
-        "imcms-window-components-builder"
+        "imcms-window-components-builder", "imcms-documents-rest-api"
     ],
-    function (BEM, pageInfoBuilder, components, primitives, windowComponents) {
+    function (BEM, pageInfoBuilder, components, primitives, windowComponents, docRestApi) {
         function buildBodyHead() {
             var bodyHeadBEM = new BEM({
                 block: "imcms-document-editor-head",
@@ -142,7 +142,7 @@ Imcms.define("imcms-document-editor-builder",
             }]);
         }
 
-        function buildDocItemControls() {
+        function buildDocItemControls(documentId) {
             var docControlsBEM = new BEM({
                 block: "imcms-controls",
                 elements: {"control": "imcms-control"}
@@ -153,15 +153,16 @@ Imcms.define("imcms-document-editor-builder",
                     console.log("%c Not implemented feature: move doc", "color: red;");
                 }
             }, ["move"]);
+
             var $controlRemove = docControlsBEM.buildElement("control", "<div>", {
                 click: function () {
-                    console.log("%c Not implemented feature: remove doc", "color: red;");
+                    removeDocument.call(this, documentId);
                 }
             }, ["remove"]);
+
+            //todo impement it,fix "rename" to more appropriate in general case e.g. "edit"
             var $controlRename = docControlsBEM.buildElement("control", "<div>", {
-                click: function () {
-                    console.log("%c Not implemented feature: rename doc", "color: red;");
-                }
+                click: pageInfoBuilder.build
             }, ["rename"]);
 
             return docControlsBEM.buildBlock("<div>", [
@@ -185,7 +186,7 @@ Imcms.define("imcms-document-editor-builder",
             var $docItemTitle = docItemBEM.buildElement("info", "<div>", {text: document.title});
             var $docItemAlias = docItemBEM.buildElement("info", "<div>", {text: document.alias});
             var $docItemType = docItemBEM.buildElement("info", "<div>", {text: document.type});
-            var $controls = buildDocItemControls();
+            var $controls = buildDocItemControls(document.id);
 
             return docItemBEM.buildBlock("<div>", [{
                 "info": $docItemId,
@@ -391,6 +392,13 @@ Imcms.define("imcms-document-editor-builder",
                 {"body": $body},
                 {"footer": $footer}
             ], {id: "imcms-document-editor"});
+        }
+
+        function removeDocument(documentId) {
+            var documentRow = this.parentElement.parentElement;
+            docRestApi.remove(documentId, function (responseCode) {
+                responseCode === 200 && documentRow.remove();
+            });
         }
 
         return {
