@@ -23,22 +23,7 @@ Imcms.define("imcms-content-manager-builder",
                 return windowComponents.buildHead("Content manager", closeWindow);
             }
 
-            function buildControls() {
-                var controlsBEM = new BEM({
-                    block: "imcms-main-folders-controls",
-                    elements: {"control": "imcms-control"}
-                });
-
-                var $createFolderBtn = controlsBEM.buildElement("control", "<div>", {
-                    click: createNewFirstLevelFolder
-                }, ["create"]);
-
-                return controlsBEM.buildBlock("<div>", [{"control": $createFolderBtn}]);
-            }
-
             function buildFoldersContainer() {
-                // var $controls = buildControls();
-                // return leftSideBEM.buildBlock("<div>", [{"controls": $controls}]);
                 var $closeFoldersBtn = components.buttons.closeButton({
                     id: "closeFolders",
                     click: function () {
@@ -78,10 +63,19 @@ Imcms.define("imcms-content-manager-builder",
                     click: openCloseFolders
                 });
 
+                var $fileInput = $("<input>", {
+                    type: "file",
+                    style: "display: none;",
+                    change: function () {
+                        console.log("%c Not implemented feature: upload new image", "color: red;");
+                        console.log(this.files[0]);
+                    }
+                });
+
                 var $uploadNewImage = components.buttons.positiveButton({
                     text: "Upload",
                     click: function () {
-                        console.log("%c Not implemented feature: upload new image", "color: red;");
+                        $fileInput.click();
                     }
                 });
 
@@ -90,7 +84,7 @@ Imcms.define("imcms-content-manager-builder",
                     click: closeWindow // fixme: just closing now, should be save and close
                 });
 
-                return windowComponents.buildFooter([$showHideFolders, $uploadNewImage, $saveAndClose]);
+                return windowComponents.buildFooter([$showHideFolders, $fileInput, $uploadNewImage, $saveAndClose]);
             }
 
             var contentManagerBEM = new BEM({
