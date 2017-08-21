@@ -18,7 +18,9 @@ Imcms.define("imcms-image-editor-builder",
                 }
             });
 
-            return imageEditorBEM.buildBlock("<div>", []);
+            var $head = windowComponents.buildHead("Image Editor", console.log);
+
+            return imageEditorBEM.buildBlock("<div>", [{"head": $head}]);
         }
 
         return {
