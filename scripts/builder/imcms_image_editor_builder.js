@@ -18,7 +18,7 @@ Imcms.define("imcms-image-editor-builder",
                 }
             });
 
-            return $("<div>");
+            return imageEditorBEM.buildBlock("<div>", []);
         }
 
         return {
