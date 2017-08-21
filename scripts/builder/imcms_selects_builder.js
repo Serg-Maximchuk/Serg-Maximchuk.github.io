@@ -65,6 +65,31 @@ Imcms.define("imcms-selects-builder",
 
         return {
             imcmsSelect: function (tag, attributes, options) {
+                var blockElements = [];
+
+                if (attributes.text) {
+                    var $label = primitives.imcmsLabel(attributes.id, attributes.text, {click: toggleSelect});
+                    blockElements = [{"label": $label}];
+                }
+
+                var $selectElements = [];
+
+                if (options.length) {
+                    $selectElements.push(this.mapOptionsToSelectItems(options));
+                }
+
+                var $selectedValInput = $("<input>", {
+                    type: "hidden",
+                    id: attributes.id,
+                    name: attributes.name
+                }); // todo: implement putting selected value into this input from [data-value] attribute
+
+                $selectElements.push($selectedValInput);
+
+                return selectBEM.buildBlock("<div>", blockElements, (attributes["class"] ? {"class": attributes["class"]} : {}))
+                    .append($selectElements);
+            },
+            mapOptionsToSelectItems: function (options) {
                 var $itemsArr = options.map(function (option) {
                         return dropDownListBEM.buildBlockElement("item", "<div>", option);
                     }),
@@ -80,21 +105,9 @@ Imcms.define("imcms-selects-builder",
                     $dropDownList = dropDownListBEM.buildBlock("<div>", [
                         {"select-item": $selectItem},
                         {"items": $itemsContainer}
-                    ]),
-                    blockElements = [{"drop-down-list": $dropDownList}]
-                ;
+                    ]);
 
-                if (attributes.text) {
-                    var $label = primitives.imcmsLabel(attributes.id, attributes.text, {click: toggleSelect});
-                    blockElements.unshift({"label": $label});
-                }
-
-                return selectBEM.buildBlock("<div>", blockElements, (attributes["class"] ? {"class": attributes["class"]} : {}))
-                    .append($("<input>", {
-                        type: "hidden",
-                        id: attributes.id,
-                        name: attributes.name
-                    })); // todo: implement putting selected value into this input from [data-value] attribute
+                return selectBEM.makeBlockElement("drop-down-list", $dropDownList);
             },
             selectContainer: function (tag, attributes, options) {
                 var clas = (attributes && attributes["class"]) || "";

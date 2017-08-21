@@ -5,9 +5,11 @@
 Imcms.define("imcms-document-editor-builder",
     [
         "imcms-bem-builder", "imcms-page-info-builder", "imcms-components-builder", "imcms-primitives-builder",
-        "imcms-window-components-builder", "imcms-documents-rest-api", "imcms-controls-builder"
+        "imcms-window-components-builder", "imcms-documents-rest-api", "imcms-controls-builder",
+        "imcms-users-rest-api"
     ],
-    function (BEM, pageInfoBuilder, components, primitives, windowComponents, docRestApi, controlsBuilder) {
+    function (BEM, pageInfoBuilder, components, primitives,
+              windowComponents, docRestApi, controlsBuilder, usersRestApi) {
         function buildBodyHead() {
             var bodyHeadBEM = new BEM({
                 block: "imcms-document-editor-head",
@@ -63,22 +65,17 @@ Imcms.define("imcms-document-editor-builder",
             var $usersFilterSelect = components.selects.imcmsSelect("<div>", {
                 id: "users-filter",
                 name: "users-filter"
-            }, [{
-                text: "All Documents",
-                value: "0"
-            }, {
-                text: "My Documents",
-                value: "1"
-            }, {
-                text: "Admin",
-                value: "1"
-            }, {
-                text: "user",
-                value: "2"
-            }, {
-                text: "test-user",
-                value: "3"
-            }]);
+            }, []);
+
+            usersRestApi.read(null, function (users) {
+                var usersDataMapped = users.map(function (user) {
+                    return {
+                        text: user.username,
+                        "data-value": user.id
+                    }
+                });
+                $usersFilterSelect.append(components.selects.mapOptionsToSelectItems(usersDataMapped));
+            });
 
             var $usersFilter = toolBEM.buildBlock("<div>", [{"select": $usersFilterSelect}]);
 
