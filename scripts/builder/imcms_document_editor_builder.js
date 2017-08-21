@@ -152,8 +152,7 @@ Imcms.define("imcms-document-editor-builder",
                 removeDocument.call(this, documentId);
             });
 
-            //todo implement it,fix "rename" to more appropriate name in general case e.g. "edit"
-            var $controlRename = controlsBuilder.rename(pageInfoBuilder.build);
+            var $controlRename = controlsBuilder.edit(pageInfoBuilder.build);
 
             var controls = [
                 {"control": $controlRemove},

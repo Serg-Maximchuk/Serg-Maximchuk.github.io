@@ -14,7 +14,7 @@
     background-image: url("../img/controls/icon_folder_controll_create.png");
 }
 
-.imcms-control--rename {
+.imcms-control--edit {
     background-image: url("../img/controls/icon_folder_controll_reverse_edit.png");
 }
 
@@ -30,7 +30,7 @@
     background-image: url("../img/controls/icon_folder_controll_create.png");
 }
 
-.imcms-folder__controls .imcms-control--rename {
+.imcms-folder__controls .imcms-control--edit {
     background-image: url("../img/controls/icon_folder_controll_edit.png");
 }
 
@@ -46,7 +46,7 @@
     background-image: url("../img/controls/icon_folder_controll_create_hover.png");
 }
 
-.imcms-control--rename:hover {
+.imcms-control--edit:hover {
     background-image: url("../img/controls/icon_folder_controll_edit_hover.png");
 }
 

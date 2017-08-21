@@ -71,8 +71,8 @@ Imcms.define("imcms-image-content-builder",
             remove: function (folder) {
                 return controlsBuilder.remove(removeFolder.bind(folder));
             },
-            rename: function (folder, level) {
-                return controlsBuilder.rename(setRenameFolder(folder, level));
+            edit: function (folder, level) {
+                return controlsBuilder.edit(setRenameFolder(folder, level));
             },
             create: function (folder, level) {
                 return controlsBuilder.create(setCreateFolder(folder, level));
@@ -232,7 +232,7 @@ Imcms.define("imcms-image-content-builder",
             var controlsElements = [
                 folderControlsBuilder.move(subfolder),
                 folderControlsBuilder.remove(subfolder),
-                folderControlsBuilder.rename(subfolder, level),
+                folderControlsBuilder.edit(subfolder, level),
                 folderControlsBuilder.create(subfolder, level)
             ];
 

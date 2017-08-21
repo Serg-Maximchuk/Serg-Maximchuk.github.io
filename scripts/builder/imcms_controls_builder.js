@@ -19,8 +19,8 @@ Imcms.define("imcms-controls-builder", ["imcms-bem-builder"], function (BEM) {
         remove: function (onClick) {
             return buildControl("remove", onClick);
         },
-        rename: function (onClick) {
-            return buildControl("rename", onClick);
+        edit: function (onClick) {
+            return buildControl("edit", onClick);
         },
         create: function (onClick) {
             return buildControl("create", onClick);
