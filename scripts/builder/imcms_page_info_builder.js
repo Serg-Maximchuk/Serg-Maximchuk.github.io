@@ -820,7 +820,7 @@ Imcms.define("imcms-page-info-builder",
 
                 var $defaultChildTemplate = componentsBuilder.selects.selectContainer("<div>", {
                     name: "categoryTest2",
-                    text: "Test category type 2"
+                    text: "Default template for childs"
                 }, templates);
 
                 return buildFormBlock([$template, $defaultChildTemplate], index);
