@@ -37,6 +37,40 @@ Imcms.define("imcms-image-editor-builder",
                 text: "Url: "
             }).append($("<span>", {text: "/img/image_editor/img1.jpg"})); // todo: print correct image url
 
+            var characteristicBEM = new BEM({
+                block: "imcms-title imcms-image-characteristic",
+                elements: {"origin-size": "imcms-img-origin-size"}
+            });
+
+            var originSizeBEM = new BEM({
+                block: "imcms-img-origin-size",
+                elements: {
+                    "height-title": "imcms-title",
+                    "height-value": "imcms-title",
+                    "width-title": "imcms-title",
+                    "width-value": "imcms-title"
+                }
+            });
+
+            var $heightTitle = originSizeBEM.buildElement("height-title", "<span>", {text: "H:"});
+            var $heightValue = originSizeBEM.buildElement("height-value", "<span>", {text: "773"});
+            var $heightBlock = originSizeBEM.buildBlock("<div>", [
+                {"height-title": $heightTitle},
+                {"height-value": $heightValue}
+            ]);
+
+            var $widthTitle = originSizeBEM.buildElement("width-title", "<span>", {text: "W:"});
+            var $widthValue = originSizeBEM.buildElement("width-value", "<span>", {text: "1436"});
+            var $widthBlock = originSizeBEM.buildBlock("<div>", [
+                {"width-title": $widthTitle},
+                {"width-value": $widthValue}
+            ]);
+
+            var $heightWidthBlock = characteristicBEM.buildBlock("<div>", [
+                {"origin-size": $heightBlock},
+                {"origin-size": $widthBlock}
+            ], {text: "Orig "});
+
             return bodyHeadBEM.buildBlock("<div>", [
                 {
                     "button": $showHideBottomPanelBtn,
@@ -48,6 +82,8 @@ Imcms.define("imcms-image-editor-builder",
                     modifiers: ["right-panel"]
                 }, {
                     "img-url": $imgUrl
+                }, {
+                    "img-origin-size": $heightWidthBlock
                 }
             ]);
         }
