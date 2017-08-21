@@ -27,7 +27,7 @@ Imcms.require(
                 href: "image_editor.html",
                 text: "image editor"
             }),
-            $MenuEditorBtn = buttons.positiveButton({
+            $menuEditorBtn = buttons.positiveButton({
                 text: "menu editor",
                 click: editors.buildMenuEditor
             })
@@ -36,7 +36,7 @@ Imcms.require(
         $("#links-as-buttons").append(
             $chooseImgLink,
             $imageEditorLink,
-            $MenuEditorBtn
+            $menuEditorBtn
         );
 
         // buttons
