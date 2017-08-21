@@ -6,10 +6,11 @@ Imcms.define("imcms-document-editor-builder",
     [
         "imcms-bem-builder", "imcms-page-info-builder", "imcms-components-builder", "imcms-primitives-builder",
         "imcms-window-components-builder", "imcms-documents-rest-api", "imcms-controls-builder",
-        "imcms-users-rest-api"
+        "imcms-users-rest-api", "imcms-categories-rest-api"
     ],
     function (BEM, pageInfoBuilder, components, primitives,
-              windowComponents, docRestApi, controlsBuilder, usersRestApi) {
+              windowComponents, docRestApi, controlsBuilder,
+              usersRestApi, categoriesRestApi) {
         function buildBodyHead() {
             var bodyHeadBEM = new BEM({
                 block: "imcms-document-editor-head",
@@ -82,16 +83,17 @@ Imcms.define("imcms-document-editor-builder",
             var $categoriesFilterSelect = components.selects.imcmsSelect("<div>", {
                 id: "categories-filter",
                 name: "categories-filter"
-            }, [{
-                text: "Category 1",
-                value: "0"
-            }, {
-                text: "Category 2",
-                value: "1"
-            }, {
-                text: "Category 3",
-                value: "2"
-            }]);
+            }, []);
+
+            categoriesRestApi.read(null, function (categories) {
+                var categoriesDataMapped = categories.map(function (user) {
+                    return {
+                        text: user.username,
+                        "data-value": user.id
+                    }
+                });
+                $categoriesFilterSelect.append(components.selects.mapOptionsToSelectItems(categoriesDataMapped));
+            });
 
             var $categoriesFilter = toolBEM.buildBlock("<div>", [{"select": $categoriesFilterSelect}]);
 
