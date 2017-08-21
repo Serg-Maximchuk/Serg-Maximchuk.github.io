@@ -3,8 +3,8 @@
  * 21.08.17
  */
 Imcms.define("imcms-image-editor-builder",
-    ["imcms-bem-builder", "imcms-window-components-builder", "jquery"],
-    function (BEM, windowComponents, $) {
+    ["imcms-bem-builder", "imcms-window-components-builder", "imcms-components-builder", "jquery"],
+    function (BEM, windowComponents, components, $) {
         var $editor;
 
         function closeEditor() {
@@ -14,16 +14,25 @@ Imcms.define("imcms-image-editor-builder",
 
         function buildBodyHead() {
             var bodyHeadBEM = new BEM({
-                block: "imcms-image-characteristic",
+                block: "imcms-image-characteristics",
                 elements: {
-                    "button": "",
-                    "img-title": "imcms-title",
-                    "img-url": "imcms-title",
-                    "img-origin-size": "imcms-title"
+                    "button": "imcms-image-characteristic",
+                    "img-title": "imcms-title imcms-image-characteristic",
+                    "img-url": "imcms-title imcms-image-characteristic",
+                    "img-origin-size": "imcms-title imcms-image-characteristic"
                 }
             });
 
-            return bodyHeadBEM.buildBlock("<div>", []);
+            var $hideBottomPanelBtn = components.buttons.neutralButton({
+                text: "Show bottom panel"
+            });
+
+            return bodyHeadBEM.buildBlock("<div>", [
+                {
+                    "button": $hideBottomPanelBtn,
+                    modifiers: ["bottom-panel"]
+                }
+            ]);
         }
 
         function buildEditor() {
@@ -31,7 +40,7 @@ Imcms.define("imcms-image-editor-builder",
                 block: "imcms-image_editor",
                 elements: {
                     "head": "imcms-head",
-                    "image-characteristics": "imcms-image-characteristic",
+                    "image-characteristics": "imcms-image-characteristics",
                     "left-side": "",
                     "right-side": ""
                 }
