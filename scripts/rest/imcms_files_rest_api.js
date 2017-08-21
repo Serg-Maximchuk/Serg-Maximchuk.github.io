@@ -548,7 +548,10 @@ Imcms.define("imcms-files-rest-api", [], function () {
         update: function (data, callback) {
             console.log("%c Updating file: ", "color: blue;");
             console.log(data);
-            callback.call();
+            callback({
+                status: "OK",
+                code: 200
+            });
         },
         remove: function (path, callback) {
             console.log("%c " + path + " was removed (not really)", "color: blue;");

@@ -5,12 +5,13 @@
 Imcms.define("imcms-image-content-builder",
     [
         "imcms-files-rest-api", "imcms-bem-builder", "imcms-components-builder", "imcms-primitives-builder",
-        "imcms-controls-builder", "jquery"
+        "imcms-controls-builder", "imcms-modal-window", "jquery"
     ],
-    function (fileREST, BEM, components, primitives, controlsBuilder, $) {
+    function (fileREST, BEM, components, primitives, controlsBuilder, modalWindow, $) {
         var OPENED_FOLDER_BTN_CLASS = "imcms-folder-btn--open";
         var SUBFOLDER_CLASS = "imcms-folders__subfolder";
         var ACTIVE_FOLDER_CLASS = "imcms-folder--active";
+        var FOLDER_CREATION_BLOCK_ID = "imcms-folder-create-block";
         var ROOT_FOLDER_LEVEL = 0;
 
         var $foldersContainer, $imagesContainer;
@@ -28,6 +29,19 @@ Imcms.define("imcms-image-content-builder",
                 "folders": "imcms-folders"
             }
         });
+
+        function onFolderRenamed(response) {
+            var newName = this.$block.find(".imcms-panel-named__input").val();
+
+            console.log("Renaming folder " + newName);
+            console.log(response);
+
+            this.$block.prev()
+                .find(".imcms-folder__name")
+                .text(newName);
+
+            this.$block.detach();
+        }
 
         function onFolderCreated(response) {
             console.log("Created folder: ");
@@ -57,8 +71,8 @@ Imcms.define("imcms-image-content-builder",
             remove: function (folder) {
                 return controlsBuilder.remove(removeFolder.bind(folder));
             },
-            rename: function (folder) {
-                return controlsBuilder.rename(renameFolder.bind(folder));
+            rename: function (folder, level) {
+                return controlsBuilder.rename(setRenameFolder(folder, level));
             },
             create: function (folder, level) {
                 return controlsBuilder.create(setCreateFolder(folder, level));
@@ -94,15 +108,41 @@ Imcms.define("imcms-image-content-builder",
         }
 
         function moveFolder() {
-            // todo: implement!
+            // todo: implement or delete it's control icon at all
         }
 
-        function removeFolder() {
-            // todo: implement!
+        function removeFolder() { // this == folder
+            modalWindow.showModalWindow("Do you want to remove folder \"" + this.name + "\"?", function (answer) {
+                if (answer) {
+                    fileREST.remove(this.path, this.$folder.detach.bind(this.$folder));
+                }
+            }.bind(this));
         }
 
-        function renameFolder() {
-            // todo: implement!
+        function buildFolderRenamingBlock(folder, level) {
+            var currentFolderName = folder.$folder.children(".imcms-folders__folder")
+                .find(".imcms-folder__name")
+                .text();
+
+            return buildFolderManageBlock({
+                    folder: folder,
+                    level: level,
+                    name: currentFolderName
+                },
+                fileREST.update,
+                onFolderRenamed
+            ).css({
+                position: "absolute",
+                top: "0px",
+                left: "0px"
+            });
+        }
+
+        function setRenameFolder(folder, level) {
+            return function renameFolder() {
+                var $folderRenamingBlock = buildFolderRenamingBlock(folder, level);
+                folder.$folder.children(".imcms-folders__folder").after($folderRenamingBlock);
+            };
         }
 
         function setCreateFolder(folder, level) {
@@ -121,9 +161,8 @@ Imcms.define("imcms-image-content-builder",
             }
         }
 
-        function buildFolderCreationBlock(parentFolder, level) {
-            folderCreationBlockId = "imcms-folder-create-block";
-            $("#" + folderCreationBlockId).detach();
+        function buildFolderManageBlock(opts, onConfirm, onSuccess) {
+            $("#" + FOLDER_CREATION_BLOCK_ID).detach();
 
             var folderCreationBEM = new BEM({
                 block: "imcms-panel-named",
@@ -133,22 +172,24 @@ Imcms.define("imcms-image-content-builder",
                 }
             });
 
-            var $folderNameInput = primitives.imcmsInput({placeholder: "New folder name"});
+            var $folderNameInput = primitives.imcmsInput({
+                value: opts.name,
+                placeholder: "New folder name"
+            });
             var $confirmBtn = components.buttons.neutralButton({
                 text: "add+",
                 click: function () {
                     var folderName = $folderNameInput.val();
-                    $folderNameInput.val('');
 
                     if (!folderName) {
                         return;
                     }
 
-                    fileREST.create({
-                        path: parentFolder.path,
+                    onConfirm({
+                        path: opts.folder.path,
                         name: folderName
-                    }, onFolderCreated.bind({
-                        parentLevel: level,
+                    }, onSuccess.bind({
+                        parentLevel: opts.level,
                         $block: $folderCreationBlock
                     }));
                 }
@@ -157,9 +198,17 @@ Imcms.define("imcms-image-content-builder",
             var $folderCreationBlock = folderCreationBEM.buildBlock("<div>", [
                 {"input": $folderNameInput},
                 {"button": $confirmBtn}
-            ], {id: folderCreationBlockId});
+            ], {id: FOLDER_CREATION_BLOCK_ID});
 
             return $folderCreationBlock;
+        }
+
+        function buildFolderCreationBlock(parentFolder, level) {
+            return buildFolderManageBlock({
+                folder: parentFolder,
+                level: level,
+                name: ""
+            }, fileREST.create, onFolderCreated);
         }
 
         function showFolderCreationBlock(parentFolder, level) {
@@ -183,7 +232,7 @@ Imcms.define("imcms-image-content-builder",
             var controlsElements = [
                 folderControlsBuilder.move(subfolder),
                 folderControlsBuilder.remove(subfolder),
-                folderControlsBuilder.rename(subfolder),
+                folderControlsBuilder.rename(subfolder, level),
                 folderControlsBuilder.create(subfolder, level)
             ];
 

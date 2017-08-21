@@ -314,7 +314,7 @@ Imcms.define("imcms-menu-editor-builder",
                 id: "imcms-menu-editor",
                 "data-document-id": docId, // receive correct doc id
                 "data-menu-id": menuId // receive correct menu id
-            });
+            }).addClass("imcms-editor-window");
         }
 
         return {

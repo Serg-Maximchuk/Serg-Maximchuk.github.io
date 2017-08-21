@@ -386,7 +386,7 @@ Imcms.define("imcms-document-editor-builder",
                 {"head": $head},
                 {"body": $body},
                 {"footer": $footer}
-            ], {id: "imcms-document-editor"});
+            ], {id: "imcms-document-editor"}).addClass("imcms-editor-window");
         }
 
         function removeDocument(documentId) {

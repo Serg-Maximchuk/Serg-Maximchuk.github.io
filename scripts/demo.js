@@ -19,15 +19,15 @@ Imcms.require(
 
         var buttons = componentsBuilder.buttons;
 
-        var $chooseImgLink = buttons.neutral("<a>", {
-                href: "choose_img.html",
-                text: "choose image"
+        var $chooseImgLink = buttons.positiveButton({
+                text: "choose image",
+                click: editors.buildContentManager
             }),
             $imageEditorLink = buttons.neutral("<a>", {
                 href: "image_editor.html",
                 text: "image editor"
             }),
-            $MenuEditorBtn = buttons.positiveButton({
+            $menuEditorBtn = buttons.positiveButton({
                 text: "menu editor",
                 click: editors.buildMenuEditor
             })
@@ -36,7 +36,7 @@ Imcms.require(
         $("#links-as-buttons").append(
             $chooseImgLink,
             $imageEditorLink,
-            $MenuEditorBtn
+            $menuEditorBtn
         );
 
         // buttons
