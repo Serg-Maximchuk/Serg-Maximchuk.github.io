@@ -3,8 +3,9 @@
  * 07.08.17.
  */
 Imcms.define("imcms-page-info-builder",
-    ["imcms-date-picker", "imcms-time-picker", "imcms-bem-builder", "imcms-components-builder", "jquery"],
-    function (DatePicker, TimePicker, BEM, componentsBuilder, $) {
+    ["imcms-date-picker", "imcms-time-picker", "imcms-bem-builder", "imcms-components-builder",
+        "imcms-roles-rest-api", "jquery"],
+    function (DatePicker, TimePicker, BEM, componentsBuilder, rolesRestApi, $) {
 
         // todo: receive date and time from server
 
@@ -703,22 +704,22 @@ Imcms.define("imcms-page-info-builder",
                         }
                     })
                 ;
+
                 var $addRoleSelect = componentsBuilder.selects.imcmsSelect("<div>", {
-                        id: "select3"
-                    }, [{
-                        text: "role1",
-                        "data-value": 1
-                    }, {
-                        text: "role2",
-                        "data-value": 2
-                    }, {
-                        text: "role3",
-                        "data-value": 3
-                    }, {
-                        text: "role4",
-                        "data-value": 4
-                    }]),
-                    $addRoleButton = componentsBuilder.buttons.neutralButton({
+                    id: "select3"
+                }, []);
+
+                rolesRestApi.read(null, function (roles) {
+                    var rolesDataMapped = roles.map(function (role) {
+                        return {
+                            text: role.name,
+                            "data-value": role.id
+                        }
+                    });
+                    $addRoleSelect.append(componentsBuilder.selects.mapOptionsToSelectItems(rolesDataMapped));
+                });
+
+                var $addRoleButton = componentsBuilder.buttons.neutralButton({
                         text: "Add role",
                         click: function () {
                             console.log("%c Not implemented feature: add role.", "color: red;")
