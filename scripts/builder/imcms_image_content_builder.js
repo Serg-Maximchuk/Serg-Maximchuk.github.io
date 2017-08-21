@@ -31,7 +31,6 @@ Imcms.define("imcms-image-content-builder",
         });
 
         function onFolderRenamed(response) {
-            console.log(this.$block[0]);
             var newName = this.$block.find(".imcms-panel-named__input").val();
 
             console.log("Renaming folder " + newName);
@@ -109,11 +108,11 @@ Imcms.define("imcms-image-content-builder",
         }
 
         function moveFolder() {
-            // todo: implement!
+            // todo: implement or delete it's control icon at all
         }
 
-        function removeFolder() {
-            // todo: implement!
+        function removeFolder() { // this == folder
+            fileREST.remove(this.path, this.$folder.detach.bind(this.$folder));
         }
 
         function buildFolderRenamingBlock(folder, level) {
