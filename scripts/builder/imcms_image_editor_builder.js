@@ -12,20 +12,38 @@ Imcms.define("imcms-image-editor-builder",
             // $editor.css("display", "none");
         }
 
+        function buildBodyHead() {
+            var bodyHeadBEM = new BEM({
+                block: "imcms-image-characteristic",
+                elements: {
+                    "button": "",
+                    "img-title": "imcms-title",
+                    "img-url": "imcms-title",
+                    "img-origin-size": "imcms-title"
+                }
+            });
+
+            return bodyHeadBEM.buildBlock("<div>", []);
+        }
+
         function buildEditor() {
             var imageEditorBEM = new BEM({
                 block: "imcms-image_editor",
                 elements: {
                     "head": "imcms-head",
-                    "image-characteristics": "",
+                    "image-characteristics": "imcms-image-characteristic",
                     "left-side": "",
                     "right-side": ""
                 }
             });
 
             var $head = windowComponents.buildHead("Image Editor", closeEditor);
+            var $bodyHead = buildBodyHead();
 
-            return imageEditorBEM.buildBlock("<div>", [{"head": $head}]);
+            return imageEditorBEM.buildBlock("<div>", [
+                {"head": $head},
+                {"image-characteristics": $bodyHead}
+            ]);
         }
 
         return {
