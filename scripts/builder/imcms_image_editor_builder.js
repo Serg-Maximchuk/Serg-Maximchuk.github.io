@@ -8,7 +8,8 @@ Imcms.define("imcms-image-editor-builder",
         var $editor;
 
         function closeEditor() {
-            // todo: implement
+            // uncomment when builder will be ready
+            // $editor.css("display", "none");
         }
 
         function buildEditor() {
