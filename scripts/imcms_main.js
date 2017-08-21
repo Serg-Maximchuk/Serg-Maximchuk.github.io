@@ -34,11 +34,7 @@ Imcms = {
             "imcms-select": "imcms_select.js",
             "imcms-numberbox": "imcms_numberbox.js",
             "imcms-keyword": "imcms_keyword.js",
-            "imcms-rest": "imcms_rest.js",
             "imcms-modal-window": "modal_window/imcms_modal_window.js",
-            "imcms-folders": "choose_img/imcms_folders.js",
-            "imcms-choose-image": "choose_img/imcms_choose_img.js",
-            "imcms-content-manager": "choose_img/imcms_content_manager.js",
             "imcms-uuid-generator": "imcms_uuid_generator.js",
             // editors (old)
             "imcms-image-editor-crop": "image_editor/imcms_image_editor_crop.js",
@@ -46,7 +42,7 @@ Imcms = {
             "imcms-image-editor": "image_editor/imcms_image_editor.js",
             // builders
             // components
-            "imcms-components-builder": "imcms_components_builder.js",
+            "imcms-components-builder": "builder/imcms_components_builder.js",
             "imcms-buttons-builder": "builder/imcms_buttons_builder.js",
             "imcms-flags-builder": "builder/imcms_flags_builder.js",
             "imcms-bem-builder": "builder/imcms_bem_builder.js",
