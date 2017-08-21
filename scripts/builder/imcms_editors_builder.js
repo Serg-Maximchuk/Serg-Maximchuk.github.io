@@ -5,14 +5,15 @@
 Imcms.define("imcms-editors-builder",
     [
         "imcms-page-info-builder", "imcms-menu-editor-builder", "imcms-document-editor-builder",
-        "imcms-content-manager-builder"
+        "imcms-content-manager-builder", "imcms-image-editor-builder"
     ],
-    function (pageInfoBuilder, menuEditorBuilder, documentEditorBuilder, contentManagerBuilder) {
+    function (pageInfoBuilder, menuEditorBuilder, documentEditorBuilder, contentManagerBuilder, imageEditorBuilder) {
         return {
             buildMenuEditor: menuEditorBuilder.build.bind(menuEditorBuilder),
             buildPageInfo: pageInfoBuilder.build.bind(pageInfoBuilder),
             buildDocumentEditor: documentEditorBuilder.build.bind(documentEditorBuilder),
-            buildContentManager: contentManagerBuilder.build.bind(contentManagerBuilder)
+            buildContentManager: contentManagerBuilder.build.bind(contentManagerBuilder),
+            buildImageEditor: imageEditorBuilder.build.bind(imageEditorBuilder)
         };
     }
 );
