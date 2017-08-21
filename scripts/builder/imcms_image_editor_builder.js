@@ -23,14 +23,31 @@ Imcms.define("imcms-image-editor-builder",
                 }
             });
 
-            var $hideBottomPanelBtn = components.buttons.neutralButton({
+            var $showHideBottomPanelBtn = components.buttons.neutralButton({
                 text: "Show bottom panel"
             });
 
+            var $imageTitle = bodyHeadBEM.buildElement("img-title", "<div>", {text: "img1.jpg"}); // todo: print correct image name
+
+            var $showHideRightPanelBtn = components.buttons.neutralButton({
+                text: "Show right panel"
+            });
+
+            var $imgUrl = bodyHeadBEM.buildElement("img-url", "<div>", {
+                text: "Url: "
+            }).append($("<span>", {text: "/img/image_editor/img1.jpg"})); // todo: print correct image url
+
             return bodyHeadBEM.buildBlock("<div>", [
                 {
-                    "button": $hideBottomPanelBtn,
+                    "button": $showHideBottomPanelBtn,
                     modifiers: ["bottom-panel"]
+                }, {
+                    "img-title": $imageTitle
+                }, {
+                    "button": $showHideRightPanelBtn,
+                    modifiers: ["right-panel"]
+                }, {
+                    "img-url": $imgUrl
                 }
             ]);
         }
