@@ -24,7 +24,16 @@ Imcms.define("imcms-rest-api", ["jquery"], function ($) {
         return ajax.bind({url: path, type: "DELETE"});
     }
 
+    var API = function (url) {
+        this.create = post(url);
+        this.read = get(url);
+        this.update = put(url);
+        this.remove = remove(url);
+    };
+
     return {
+
+        API: API,
 
         create: function (path, data, callback) {
             post(path)(data, callback);
