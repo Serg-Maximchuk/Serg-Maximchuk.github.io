@@ -107,7 +107,7 @@ Imcms.define("imcms-content-manager-builder",
                 {"left-side": $foldersContainer},
                 {"right-side": $imagesContainer},
                 {"footer": $footer}
-            ]);
+            ]).addClass("imcms-editor-window");
         }
 
         var leftSideBEM = new BEM({
