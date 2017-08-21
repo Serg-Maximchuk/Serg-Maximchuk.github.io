@@ -24,7 +24,6 @@ Imcms.define("imcms-time-picker", ["imcms", "jquery"], function (imcms, $) {
             timePicker = curTime.parents(TIME_PICKER_CLASS_SELECTOR),
             hour = timePicker.find(".imcms-time-picker__hour"),
             minute = timePicker.find(".imcms-time-picker__minute"),
-            picker = timePicker.find(".imcms-time-picker__time"),
             curHour, curMinute,
             currentTimeInput = timePicker.find(".imcms-current-time__input"),
             currentTimeInputVal = currentTimeInput.val().split(":")
@@ -229,9 +228,6 @@ Imcms.define("imcms-time-picker", ["imcms", "jquery"], function (imcms, $) {
         setTime: function (setMeAsTime) {
             this.$timePicker.find(".imcms-current-time__input").val(setMeAsTime);
         }
-    };
-    TimePicker.init = function () {
-        new TimePicker($(document)).setTime(getCurrentTime());
     };
 
     $(document).click(closePicker);
