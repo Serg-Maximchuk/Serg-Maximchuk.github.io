@@ -26,25 +26,25 @@
     height: 12px;
 }
 
-.imcms-angle-top-left {
+.imcms-angle--top-left {
     cursor: nw-resize;
     top: -6px;
     left: -6px;
 }
 
-.imcms-angle-top-right {
+.imcms-angle--top-right {
     cursor: ne-resize;
     top: -6px;
     right: -6px;
 }
 
-.imcms-angle-bottom-left {
+.imcms-angle--bottom-left {
     cursor: sw-resize;
     bottom: -6px;
     left: -6px;
 }
 
-.imcms-angle-bottom-right {
+.imcms-angle--bottom-right {
     cursor: se-resize;
     bottom: -6px;
     right: -6px;
