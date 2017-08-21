@@ -7,6 +7,10 @@ Imcms.define("imcms-image-editor-builder",
     function (BEM, windowComponents, $) {
         var $editor;
 
+        function closeEditor() {
+            // todo: implement
+        }
+
         function buildEditor() {
             var imageEditorBEM = new BEM({
                 block: "imcms-image_editor",
@@ -18,7 +22,7 @@ Imcms.define("imcms-image-editor-builder",
                 }
             });
 
-            var $head = windowComponents.buildHead("Image Editor", console.log);
+            var $head = windowComponents.buildHead("Image Editor", closeEditor);
 
             return imageEditorBEM.buildBlock("<div>", [{"head": $head}]);
         }
