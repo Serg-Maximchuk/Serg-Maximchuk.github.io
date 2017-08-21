@@ -19,9 +19,9 @@ Imcms.require(
 
         var buttons = componentsBuilder.buttons;
 
-        var $chooseImgLink = buttons.neutral("<a>", {
-                href: "choose_img.html",
-                text: "choose image"
+        var $chooseImgLink = buttons.positiveButton({
+                text: "choose image",
+                click: editors.buildContentManager
             }),
             $imageEditorLink = buttons.neutral("<a>", {
                 href: "image_editor.html",
