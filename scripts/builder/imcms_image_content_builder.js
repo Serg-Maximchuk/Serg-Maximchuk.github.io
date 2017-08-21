@@ -5,9 +5,9 @@
 Imcms.define("imcms-image-content-builder",
     [
         "imcms-files-rest-api", "imcms-bem-builder", "imcms-components-builder", "imcms-primitives-builder",
-        "imcms-controls-builder", "jquery"
+        "imcms-controls-builder", "imcms-modal-window", "jquery"
     ],
-    function (fileREST, BEM, components, primitives, controlsBuilder, $) {
+    function (fileREST, BEM, components, primitives, controlsBuilder, modalWindow, $) {
         var OPENED_FOLDER_BTN_CLASS = "imcms-folder-btn--open";
         var SUBFOLDER_CLASS = "imcms-folders__subfolder";
         var ACTIVE_FOLDER_CLASS = "imcms-folder--active";
@@ -112,7 +112,11 @@ Imcms.define("imcms-image-content-builder",
         }
 
         function removeFolder() { // this == folder
-            fileREST.remove(this.path, this.$folder.detach.bind(this.$folder));
+            modalWindow.showModalWindow("Do you want to remove folder \"" + this.name + "\"?", function (answer) {
+                if (answer) {
+                    fileREST.remove(this.path, this.$folder.detach.bind(this.$folder));
+                }
+            }.bind(this));
         }
 
         function buildFolderRenamingBlock(folder, level) {
