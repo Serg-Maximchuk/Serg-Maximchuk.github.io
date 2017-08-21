@@ -86,10 +86,10 @@ Imcms.define("imcms-document-editor-builder",
             }, []);
 
             categoriesRestApi.read(null, function (categories) {
-                var categoriesDataMapped = categories.map(function (user) {
+                var categoriesDataMapped = categories.map(function (category) {
                     return {
-                        text: user.username,
-                        "data-value": user.id
+                        text: category.name,
+                        "data-value": category.id
                     }
                 });
                 $categoriesFilterSelect.append(components.selects.mapOptionsToSelectItems(categoriesDataMapped));
