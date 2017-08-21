@@ -1,7 +1,13 @@
 Imcms.define("imcms-rest-api", ["jquery"], function ($) {
     function ajax(data, callback) {
+        var url = this.url;
+        // path variable case handling, it should be at the end of url
+        if (typeof data === String || typeof data === Number) {
+            url += '/' + data;
+            data = {};
+        }
         $.ajax({
-            url: this.url,
+            url: url,
             type: this.type,
             data: data,
             success: callback
