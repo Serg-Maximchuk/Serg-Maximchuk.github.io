@@ -22,17 +22,6 @@ Imcms.define("imcms-image-editor-crop", ["jquery", "jquery-ui"], function ($) {
                 });
             }
         });
-
-        cropArea.resizable({
-            handles: "all",
-            containment: "parent",
-            resize: function (event, ui) {
-                cropArea.css({
-                    "background-position-x": "-" + positionLeft,
-                    "background-position-y": "-" + positionTop
-                });
-            }
-        });
     }
 
     return {
