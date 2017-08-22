@@ -150,9 +150,17 @@ Imcms.define("imcms-image-editor-builder",
                     error: "Error text"
                 });
 
+                var $proportionsBtn = components.buttons.proportionsButton({
+                    "data-state": "active",
+                    click: function () {
+                        console.log("%c Not implemented: Lock/unlock image proportions!", "color: red");
+                    }
+                });
+
                 return editSizeBEM.buildBlock("<div>", [
                     {"title": $title},
-                    {"number": $heightControlInput}
+                    {"number": $heightControlInput},
+                    {"button": $proportionsBtn}
                 ]);
             }
 
