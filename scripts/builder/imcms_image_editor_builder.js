@@ -308,6 +308,15 @@ Imcms.define("imcms-image-editor-builder",
                 ]);
             }
 
+            function buildAllLanguagesCheckbox() {
+                return components.checkboxes.checkboxContainer("<div>", [
+                    components.checkboxes.imcmsCheckbox("<div>", {
+                        name: "allLanguages",
+                        text: "All languages"
+                    })
+                ]);
+            }
+
             function buildEditableControls() {
                 var editableControlsBEM = new BEM({
                     block: "imcms-editable-controls-area",
@@ -323,13 +332,15 @@ Imcms.define("imcms-image-editor-builder",
                 var $selectImageBtnContainer = buildSelectImageBtnContainer();
                 var $altTextBox = buildAltTextBox();
                 var $imageLinkTextBox = buildImageLinkTextBox();
-                var $languages = buildImageLangFlags();
+                var $langFlags = buildImageLangFlags();
+                var $allLangs = buildAllLanguagesCheckbox();
 
                 return editableControlsBEM.buildBlock("<div>", [
                     {"buttons": $selectImageBtnContainer},
                     {"text-box": $altTextBox},
                     {"text-box": $imageLinkTextBox},
-                    {"flags": $languages}
+                    {"flags": $langFlags},
+                    {"checkboxes": $allLangs}
                 ]);
             }
 
