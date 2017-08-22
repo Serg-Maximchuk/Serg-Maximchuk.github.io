@@ -136,13 +136,24 @@ Imcms.define("imcms-image-editor-builder",
                     block: "imcms-edit-size",
                     elements: {
                         "title": "imcms-title",
-                        "height": "",
-                        "button": "",
-                        "width": ""
+                        "number": "",
+                        "button": ""
                     }
                 });
 
-                return editSizeBEM.buildBlock("<div>", []);
+                var $title = editSizeBEM.buildElement("title", "<div>", {text: "Display size"});
+
+                var $heightControlInput = components.texts.textNumber("<div>", {
+                    name: "height",
+                    placeholder: "Height",
+                    text: "H",
+                    error: "Error text"
+                });
+
+                return editSizeBEM.buildBlock("<div>", [
+                    {"title": $title},
+                    {"number": $heightControlInput}
+                ]);
             }
 
             function buildBottomPanel() {
