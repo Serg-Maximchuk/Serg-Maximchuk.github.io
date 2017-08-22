@@ -188,6 +188,10 @@ Imcms.define("imcms-image-editor-builder",
                 // todo: implement!
             }
 
+            function rotateRight() {
+                // todo: implement!
+            }
+
             function buildScaleAndRotateControls() {
                 var scaleAndRotateBEM = new BEM({
                     block: "imcms-edit-image",
@@ -198,12 +202,14 @@ Imcms.define("imcms-image-editor-builder",
                 var $zoomMinusBtn = components.buttons.zoomMinusButton({click: zoomMinus});
                 var $zoomContainBtn = components.buttons.zoomContainButton({click: zoomContain});
                 var $rotateLeftBtn = components.buttons.rotateLeftButton({click: rotateLeft});
+                var $rotateRightBtn = components.buttons.rotateRightButton({click: rotateRight});
 
                 return scaleAndRotateBEM.buildBlock("<div>", [
                     {"button": $zoomPlusBtn},
                     {"button": $zoomMinusBtn},
                     {"button": $zoomContainBtn},
-                    {"button": $rotateLeftBtn}
+                    {"button": $rotateLeftBtn},
+                    {"button": $rotateRightBtn}
                 ]);
             }
 
