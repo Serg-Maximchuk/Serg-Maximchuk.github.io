@@ -260,11 +260,26 @@ Imcms.define("imcms-image-editor-builder",
         }
 
         function buildRightSide() {
-            function buildEditableControls() {
-                function selectNewImage() {
-                    $hiddenFileInput.click();
-                }
 
+            function buildSelectImageBtnContainer() {
+                var $hiddenFileInput = $("<input>", {
+                    type: "file",
+                    name: "image",
+                    "style": "display: none"
+                });
+                var $selectImageBtn = components.buttons.neutralButton({
+                    text: "Select Image",
+                    click: function () {
+                        $hiddenFileInput.click();
+                    }
+                });
+                return components.buttons.buttonsContainer("<div>", [
+                    $hiddenFileInput,
+                    $selectImageBtn
+                ]);
+            }
+
+            function buildEditableControls() {
                 var editableControlsBEM = new BEM({
                     block: "imcms-editable-controls-area",
                     elements: {
@@ -277,19 +292,7 @@ Imcms.define("imcms-image-editor-builder",
                     }
                 });
 
-                var $hiddenFileInput = $("<input>", {
-                    type: "file",
-                    name: "image",
-                    "style": "display: none"
-                });
-                var $selectImageBtn = components.buttons.neutralButton({
-                    text: "Select Image",
-                    click: selectNewImage
-                });
-                var $selectImageBtnContainer = components.buttons.buttonsContainer("<div>", [
-                    $hiddenFileInput,
-                    $selectImageBtn
-                ]);
+                var $selectImageBtnContainer = buildSelectImageBtnContainer();
 
                 return editableControlsBEM.buildBlock("<div>", [
                     {"buttons": $selectImageBtnContainer}
