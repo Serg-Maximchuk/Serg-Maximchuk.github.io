@@ -31,7 +31,7 @@
     padding-top: 40px;
 }
 
-.imcms-editable-img-control-tab {
+.imcms-editable-img-control-tabs__tab {
     cursor: pointer;
     line-height: 41px;
     text-align: center;
@@ -41,7 +41,7 @@
     width: 50%;
 }
 
-.imcms-editable-img-control-tab:after {
+.imcms-editable-img-control-tabs__tab:after {
     content: "";
     background-color: #0b94d8;
     display: none;
@@ -52,11 +52,11 @@
     height: 3px;
 }
 
-.imcms-editable-img-control-tab--active:after {
+.imcms-editable-img-control-tabs__tab--active:after {
     display: block;
 }
 
-.imcms-editable-img-control-tab:hover:after {
+.imcms-editable-img-control-tabs__tab:hover:after {
     display: block;
 }
 
