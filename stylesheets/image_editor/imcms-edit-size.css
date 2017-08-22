@@ -39,3 +39,19 @@
     float: left;
     margin: 3px 15px;
 }
+
+.imcms-edit-size .imcms-edit-size__number {
+    width: auto;
+}
+
+.imcms-edit-size__number .imcms-number__label {
+    margin-right: 5px;
+}
+
+.imcms-edit-size__number .imcms-number-box {
+    display: inline-block;
+}
+
+.imcms-edit-size__number .imcms-number-box__input {
+    width: 100px;
+}
