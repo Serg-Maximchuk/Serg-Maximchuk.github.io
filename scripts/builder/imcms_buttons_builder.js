@@ -54,6 +54,9 @@ Imcms.define("imcms-buttons-builder", ["imcms-bem-builder"], function (bemBuilde
         search: function (tag, attributes) {
             return buildButtonElement(tag, attributes, "search");
         },
+        proportions: function (tag, attributes) {
+            return buildButtonElement(tag, attributes, "proportions");
+        },
         negativeButton: function (attributes) {
             return this.negative("<button>", setAttributesTypeButton(attributes));
         },
@@ -86,6 +89,9 @@ Imcms.define("imcms-buttons-builder", ["imcms-bem-builder"], function (bemBuilde
         },
         searchButton: function (attributes) {
             return this.search("<button>", setAttributesTypeButton(attributes));
+        },
+        proportionsButton: function (attributes) {
+            return this.proportions("<button>", setAttributesTypeButton(attributes));
         },
         buttonsContainer: function (tag, elements, attributes) {
             return buttonsBEM.buildBlock(tag, elements, attributes, "button");
