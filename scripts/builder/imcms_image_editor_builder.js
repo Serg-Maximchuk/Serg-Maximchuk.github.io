@@ -317,6 +317,18 @@ Imcms.define("imcms-image-editor-builder",
                 ]);
             }
 
+            function buildAdvancedModeBtn() {
+                return components.buttons.buttonsContainer("<div>", [
+                    components.buttons.negativeButton({
+                        text: "Advanced",
+                        "data-state": false,
+                        click: function () {
+                            // todo: implement!!!
+                        }
+                    })
+                ]);
+            }
+
             function buildEditableControls() {
                 var editableControlsBEM = new BEM({
                     block: "imcms-editable-controls-area",
@@ -334,13 +346,15 @@ Imcms.define("imcms-image-editor-builder",
                 var $imageLinkTextBox = buildImageLinkTextBox();
                 var $langFlags = buildImageLangFlags();
                 var $allLangs = buildAllLanguagesCheckbox();
+                var $advancedModeBtn = buildAdvancedModeBtn();
 
                 return editableControlsBEM.buildBlock("<div>", [
                     {"buttons": $selectImageBtnContainer},
                     {"text-box": $altTextBox},
                     {"text-box": $imageLinkTextBox},
                     {"flags": $langFlags},
-                    {"checkboxes": $allLangs}
+                    {"checkboxes": $allLangs},
+                    {"buttons": $advancedModeBtn}
                 ]);
             }
 
