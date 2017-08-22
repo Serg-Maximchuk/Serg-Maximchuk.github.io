@@ -279,6 +279,13 @@ Imcms.define("imcms-image-editor-builder",
                 ]);
             }
 
+            function buildAltTextBox() {
+                return components.texts.textBox("<div>", {
+                    text: "Alt text",
+                    name: "altText"
+                });
+            }
+
             function buildEditableControls() {
                 var editableControlsBEM = new BEM({
                     block: "imcms-editable-controls-area",
@@ -293,9 +300,11 @@ Imcms.define("imcms-image-editor-builder",
                 });
 
                 var $selectImageBtnContainer = buildSelectImageBtnContainer();
+                var $altTextBox = buildAltTextBox();
 
                 return editableControlsBEM.buildBlock("<div>", [
-                    {"buttons": $selectImageBtnContainer}
+                    {"buttons": $selectImageBtnContainer},
+                    {"text-box": $altTextBox}
                 ]);
             }
 
