@@ -219,7 +219,17 @@ Imcms.define("imcms-image-editor-builder",
                     elements: {"tab": "imcms-title"}
                 });
 
-                return switchViewControlsBEM.buildBlock("<div>", []);
+                var $preview = switchViewControlsBEM.buildElement("tab", "<div>", {text: "Preview"});
+                var $origin = switchViewControlsBEM.buildElement("tab", "<div>", {text: "Original"});
+
+                return switchViewControlsBEM.buildBlock("<div>", [
+                    {
+                        "tab": $preview
+                    }, {
+                        "tab": $origin,
+                        modifiers: ["active"]
+                    }
+                ]);
             }
 
             function buildBottomPanel() {
