@@ -154,7 +154,7 @@ Imcms.define("imcms-texts-builder",
                     {"label": $label},
                     {"number-box": $numberInputBox},
                     {"error-msg": $error}
-                ]);
+                ], (attributes["class"] ? {"class": attributes["class"]} : {}));
             },
             textNumberField: function (tag, attributes) {
                 return this.textNumber.apply(this, arguments).addClass("imcms-field");
