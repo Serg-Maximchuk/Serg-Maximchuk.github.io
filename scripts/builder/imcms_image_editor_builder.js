@@ -259,6 +259,10 @@ Imcms.define("imcms-image-editor-builder",
             return $("<div>").append($editableImageArea, $bottomPanel);
         }
 
+        function buildRightSide() {
+            return $("<div>");
+        }
+
         function buildEditor() {
             var imageEditorBEM = new BEM({
                 block: "imcms-image_editor",
@@ -273,11 +277,13 @@ Imcms.define("imcms-image-editor-builder",
             var $head = windowComponents.buildHead("Image Editor", closeEditor);
             var $bodyHead = buildBodyHead();
             var $leftSide = buildLeftSide();
+            var $rightSide = buildRightSide();
 
             return imageEditorBEM.buildBlock("<div>", [
                 {"head": $head},
                 {"image-characteristics": $bodyHead},
-                {"left-side": $leftSide}
+                {"left-side": $leftSide},
+                {"right-side": $rightSide}
             ]);
         }
 
