@@ -95,7 +95,17 @@ Imcms.define("imcms-image-editor-builder",
                     elements: {"angle": "imcms-angle"}
                 });
 
-                return cropAreaBEM.buildBlock("<div>", []);
+                var $angleTopLeft = cropAreaBEM.buildElement("angle", "<div>", {}, ["top-left"]);
+                var $angleTopRight = cropAreaBEM.buildElement("angle", "<div>", {}, ["top-right"]);
+                var $angleBottomLeft = cropAreaBEM.buildElement("angle", "<div>", {}, ["bottom-left"]);
+                var $angleBottomRight = cropAreaBEM.buildElement("angle", "<div>", {}, ["bottom-right"]);
+
+                return cropAreaBEM.buildBlock("<div>", [
+                    {"angle": $angleTopLeft},
+                    {"angle": $angleTopRight},
+                    {"angle": $angleBottomLeft},
+                    {"angle": $angleBottomRight}
+                ]);
             }
 
             function buildEditableImageArea() {
