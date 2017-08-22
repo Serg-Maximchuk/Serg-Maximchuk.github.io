@@ -286,13 +286,19 @@ Imcms.define("imcms-image-editor-builder",
                 });
             }
 
+            function buildImageLinkTextBox() {
+                return components.texts.textBox("<div>", {
+                    text: "Image link",
+                    name: "imageLink"
+                });
+            }
+
             function buildEditableControls() {
                 var editableControlsBEM = new BEM({
                     block: "imcms-editable-controls-area",
                     elements: {
                         "buttons": "imcms-buttons",
                         "text-box": "imcms-text-box",
-                        "select": "imcms-select",
                         "flags": "imcms-flags",
                         "checkboxes": "imcms-checkboxes",
                         "advanced-mode": "imcms-advanced-mode"
@@ -301,10 +307,12 @@ Imcms.define("imcms-image-editor-builder",
 
                 var $selectImageBtnContainer = buildSelectImageBtnContainer();
                 var $altTextBox = buildAltTextBox();
+                var $imageLinkTextBox = buildImageLinkTextBox();
 
                 return editableControlsBEM.buildBlock("<div>", [
                     {"buttons": $selectImageBtnContainer},
-                    {"text-box": $altTextBox}
+                    {"text-box": $altTextBox},
+                    {"text-box": $imageLinkTextBox}
                 ]);
             }
 
