@@ -157,10 +157,18 @@ Imcms.define("imcms-image-editor-builder",
                     }
                 });
 
+                var $widthControlInput = components.texts.textNumber("<div>", {
+                    name: "width",
+                    placeholder: "Width",
+                    text: "W",
+                    error: "Error text"
+                });
+
                 return editSizeBEM.buildBlock("<div>", [
                     {"title": $title},
                     {"number": $heightControlInput},
-                    {"button": $proportionsBtn}
+                    {"button": $proportionsBtn},
+                    {"number": $widthControlInput}
                 ]);
             }
 
