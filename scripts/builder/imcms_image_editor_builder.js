@@ -172,13 +172,21 @@ Imcms.define("imcms-image-editor-builder",
                 ]);
             }
 
+            function zoomPlus() {
+                // todo: implement!
+            }
+
             function buildScaleAndRotateControls() {
                 var scaleAndRotateBEM = new BEM({
                     block: "imcms-edit-image",
                     elements: {"button": ""}
                 });
 
-                return scaleAndRotateBEM.buildBlock("<div>", []);
+                var $zoomPlusBtn = components.buttons.zoomPlusButton({click: zoomPlus});
+
+                return scaleAndRotateBEM.buildBlock("<div>", [
+                    {"button": $zoomPlusBtn}
+                ]);
             }
 
             function buildBottomPanel() {
