@@ -187,7 +187,7 @@ Imcms.define("imcms-image-editor-builder",
                 });
 
                 var $zoomPlusBtn = components.buttons.zoomPlusButton({click: zoomPlus});
-                var $zoomMinusBtn = components.buttons.zoomPlusButton({click: zoomMinus});
+                var $zoomMinusBtn = components.buttons.zoomMinusButton({click: zoomMinus});
 
                 return scaleAndRotateBEM.buildBlock("<div>", [
                     {"button": $zoomPlusBtn},
