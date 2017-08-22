@@ -24,12 +24,14 @@ Imcms.define("imcms-image-editor-builder",
             });
 
             var $showHideBottomPanelBtn = components.buttons.neutralButton({
+                "class": "imcms-image-characteristic",
                 text: "Show bottom panel"
             });
 
             var $imageTitle = bodyHeadBEM.buildElement("img-title", "<div>", {text: "img1.jpg"}); // todo: print correct image name
 
             var $showHideRightPanelBtn = components.buttons.neutralButton({
+                "class": "imcms-image-characteristic",
                 text: "Show right panel"
             });
 
