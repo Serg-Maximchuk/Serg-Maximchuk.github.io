@@ -5,7 +5,7 @@
 Imcms.define("imcms-image-editor-builder",
     ["imcms-bem-builder", "imcms-window-components-builder", "imcms-components-builder", "jquery"],
     function (BEM, windowComponents, components, $) {
-        var $editor;
+        var $editor, $imageContainer;
 
         function closeEditor() {
             // uncomment when builder will be ready
@@ -99,7 +99,13 @@ Imcms.define("imcms-image-editor-builder",
                     }
                 });
 
-                return editableImgAreaBEM.buildBlock("<div>", []);
+                $imageContainer = editableImgAreaBEM.buildElement("img", "<div>");
+                var $shadow = editableImgAreaBEM.buildElement("layout", "<div>");
+
+                return editableImgAreaBEM.buildBlock("<div>", [
+                    {"img": $imageContainer},
+                    {"layout": $shadow}
+                ]);
             }
 
             var $editableImageArea = buildEditableImageArea();
