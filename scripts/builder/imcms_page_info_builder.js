@@ -4,8 +4,8 @@
  */
 Imcms.define("imcms-page-info-builder",
     ["imcms-date-picker", "imcms-time-picker", "imcms-bem-builder", "imcms-components-builder",
-        "imcms-roles-rest-api", "jquery"],
-    function (DatePicker, TimePicker, BEM, componentsBuilder, rolesRestApi, $) {
+        "imcms-roles-rest-api", "imcms-templates-rest-api", "jquery"],
+    function (DatePicker, TimePicker, BEM, componentsBuilder, rolesRestApi, templatesRestApi, $) {
 
         // todo: receive date and time from server
 
@@ -801,30 +801,30 @@ Imcms.define("imcms-page-info-builder",
         }, {
             name: "templates",
             buildTab: function (index) {
-                var templates = [{
-                    text: "demo",
-                    value: "demo"
-                }, {
-                    text: "test",
-                    value: "test"
-                }, {
-                    text: "imageArchive",
-                    value: "imageArchive"
-                }, {
-                    text: "demoold",
-                    value: "demoold"
-                }];
-                var $template = componentsBuilder.selects.selectContainer("<div>", {
+                var $templateSelect = componentsBuilder.selects.selectContainer("<div>", {
                     name: "template",
                     text: "Template"
-                }, templates);
+                }, []);
 
-                var $defaultChildTemplate = componentsBuilder.selects.selectContainer("<div>", {
-                    name: "categoryTest2",
-                    text: "Default template for childs"
-                }, templates);
+                var $defaultChildTemplateSelect = componentsBuilder.selects.selectContainer("<div>", {
+                    name: "childTemplate",
+                    text: "Default child template"
+                }, []);
 
-                return buildFormBlock([$template, $defaultChildTemplate], index);
+                templatesRestApi.read(null, function (templates) {
+                    var templatesDataMapped = templates.map(function (template) {
+                        return {
+                            text: template.name,
+                            "data-value": template.id
+                        }
+                    });
+
+                    var $selectItems = componentsBuilder.selects.mapOptionsToSelectItems(templatesDataMapped);
+                    $templateSelect.find(".imcms-select").append($selectItems);
+                    $defaultChildTemplateSelect.find(".imcms-select").append($selectItems.clone(true, true));
+                });
+
+                return buildFormBlock([$templateSelect, $defaultChildTemplateSelect], index);
             }
         }, {
             name: "status",

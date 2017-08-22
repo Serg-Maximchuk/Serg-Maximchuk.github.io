@@ -75,7 +75,8 @@ Imcms = {
             "imcms-documents-rest-api": "rest/imcms_documents_rest_api.js",
             "imcms-users-rest-api": "rest/imcms_users_rest_api.js",
             "imcms-categories-rest-api": "rest/imcms_categories_rest_api.js",
-            "imcms-roles-rest-api": "rest/imcms_roles_rest_api.js"
+            "imcms-roles-rest-api": "rest/imcms_roles_rest_api.js",
+            "imcms-templates-rest-api": "rest/imcms_templates_rest_api.js"
         }
     }
 };
