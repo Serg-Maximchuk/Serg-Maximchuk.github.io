@@ -57,6 +57,21 @@ Imcms.define("imcms-buttons-builder", ["imcms-bem-builder"], function (bemBuilde
         proportions: function (tag, attributes) {
             return buildButtonElement(tag, attributes, "proportions");
         },
+        zoomPlus: function (tag, attributes) {
+            return buildButtonElement(tag, attributes, "zoom-plus");
+        },
+        zoomMinus: function (tag, attributes) {
+            return buildButtonElement(tag, attributes, "zoom-minus");
+        },
+        zoomContain: function (tag, attributes) {
+            return buildButtonElement(tag, attributes, "zoom-contain");
+        },
+        rotateLeft: function (tag, attributes) {
+            return buildButtonElement(tag, attributes, "rotate-left");
+        },
+        rotateRight: function (tag, attributes) {
+            return buildButtonElement(tag, attributes, "rotate-right");
+        },
         negativeButton: function (attributes) {
             return this.negative("<button>", setAttributesTypeButton(attributes));
         },
@@ -92,6 +107,21 @@ Imcms.define("imcms-buttons-builder", ["imcms-bem-builder"], function (bemBuilde
         },
         proportionsButton: function (attributes) {
             return this.proportions("<button>", setAttributesTypeButton(attributes));
+        },
+        zoomPlusButton: function (tag, attributes) {
+            return this.zoomPlus("<button>", setAttributesTypeButton(attributes));
+        },
+        zoomMinusButton: function (tag, attributes) {
+            return this.zoomMinus("<button>", setAttributesTypeButton(attributes));
+        },
+        zoomContainButton: function (tag, attributes) {
+            return this.zoomContain("<button>", setAttributesTypeButton(attributes));
+        },
+        rotateLeftButton: function (tag, attributes) {
+            return this.rotateLeft("<button>", setAttributesTypeButton(attributes));
+        },
+        rotateRightButton: function (tag, attributes) {
+            return this.rotateRight("<button>", setAttributesTypeButton(attributes));
         },
         buttonsContainer: function (tag, elements, attributes) {
             return buttonsBEM.buildBlock(tag, elements, attributes, "button");
