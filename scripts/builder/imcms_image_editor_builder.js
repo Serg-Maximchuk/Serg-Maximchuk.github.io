@@ -131,6 +131,20 @@ Imcms.define("imcms-image-editor-builder",
                 ]);
             }
 
+            function buildEditSizeControls() {
+                var editSizeBEM = new BEM({
+                    block: "imcms-edit-size",
+                    elements: {
+                        "title": "imcms-title",
+                        "height": "",
+                        "button": "",
+                        "width": ""
+                    }
+                });
+
+                return editSizeBEM.buildBlock("<div>", []);
+            }
+
             function buildBottomPanel() {
                 var bottomPanelBEM = new BEM({
                     block: "imcms-editable-img-controls",
@@ -141,7 +155,11 @@ Imcms.define("imcms-image-editor-builder",
                     }
                 });
 
-                return bottomPanelBEM.buildBlock("<div>", []);
+                var $editSizeControls = buildEditSizeControls();
+
+                return bottomPanelBEM.buildBlock("<div>", [
+                    {"control-size": $editSizeControls}
+                ]);
             }
 
             var $editableImageArea = buildEditableImageArea();
