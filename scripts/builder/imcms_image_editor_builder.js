@@ -260,7 +260,25 @@ Imcms.define("imcms-image-editor-builder",
         }
 
         function buildRightSide() {
-            return $("<div>");
+            function buildEditableControls() {
+                var editableControlsBEM = new BEM({
+                    block: "imcms-editable-controls-area",
+                    elements: {
+                        "buttons": "imcms-buttons",
+                        "text-box": "imcms-text-box",
+                        "select": "imcms-select",
+                        "flags": "imcms-flags",
+                        "checkboxes": "imcms-checkboxes",
+                        "advanced-mode": "imcms-advanced-mode"
+                    }
+                });
+
+                return editableControlsBEM.buildBlock("<div>", []);
+            }
+
+            var $editableControls = buildEditableControls();
+
+            return $("<div>").append($editableControls);
         }
 
         function buildEditor() {
