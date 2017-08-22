@@ -131,9 +131,23 @@ Imcms.define("imcms-image-editor-builder",
                 ]);
             }
 
-            var $editableImageArea = buildEditableImageArea();
+            function buildBottomPanel() {
+                var bottomPanelBEM = new BEM({
+                    block: "imcms-editable-img-controls",
+                    elements: {
+                        "control-size": "imcms-edit-size",
+                        "control-scale-n-rotate": "imcms-edit-image",
+                        "control-view": "imcms-editable-img-control-tabs"
+                    }
+                });
 
-            return $("<div>").append($editableImageArea);
+                return bottomPanelBEM.buildBlock("<div>", []);
+            }
+
+            var $editableImageArea = buildEditableImageArea();
+            var $bottomPanel = buildBottomPanel();
+
+            return $("<div>").append($editableImageArea, $bottomPanel);
         }
 
         function buildEditor() {
