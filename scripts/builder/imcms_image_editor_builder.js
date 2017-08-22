@@ -89,7 +89,22 @@ Imcms.define("imcms-image-editor-builder",
         }
 
         function buildLeftSide() {
-            return $("<div>");
+            function buildEditableImageArea() {
+                var editableImgAreaBEM = new BEM({
+                    block: "imcms-editable-img-area",
+                    elements: {
+                        "img": "imcms-editable-img",
+                        "layout": "",
+                        "crop-area": "imcms-crop-area"
+                    }
+                });
+
+                return editableImgAreaBEM.buildBlock("<div>", []);
+            }
+
+            var $editableImageArea = buildEditableImageArea();
+
+            return $("<div>").append($editableImageArea);
         }
 
         function buildEditor() {
