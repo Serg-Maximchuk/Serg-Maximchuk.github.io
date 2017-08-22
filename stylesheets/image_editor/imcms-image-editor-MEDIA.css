@@ -38,13 +38,13 @@
 @media screen and (max-width: 790px) {
     .imcms-editable-img-controls {
         padding: 0 20px;
-        height: 185px;
-        bottom: -185px;
+        height: 215px;
+        bottom: -215px;
     }
 
-    .imcms-editable-img-control:first-child,
-    .imcms-editable-img-control:nth-child(2),
-    .imcms-editable-img-control:last-child {
+    .imcms-editable-img-controls__control-size,
+    .imcms-editable-img-controls__control-scale-n-rotate,
+    .imcms-editable-img-controls__control-view {
         display: block;
         float: none;
         margin: 5px auto;
