@@ -213,6 +213,15 @@ Imcms.define("imcms-image-editor-builder",
                 ]);
             }
 
+            function buildSwitchViewControls() {
+                var switchViewControlsBEM = new BEM({
+                    block: "imcms-editable-img-control-tabs",
+                    elements: {"tab": "imcms-title"}
+                });
+
+                return switchViewControlsBEM.buildBlock("<div>", []);
+            }
+
             function buildBottomPanel() {
                 var bottomPanelBEM = new BEM({
                     block: "imcms-editable-img-controls",
@@ -225,10 +234,12 @@ Imcms.define("imcms-image-editor-builder",
 
                 var $editSizeControls = buildEditSizeControls();
                 var $scaleAndRotateControls = buildScaleAndRotateControls();
+                var $switchViewControls = buildSwitchViewControls();
 
                 return bottomPanelBEM.buildBlock("<div>", [
                     {"control-size": $editSizeControls},
-                    {"control-scale-n-rotate": $scaleAndRotateControls}
+                    {"control-scale-n-rotate": $scaleAndRotateControls},
+                    {"control-view": $switchViewControls}
                 ]);
             }
 
