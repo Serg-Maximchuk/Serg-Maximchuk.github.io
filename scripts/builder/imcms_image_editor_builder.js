@@ -172,6 +172,15 @@ Imcms.define("imcms-image-editor-builder",
                 ]);
             }
 
+            function buildScaleAndRotateControls() {
+                var scaleAndRotateBEM = new BEM({
+                    block: "imcms-edit-image",
+                    elements: {"button": ""}
+                });
+
+                return scaleAndRotateBEM.buildBlock("<div>", []);
+            }
+
             function buildBottomPanel() {
                 var bottomPanelBEM = new BEM({
                     block: "imcms-editable-img-controls",
@@ -183,9 +192,11 @@ Imcms.define("imcms-image-editor-builder",
                 });
 
                 var $editSizeControls = buildEditSizeControls();
+                var $scaleAndRotateControls = buildScaleAndRotateControls();
 
                 return bottomPanelBEM.buildBlock("<div>", [
-                    {"control-size": $editSizeControls}
+                    {"control-size": $editSizeControls},
+                    {"control-scale-n-rotate": $scaleAndRotateControls}
                 ]);
             }
 
