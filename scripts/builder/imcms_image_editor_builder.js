@@ -120,9 +120,19 @@ Imcms.define("imcms-image-editor-builder",
                     }
                 });
 
-                $imageContainer = editableImgAreaBEM.buildElement("img", "<div>");
-                var $shadow = editableImgAreaBEM.buildElement("layout", "<div>");
-                var $cropArea = buildCropArea();
+                // todo: set image specific width/height !!1!
+                $imageContainer = editableImgAreaBEM.buildElement("img", "<div>").css({
+                    width: "1436px",
+                    height: "773px"
+                });
+                var $shadow = editableImgAreaBEM.buildElement("layout", "<div>").css({
+                    width: "1436px",
+                    height: "773px"
+                });
+                var $cropArea = buildCropArea().css({
+                    width: "649px",
+                    height: "496px"
+                });
 
                 return editableImgAreaBEM.buildBlock("<div>", [
                     {"img": $imageContainer},
