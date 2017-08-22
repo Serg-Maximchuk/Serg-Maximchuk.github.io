@@ -62,9 +62,8 @@
         text-align: center;
     }
 
-    .imcms-edit-size__height,
     .imcms-edit-size__button,
-    .imcms-edit-size__width {
+    .imcms-edit-size__number {
         float: none;
         display: inline-block;
         overflow: hidden;
@@ -72,11 +71,6 @@
 
     .imcms-edit-size__button {
         margin: 0 10px;
-    }
-
-    .imcms-edit-size__height span,
-    .imcms-edit-size__width span {
-        line-height: 35px;
     }
 
     .imcms-edit-size .imcms-number-box__input {
