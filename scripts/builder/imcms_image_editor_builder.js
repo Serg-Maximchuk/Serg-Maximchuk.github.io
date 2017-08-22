@@ -293,6 +293,21 @@ Imcms.define("imcms-image-editor-builder",
                 });
             }
 
+            function buildImageLangFlags() {
+                return components.flags.flagsContainer("<div>", [
+                    components.flags.eng("<div>", true, {
+                        click: function () {
+                            // todo: implement!!!
+                        }
+                    }),
+                    components.flags.swe("<div>", false, {
+                        click: function () {
+                            // todo: implement!!!
+                        }
+                    })
+                ]);
+            }
+
             function buildEditableControls() {
                 var editableControlsBEM = new BEM({
                     block: "imcms-editable-controls-area",
@@ -308,11 +323,13 @@ Imcms.define("imcms-image-editor-builder",
                 var $selectImageBtnContainer = buildSelectImageBtnContainer();
                 var $altTextBox = buildAltTextBox();
                 var $imageLinkTextBox = buildImageLinkTextBox();
+                var $languages = buildImageLangFlags();
 
                 return editableControlsBEM.buildBlock("<div>", [
                     {"buttons": $selectImageBtnContainer},
                     {"text-box": $altTextBox},
-                    {"text-box": $imageLinkTextBox}
+                    {"text-box": $imageLinkTextBox},
+                    {"flags": $languages}
                 ]);
             }
 
