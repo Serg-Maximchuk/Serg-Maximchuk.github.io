@@ -89,6 +89,15 @@ Imcms.define("imcms-image-editor-builder",
         }
 
         function buildLeftSide() {
+            function buildCropArea() {
+                var cropAreaBEM = new BEM({
+                    block: "imcms-crop-area",
+                    elements: {"angle": "imcms-angle"}
+                });
+
+                return cropAreaBEM.buildBlock("<div>", []);
+            }
+
             function buildEditableImageArea() {
                 var editableImgAreaBEM = new BEM({
                     block: "imcms-editable-img-area",
@@ -101,10 +110,12 @@ Imcms.define("imcms-image-editor-builder",
 
                 $imageContainer = editableImgAreaBEM.buildElement("img", "<div>");
                 var $shadow = editableImgAreaBEM.buildElement("layout", "<div>");
+                var $cropArea = buildCropArea();
 
                 return editableImgAreaBEM.buildBlock("<div>", [
                     {"img": $imageContainer},
-                    {"layout": $shadow}
+                    {"layout": $shadow},
+                    {"crop-area": $cropArea}
                 ]);
             }
 
