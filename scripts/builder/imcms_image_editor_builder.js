@@ -402,6 +402,20 @@ Imcms.define("imcms-image-editor-builder",
                     .append(")");
             }
 
+            function buildCropCoordinatesContainer() {
+                var cropCoordinatesBEM = new BEM({
+                    block: "imcms-crop-coordinates",
+                    elements: {
+                        "x": "imcms-crop-coordinate",
+                        "y": "imcms-crop-coordinate",
+                        "x1": "imcms-crop-coordinate",
+                        "y1": "imcms-crop-coordinate"
+                    }
+                });
+
+                return cropCoordinatesBEM.buildBlock("<div>", []);
+            }
+
             function buildAdvancedControls() {
                 var advancedModeBEM = new BEM({
                     block: "imcms-advanced-mode",
@@ -409,8 +423,8 @@ Imcms.define("imcms-image-editor-builder",
                         "title": "imcms-title",
                         "buttons": "imcms-buttons",
                         "space-around": "imcms-space-around",
-                        "crop-coordinates": "imcms-crop-coordinates",
                         "current-crop-width": "imcms-title",
+                        "crop-coordinates": "imcms-crop-coordinates",
                         "file-format": "",
                         "button": "imcms-button"
                     }
@@ -420,12 +434,14 @@ Imcms.define("imcms-image-editor-builder",
                 var $textAlignmentBtnsContainer = buildTextAlignmentBtnsContainer();
                 var $spaceAroundImageInputContainer = buildSpaceAroundImageInputContainer();
                 var $cropCoordinatesText = buildCropCoordinatesText(advancedModeBEM);
+                var $cropCoordinatesContainer = buildCropCoordinatesContainer();
 
                 return advancedModeBEM.buildBlock("<div>", [
                     {"title": $textAlignmentBtnsTitle},
                     {"buttons": $textAlignmentBtnsContainer},
                     {"space-around": $spaceAroundImageInputContainer},
-                    {"title": $cropCoordinatesText}
+                    {"title": $cropCoordinatesText},
+                    {"crop-coordinates": $cropCoordinatesContainer}
                 ]);
             }
 
