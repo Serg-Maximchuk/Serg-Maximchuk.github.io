@@ -19,10 +19,6 @@ Imcms = {
                 path: "./libs/jquery.mask.min.js",
                 addon: "jquery-mask"
             },
-            "jquery-ui": {
-                path: "//ajax.aspnetcdn.com/ajax/jquery.ui/1.12.1/jquery-ui.min.js",
-                addon: "jquery-ui"
-            },
             // todo: support local modules without defining their paths directly!
             // components (old)
             "imcms-flags": "imcms_flags.js",

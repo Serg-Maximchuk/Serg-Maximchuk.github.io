@@ -1,4 +1,4 @@
-Imcms.define("imcms-image-editor-crop", ["jquery", "jquery-ui"], function ($) {
+Imcms.define("imcms-image-editor-crop", ["jquery"], function ($) {
     function cropImg() {
         var cropArea = $("#cropArea"),
             positionTop = cropArea.css("top"),
