@@ -21,6 +21,9 @@ Imcms.define("imcms-buttons-builder", ["imcms-bem-builder"], function (bemBuilde
     }
 
     return {
+        imcmsButton: function (attributes, modifiers) {
+            return buttonsBEM.buildElement("button", "<button>", setAttributesTypeButton(attributes), modifiers);
+        },
         negative: function (tag, attributes) {
             return buildButtonElement(tag, attributes, "negative");
         },
