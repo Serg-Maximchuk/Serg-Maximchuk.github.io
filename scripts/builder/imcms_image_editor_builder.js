@@ -371,6 +371,28 @@ Imcms.define("imcms-image-editor-builder",
                 ]);
             }
 
+            function buildSpaceAroundImageInputContainer() {
+                return components.texts.pluralInput("<div>", [
+                    {
+                        id: "image-space-top",
+                        name: "top",
+                        placeholder: "top"
+                    }, {
+                        id: "image-space-right",
+                        name: "right",
+                        placeholder: "right"
+                    }, {
+                        id: "image-space-bottom",
+                        name: "bottom",
+                        placeholder: "bottom"
+                    }, {
+                        id: "image-space-left",
+                        name: "left",
+                        placeholder: "left"
+                    }
+                ], {text: "Space around image (h-vspace)"});
+            }
+
             function buildAdvancedControls() {
                 var advancedModeBEM = new BEM({
                     block: "imcms-advanced-mode",
@@ -386,10 +408,12 @@ Imcms.define("imcms-image-editor-builder",
 
                 var $textAlignmentBtnsTitle = advancedModeBEM.buildElement("title", "<div>", {text: "Text alignment"});
                 var $textAlignmentBtnsContainer = buildTextAlignmentBtnsContainer();
+                var $spaceAroundImageInputContainer = buildSpaceAroundImageInputContainer();
 
                 return advancedModeBEM.buildBlock("<div>", [
                     {"title": $textAlignmentBtnsTitle},
-                    {"buttons": $textAlignmentBtnsContainer}
+                    {"buttons": $textAlignmentBtnsContainer},
+                    {"space-around": $spaceAroundImageInputContainer}
                 ]);
             }
 
