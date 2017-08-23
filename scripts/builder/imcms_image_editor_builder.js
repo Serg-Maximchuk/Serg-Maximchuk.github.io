@@ -269,7 +269,7 @@ Imcms.define("imcms-image-editor-builder",
             return $("<div>").append($editableImageArea, $bottomPanel);
         }
 
-        function buildRightSide() {
+        function buildRightSide(imageEditorBEM) {
 
             function buildSelectImageBtnContainer() {
                 var $hiddenFileInput = $("<input>", {
@@ -539,9 +539,24 @@ Imcms.define("imcms-image-editor-builder",
                 ]);
             }
 
-            var $editableControls = buildEditableControls();
+            function buildFooter() {
+                var $removeAndCloseButton = components.buttons.negativeButton({
+                    text: "remove and close",
+                    click: closeEditor // fixme: just closing for now, should be remove and close
+                });
 
-            return $("<div>").append($editableControls);
+                var $saveAndCloseButton = components.buttons.saveButton({
+                    text: "save and close",
+                    click: closeEditor // fixme: just closing for now, should be save and close
+                });
+
+                return $("<div>").append($removeAndCloseButton, $saveAndCloseButton);
+            }
+
+            var $editableControls = buildEditableControls();
+            var $footer = imageEditorBEM.makeBlockElement("footer", buildFooter());
+
+            return $("<div>").append($editableControls, $footer);
         }
 
         function buildEditor() {
@@ -551,14 +566,15 @@ Imcms.define("imcms-image-editor-builder",
                     "head": "imcms-head",
                     "image-characteristics": "imcms-image-characteristics",
                     "left-side": "",
-                    "right-side": ""
+                    "right-side": "",
+                    "footer": "imcms-buttons"
                 }
             });
 
             var $head = windowComponents.buildHead("Image Editor", closeEditor);
             var $bodyHead = buildBodyHead();
             var $leftSide = buildLeftSide();
-            var $rightSide = buildRightSide();
+            var $rightSide = buildRightSide(imageEditorBEM);
 
             return imageEditorBEM.buildBlock("<div>", [
                 {"head": $head},
