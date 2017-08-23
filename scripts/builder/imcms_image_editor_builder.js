@@ -348,6 +348,29 @@ Imcms.define("imcms-image-editor-builder",
                 ]);
             }
 
+            function buildTextAlignmentBtnsContainer() {
+                function buildAlignButton(modifiers, onClick) {
+                    return components.buttons.imcmsButton({click: onClick}, ["align"].concat(modifiers));
+                }
+
+                // todo: implement onClick!
+                var $alignNoneBtn = buildAlignButton(["align-none", "align-active"]).text("None");
+                var $alignTopBtn = buildAlignButton(["align-top"]);
+                var $alignCenterBtn = buildAlignButton(["align-center"]);
+                var $alignBottomBtn = buildAlignButton(["align-bottom"]);
+                var $alignLeftBtn = buildAlignButton(["align-left"]);
+                var $alignRightBtn = buildAlignButton(["align-right"]);
+
+                return components.buttons.buttonsContainer("<div>", [
+                    $alignNoneBtn,
+                    $alignTopBtn,
+                    $alignCenterBtn,
+                    $alignBottomBtn,
+                    $alignLeftBtn,
+                    $alignRightBtn
+                ]);
+            }
+
             function buildAdvancedControls() {
                 var advancedModeBEM = new BEM({
                     block: "imcms-advanced-mode",
@@ -362,9 +385,11 @@ Imcms.define("imcms-image-editor-builder",
                 });
 
                 var $textAlignmentBtnsTitle = advancedModeBEM.buildElement("title", "<div>", {text: "Text alignment"});
+                var $textAlignmentBtnsContainer = buildTextAlignmentBtnsContainer();
 
                 return advancedModeBEM.buildBlock("<div>", [
-                    {"title": $textAlignmentBtnsTitle}
+                    {"title": $textAlignmentBtnsTitle},
+                    {"buttons": $textAlignmentBtnsContainer}
                 ]);
             }
 
