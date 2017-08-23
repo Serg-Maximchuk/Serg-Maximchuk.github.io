@@ -449,6 +449,25 @@ Imcms.define("imcms-image-editor-builder",
                 ]);
             }
 
+            function buildFileFormatSelect() {
+                return components.selects.imcmsSelect("<div>", {
+                    text: "File format",
+                    name: "fileFormat"
+                }, [{
+                    text: "GIF",
+                    "data-value": 0
+                }, {
+                    text: "PNG",
+                    "data-value": 1
+                }, {
+                    text: "PNG-24",
+                    "data-value": 2
+                }, {
+                    text: "JPG",
+                    "data-value": 3
+                }]);
+            }
+
             function buildAdvancedControls() {
                 var advancedModeBEM = new BEM({
                     block: "imcms-advanced-mode",
@@ -458,7 +477,7 @@ Imcms.define("imcms-image-editor-builder",
                         "space-around": "imcms-space-around",
                         "current-crop-width": "imcms-title",
                         "crop-coordinates": "imcms-crop-coordinates",
-                        "file-format": "",
+                        "file-format": "imcms-select",
                         "button": "imcms-button"
                     }
                 });
@@ -468,7 +487,7 @@ Imcms.define("imcms-image-editor-builder",
                 var $spaceAroundImageInputContainer = buildSpaceAroundImageInputContainer();
                 var $cropCoordinatesText = buildCropCoordinatesText(advancedModeBEM);
                 var $cropCoordinatesContainer = buildCropCoordinatesContainer();
-                var $fileFormatTitle = advancedModeBEM.buildElement("title", "<div>", {text: "File format"});
+                var $fileFormat = buildFileFormatSelect();
 
                 return advancedModeBEM.buildBlock("<div>", [
                     {"title": $textAlignmentBtnsTitle},
@@ -476,7 +495,7 @@ Imcms.define("imcms-image-editor-builder",
                     {"space-around": $spaceAroundImageInputContainer},
                     {"title": $cropCoordinatesText},
                     {"crop-coordinates": $cropCoordinatesContainer},
-                    {"title": $fileFormatTitle}
+                    {"file-format": $fileFormat}
                 ]);
             }
 
