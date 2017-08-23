@@ -208,6 +208,7 @@ Function.prototype.applyAsync = function (args, context) {
         var script = document.createElement("script");
         script.type = "text/javascript";
         script.async = true;
+        script.setAttribute("data-loader", "imcms");
 
         if (script.readyState) {  // IE support
             script.onreadystatechange = function () {
