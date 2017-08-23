@@ -580,7 +580,7 @@ Imcms.define("imcms-image-editor-builder",
                 {"image-characteristics": $bodyHead},
                 {"left-side": $leftSide},
                 {"right-side": $rightSide}
-            ]);
+            ]).addClass("imcms-editor-window");
         }
 
         return {
