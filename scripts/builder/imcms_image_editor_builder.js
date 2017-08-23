@@ -586,7 +586,7 @@ Imcms.define("imcms-image-editor-builder",
         return {
             build: function () {
                 if (!$editor) {
-                    $editor = buildEditor().prependTo("body");
+                    $editor = buildEditor().appendTo("body");
                 }
 
                 $editor.css("display", "block");
