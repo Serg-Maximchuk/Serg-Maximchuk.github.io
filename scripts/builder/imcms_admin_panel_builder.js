@@ -29,7 +29,7 @@ Imcms.define("imcms-admin-panel-builder",
         }
 
         function showPageInfo() {
-            editors.buildPageInfo();
+            editors.buildPageInfo(Imcms.currentDocId);
         }
 
         function initDocumentEditor() {

@@ -1,6 +1,7 @@
 console.time("imCMS JS loaded");
 Imcms = {
     version: "imCMS 6.0.0-alpha109-SNAPSHOT", // todo: receive current version from server
+    currentDocId: 1001, // todo: receive current doc id from server
     loadedDependencies: {},
     dependencyTree: {
         imcms: []
@@ -76,7 +77,8 @@ Imcms = {
             "imcms-users-rest-api": "rest/imcms_users_rest_api.js",
             "imcms-categories-rest-api": "rest/imcms_categories_rest_api.js",
             "imcms-roles-rest-api": "rest/imcms_roles_rest_api.js",
-            "imcms-templates-rest-api": "rest/imcms_templates_rest_api.js"
+            "imcms-templates-rest-api": "rest/imcms_templates_rest_api.js",
+            "imcms-category-types-rest-api": "rest/category_types_rest_api.js"
         }
     }
 };

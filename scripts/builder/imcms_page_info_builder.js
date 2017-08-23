@@ -4,8 +4,11 @@
  */
 Imcms.define("imcms-page-info-builder",
     ["imcms-date-picker", "imcms-time-picker", "imcms-bem-builder", "imcms-components-builder",
-        "imcms-roles-rest-api", "imcms-templates-rest-api", "jquery"],
-    function (DatePicker, TimePicker, BEM, componentsBuilder, rolesRestApi, templatesRestApi, $) {
+        "imcms-roles-rest-api", "imcms-templates-rest-api",
+        "imcms-documents-rest-api", "imcms-users-rest-api", "imcms-category-types-rest-api", "jquery"],
+    function (DatePicker, TimePicker, BEM, componentsBuilder,
+              rolesRestApi, templatesRestApi, documentsRestApi, usersRestApi,
+              categoriesTypesRestApi, $) {
 
         // todo: receive date and time from server
 
@@ -55,6 +58,8 @@ Imcms.define("imcms-page-info-builder",
             }
         });
 
+        var pageInfoElements = {};
+
         function buildPageInfoHead() {
             var pageInfoHeadBEM = new BEM({
                 block: "imcms-head",
@@ -63,12 +68,10 @@ Imcms.define("imcms-page-info-builder",
                 }
             });
 
-            var $title = pageInfoHeadBEM.buildElement("title", "<div>", {
-                text: "document 1001" // todo: receive correct doc id
-            });
+            pageInfoElements.$title = pageInfoHeadBEM.buildElement("title", "<div>", {});
 
             return pageInfoHeadBEM.buildBlock("<div>", [
-                {"title": $title}
+                {"title": pageInfoElements.$title}
             ]);
         }
 
@@ -101,71 +104,92 @@ Imcms.define("imcms-page-info-builder",
                     }
                 });
 
-                var $engCheckbox = componentsBuilder.checkboxes.imcmsCheckbox("<div>", {
+                pageInfoElements.appearance = {};
+
+                pageInfoElements.appearance.$engCheckbox = componentsBuilder.checkboxes.imcmsCheckbox("<div>", {
                         name: "english",
                         text: "English",
                         checked: "checked"
-                    }),
-                    $engCheckboxWrapper = componentsBuilder.checkboxes.checkboxContainer("<div>", [$engCheckbox]),
-                    $engCheckboxContainer = pageInfoInnerStructureBEM.buildBlock("<div>", [{
+                    });
+
+                var
+                    $engCheckboxWrapper = componentsBuilder.checkboxes.checkboxContainer("<div>",
+                        [pageInfoElements.appearance.$engCheckbox]);
+                var $engCheckboxContainer = pageInfoInnerStructureBEM.buildBlock("<div>", [{
                         "checkboxes": $engCheckboxWrapper
-                    }]),
-                    $pageTitle = componentsBuilder.texts.textBox("<div>", {
+                    }]);
+
+                pageInfoElements.appearance.$pageTitle = componentsBuilder.texts.textBox("<div>", {
                         name: "title",
                         text: "Title",
                         placeholder: "Start page"
-                    }),
-                    $pageTitleContainer = pageInfoInnerStructureBEM.buildBlock("<div>", [{"text-box": $pageTitle}]),
-                    $menuText = componentsBuilder.texts.textArea("<div>", {
+                    });
+
+                var $pageTitleContainer = pageInfoInnerStructureBEM.buildBlock("<div>",
+                    [{"text-box": pageInfoElements.appearance.$pageTitle}]);
+
+                pageInfoElements.appearance.$menuText = componentsBuilder.texts.textArea("<div>", {
                         text: "Menu text",
                         name: "menu-text"
-                    }),
-                    $menuTextContainer = pageInfoInnerStructureBEM.buildBlock("<div>", [{"text-area": $menuText}]),
-                    $linkToImage = componentsBuilder.chooseImage.container("<div>", {
+                    });
+
+                var $menuTextContainer = pageInfoInnerStructureBEM.buildBlock("<div>", [{"text-area": pageInfoElements.appearance.$menuText}]);
+
+                pageInfoElements.appearance.$linkToImage = componentsBuilder.chooseImage.container("<div>", {
                         id: "path-to-image",
                         name: "image",
                         placeholder: "Image path",
                         "label-text": "Link to image",
                         "button-text": "choose..."
-                    }),
-                    $linkToImageContainer = pageInfoInnerStructureBEM.buildBlock("<div>", [{
-                        "choose-image": $linkToImage
-                    }]),
-                    $sweCheckbox = componentsBuilder.checkboxes.imcmsCheckbox("<div>", {
+                    });
+
+                var $linkToImageContainer = pageInfoInnerStructureBEM.buildBlock("<div>", [{
+                        "choose-image": pageInfoElements.appearance.$linkToImage
+                    }]);
+
+                pageInfoElements.appearance.$sweCheckbox = componentsBuilder.checkboxes.imcmsCheckbox("<div>", {
                         name: "swedish",
-                        text: "Swedish",
-                        checked: "checked"
-                    }),
-                    $sweCheckboxWrapper = componentsBuilder.checkboxes.checkboxContainer("<div>", [$sweCheckbox]),
+                        text: "Swedish"
+                    });
+
+                var
+                    $sweCheckboxWrapper = componentsBuilder.checkboxes.checkboxContainer("<div>", [pageInfoElements.appearance.$sweCheckbox]),
                     $sweCheckboxContainer = pageInfoInnerStructureBEM.buildBlock("<div>", [{
                         "checkboxes": $sweCheckboxWrapper
-                    }]),
-                    $pageTitleSwe = componentsBuilder.texts.textBox("<div>", {
+                    }]);
+
+                pageInfoElements.appearance.$pageTitleSwe = componentsBuilder.texts.textBox("<div>", {
                         name: "title",
                         text: "Title",
                         placeholder: "Startsida"
-                    }),
-                    $pageTitleSweContainer = pageInfoInnerStructureBEM.buildBlock("<div>", [{
-                        "text-box": $pageTitleSwe
-                    }]),
-                    $menuTextSwe = componentsBuilder.texts.textArea("<div>", {
+                    });
+
+                var $pageTitleSweContainer = pageInfoInnerStructureBEM.buildBlock("<div>", [{
+                        "text-box": pageInfoElements.appearance.$pageTitleSwe
+                    }]);
+
+                pageInfoElements.appearance.$menuTextSwe = componentsBuilder.texts.textArea("<div>", {
                         text: "Menu text",
                         name: "menu-text"
-                    }),
-                    $menuTextSweContainer = pageInfoInnerStructureBEM.buildBlock("<div>", [{
-                        "text-area": $menuTextSwe
-                    }]),
-                    $linkToImageSwe = componentsBuilder.chooseImage.container("<div>", {
+                    });
+
+                var $menuTextSweContainer = pageInfoInnerStructureBEM.buildBlock("<div>", [{
+                        "text-area": pageInfoElements.appearance.$menuTextSwe
+                    }]);
+
+                pageInfoElements.appearance.$linkToImageSwe = componentsBuilder.chooseImage.container("<div>", {
                         id: "path-to-image-swe",
                         name: "image",
                         placeholder: "Image path",
                         "label-text": "Link to image",
                         "button-text": "choose..."
-                    }),
-                    $linkToImageSweContainer = pageInfoInnerStructureBEM.buildBlock("<div>", [{
-                        "choose-image": $linkToImageSwe
-                    }]),
-                    $showIn = componentsBuilder.selects.imcmsSelect("<div>", {
+                    });
+
+                var $linkToImageSweContainer = pageInfoInnerStructureBEM.buildBlock("<div>", [{
+                        "choose-image": pageInfoElements.appearance.$linkToImageSwe
+                    }]);
+
+                pageInfoElements.appearance.$showIn = componentsBuilder.selects.imcmsSelect("<div>", {
                         id: "show-in",
                         text: "Show in",
                         name: "show-in"
@@ -178,15 +202,19 @@ Imcms.define("imcms-page-info-builder",
                     }, {
                         text: "Replace all",
                         "data-value": "_top"
-                    }]),
-                    $showInContainer = pageInfoInnerStructureBEM.buildBlock("<div>", [{"select": $showIn}]),
-                    $documentAlias = componentsBuilder.texts.textBox("<div>", {
+                    }]);
+
+                var $showInContainer = pageInfoInnerStructureBEM.buildBlock("<div>",
+                    [{"select": pageInfoElements.appearance.$showIn}]);
+
+                pageInfoElements.appearance.$documentAlias = componentsBuilder.texts.textBox("<div>", {
                         name: "alias",
-                        text: "Document Alias",
-                        placeholder: "alias-example"
-                    }),
-                    $documentAliasContainer = pageInfoInnerStructureBEM.buildBlock("<div>", [{"text-box": $documentAlias}])
-                ;
+                        text: "Document alias",
+                        placeholder: "this-doc-alias"
+                    });
+
+                var $documentAliasContainer = pageInfoInnerStructureBEM.buildBlock("<div>",
+                    [{"text-box": pageInfoElements.appearance.$documentAlias}]);
 
                 var tabElements = [
                     $engCheckboxContainer,
@@ -224,7 +252,9 @@ Imcms.define("imcms-page-info-builder",
                     console.log("%c Not implemented feature: clear time.", "color: red;")
                 }
 
-                var $docStatusSelect = componentsBuilder.selects.imcmsSelect("<div>", {
+                pageInfoElements.lifeCycle = {};
+
+                pageInfoElements.lifeCycle.$docStatusSelect = componentsBuilder.selects.imcmsSelect("<div>", {
                         id: "doc-status",
                         text: "Status",
                         name: "status"
@@ -237,28 +267,34 @@ Imcms.define("imcms-page-info-builder",
                     }, {
                         text: "Approved",
                         "data-value": "2"
-                    }]),
-                    $docStatusSelectContainer = lifeCycleInnerStructureBEM.buildBlock("<div>", [{"select": $docStatusSelect}]),
+                    }]);
+
+                var $docStatusSelectContainer = lifeCycleInnerStructureBEM.buildBlock("<div>", [{"select": pageInfoElements.lifeCycle.$docStatusSelect}]),
 
                     // published date-time row
-
                     $publishedTitle = lifeCycleInnerStructureBEM.buildElement("title", "<div>", {text: "Published"}),
                     $publishDate = componentsBuilder.dateTime.datePickerCalendar({title: "Set published date"}),
                     $publishTime = componentsBuilder.dateTime.timePickerClock({title: "Set published time"}),
-
                     $setPublishTimeNowBtn = componentsBuilder.buttons.neutralButton({
                         text: "Now",
                         click: onTimeNowButtonClick
                     }),
                     $setPublishTimeNowContainer = componentsBuilder.buttons.buttonsContainer("<div>", [$setPublishTimeNowBtn]),
 
-                    $setPublishDateTime = componentsBuilder.dateTime.dateTimeReadOnly({title: "Saved publish date-time"}),
+                    $publishDateTime = componentsBuilder.dateTime.dateTimeReadOnly({title: "Saved publish date-time"}),
 
                     $clearPublishTimeBtn = componentsBuilder.buttons.neutralButton({
                         text: "Clear",
                         click: onTimeClearButtonClick
-                    }),
-                    $clearPublishTimeContainer = componentsBuilder.buttons.buttonsContainer("<div>", [$clearPublishTimeBtn]),
+                    });
+
+                pageInfoElements.lifeCycle.publishTime = new TimePicker($publishTime);
+                pageInfoElements.lifeCycle.publishDate = new DatePicker($publishDate);
+                pageInfoElements.lifeCycle.publishDateTime = {};
+                pageInfoElements.lifeCycle.publishDateTime.date = new DatePicker($publishDateTime);
+                pageInfoElements.lifeCycle.publishDateTime.time = new TimePicker($publishDateTime);
+
+                var $clearPublishTimeContainer = componentsBuilder.buttons.buttonsContainer("<div>", [$clearPublishTimeBtn]),
 
                     $publishedDateTimeContainer = lifeCycleInnerStructureBEM.buildBlock("<div>", [
                         {"title": $publishedTitle},
@@ -272,7 +308,7 @@ Imcms.define("imcms-page-info-builder",
                             "item": $setPublishTimeNowContainer,
                             modifiers: itemModifiers
                         }, {
-                            "item": $setPublishDateTime,
+                            "item": $publishDateTime,
                             modifiers: itemModifiers
                         }, {
                             "item": $clearPublishTimeContainer,
@@ -285,20 +321,26 @@ Imcms.define("imcms-page-info-builder",
                     $archivedTitle = lifeCycleInnerStructureBEM.buildElement("title", "<div>", {text: "Archived"}),
                     $archivedDate = componentsBuilder.dateTime.datePickerCalendar({title: "Set archived date"}),
                     $archivedTime = componentsBuilder.dateTime.timePickerClock({title: "Set archived time"}),
-
                     $setArchivedTimeNowBtn = componentsBuilder.buttons.neutralButton({
                         text: "Now",
                         click: onTimeNowButtonClick
                     }),
                     $setArchivedTimeNowContainer = componentsBuilder.buttons.buttonsContainer("<div>", [$setArchivedTimeNowBtn]),
 
-                    $setArchivedDateTime = componentsBuilder.dateTime.dateTimeReadOnly({title: "Saved archived date-time"}),
+                    $archivedDateTime = componentsBuilder.dateTime.dateTimeReadOnly({title: "Saved archived date-time"}),
 
                     $clearArchivedTimeBtn = componentsBuilder.buttons.neutralButton({
                         text: "Clear",
                         click: onTimeClearButtonClick
-                    }),
-                    $clearArchivedTimeContainer = componentsBuilder.buttons.buttonsContainer("<div>", [$clearArchivedTimeBtn]),
+                    });
+
+                pageInfoElements.lifeCycle.archivedTime = new TimePicker($archivedTime);
+                pageInfoElements.lifeCycle.archivedDate = new DatePicker($archivedDate);
+                pageInfoElements.lifeCycle.archivedDateTime = {};
+                pageInfoElements.lifeCycle.archivedDateTime.date = new DatePicker($archivedDateTime);
+                pageInfoElements.lifeCycle.archivedDateTime.time = new TimePicker($archivedDateTime);
+
+                var $clearArchivedTimeContainer = componentsBuilder.buttons.buttonsContainer("<div>", [$clearArchivedTimeBtn]),
 
                     $archivedDateTimeContainer = lifeCycleInnerStructureBEM.buildBlock("<div>", [
                         {"title": $archivedTitle},
@@ -312,7 +354,7 @@ Imcms.define("imcms-page-info-builder",
                             "item": $setArchivedTimeNowContainer,
                             modifiers: itemModifiers
                         }, {
-                            "item": $setArchivedDateTime,
+                            "item": $archivedDateTime,
                             modifiers: itemModifiers
                         }, {
                             "item": $clearArchivedTimeContainer,
@@ -330,9 +372,10 @@ Imcms.define("imcms-page-info-builder",
                         text: "Now",
                         click: onTimeNowButtonClick
                     }),
+
                     $setPublishEndTimeNowContainer = componentsBuilder.buttons.buttonsContainer("<div>", [$setPublishEndTimeNowBtn]),
 
-                    $setPublishEndDateTime = componentsBuilder.dateTime.dateTimeReadOnly({
+                    $publishEndDateTime = componentsBuilder.dateTime.dateTimeReadOnly({
                         title: "Saved publication end date-time"
                     }),
 
@@ -340,6 +383,7 @@ Imcms.define("imcms-page-info-builder",
                         text: "Clear",
                         click: onTimeClearButtonClick
                     }),
+
                     $clearPublishEndTimeContainer = componentsBuilder.buttons.buttonsContainer("<div>", [$clearPublishEndTimeBtn]),
 
                     $publishEndDateTimeContainer = lifeCycleInnerStructureBEM.buildBlock("<div>", [
@@ -354,69 +398,75 @@ Imcms.define("imcms-page-info-builder",
                             "item": $setPublishEndTimeNowContainer,
                             modifiers: itemModifiers
                         }, {
-                            "item": $setPublishEndDateTime,
+                            "item": $publishEndDateTime,
                             modifiers: itemModifiers
                         }, {
                             "item": $clearPublishEndTimeContainer,
                             modifiers: itemModifiers
                         }
-                    ]),
+                    ]);
 
-                    // publisher select row
+                pageInfoElements.lifeCycle.publishEndTime = new TimePicker($publishEndTime);
+                pageInfoElements.lifeCycle.publishEndDate = new DatePicker($publishEndDate);
+                pageInfoElements.lifeCycle.publishEndDateTime = {};
+                pageInfoElements.lifeCycle.publishEndDateTime.date = new DatePicker($publishEndDateTime);
+                pageInfoElements.lifeCycle.publishEndDateTime.time = new TimePicker($publishEndDateTime);
 
-                    $publisherSelect = componentsBuilder.selects.imcmsSelect("<div>", {
+                // publisher select row
+
+                pageInfoElements.lifeCycle.$publisherSelect = componentsBuilder.selects.imcmsSelect("<div>", {
                         id: "doc-publisher",
                         text: "Publisher",
                         name: "publisher"
-                    }, [{
-                        text: "Admin",
-                        "data-value": "0"
-                    }, {
-                        text: "User1",
-                        "data-value": "1"
-                    }, {
-                        text: "User2",
-                        "data-value": "2"
-                    }]),
-                    $publisherSelectContainer = lifeCycleInnerStructureBEM.buildBlock("<div>", [{"select": $publisherSelect}]),
+                    }, []);
+                usersRestApi.read(null, function (users) {
+                    var usersDataMapped = users.map(function (user) {
+                        return {
+                            text: user.username,
+                            "data-value": user.id
+                        }
+                    });
+                    pageInfoElements.lifeCycle.$publisherSelect.append(componentsBuilder.selects.mapOptionsToSelectItems(usersDataMapped));
+                });// todo receive users with specific role admin
+                var $publisherSelectContainer = lifeCycleInnerStructureBEM.buildBlock("<div>", [{"select": pageInfoElements.lifeCycle.$publisherSelect}]),
 
                     // languages row
 
                     $languagesTitle = lifeCycleInnerStructureBEM.buildElement("title", "<div>", {
                         text: "If requested language is missing:"
-                    }),
-                    $showDefaultLang = componentsBuilder.radios.imcmsRadio("<div>", {
+                    });
+                pageInfoElements.lifeCycle.$showDefaultLang = componentsBuilder.radios.imcmsRadio("<div>", {
                         text: "Show in default language if enabled",
                         name: "langSetting",
                         value: "SHOW_DEFAULT",
                         checked: "checked"
-                    }),
-                    $doNotShow = componentsBuilder.radios.imcmsRadio("<div>", {
+                    });
+                pageInfoElements.lifeCycle.$doNotShow = componentsBuilder.radios.imcmsRadio("<div>", {
                         text: "Don't show at all",
                         name: "langSetting",
                         value: "DO_NOT_SHOW"
-                    }),
-                    $languagesContainer = lifeCycleInnerStructureBEM.buildBlock("<div>", [
+                    });
+                var $languagesContainer = lifeCycleInnerStructureBEM.buildBlock("<div>", [
                         {"title": $languagesTitle},
-                        {"item": $showDefaultLang},
-                        {"item": $doNotShow}
+                        {"item": pageInfoElements.lifeCycle.$showDefaultLang},
+                        {"item": pageInfoElements.lifeCycle.$doNotShow}
                     ]),
 
                     // current version row
 
                     $currentVersionRowTitle = lifeCycleInnerStructureBEM.buildElement("title", "<div>", {
                         text: "Current version:"
-                    }),
-                    $currentVersionNumber = componentsBuilder.texts.textBox("<div>", {
-                        id: "document-version",
+                    });
+                pageInfoElements.lifeCycle.$currentVersionNumber = componentsBuilder.texts.textBox("<div>", {
                         readonly: "readonly",
-                        value: "31"
-                    }),
-                    $docVersionSaveDateTime = componentsBuilder.dateTime.dateTimeReadOnly(),
+                        value: "0"
+                    });
+
+                var $docVersionSaveDateTime = componentsBuilder.dateTime.dateTimeReadOnly(),
                     $docVersionContainer = lifeCycleInnerStructureBEM.buildBlock("<div>", [
                         {"title": $currentVersionRowTitle},
                         {
-                            "item": $currentVersionNumber,
+                            "item": pageInfoElements.lifeCycle.$currentVersionNumber,
                             modifiers: itemModifiers.concat("short")
                         }, {
                             "item": $docVersionSaveDateTime,
@@ -426,37 +476,20 @@ Imcms.define("imcms-page-info-builder",
 
                     // doc versions info row
 
+                    // todo implement appearance logic for this text
                     $offlineVersionInfo = componentsBuilder.texts.infoText("<div>", "This offline version has changes."),
                     $savingVersionInfo = componentsBuilder.texts.infoText("<div>",
-                        "Please press \"Save and publish this version\" to publish as: version 32.", {
+                        "Please press \"Save and publish this version\" to publish as: version 0000.", {
                             id: "save-as-new-version-message"
                         }),
                     $docVersionsInfoContainer = lifeCycleInnerStructureBEM.buildBlock("<div>", [
                         {"item": $offlineVersionInfo},
                         {"item": $savingVersionInfo}
-                    ])
-                ;
+                    ]);
 
-                new DatePicker($publishDate).setDate(mockDateReceivedFromServer);
-                new TimePicker($publishTime).setTime(mockTimeReceivedFromServer);
-
-                new DatePicker($setPublishDateTime).setDate(mockDateReceivedFromServer);
-                new TimePicker($setPublishDateTime).setTime(mockTimeReceivedFromServer);
-
-                new DatePicker($archivedDate).setDate(mockDateReceivedFromServer);
-                new TimePicker($archivedTime).setTime(mockTimeReceivedFromServer);
-
-                new DatePicker($setArchivedDateTime).setDate(mockDateReceivedFromServer);
-                new TimePicker($setArchivedDateTime).setTime(mockTimeReceivedFromServer);
-
-                new DatePicker($publishEndDate).setDate(mockDateReceivedFromServer);
-                new TimePicker($publishEndTime).setTime(mockTimeReceivedFromServer);
-
-                new DatePicker($setPublishEndDateTime).setDate(mockDateReceivedFromServer);
-                new TimePicker($setPublishEndDateTime).setTime(mockTimeReceivedFromServer);
-
-                new DatePicker($docVersionSaveDateTime).setDate(mockDateReceivedFromServer);
-                new TimePicker($docVersionSaveDateTime).setTime(mockTimeReceivedFromServer);
+                pageInfoElements.lifeCycle.docVersionSaveDateTime = {};
+                pageInfoElements.lifeCycle.docVersionSaveDateTime.date = new DatePicker($docVersionSaveDateTime);
+                pageInfoElements.lifeCycle.docVersionSaveDateTime.time = new TimePicker($docVersionSaveDateTime);
 
                 var formElements = [
                     $docStatusSelectContainer,
@@ -474,220 +507,236 @@ Imcms.define("imcms-page-info-builder",
         }, {
             name: "keywords",
             buildTab: function (index) {
-                var $keywordsBox = componentsBuilder.keywords.keywordsBox("<div>", {
+                pageInfoElements.keywords = {};
+
+                pageInfoElements.keywords.$keywordsBox = componentsBuilder.keywords.keywordsBox("<div>", {
                     "input-id": "keyword",
                     title: "Keywords",
                     placeholder: "keyword",
                     "button-text": "ADD+"
                 });
-                var $searchDisableCheckbox = componentsBuilder.checkboxes.imcmsCheckbox("<div>", {
+                pageInfoElements.keywords.$searchDisableCheckbox = componentsBuilder.checkboxes.imcmsCheckbox("<div>", {
                     id: "isSearchDisabled",
                     name: "isSearchDisabled",
                     text: "Disable search"
                 });
-                var $checkboxField = componentsBuilder.checkboxes.checkboxContainerField("<div>", [$searchDisableCheckbox]);
+                var $checkboxField = componentsBuilder.checkboxes.checkboxContainerField("<div>",
+                    [pageInfoElements.keywords.$searchDisableCheckbox]);
 
-                return buildFormBlock([$keywordsBox, $checkboxField], index);
+                return buildFormBlock([pageInfoElements.keywords.$keywordsBox, $checkboxField], index);
             }
         }, {
             name: "categories",
             buildTab: function (index) {
-                var $testCategoryType1 = componentsBuilder.selects.selectContainer("<div>", {
-                    name: "categoryTest1",
-                    text: "Test category type 1"
-                }, [{
-                    text: "Test1",
-                    value: "0"
-                }, {
-                    text: "Test2",
-                    value: "1"
-                }]);
+                pageInfoElements.categories = {};
 
-                var $testCategoryType2 = componentsBuilder.selects.selectContainer("<div>", {
-                    name: "categoryTest2",
-                    text: "Test category type 2"
-                }, [{
-                    text: "Test1",
-                    value: "0"
-                }, {
-                    text: "Test2",
-                    value: "1"
-                }]);
+                var $categoriesBlock = buildFormBlock([], index);
+                var categoriesBlockElements = [];
 
-                var $checkbox1 = componentsBuilder.checkboxes.imcmsCheckbox("<div>", {
-                    id: "checkbox01",
-                    name: "checkbox1",
-                    text: "Blue"
+                categoriesTypesRestApi.read(null, function (categoriesTypes) {
+                    categoriesTypes.forEach(function (categoryType) {
+                        var $categoryType,
+                            categoryTypeQualifier = "category-type-" + categoryType.id;
+
+                        pageInfoElements.categories.descriptor= [];
+
+                        if (categoryType.multi_select) {
+                            pageInfoElements.categories[categoryTypeQualifier] = {};
+                            categoryType.categories.forEach(function (category) {
+                                var $categoryCheckbox = componentsBuilder.checkboxes.imcmsCheckbox("<div>", {
+                                    name: categoryTypeQualifier,
+                                    value: category.id,
+                                    text: category.name
+                                });
+
+                                pageInfoElements.categories[categoryTypeQualifier][category.id] = $categoryCheckbox;
+
+                                pageInfoElements.categories.descriptor.push({
+                                    category_ids: [category.id],
+                                    access_key_category_type_qualifier: categoryTypeQualifier,
+                                    access_key_category_id: category.id,
+                                    member_of_multi_select: true
+                                });
+                            });
+
+                            $categoryType = componentsBuilder.checkboxes.checkboxContainerField("<div>", Object.values(pageInfoElements.categories[categoryTypeQualifier]),
+                                {title: categoryType.name}
+                            );
+                        } else {
+                            var mappedCategoriesForSelectContainer = categoryType.categories.map(function (category) {
+                                return {
+                                    text: category.name,
+                                    value: category.id
+                                }
+                            });
+
+                            $categoryType = componentsBuilder.selects.selectContainer("<div>", {
+                                id: categoryTypeQualifier,
+                                text: categoryType.name
+                            }, mappedCategoriesForSelectContainer);
+
+                            pageInfoElements.categories[categoryTypeQualifier] = $categoryType;
+
+                            pageInfoElements.categories.descriptor.push({
+                                category_ids: categoryType.categories.map(function (category) {return category.id;}),
+                                access_key_category_type_qualifier: categoryTypeQualifier,
+                                member_of_multi_select: false
+                            });
+                        }
+
+                        categoriesBlockElements.push($categoryType);
+
+                        $categoriesBlock.append(categoriesBlockElements);
+                    });
                 });
-                var $checkbox2 = componentsBuilder.checkboxes.imcmsCheckbox("<div>", {
-                    id: "checkbox02",
-                    name: "checkbox2",
-                    checked: "checked",
-                    text: "Red"
-                });
-                var $checkbox3 = componentsBuilder.checkboxes.imcmsCheckbox("<div>", {
-                    id: "checkbox03",
-                    name: "checkbox3",
-                    text: "White"
-                });
-                var $testCategoryType3 = componentsBuilder.checkboxes.checkboxContainerField("<div>", [
-                        $checkbox1,
-                        $checkbox2,
-                        $checkbox3
-                    ],
-                    {title: "Car"}
-                );
 
-                var blockElements = [
-                    $testCategoryType1,
-                    $testCategoryType2,
-                    $testCategoryType3
-                ];
-
-                return buildFormBlock(blockElements, index);
+                return $categoriesBlock;
             }
         }, {
             name: "access",
             buildTab: function (index) {
-                var rolesBEM = new BEM({
-                        block: "imcms-access-role",
-                        elements: {
-                            "head": "",
-                            "title": "imcms-title",
-                            "body": "",
-                            "row": "",
-                            "column-title": "imcms-title",
-                            "column": "imcms-radio",
-                            "button": "imcms-button"
-                        }
-                    }),
-                    rolesContainerBEM = new BEM({
-                        block: "imcms-field",
-                        elements: {
-                            "access-role": "imcms-access-role"
-                        }
-                    })
-                ;
+                pageInfoElements.access = {};
 
-                var $titleRole = rolesBEM.buildBlockElement("title", "<div>", {text: "role"}),
-                    $titleView = rolesBEM.buildBlockElement("title", "<div>", {text: "view"}),
-                    $titleEdit = rolesBEM.buildBlockElement("title", "<div>", {text: "edit"}),
-                    $titleRestricted1 = rolesBEM.buildBlockElement("title", "<div>", {text: "restricted 1"}),
-                    $titleRestricted2 = rolesBEM.buildBlockElement("title", "<div>", {text: "restricted 2"}),
-                    $rolesHead = rolesBEM.buildElement("head", "<div>").append([
-                        $titleRole,
-                        $titleView,
-                        $titleEdit,
-                        $titleRestricted1,
-                        $titleRestricted2
-                    ]),
-                    $userAdminTitle = rolesBEM.buildBlockElement("column-title", "<div>", {text: "Useradmin"}),
-                    userAdminRadioName = "useradmin0",
-                    $userAdminView = rolesBEM.makeBlockElement("column", componentsBuilder.radios.imcmsRadio("<div>", {
-                        id: "view01",
-                        name: userAdminRadioName,
-                        checked: "checked"
-                    })),
-                    $userAdminEdit = rolesBEM.makeBlockElement("column", componentsBuilder.radios.imcmsRadio("<div>", {
-                        id: "edit01",
-                        name: userAdminRadioName
-                    })),
-                    $userAdminRestricted1 = rolesBEM.makeBlockElement("column", componentsBuilder.radios.imcmsRadio("<div>", {
-                        id: "restricted011",
-                        name: userAdminRadioName
-                    })),
-                    $userAdminRestricted2 = rolesBEM.makeBlockElement("column", componentsBuilder.radios.imcmsRadio("<div>", {
-                        id: "restricted021",
-                        name: userAdminRadioName
-                    })),
-                    $userAdminDeleteRoleButton = rolesBEM.makeBlockElement("button", componentsBuilder.buttons.closeButton({
-                        click: function () {
-                            console.log("%c Not implemented feature: delete role.", "color: red;")
-                        }
-                    })),
-                    $userAdminRow = rolesBEM.buildBlockElement("row", "<div>").append([
-                        $userAdminTitle,
-                        $userAdminView,
-                        $userAdminEdit,
-                        $userAdminRestricted1,
-                        $userAdminRestricted2,
-                        $userAdminDeleteRoleButton
-                    ]),
-                    $userTitle = rolesBEM.buildBlockElement("column-title", "<div>", {text: "Users"}),
-                    usersRadioName = "users0",
-                    $userView = rolesBEM.makeBlockElement("column", componentsBuilder.radios.imcmsRadio("<div>", {
-                        id: "view02",
-                        name: usersRadioName,
-                        checked: "checked"
-                    })),
-                    $userEdit = rolesBEM.makeBlockElement("column", componentsBuilder.radios.imcmsRadio("<div>", {
-                        id: "edit02",
-                        name: usersRadioName
-                    })),
-                    $userRestricted1 = rolesBEM.makeBlockElement("column", componentsBuilder.radios.imcmsRadio("<div>", {
-                        id: "restricted012",
-                        name: usersRadioName
-                    })),
-                    $userRestricted2 = rolesBEM.makeBlockElement("column", componentsBuilder.radios.imcmsRadio("<div>", {
-                        id: "restricted022",
-                        name: usersRadioName
-                    })),
-                    $userDeleteRoleButton = rolesBEM.makeBlockElement("button", componentsBuilder.buttons.closeButton({
-                        click: function () {
-                            console.log("%c Not implemented feature: delete role.", "color: red;")
-                        }
-                    })),
-                    $userRow = rolesBEM.buildBlockElement("row", "<div>").append([
-                        $userTitle,
-                        $userView,
-                        $userEdit,
-                        $userRestricted1,
-                        $userRestricted2,
-                        $userDeleteRoleButton
-                    ]),
-                    $testRoleTitle = rolesBEM.buildBlockElement("column-title", "<div>", {text: "Test role"}),
-                    testRoleRadioName = "testrole0",
-                    $testRoleView = rolesBEM.makeBlockElement("column", componentsBuilder.radios.imcmsRadio("<div>", {
-                        id: "view03",
-                        name: testRoleRadioName,
-                        checked: "checked"
-                    })),
-                    $testRoleEdit = rolesBEM.makeBlockElement("column", componentsBuilder.radios.imcmsRadio("<div>", {
-                        id: "edit03",
-                        name: testRoleRadioName
-                    })),
-                    $testRoleRestricted1 = rolesBEM.makeBlockElement("column", componentsBuilder.radios.imcmsRadio("<div>", {
-                        id: "restricted013",
-                        name: testRoleRadioName
-                    })),
-                    $testRoleRestricted2 = rolesBEM.makeBlockElement("column", componentsBuilder.radios.imcmsRadio("<div>", {
-                        id: "restricted023",
-                        name: testRoleRadioName
-                    })),
-                    $testRoleDeleteRoleButton = rolesBEM.makeBlockElement("button", componentsBuilder.buttons.closeButton({
-                        click: function () {
-                            console.log("%c Not implemented feature: delete role.", "color: red;")
-                        }
-                    })),
-                    $testRoleRow = rolesBEM.buildBlockElement("row", "<div>").append([
-                        $testRoleTitle,
-                        $testRoleView,
-                        $testRoleEdit,
-                        $testRoleRestricted1,
-                        $testRoleRestricted2,
-                        $testRoleDeleteRoleButton
-                    ]),
-                    $rolesBody = rolesBEM.buildElement("body", "<div>").append([
-                        $userAdminRow,
-                        $userRow,
-                        $testRoleRow
-                    ]),
-                    $rolesTable = rolesBEM.buildBlock("<div>", [
-                        {"head": $rolesHead},
-                        {"body": $rolesBody}
-                    ]),
-                    $rolesField = rolesContainerBEM.buildBlock("<div>", [{"access-role": $rolesTable}])
-                ;
+
+                // var rolesBEM = new BEM({
+                //         block: "imcms-access-role",
+                //         elements: {
+                //             "head": "",
+                //             "title": "imcms-title",
+                //             "body": "",
+                //             "row": "",
+                //             "column-title": "imcms-title",
+                //             "column": "imcms-radio",
+                //             "button": "imcms-button"
+                //         }
+                //     }),
+                //     rolesContainerBEM = new BEM({
+                //         block: "imcms-field",
+                //         elements: {
+                //             "access-role": "imcms-access-role"
+                //         }
+                //     })
+                // ;
+                //
+                // var $titleRole = rolesBEM.buildBlockElement("title", "<div>", {text: "role"}),
+                //     $titleView = rolesBEM.buildBlockElement("title", "<div>", {text: "view"}),
+                //     $titleEdit = rolesBEM.buildBlockElement("title", "<div>", {text: "edit"}),
+                //     $titleRestricted1 = rolesBEM.buildBlockElement("title", "<div>", {text: "restricted 1"}),
+                //     $titleRestricted2 = rolesBEM.buildBlockElement("title", "<div>", {text: "restricted 2"}),
+                //     $rolesHead = rolesBEM.buildElement("head", "<div>").append([
+                //         $titleRole,
+                //         $titleView,
+                //         $titleEdit,
+                //         $titleRestricted1,
+                //         $titleRestricted2
+                //     ]),
+                //     $userAdminTitle = rolesBEM.buildBlockElement("column-title", "<div>", {text: "Useradmin"}),
+                //     userAdminRadioName = "useradmin0",
+                //     $userAdminView = rolesBEM.makeBlockElement("column", componentsBuilder.radios.imcmsRadio("<div>", {
+                //         id: "view01",
+                //         name: userAdminRadioName,
+                //         checked: "checked"
+                //     })),
+                //     $userAdminEdit = rolesBEM.makeBlockElement("column", componentsBuilder.radios.imcmsRadio("<div>", {
+                //         id: "edit01",
+                //         name: userAdminRadioName
+                //     })),
+                //     $userAdminRestricted1 = rolesBEM.makeBlockElement("column", componentsBuilder.radios.imcmsRadio("<div>", {
+                //         id: "restricted011",
+                //         name: userAdminRadioName
+                //     })),
+                //     $userAdminRestricted2 = rolesBEM.makeBlockElement("column", componentsBuilder.radios.imcmsRadio("<div>", {
+                //         id: "restricted021",
+                //         name: userAdminRadioName
+                //     })),
+                //     $userAdminDeleteRoleButton = rolesBEM.makeBlockElement("button", componentsBuilder.buttons.closeButton({
+                //         click: function () {
+                //             console.log("%c Not implemented feature: delete role.", "color: red;")
+                //         }
+                //     })),
+                //     $userAdminRow = rolesBEM.buildBlockElement("row", "<div>").append([
+                //         $userAdminTitle,
+                //         $userAdminView,
+                //         $userAdminEdit,
+                //         $userAdminRestricted1,
+                //         $userAdminRestricted2,
+                //         $userAdminDeleteRoleButton
+                //     ]),
+                //     $userTitle = rolesBEM.buildBlockElement("column-title", "<div>", {text: "Users"}),
+                //     usersRadioName = "users0",
+                //     $userView = rolesBEM.makeBlockElement("column", componentsBuilder.radios.imcmsRadio("<div>", {
+                //         id: "view02",
+                //         name: usersRadioName,
+                //         checked: "checked"
+                //     })),
+                //     $userEdit = rolesBEM.makeBlockElement("column", componentsBuilder.radios.imcmsRadio("<div>", {
+                //         id: "edit02",
+                //         name: usersRadioName
+                //     })),
+                //     $userRestricted1 = rolesBEM.makeBlockElement("column", componentsBuilder.radios.imcmsRadio("<div>", {
+                //         id: "restricted012",
+                //         name: usersRadioName
+                //     })),
+                //     $userRestricted2 = rolesBEM.makeBlockElement("column", componentsBuilder.radios.imcmsRadio("<div>", {
+                //         id: "restricted022",
+                //         name: usersRadioName
+                //     })),
+                //     $userDeleteRoleButton = rolesBEM.makeBlockElement("button", componentsBuilder.buttons.closeButton({
+                //         click: function () {
+                //             console.log("%c Not implemented feature: delete role.", "color: red;")
+                //         }
+                //     })),
+                //     $userRow = rolesBEM.buildBlockElement("row", "<div>").append([
+                //         $userTitle,
+                //         $userView,
+                //         $userEdit,
+                //         $userRestricted1,
+                //         $userRestricted2,
+                //         $userDeleteRoleButton
+                //     ]),
+                //     $testRoleTitle = rolesBEM.buildBlockElement("column-title", "<div>", {text: "Test role"}),
+                //     testRoleRadioName = "testrole0",
+                //     $testRoleView = rolesBEM.makeBlockElement("column", componentsBuilder.radios.imcmsRadio("<div>", {
+                //         id: "view03",
+                //         name: testRoleRadioName,
+                //         checked: "checked"
+                //     })),
+                //     $testRoleEdit = rolesBEM.makeBlockElement("column", componentsBuilder.radios.imcmsRadio("<div>", {
+                //         id: "edit03",
+                //         name: testRoleRadioName
+                //     })),
+                //     $testRoleRestricted1 = rolesBEM.makeBlockElement("column", componentsBuilder.radios.imcmsRadio("<div>", {
+                //         id: "restricted013",
+                //         name: testRoleRadioName
+                //     })),
+                //     $testRoleRestricted2 = rolesBEM.makeBlockElement("column", componentsBuilder.radios.imcmsRadio("<div>", {
+                //         id: "restricted023",
+                //         name: testRoleRadioName
+                //     })),
+                //     $testRoleDeleteRoleButton = rolesBEM.makeBlockElement("button", componentsBuilder.buttons.closeButton({
+                //         click: function () {
+                //             console.log("%c Not implemented feature: delete role.", "color: red;")
+                //         }
+                //     })),
+                //     $testRoleRow = rolesBEM.buildBlockElement("row", "<div>").append([
+                //         $testRoleTitle,
+                //         $testRoleView,
+                //         $testRoleEdit,
+                //         $testRoleRestricted1,
+                //         $testRoleRestricted2,
+                //         $testRoleDeleteRoleButton
+                //     ]),
+                //     $rolesBody = rolesBEM.buildElement("body", "<div>").append([
+                //         $userAdminRow,
+                //         $userRow,
+                //         $testRoleRow
+                //     ]),
+                //     $rolesTable = rolesBEM.buildBlock("<div>", [
+                //         {"head": $rolesHead},
+                //         {"body": $rolesBody}
+                //     ]),
+                //     $rolesField = rolesContainerBEM.buildBlock("<div>", [{"access-role": $rolesTable}])
+                // ;
                 // add role
 
                 var addRoleContainerBEM = new BEM({
@@ -732,11 +781,14 @@ Imcms.define("imcms-page-info-builder",
                     $addRoleContainer = addRoleContainerBEM.buildBlock("<div>", [{"access-role": $addRoleInnerBlock}])
                 ;
 
-                return buildFormBlock([$rolesField, $addRoleContainer], index);
+                pageInfoElements.access.$accessBlock = buildFormBlock([$addRoleContainer], index);
+                return pageInfoElements.access.$accessBlock;
             }
         }, {
             name: "permissions",
             buildTab: function (index) {
+                pageInfoElements.permissions = {};
+
                 function buildTestCheckboxes(attributesArr) {
                     return attributesArr.map(function (attributes) {
                         return componentsBuilder.checkboxes.imcmsCheckbox("<div>", attributes);
@@ -750,7 +802,7 @@ Imcms.define("imcms-page-info-builder",
                     }
                 });
 
-                var $checkboxes1 = buildTestCheckboxes([{
+                pageInfoElements.permissions.$restrictedCheckboxes1 = buildTestCheckboxes([{
                     name: "editText1",
                     text: "Edit text"
                 }, {
@@ -767,9 +819,9 @@ Imcms.define("imcms-page-info-builder",
                     text: "Edit doc info"
                 }]);
                 var $restrictedRole1Rights = componentsBuilder.checkboxes
-                    .checkboxContainer("<div>", $checkboxes1, {title: "Restricted 1"});
+                    .checkboxContainer("<div>", pageInfoElements.permissions.$restrictedCheckboxes1, {title: "Restricted 1"});
 
-                var $checkboxes2 = buildTestCheckboxes([{
+                pageInfoElements.permissions.$restrictedCheckboxes2 = buildTestCheckboxes([{
                     name: "editText2",
                     text: "Edit text"
                 }, {
@@ -786,7 +838,7 @@ Imcms.define("imcms-page-info-builder",
                     text: "Edit doc info"
                 }]);
                 var $restrictedRole2Rights = componentsBuilder.checkboxes
-                    .checkboxContainer("<div>", $checkboxes2, {title: "Restricted 2"});
+                    .checkboxContainer("<div>", pageInfoElements.permissions.$restrictedCheckboxes2, {title: "Restricted 2"});
 
                 var $permissionsWrapper = fieldItemBEM.buildBlock("<div>", [{
                     "item": $restrictedRole1Rights,
@@ -801,12 +853,14 @@ Imcms.define("imcms-page-info-builder",
         }, {
             name: "templates",
             buildTab: function (index) {
-                var $templateSelect = componentsBuilder.selects.selectContainer("<div>", {
+                pageInfoElements.templates = {};
+
+                pageInfoElements.templates.$templateSelect = componentsBuilder.selects.selectContainer("<div>", {
                     name: "template",
                     text: "Template"
                 }, []);
 
-                var $defaultChildTemplateSelect = componentsBuilder.selects.selectContainer("<div>", {
+                pageInfoElements.templates.$defaultChildTemplateSelect = componentsBuilder.selects.selectContainer("<div>", {
                     name: "childTemplate",
                     text: "Default child template"
                 }, []);
@@ -820,15 +874,17 @@ Imcms.define("imcms-page-info-builder",
                     });
 
                     var $selectItems = componentsBuilder.selects.mapOptionsToSelectItems(templatesDataMapped);
-                    $templateSelect.find(".imcms-select").append($selectItems);
-                    $defaultChildTemplateSelect.find(".imcms-select").append($selectItems.clone(true, true));
+                    pageInfoElements.templates.$templateSelect.find(".imcms-select").append($selectItems);
+                    pageInfoElements.templates.$defaultChildTemplateSelect.find(".imcms-select").append($selectItems.clone(true, true));
                 });
 
-                return buildFormBlock([$templateSelect, $defaultChildTemplateSelect], index);
+                return buildFormBlock([pageInfoElements.templates.$templateSelect, pageInfoElements.templates.$defaultChildTemplateSelect], index);
             }
         }, {
             name: "status",
             buildTab: function (index) {
+                pageInfoElements.status = {};
+
                 var statusFieldBEM = new BEM({
                         block: "imcms-field",
                         elements: {"item": "imcms-item"}
@@ -845,30 +901,29 @@ Imcms.define("imcms-page-info-builder",
                 // created by
 
                 var $createdTimeTitle = statusItemBEM.buildElement("label", "<div>", {text: "Created"});
-                var $createdDate = componentsBuilder.dateTime.dateBoxReadOnly({id: "createdDate"});
-                var $createdTime = componentsBuilder.dateTime.timeBoxReadOnly({id: "createdTime"});
+                pageInfoElements.status.$createdDate = componentsBuilder.dateTime.dateBoxReadOnly({id: "createdDate"});
+                pageInfoElements.status.$createdTime = componentsBuilder.dateTime.timeBoxReadOnly({id: "createdTime"});
 
                 var $createdDateTimeField = statusItemBEM.buildBlock("<div>", [{
                     "label": $createdTimeTitle
                 }, {
-                    "input": $createdDate,
+                    "input": pageInfoElements.status.$createdDate,
                     modifiers: boxModifiers
                 }, {
-                    "input": $createdTime,
+                    "input": pageInfoElements.status.$createdTime,
                     modifiers: boxModifiers
                 }]);
 
                 var $createdByTitle = statusItemBEM.buildElement("label", "<div>", {text: "By"});
-                var $createdBy = componentsBuilder.texts.textBox("<div>", {
+                pageInfoElements.status.$createdBy = componentsBuilder.texts.textBox("<div>", {
                     id: "createdBy",
-                    value: "Admin",
                     readonly: "readonly"
                 });
 
                 var $createdByField = statusItemBEM.buildBlock("<div>", [{
                         "label": $createdByTitle
                     }, {
-                        "input": $createdBy,
+                        "input": pageInfoElements.status.$createdBy,
                         modifiers: boxModifiers
                     }]
                 );
@@ -886,30 +941,29 @@ Imcms.define("imcms-page-info-builder",
                 // modified by
 
                 var $modifiedTimeTitle = statusItemBEM.buildElement("label", "<div>", {text: "Modified"});
-                var $modifiedDate = componentsBuilder.dateTime.dateBoxReadOnly({id: "modifiedDate"});
-                var $modifiedTime = componentsBuilder.dateTime.timeBoxReadOnly({id: "modifiedTime"});
+                pageInfoElements.status.$modifiedDate = componentsBuilder.dateTime.dateBoxReadOnly({id: "modifiedDate"});
+                pageInfoElements.status.$modifiedTime = componentsBuilder.dateTime.timeBoxReadOnly({id: "modifiedTime"});
 
                 var $modifiedDateTimeField = statusItemBEM.buildBlock("<div>", [{
                     "label": $modifiedTimeTitle
                 }, {
-                    "input": $modifiedDate,
+                    "input": pageInfoElements.status.$modifiedDate,
                     modifiers: boxModifiers
                 }, {
-                    "input": $modifiedTime,
+                    "input": pageInfoElements.status.$modifiedTime,
                     modifiers: boxModifiers
                 }]);
 
                 var $modifiedByTitle = statusItemBEM.buildElement("label", "<div>", {text: "By"});
-                var $modifiedBy = componentsBuilder.texts.textBox("<div>", {
+                pageInfoElements.status.$modifiedBy = componentsBuilder.texts.textBox("<div>", {
                     id: "modifiedBy",
-                    value: "Admin",
                     readonly: "readonly"
                 });
 
                 var $modifiedByField = statusItemBEM.buildBlock("<div>", [{
                         "label": $modifiedByTitle
                     }, {
-                        "input": $modifiedBy,
+                        "input": pageInfoElements.status.$modifiedBy,
                         modifiers: boxModifiers
                     }]
                 );
@@ -927,30 +981,29 @@ Imcms.define("imcms-page-info-builder",
                 // archived
 
                 var $archivedTimeTitle = statusItemBEM.buildElement("label", "<div>", {text: "Archived"});
-                var $archivedDate = componentsBuilder.dateTime.dateBoxReadOnly({id: "archivedDate"});
-                var $archivedTime = componentsBuilder.dateTime.timeBoxReadOnly({id: "archivedTime"});
+                pageInfoElements.status.$archivedDate = componentsBuilder.dateTime.dateBoxReadOnly({id: "archivedDate"});
+                pageInfoElements.status.$archivedTime = componentsBuilder.dateTime.timeBoxReadOnly({id: "archivedTime"});
 
                 var $archivedDateTimeField = statusItemBEM.buildBlock("<div>", [{
                     "label": $archivedTimeTitle
                 }, {
-                    "input": $archivedDate,
+                    "input": pageInfoElements.status.$archivedDate,
                     modifiers: boxModifiers
                 }, {
-                    "input": $archivedTime,
+                    "input": pageInfoElements.status.$archivedTime,
                     modifiers: boxModifiers
                 }]);
 
                 var $archivedByTitle = statusItemBEM.buildElement("label", "<div>", {text: "By"});
-                var $archivedBy = componentsBuilder.texts.textBox("<div>", {
+                pageInfoElements.status.$archivedBy = componentsBuilder.texts.textBox("<div>", {
                     id: "archivedBy",
-                    value: "Admin",
                     readonly: "readonly"
                 });
 
                 var $archivedByField = statusItemBEM.buildBlock("<div>", [{
                         "label": $archivedByTitle
                     }, {
-                        "input": $archivedBy,
+                        "input": pageInfoElements.status.$archivedBy,
                         modifiers: boxModifiers
                     }]
                 );
@@ -968,30 +1021,29 @@ Imcms.define("imcms-page-info-builder",
                 // published
 
                 var $publishedTimeTitle = statusItemBEM.buildElement("label", "<div>", {text: "Published"});
-                var $publishedDate = componentsBuilder.dateTime.dateBoxReadOnly({id: "publishedDate"});
-                var $publishedTime = componentsBuilder.dateTime.timeBoxReadOnly({id: "publishedTime"});
+                pageInfoElements.status.$publishedDate = componentsBuilder.dateTime.dateBoxReadOnly({id: "publishedDate"});
+                pageInfoElements.status.$publishedTime = componentsBuilder.dateTime.timeBoxReadOnly({id: "publishedTime"});
 
                 var $publishedDateTimeField = statusItemBEM.buildBlock("<div>", [{
                     "label": $publishedTimeTitle
                 }, {
-                    "input": $publishedDate,
+                    "input": pageInfoElements.status.$publishedDate,
                     modifiers: boxModifiers
                 }, {
-                    "input": $publishedTime,
+                    "input": pageInfoElements.status.$publishedTime,
                     modifiers: boxModifiers
                 }]);
 
                 var $publishedByTitle = statusItemBEM.buildElement("label", "<div>", {text: "By"});
-                var $publishedBy = componentsBuilder.texts.textBox("<div>", {
+                pageInfoElements.status.$publishedBy = componentsBuilder.texts.textBox("<div>", {
                     id: "publishedBy",
-                    value: "Admin",
                     readonly: "readonly"
                 });
 
                 var $publishedByField = statusItemBEM.buildBlock("<div>", [{
                         "label": $publishedByTitle
                     }, {
-                        "input": $publishedBy,
+                        "input": pageInfoElements.status.$publishedBy,
                         modifiers: boxModifiers
                     }]
                 );
@@ -1009,30 +1061,29 @@ Imcms.define("imcms-page-info-builder",
                 // publish end
 
                 var $publishEndTimeTitle = statusItemBEM.buildElement("label", "<div>", {text: "Publish end"});
-                var $publishEndDate = componentsBuilder.dateTime.dateBoxReadOnly({id: "publishEndDate"});
-                var $publishEndTime = componentsBuilder.dateTime.timeBoxReadOnly({id: "publishEndTime"});
+                pageInfoElements.status.$publishEndDate = componentsBuilder.dateTime.dateBoxReadOnly({id: "publishEndDate"});
+                pageInfoElements.status.$publishEndTime = componentsBuilder.dateTime.timeBoxReadOnly({id: "publishEndTime"});
 
                 var $publishEndDateTimeField = statusItemBEM.buildBlock("<div>", [{
                     "label": $publishEndTimeTitle
                 }, {
-                    "input": $publishEndDate,
+                    "input": pageInfoElements.status.$publishEndDate,
                     modifiers: boxModifiers
                 }, {
-                    "input": $publishEndTime,
+                    "input": pageInfoElements.status.$publishEndTime,
                     modifiers: boxModifiers
                 }]);
 
                 var $publishEndByTitle = statusItemBEM.buildElement("label", "<div>", {text: "By"});
-                var $publishEndBy = componentsBuilder.texts.textBox("<div>", {
+                pageInfoElements.status.$publishEndBy = componentsBuilder.texts.textBox("<div>", {
                     id: "publishEndBy",
-                    value: "Admin",
                     readonly: "readonly"
                 });
 
                 var $publishEndByField = statusItemBEM.buildBlock("<div>", [{
                         "label": $publishEndByTitle
                     }, {
-                        "input": $publishEndBy,
+                        "input": pageInfoElements.status.$publishEndBy,
                         modifiers: boxModifiers
                     }]
                 );
@@ -1046,15 +1097,6 @@ Imcms.define("imcms-page-info-builder",
                         modifiers: ["col-2-3", "float-l"]
                     }]
                 );
-
-                new DatePicker($createdDate).setDate(mockDateReceivedFromServer);
-                new TimePicker($createdTime).setTime(mockTimeReceivedFromServer);
-
-                new DatePicker($modifiedDate).setDate(mockDateReceivedFromServer);
-                new TimePicker($modifiedTime).setTime(mockTimeReceivedFromServer);
-
-                new DatePicker($publishedDate).setDate(mockDateReceivedFromServer);
-                new TimePicker($publishedTime).setTime(mockTimeReceivedFromServer);
 
                 var blockElements = [
                     $created,
@@ -1118,8 +1160,9 @@ Imcms.define("imcms-page-info-builder",
 
         function buildPageInfoFooter() {
             function closePageInfo() {
-                $(this).parents(".imcms-pop-up-modal").css({"display": "none"});
-                $(".imcms-modal-layout").css({"display": "none"});
+                $pageInfo.css({"display": "none"});
+                $shadow.css({"display": "none"});
+                clearPageInfoData();
             }
 
             var $saveBtn = componentsBuilder.buttons.positiveButton({
@@ -1179,8 +1222,19 @@ Imcms.define("imcms-page-info-builder",
             );
         }
 
+        function loadPageInfoDataFrom(docId) {
+
+            documentsRestApi.read(docId, function (document) {
+                pageInfoElements.$title.text("document " + document.id);
+            });
+        }
+
+        function clearPageInfoData() {
+
+        }
+
         return {
-            build: function () {
+            build: function (docId) {
                 $shadow = buildShadow();
 
                 if (!$pageInfo) {
@@ -1188,6 +1242,8 @@ Imcms.define("imcms-page-info-builder",
                 }
 
                 $pageInfo.css({"display": "block"});
+
+                docId && loadPageInfoDataFrom(docId);
             }
         }
     }
