@@ -339,6 +339,22 @@ Imcms.define("imcms-image-editor-builder",
                 ]);
             }
 
+            function buildAdvancedControls() {
+                var advancedModeBEM = new BEM({
+                    block: "imcms-advanced-mode",
+                    elements: {
+                        "title": "imcms-title",
+                        "buttons": "imcms-buttons",
+                        "space-around": "imcms-space-around",
+                        "crop-coordinates": "imcms-crop-coordinates",
+                        "file-format": "",
+                        "button": "imcms-button"
+                    }
+                });
+
+                return advancedModeBEM.buildBlock("<div>", []);
+            }
+
             function buildEditableControls() {
                 var editableControlsBEM = new BEM({
                     block: "imcms-editable-controls-area",
@@ -357,6 +373,7 @@ Imcms.define("imcms-image-editor-builder",
                 var $langFlags = buildImageLangFlags();
                 var $allLangs = buildAllLanguagesCheckbox();
                 var $advancedModeBtn = buildAdvancedModeBtn();
+                var $advancedControls = buildAdvancedControls();
 
                 return editableControlsBEM.buildBlock("<div>", [
                     {"buttons": $selectImageBtnContainer},
@@ -364,7 +381,8 @@ Imcms.define("imcms-image-editor-builder",
                     {"text-box": $imageLinkTextBox},
                     {"flags": $langFlags},
                     {"checkboxes": $allLangs},
-                    {"buttons": $advancedModeBtn}
+                    {"buttons": $advancedModeBtn},
+                    {"advanced-mode": $advancedControls}
                 ]);
             }
 
