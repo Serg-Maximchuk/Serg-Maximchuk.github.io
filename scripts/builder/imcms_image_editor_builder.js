@@ -336,11 +336,11 @@ Imcms.define("imcms-image-editor-builder",
 
                             if ($btn.attr("data-state") === "false") {
                                 $advancedControls.css("display", "block");
-                                $btn.attr("data-state", "true");
+                                $btn.attr("data-state", "true").text("Simple");
 
                             } else {
                                 $advancedControls.css("display", "none");
-                                $btn.attr("data-state", "false");
+                                $btn.attr("data-state", "false").text("Advanced");
                             }
                         }
                     })
