@@ -8,8 +8,7 @@ Imcms.define("imcms-image-editor-builder",
         var $editor, $imageContainer;
 
         function closeEditor() {
-            // uncomment when builder will be ready
-            // $editor.css("display", "none");
+            $editor.css("display", "none");
         }
 
         function buildBodyHead() {
