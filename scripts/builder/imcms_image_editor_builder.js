@@ -352,7 +352,11 @@ Imcms.define("imcms-image-editor-builder",
                     }
                 });
 
-                return advancedModeBEM.buildBlock("<div>", []);
+                var $textAlignmentBtnsTitle = advancedModeBEM.buildElement("title", "<div>", {text: "Text alignment"});
+
+                return advancedModeBEM.buildBlock("<div>", [
+                    {"title": $textAlignmentBtnsTitle}
+                ]);
             }
 
             function buildEditableControls() {
