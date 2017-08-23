@@ -468,6 +468,10 @@ Imcms.define("imcms-image-editor-builder",
                 }]);
             }
 
+            function showExif() {
+                // todo: implement!!!
+            }
+
             function buildAdvancedControls() {
                 var advancedModeBEM = new BEM({
                     block: "imcms-advanced-mode",
@@ -488,6 +492,10 @@ Imcms.define("imcms-image-editor-builder",
                 var $cropCoordinatesText = buildCropCoordinatesText(advancedModeBEM);
                 var $cropCoordinatesContainer = buildCropCoordinatesContainer();
                 var $fileFormat = buildFileFormatSelect();
+                var $showExifBtn = components.buttons.neutralButton({
+                    text: "Show exif",
+                    click: showExif
+                });
 
                 return advancedModeBEM.buildBlock("<div>", [
                     {"title": $textAlignmentBtnsTitle},
@@ -495,7 +503,8 @@ Imcms.define("imcms-image-editor-builder",
                     {"space-around": $spaceAroundImageInputContainer},
                     {"title": $cropCoordinatesText},
                     {"crop-coordinates": $cropCoordinatesContainer},
-                    {"file-format": $fileFormat}
+                    {"file-format": $fileFormat},
+                    {"button": $showExifBtn}
                 ]);
             }
 
