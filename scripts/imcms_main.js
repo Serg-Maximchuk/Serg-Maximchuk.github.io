@@ -19,13 +19,7 @@ Imcms = {
                 path: "./libs/jquery.mask.min.js",
                 addon: "jquery-mask"
             },
-            // todo: support local modules without defining their paths directly!
-            // components (old)
-            "imcms-flags": "imcms_flags.js",
-            "imcms-select": "imcms_select.js",
-            "imcms-numberbox": "imcms_numberbox.js",
-            "imcms-initialize": "imcms_initialize.js",
-            // components (new)
+            // components
             "imcms-date-picker": "imcms_date_picker.js",
             "imcms-calendar": "imcms_calendar.js",
             "imcms-time-picker": "imcms_time_picker.js",
