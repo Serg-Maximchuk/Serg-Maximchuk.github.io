@@ -393,6 +393,15 @@ Imcms.define("imcms-image-editor-builder",
                 ], {text: "Space around image (h-vspace)"});
             }
 
+            function buildCropCoordinatesText(advancedModeBEM) {
+                return advancedModeBEM.buildElement("title", "<div>")
+                    .append("Crop Coordinates (W:")
+                    .append(advancedModeBEM.buildBlockElement("current-crop-width", "<span>", {text: "400"}))
+                    .append(" H:")
+                    .append(advancedModeBEM.buildBlockElement("current-crop-width", "<span>", {text: "100"}))
+                    .append(")");
+            }
+
             function buildAdvancedControls() {
                 var advancedModeBEM = new BEM({
                     block: "imcms-advanced-mode",
@@ -401,6 +410,7 @@ Imcms.define("imcms-image-editor-builder",
                         "buttons": "imcms-buttons",
                         "space-around": "imcms-space-around",
                         "crop-coordinates": "imcms-crop-coordinates",
+                        "current-crop-width": "imcms-title",
                         "file-format": "",
                         "button": "imcms-button"
                     }
@@ -409,11 +419,13 @@ Imcms.define("imcms-image-editor-builder",
                 var $textAlignmentBtnsTitle = advancedModeBEM.buildElement("title", "<div>", {text: "Text alignment"});
                 var $textAlignmentBtnsContainer = buildTextAlignmentBtnsContainer();
                 var $spaceAroundImageInputContainer = buildSpaceAroundImageInputContainer();
+                var $cropCoordinatesText = buildCropCoordinatesText(advancedModeBEM);
 
                 return advancedModeBEM.buildBlock("<div>", [
                     {"title": $textAlignmentBtnsTitle},
                     {"buttons": $textAlignmentBtnsContainer},
-                    {"space-around": $spaceAroundImageInputContainer}
+                    {"space-around": $spaceAroundImageInputContainer},
+                    {"title": $cropCoordinatesText}
                 ]);
             }
 
