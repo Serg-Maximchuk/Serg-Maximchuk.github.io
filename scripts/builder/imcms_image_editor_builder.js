@@ -406,14 +406,47 @@ Imcms.define("imcms-image-editor-builder",
                 var cropCoordinatesBEM = new BEM({
                     block: "imcms-crop-coordinates",
                     elements: {
-                        "x": "imcms-crop-coordinate",
-                        "y": "imcms-crop-coordinate",
-                        "x1": "imcms-crop-coordinate",
-                        "y1": "imcms-crop-coordinate"
+                        "x": "imcms-number",
+                        "y": "imcms-number",
+                        "x1": "imcms-number",
+                        "y1": "imcms-number"
                     }
                 });
 
-                return cropCoordinatesBEM.buildBlock("<div>", []);
+                var $xCropCoord = components.texts.textNumber("<div>", {
+                    name: "cropX0",
+                    placeholder: "X",
+                    text: "X",
+                    error: "Error text"
+                });
+
+                var $yCropCoord = components.texts.textNumber("<div>", {
+                    name: "cropY0",
+                    placeholder: "Y",
+                    text: "Y",
+                    error: "Error text"
+                });
+
+                var $x1CropCoord = components.texts.textNumber("<div>", {
+                    name: "cropX1",
+                    placeholder: "X1",
+                    text: "X1",
+                    error: "Error text"
+                });
+
+                var $y1CropCoord = components.texts.textNumber("<div>", {
+                    name: "cropY1",
+                    placeholder: "Y1",
+                    text: "Y1",
+                    error: "Error text"
+                });
+
+                return cropCoordinatesBEM.buildBlock("<div>", [
+                    {"x": $xCropCoord},
+                    {"y": $yCropCoord},
+                    {"x1": $x1CropCoord},
+                    {"y1": $y1CropCoord}
+                ]);
             }
 
             function buildAdvancedControls() {
