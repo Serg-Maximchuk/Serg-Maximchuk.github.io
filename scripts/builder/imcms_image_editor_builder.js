@@ -468,13 +468,15 @@ Imcms.define("imcms-image-editor-builder",
                 var $spaceAroundImageInputContainer = buildSpaceAroundImageInputContainer();
                 var $cropCoordinatesText = buildCropCoordinatesText(advancedModeBEM);
                 var $cropCoordinatesContainer = buildCropCoordinatesContainer();
+                var $fileFormatTitle = advancedModeBEM.buildElement("title", "<div>", {text: "File format"});
 
                 return advancedModeBEM.buildBlock("<div>", [
                     {"title": $textAlignmentBtnsTitle},
                     {"buttons": $textAlignmentBtnsContainer},
                     {"space-around": $spaceAroundImageInputContainer},
                     {"title": $cropCoordinatesText},
-                    {"crop-coordinates": $cropCoordinatesContainer}
+                    {"crop-coordinates": $cropCoordinatesContainer},
+                    {"title": $fileFormatTitle}
                 ]);
             }
 
