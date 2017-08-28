@@ -4,7 +4,7 @@
  */
 Imcms.define("imcms-menu-editor-builder",
     [
-        "imcms-bem-builder", "imcms-components-builder", "imcms-document-editor-builder", "imcms-modal-window",
+        "imcms-bem-builder", "imcms-components-builder", "imcms-document-editor-builder", "imcms-modal-window-builder",
         "imcms-window-components-builder", "jquery"
     ],
     function (BEM, components, documentEditorBuilder, imcmsModalWindow, windowComponents, $) {

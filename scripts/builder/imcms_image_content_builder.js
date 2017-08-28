@@ -5,7 +5,7 @@
 Imcms.define("imcms-image-content-builder",
     [
         "imcms-files-rest-api", "imcms-bem-builder", "imcms-components-builder", "imcms-primitives-builder",
-        "imcms-controls-builder", "imcms-modal-window", "jquery"
+        "imcms-controls-builder", "imcms-modal-window-builder", "jquery"
     ],
     function (fileREST, BEM, components, primitives, controlsBuilder, modalWindow, $) {
         var OPENED_FOLDER_BTN_CLASS = "imcms-folder-btn--open";

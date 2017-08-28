@@ -24,7 +24,6 @@ Imcms = {
             "imcms-calendar": "imcms_calendar.js",
             "imcms-time-picker": "imcms_time_picker.js",
             "imcms-tests": "imcms_tests.js",
-            "imcms-modal-window": "modal_window/imcms_modal_window.js",
             "imcms-uuid-generator": "imcms_uuid_generator.js",
             // builders
             // components
@@ -42,6 +41,7 @@ Imcms = {
             "imcms-primitives-builder": "builder/imcms_primitives_builder.js",
             "imcms-date-time-builder": "builder/imcms_date_time_builder.js",
             "imcms-window-components-builder": "builder/imcms_window_components_builder.js",
+            "imcms-modal-window-builder": "builder/imcms_modal_window_builder.js",
             "imcms-image-content-builder": "builder/imcms_image_content_builder.js",
             "imcms-controls-builder": "builder/imcms_controls_builder.js",
             // admin panel

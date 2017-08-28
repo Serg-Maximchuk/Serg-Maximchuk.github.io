@@ -1,4 +1,4 @@
-Imcms.define("imcms-modal-window",
+Imcms.define("imcms-modal-window-builder",
     ["imcms-bem-builder", "imcms-components-builder", "jquery"],
     function (BEM, components, $) {
         var $modal, $shadow;
