@@ -56,7 +56,7 @@ Imcms.define("imcms-keywords-builder",
 
         return {
             keywordsBox: function (tag, attributes) {
-                var inputId = attributes["input-id"] && uuidGenerator.generateUUID(),
+                var inputId = attributes["input-id"] || uuidGenerator.generateUUID(),
                     $label = primitives.imcmsLabel(inputId, attributes.title),
                     $input = primitives.imcmsInputText({
                         id: inputId,
