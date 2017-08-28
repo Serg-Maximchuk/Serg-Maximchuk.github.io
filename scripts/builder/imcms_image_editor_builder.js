@@ -5,7 +5,7 @@
 Imcms.define("imcms-image-editor-builder",
     ["imcms-bem-builder", "imcms-window-components-builder", "imcms-components-builder", "jquery"],
     function (BEM, windowComponents, components, $) {
-        var $editor, $imageContainer, $shadow, $cropArea;
+        var $editor, $imageContainer, $shadow, $cropArea, $editableImageArea;
 
         function closeEditor() {
             $editor.css("display", "none");
@@ -181,12 +181,7 @@ Imcms.define("imcms-image-editor-builder",
                 ]);
             }
 
-            function zoom(zoomCoefficient) {
-                var newHeight = ~~($imageContainer.height() * zoomCoefficient),
-                    newWidth = ~~($imageContainer.width() * zoomCoefficient),
-                    backgroundSizeVal = newWidth + "px " + newHeight + "px"
-                ;
-
+            function resizeImage(newWidth, newHeight, backgroundSizeVal) {
                 $imageContainer.animate({
                     "width": newWidth + "px",
                     "height": newHeight + "px"
@@ -200,6 +195,14 @@ Imcms.define("imcms-image-editor-builder",
                 $cropArea.css({"background-size": backgroundSizeVal});
             }
 
+            function zoom(zoomCoefficient) {
+                var newHeight = ~~($imageContainer.height() * zoomCoefficient),
+                    newWidth = ~~($imageContainer.width() * zoomCoefficient),
+                    backgroundSizeVal = "" + newWidth + "px " + newHeight + "px"
+                ;
+                resizeImage(newWidth, newHeight, backgroundSizeVal);
+            }
+
             function zoomPlus() {
                 zoom(1.1);
             }
@@ -209,7 +212,13 @@ Imcms.define("imcms-image-editor-builder",
             }
 
             function zoomContain() {
-                // todo: implement!
+                // fixme: save proportions! now image becomes just as editable area
+                // only one side should be as area's side and one as needed to save proportions
+                var newHeight = $editableImageArea.height(),
+                    newWidth = $editableImageArea.width(),
+                    backgroundSizeVal = "" + newWidth + "px " + "auto"
+                ;
+                resizeImage(newWidth, newHeight, backgroundSizeVal);
             }
 
             function rotateLeft() {
@@ -281,7 +290,7 @@ Imcms.define("imcms-image-editor-builder",
                 ]);
             }
 
-            var $editableImageArea = buildEditableImageArea();
+            $editableImageArea = buildEditableImageArea();
             var $bottomPanel = buildBottomPanel();
 
             return $("<div>").append($editableImageArea, $bottomPanel);
