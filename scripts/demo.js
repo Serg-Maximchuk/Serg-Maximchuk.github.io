@@ -23,9 +23,9 @@ Imcms.require(
                 text: "choose image",
                 click: editors.buildContentManager
             }),
-            $imageEditorLink = buttons.neutral("<a>", {
-                href: "image_editor.html",
-                text: "image editor"
+            $imageEditorLink = buttons.positiveButton({
+                text: "image editor",
+                click: editors.buildImageEditor
             }),
             $menuEditorBtn = buttons.positiveButton({
                 text: "menu editor",

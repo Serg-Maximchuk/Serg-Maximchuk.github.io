@@ -1,4 +1,4 @@
-Imcms.define("imcms-image-editor-crop", ["jquery", "jquery-ui"], function ($) {
+Imcms.define("imcms-image-editor-crop", ["jquery"], function ($) {
     function cropImg() {
         var cropArea = $("#cropArea"),
             positionTop = cropArea.css("top"),
@@ -16,17 +16,6 @@ Imcms.define("imcms-image-editor-crop", ["jquery", "jquery-ui"], function ($) {
             drag: function () {
                 positionTop = cropArea.css("top");
                 positionLeft = cropArea.css("left");
-                cropArea.css({
-                    "background-position-x": "-" + positionLeft,
-                    "background-position-y": "-" + positionTop
-                });
-            }
-        });
-
-        cropArea.resizable({
-            handles: "all",
-            containment: "parent",
-            resize: function (event, ui) {
                 cropArea.css({
                     "background-position-x": "-" + positionLeft,
                     "background-position-y": "-" + positionTop

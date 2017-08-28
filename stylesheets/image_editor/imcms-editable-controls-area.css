@@ -81,6 +81,7 @@
 }
 
 .imcms-advanced-mode__button {
+    padding-top: 30px;
     float: right;
     line-height: 40px;
 }

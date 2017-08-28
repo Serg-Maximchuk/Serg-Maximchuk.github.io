@@ -7,20 +7,22 @@
     height: 125px;
 }
 
-.imcms-editable-img-control {
+.imcms-editable-img-controls__control-size,
+.imcms-editable-img-controls__control-scale-n-rotate,
+.imcms-editable-img-controls__control-view {
     display: block;
     float: left;
 }
 
-.imcms-editable-img-control:first-child {
+.imcms-editable-img-controls__control-size {
     width: 25%;
 }
 
-.imcms-editable-img-control:nth-child(2) {
+.imcms-editable-img-controls__control-scale-n-rotate {
     width: 50%;
 }
 
-.imcms-editable-img-control:last-child {
+.imcms-editable-img-controls__control-view {
     width: 20%;
     float: right;
 }
@@ -29,7 +31,7 @@
     padding-top: 40px;
 }
 
-.imcms-editable-img-control-tab {
+.imcms-editable-img-control-tabs__tab {
     cursor: pointer;
     line-height: 41px;
     text-align: center;
@@ -39,7 +41,7 @@
     width: 50%;
 }
 
-.imcms-editable-img-control-tab:after {
+.imcms-editable-img-control-tabs__tab:after {
     content: "";
     background-color: #0b94d8;
     display: none;
@@ -50,36 +52,36 @@
     height: 3px;
 }
 
-.imcms-editable-img-control-tab--active:after {
+.imcms-editable-img-control-tabs__tab--active:after {
     display: block;
 }
 
-.imcms-editable-img-control-tab:hover:after {
+.imcms-editable-img-control-tabs__tab:hover:after {
     display: block;
 }
 
 @media screen and (max-width: 1500px) {
-    .imcms-editable-img-control:last-child {
+    .imcms-editable-img-controls__control-view {
         width: 15%;
     }
 }
 
 @media screen and (max-width: 1300px) {
-    .imcms-editable-img-control:last-child {
+    .imcms-editable-img-controls__control-view {
         width: 20%;
     }
 
-    .imcms-editable-img-control:nth-child(2) {
+    .imcms-editable-img-controls__control-scale-n-rotate {
         width: 40%;
     }
 }
 
 @media screen and (max-width: 1150px) {
-    .imcms-editable-img-control:last-child {
+    .imcms-editable-img-controls__control-view {
         width: 17%;
     }
 
-    .imcms-editable-img-control:nth-child(2) {
+    .imcms-editable-img-controls__control-scale-n-rotate {
         width: 37%;
     }
 }

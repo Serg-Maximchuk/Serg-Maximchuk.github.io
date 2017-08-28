@@ -20,17 +20,7 @@ Imcms = {
                 path: "./libs/jquery.mask.min.js",
                 addon: "jquery-mask"
             },
-            "jquery-ui": {
-                path: "//ajax.aspnetcdn.com/ajax/jquery.ui/1.12.1/jquery-ui.min.js",
-                addon: "jquery-ui"
-            },
-            // todo: support local modules without defining their paths directly!
-            // components (old)
-            "imcms-flags": "imcms_flags.js",
-            "imcms-select": "imcms_select.js",
-            "imcms-numberbox": "imcms_numberbox.js",
-            "imcms-initialize": "imcms_initialize.js",
-            // components (new)
+            // components
             "imcms-date-picker": "imcms_date_picker.js",
             "imcms-calendar": "imcms_calendar.js",
             "imcms-time-picker": "imcms_time_picker.js",
@@ -214,6 +204,7 @@ Function.prototype.applyAsync = function (args, context) {
         var script = document.createElement("script");
         script.type = "text/javascript";
         script.async = true;
+        script.setAttribute("data-loader", "imcms");
 
         if (script.readyState) {  // IE support
             script.onreadystatechange = function () {
