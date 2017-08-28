@@ -1,74 +1,95 @@
-Imcms.define("imcms-modal-window", ["jquery"], function ($) {
-    function createModalWindow(question) {
-        var modal, head, body, footer, btnYes, btnNo;
+Imcms.define("imcms-modal-window",
+    ["imcms-bem-builder", "imcms-components-builder", "jquery"],
+    function (BEM, components, $) {
+        var $modal, $shadow;
 
-        modal = $("<div>", {
-            "id": "imcmsModalWindow",
-            "class": "imcms-modal-window"
-        });
+        function createModalWindow(question, callback) {
+            function closeModal() {
+                $modal.remove();
+                $shadow.remove();
+            }
 
-        head = $("<div>", {
-            "class": "imcms-modal-window__modal-head imcms-head",
-            html: $("<div>", {
-                "class": "imcms-modal-head__title imcms-title",
-                text: "Modal Window"
-            })
-        });
+            function buildHead() {
+                var headBEM = new BEM({
+                    block: "imcms-head",
+                    elements: {"title": "imcms-title"}
+                });
 
-        body = $("<div>", {
-            "class": "imcms-modal-window__modal-body",
-            html: $("<div>", {
-                "class": "imcms-modal-body__text imcms-info-msg",
-                text: question
-            })
-        });
+                var $title = headBEM.buildElement("title", "<div>", {text: "Confirmation"});
 
-        footer = $("<div>", {
-            "class": "imcms-modal-window__modal-footer"
-        });
+                return headBEM.buildBlock("<div>", [{"title": $title}]);
+            }
 
-        btnYes = $("<button>", {
-            "type": "button",
-            "id": "imcmsButtonTrue",
-            "class": "imcms-modal-footer__button imcms-button imcms-button--positive",
-            text: "Yes"
-        });
+            function buildBody(question) {
+                var bodyBEM = new BEM({
+                    block: "imcms-modal-body",
+                    elements: {"text": "imcms-info-msg"}
+                });
 
-        btnNo = $("<button>", {
-            "type": "button",
-            "id": "imcmsButtonFalse",
-            "class": "imcms-modal-footer__button imcms-button imcms-button--negative",
-            text: "No"
-        });
+                var $question = components.texts.infoText("<div>", question);
 
-        footer.append(btnYes).append(btnNo);
-        return modal.append(head).append(body).append(footer);
-    }
+                return bodyBEM.buildBlock("<div>", [{"text": $question}]);
+            }
 
-    function createLayout() {
-        return $("<div>", {
-            "class": "imcms-modal-layout"
-        });
-    }
+            function buildFooter(callback) {
+                var footerBEM = new BEM({
+                    block: "imcms-modal-footer",
+                    elements: {"button": "imcms-button"}
+                });
 
-    return {
-        showModalWindow: function (question, callback) {
-            var modal = createModalWindow(question);
-            var modalLayout = createLayout();
+                var $yesButton = components.buttons.positiveButton({
+                    text: "Yes",
+                    click: function () {
+                        callback(true);
+                        closeModal();
+                    }
+                });
 
-            $("body").append(modalLayout).append(modal);
+                var $noButton = components.buttons.negativeButton({
+                    text: "No",
+                    click: function () {
+                        callback(false);
+                        closeModal();
+                    }
+                });
 
-            modal.find("#imcmsButtonTrue").click(function () {
-                callback(true);
-                modal.remove();
-                modalLayout.remove();
+                return footerBEM.buildBlock("<div>", [
+                    {"button": $yesButton},
+                    {"button": $noButton}
+                ]);
+            }
+
+            var modalWindowBEM = new BEM({
+                block: "imcms-modal-window",
+                elements: {
+                    "modal-head": "imcms-head",
+                    "modal-body": "imcms-modal-body",
+                    "modal-footer": "imcms-modal-footer"
+                }
             });
 
-            modal.find("#imcmsButtonFalse").click(function () {
-                callback(false);
-                modal.remove();
-                modalLayout.remove();
-            });
+            var $head = buildHead();
+            var $body = buildBody(question);
+            var $footer = buildFooter(callback);
+
+            return modalWindowBEM.buildBlock("<div>", [
+                {"modal-head": $head},
+                {"modal-body": $body},
+                {"modal-footer": $footer}
+            ])
         }
-    };
-});
+
+        function createLayout() {
+            return $("<div>", {"class": "imcms-modal-layout"});
+        }
+
+        return {
+            showModalWindow: function (question, callback) {
+                $modal = createModalWindow(question, callback);
+                $shadow = createLayout();
+
+                $("body").append($shadow, $modal);
+            }
+        };
+    }
+);
