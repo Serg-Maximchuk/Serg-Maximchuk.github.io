@@ -19,12 +19,12 @@ Imcms = {
                 path: "./libs/jquery.mask.min.js",
                 addon: "jquery-mask"
             },
-            // components
-            "imcms-date-picker": "imcms_date_picker.js",
-            "imcms-calendar": "imcms_calendar.js",
-            "imcms-time-picker": "imcms_time_picker.js",
             "imcms-tests": "imcms_tests.js",
-            "imcms-uuid-generator": "imcms_uuid_generator.js",
+            // components
+            "imcms-calendar": "components/imcms_calendar.js",
+            "imcms-date-picker": "components/imcms_date_picker.js",
+            "imcms-time-picker": "components/imcms_time_picker.js",
+            "imcms-uuid-generator": "components/imcms_uuid_generator.js",
             // builders
             // components
             "imcms-components-builder": "builder/imcms_components_builder.js",
