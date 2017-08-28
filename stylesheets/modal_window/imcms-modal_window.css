@@ -34,12 +34,6 @@
     background-color: #389ecf;
 }
 
-.imcms-modal-head__title {
-    color: #fff;
-    line-height: 42px;
-    text-transform: uppercase;
-}
-
 .imcms-modal-window__modal-body {
     background-color: #f3f5f7;
     display: block;
