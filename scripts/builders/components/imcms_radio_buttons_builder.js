@@ -41,14 +41,16 @@ Imcms.define("imcms-radio-buttons-builder",
                 ]);
             },
             group: function () {
-                arguments.checkAmongGroup = function (value) {
-                    Array.prototype.forEach.call(this, function (radioBlock) {
-                        var $radio = radioBlock.find("input");
-                        $radio.val() === value && $radio.prop("checked", "checked");
-                    });
-                };
+                var args = arguments;
 
-                return arguments;
+                return {
+                    checkAmongGroup: function (value) {
+                        Array.prototype.forEach.call(args, function (radioBlock) {
+                            var $radio = radioBlock.find("input");
+                            $radio.val() === value && $radio.prop("checked", "checked");
+                        });
+                    }
+                };
             },
             radioContainer: function (tag, elements, attributes) {
                 return containerBEM.buildBlock(tag, elements, attributes, "radio");
