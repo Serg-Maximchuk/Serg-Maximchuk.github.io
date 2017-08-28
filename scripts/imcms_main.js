@@ -26,10 +26,6 @@ Imcms = {
             "imcms-tests": "imcms_tests.js",
             "imcms-modal-window": "modal_window/imcms_modal_window.js",
             "imcms-uuid-generator": "imcms_uuid_generator.js",
-            // editors (old)
-            "imcms-image-editor-crop": "image_editor/imcms_image_editor_crop.js",
-            "imcms-image-editor-bottom-panel": "image_editor/imcms_image_editor_bottom_panel.js",
-            "imcms-image-editor": "image_editor/imcms_image_editor.js",
             // builders
             // components
             "imcms-components-builder": "builder/imcms_components_builder.js",
