@@ -5,7 +5,7 @@
 Imcms.define("imcms-image-editor-builder",
     ["imcms-bem-builder", "imcms-window-components-builder", "imcms-components-builder", "jquery"],
     function (BEM, windowComponents, components, $) {
-        var $editor, $imageContainer;
+        var $editor, $imageContainer, $shadow, $cropArea;
 
         function closeEditor() {
             $editor.css("display", "none");
@@ -124,11 +124,11 @@ Imcms.define("imcms-image-editor-builder",
                     width: "1436px",
                     height: "773px"
                 });
-                var $shadow = editableImgAreaBEM.buildElement("layout", "<div>").css({
+                $shadow = editableImgAreaBEM.buildElement("layout", "<div>").css({
                     width: "1436px",
                     height: "773px"
                 });
-                var $cropArea = buildCropArea().css({
+                $cropArea = buildCropArea().css({
                     width: "649px",
                     height: "496px"
                 });
@@ -181,12 +181,31 @@ Imcms.define("imcms-image-editor-builder",
                 ]);
             }
 
+            function zoom(zoomCoefficient) {
+                var newHeight = ~~($imageContainer.height() * zoomCoefficient),
+                    newWidth = ~~($imageContainer.width() * zoomCoefficient),
+                    backgroundSizeVal = newWidth + "px " + newHeight + "px"
+                ;
+
+                $imageContainer.animate({
+                    "width": newWidth + "px",
+                    "height": newHeight + "px"
+                }, 200).css({"background-size": backgroundSizeVal});
+
+                $shadow.animate({
+                    "width": newWidth + "px",
+                    "height": newHeight + "px"
+                }, 200);
+
+                $cropArea.css({"background-size": backgroundSizeVal});
+            }
+
             function zoomPlus() {
-                // todo: implement!
+                zoom(1.1);
             }
 
             function zoomMinus() {
-                // todo: implement!
+                zoom(0.9);
             }
 
             function zoomContain() {
