@@ -5,13 +5,52 @@
 Imcms.define("imcms-image-editor-builder",
     ["imcms-bem-builder", "imcms-window-components-builder", "imcms-components-builder", "jquery"],
     function (BEM, windowComponents, components, $) {
-        var $editor, $imageContainer, $shadow, $cropArea, $editableImageArea;
+        var $editor, $imageContainer, $shadow, $cropArea, $editableImageArea, $rightSidePanel, $bottomPanel;
 
         function closeEditor() {
             $editor.css("display", "none");
         }
 
         function buildBodyHead() {
+            function showHidePanel(panelOpts) {
+                var panelAnimationOpts = {};
+
+                if (panelOpts.$btn.data("state")) {
+                    panelAnimationOpts[panelOpts.panelSide] = "-" + panelOpts.newPanelSideValue + "px";
+                    panelOpts.$panel.animate(panelAnimationOpts, 300);
+                    panelOpts.$btn.data("state", false);
+                    panelOpts.$btn.text("show bottom panel");
+
+                } else {
+                    panelAnimationOpts[panelOpts.panelSide] = 0;
+                    panelOpts.$panel.animate(panelAnimationOpts, 300);
+                    panelOpts.$btn.data("state", true);
+                    panelOpts.$btn.text("hide bottom panel");
+                }
+            }
+
+            function showHideRightPanel() {
+                showHidePanel({
+                    $btn: $(this),
+                    newPanelSideValue: $rightSidePanel.width(),
+                    $panel: $rightSidePanel,
+                    panelSide: "right",
+                    textHide: "hide right panel",
+                    textShow: "show right panel"
+                });
+            }
+
+            function showHideBottomPanel() {
+                showHidePanel({
+                    $btn: $(this),
+                    newPanelSideValue: $bottomPanel.height(),
+                    $panel: $bottomPanel,
+                    panelSide: "bottom",
+                    textHide: "hide bottom panel",
+                    textShow: "show bottom panel"
+                });
+            }
+
             var bodyHeadBEM = new BEM({
                 block: "imcms-image-characteristics",
                 elements: {
@@ -24,14 +63,16 @@ Imcms.define("imcms-image-editor-builder",
 
             var $showHideBottomPanelBtn = components.buttons.neutralButton({
                 "class": "imcms-image-characteristic",
-                text: "Show bottom panel"
+                text: "Show bottom panel",
+                click: showHideBottomPanel
             });
 
             var $imageTitle = bodyHeadBEM.buildElement("img-title", "<div>", {text: "img1.jpg"}); // todo: print correct image name
 
             var $showHideRightPanelBtn = components.buttons.neutralButton({
                 "class": "imcms-image-characteristic",
-                text: "Show right panel"
+                text: "Show right panel",
+                click: showHideRightPanel
             });
 
             var $imgUrl = bodyHeadBEM.buildElement("img-url", "<div>", {
@@ -299,7 +340,7 @@ Imcms.define("imcms-image-editor-builder",
             }
 
             $editableImageArea = buildEditableImageArea();
-            var $bottomPanel = buildBottomPanel();
+            $bottomPanel = buildBottomPanel();
 
             return $("<div>").append($editableImageArea, $bottomPanel);
         }
@@ -609,13 +650,13 @@ Imcms.define("imcms-image-editor-builder",
             var $head = windowComponents.buildHead("Image Editor", closeEditor);
             var $bodyHead = buildBodyHead();
             var $leftSide = buildLeftSide();
-            var $rightSide = buildRightSide(imageEditorBEM);
+            $rightSidePanel = buildRightSide(imageEditorBEM);
 
             return imageEditorBEM.buildBlock("<div>", [
                 {"head": $head},
                 {"image-characteristics": $bodyHead},
                 {"left-side": $leftSide},
-                {"right-side": $rightSide}
+                {"right-side": $rightSidePanel}
             ]).addClass("imcms-editor-window");
         }
 
