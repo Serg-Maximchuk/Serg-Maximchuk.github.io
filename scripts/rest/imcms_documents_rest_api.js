@@ -71,8 +71,9 @@ Imcms.define("imcms-documents-rest-api", ["imcms-rest-api"], function (rest) {
         if_requested_lang_missing_doc_opts: "DO_NOT_SHOW",
         currentVersion: 24,
         currentVersionDate: currentDate,
-        currentVersionTime: currentTime
-
+        currentVersionTime: currentTime,
+        keywords: ["test", "keyword 1", "document"],
+        disable_search: true
     }, {
         id: 1002,
         title: "Second page",

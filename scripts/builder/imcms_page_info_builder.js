@@ -1239,6 +1239,13 @@ Imcms.define("imcms-page-info-builder",
                 pageInfoElements.lifeCycle.docVersionSaveDateTime.date.setDate(document.currentVersionDate);
                 pageInfoElements.lifeCycle.docVersionSaveDateTime.time.setTime(document.currentVersionTime);
 
+                // keywords
+
+                var keywordsTab = pageInfoElements.keywords;
+
+                document.keywords.forEach(keywordsTab.$keywordsBox.addKeyword);
+
+                keywordsTab.$searchDisableCheckbox.setValue(document.disable_search)
 
             });
         }

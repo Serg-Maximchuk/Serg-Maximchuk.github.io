@@ -74,7 +74,14 @@ Imcms.define("imcms-keywords-builder",
                         {"keywords": $keywordsContainer}
                     ])
                 ;
-                return keywordsContainerBEM.buildBlock("<div>", [{"keywords-box": $keywordsBox}])
+                var keywordResult = keywordsContainerBEM.buildBlock("<div>", [{"keywords-box": $keywordsBox}]);
+
+                keywordResult.addKeyword = function (keyword) {
+                    $input.val(keyword);
+                    $addKeywordButton.click();
+                };
+
+                return keywordResult;
             }
         };
     }
