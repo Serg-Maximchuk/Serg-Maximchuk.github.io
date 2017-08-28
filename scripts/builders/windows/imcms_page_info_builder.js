@@ -3,11 +3,12 @@
  * 07.08.17.
  */
 Imcms.define("imcms-page-info-builder",
-    ["imcms-date-picker", "imcms-time-picker", "imcms-bem-builder", "imcms-components-builder",
-        "imcms-roles-rest-api", "imcms-templates-rest-api",
-        "imcms-documents-rest-api", "imcms-users-rest-api", "imcms-category-types-rest-api", "jquery"],
-    function (DatePicker, TimePicker, BEM, componentsBuilder,
-              rolesRestApi, templatesRestApi, documentsRestApi, usersRestApi,
+    [
+        "imcms-date-picker", "imcms-time-picker", "imcms-bem-builder", "imcms-components-builder",
+        "imcms-roles-rest-api", "imcms-templates-rest-api", "imcms-documents-rest-api", "imcms-users-rest-api",
+        "imcms-category-types-rest-api", "jquery"
+    ],
+    function (DatePicker, TimePicker, BEM, components, rolesRestApi, templatesRestApi, documentsRestApi, usersRestApi,
               categoriesTypesRestApi, $) {
 
         var pageInfoBEM = new BEM({
@@ -68,115 +69,121 @@ Imcms.define("imcms-page-info-builder",
 
                 pageInfoElements.appearance = {};
 
-                pageInfoElements.appearance.$engCheckbox = componentsBuilder.checkboxes.imcmsCheckbox("<div>", {
-                        name: "english",
-                        text: "English",
-                        checked: "checked"
-                    });
+                pageInfoElements.appearance.$engCheckbox = components.checkboxes.imcmsCheckbox("<div>", {
+                    name: "english",
+                    text: "English",
+                    checked: "checked"
+                });
 
-                var
-                    $engCheckboxWrapper = componentsBuilder.checkboxes.checkboxContainer("<div>",
-                        [pageInfoElements.appearance.$engCheckbox]);
+                var $engCheckboxWrapper = components.checkboxes.checkboxContainer("<div>", [
+                    pageInfoElements.appearance.$engCheckbox
+                ]);
                 var $engCheckboxContainer = pageInfoInnerStructureBEM.buildBlock("<div>", [{
-                        "checkboxes": $engCheckboxWrapper
-                    }]);
+                    "checkboxes": $engCheckboxWrapper
+                }]);
 
-                pageInfoElements.appearance.$engPageTitle = componentsBuilder.texts.textBox("<div>", {
-                        name: "title",
-                        text: "Title",
-                        placeholder: "Start page"
-                    });
+                pageInfoElements.appearance.$engPageTitle = components.texts.textBox("<div>", {
+                    name: "title",
+                    text: "Title",
+                    placeholder: "Start page"
+                });
 
-                var $pageTitleContainer = pageInfoInnerStructureBEM.buildBlock("<div>",
-                    [{"text-box": pageInfoElements.appearance.$engPageTitle}]);
+                var $pageTitleContainer = pageInfoInnerStructureBEM.buildBlock("<div>", [
+                    {"text-box": pageInfoElements.appearance.$engPageTitle}
+                ]);
 
-                pageInfoElements.appearance.$engMenuText = componentsBuilder.texts.textArea("<div>", {
-                        text: "Menu text",
-                        name: "menu-text"
-                    });
+                pageInfoElements.appearance.$engMenuText = components.texts.textArea("<div>", {
+                    text: "Menu text",
+                    name: "menu-text"
+                });
 
-                var $menuTextContainer = pageInfoInnerStructureBEM.buildBlock("<div>", [{"text-area": pageInfoElements.appearance.$engMenuText}]);
+                var $menuTextContainer = pageInfoInnerStructureBEM.buildBlock("<div>", [
+                    {"text-area": pageInfoElements.appearance.$engMenuText}
+                ]);
 
-                pageInfoElements.appearance.$engLinkToImage = componentsBuilder.chooseImage.container("<div>", {
-                        id: "path-to-image",
-                        name: "image",
-                        placeholder: "Image path",
-                        "label-text": "Link to image",
-                        "button-text": "choose..."
-                    });
+                pageInfoElements.appearance.$engLinkToImage = components.chooseImage.container("<div>", {
+                    id: "path-to-image",
+                    name: "image",
+                    placeholder: "Image path",
+                    "label-text": "Link to image",
+                    "button-text": "choose..."
+                });
 
                 var $linkToImageContainer = pageInfoInnerStructureBEM.buildBlock("<div>", [{
-                        "choose-image": pageInfoElements.appearance.$engLinkToImage
-                    }]);
+                    "choose-image": pageInfoElements.appearance.$engLinkToImage
+                }]);
 
-                pageInfoElements.appearance.$sweCheckbox = componentsBuilder.checkboxes.imcmsCheckbox("<div>", {
-                        name: "swedish",
-                        text: "Swedish"
-                    });
+                pageInfoElements.appearance.$sweCheckbox = components.checkboxes.imcmsCheckbox("<div>", {
+                    name: "swedish",
+                    text: "Swedish"
+                });
 
-                var
-                    $sweCheckboxWrapper = componentsBuilder.checkboxes.checkboxContainer("<div>", [pageInfoElements.appearance.$sweCheckbox]),
+                var $sweCheckboxWrapper = components.checkboxes.checkboxContainer("<div>", [
+                        pageInfoElements.appearance.$sweCheckbox
+                    ]),
                     $sweCheckboxContainer = pageInfoInnerStructureBEM.buildBlock("<div>", [{
                         "checkboxes": $sweCheckboxWrapper
                     }]);
 
-                pageInfoElements.appearance.$swePageTitle = componentsBuilder.texts.textBox("<div>", {
-                        name: "title",
-                        text: "Title",
-                        placeholder: "Startsida"
-                    });
+                pageInfoElements.appearance.$swePageTitle = components.texts.textBox("<div>", {
+                    name: "title",
+                    text: "Title",
+                    placeholder: "Startsida"
+                });
 
                 var $pageTitleSweContainer = pageInfoInnerStructureBEM.buildBlock("<div>", [{
-                        "text-box": pageInfoElements.appearance.$swePageTitle
-                    }]);
+                    "text-box": pageInfoElements.appearance.$swePageTitle
+                }]);
 
-                pageInfoElements.appearance.$sweMenuText = componentsBuilder.texts.textArea("<div>", {
-                        text: "Menu text",
-                        name: "menu-text"
-                    });
+                pageInfoElements.appearance.$sweMenuText = components.texts.textArea("<div>", {
+                    text: "Menu text",
+                    name: "menu-text"
+                });
 
                 var $menuTextSweContainer = pageInfoInnerStructureBEM.buildBlock("<div>", [{
-                        "text-area": pageInfoElements.appearance.$sweMenuText
-                    }]);
+                    "text-area": pageInfoElements.appearance.$sweMenuText
+                }]);
 
-                pageInfoElements.appearance.$linkToImageSwe = componentsBuilder.chooseImage.container("<div>", {
-                        id: "path-to-image-swe",
-                        name: "image",
-                        placeholder: "Image path",
-                        "label-text": "Link to image",
-                        "button-text": "choose..."
-                    });
+                pageInfoElements.appearance.$linkToImageSwe = components.chooseImage.container("<div>", {
+                    id: "path-to-image-swe",
+                    name: "image",
+                    placeholder: "Image path",
+                    "label-text": "Link to image",
+                    "button-text": "choose..."
+                });
 
                 var $linkToImageSweContainer = pageInfoInnerStructureBEM.buildBlock("<div>", [{
-                        "choose-image": pageInfoElements.appearance.$linkToImageSwe
-                    }]);
+                    "choose-image": pageInfoElements.appearance.$linkToImageSwe
+                }]);
 
-                pageInfoElements.appearance.$showIn = componentsBuilder.selects.imcmsSelect("<div>", {
-                        id: "show-in",
-                        text: "Show in",
-                        name: "show-in"
-                    }, [{
-                        text: "Same frame",
-                        "data-value": "_self"
-                    }, {
-                        text: "New window",
-                        "data-value": "_blank"
-                    }, {
-                        text: "Replace all",
-                        "data-value": "_top"
-                    }]);
+                pageInfoElements.appearance.$showIn = components.selects.imcmsSelect("<div>", {
+                    id: "show-in",
+                    text: "Show in",
+                    name: "show-in"
+                }, [{
+                    text: "Same frame",
+                    "data-value": "_self"
+                }, {
+                    text: "New window",
+                    "data-value": "_blank"
+                }, {
+                    text: "Replace all",
+                    "data-value": "_top"
+                }]);
 
-                var $showInContainer = pageInfoInnerStructureBEM.buildBlock("<div>",
-                    [{"select": pageInfoElements.appearance.$showIn}]);
+                var $showInContainer = pageInfoInnerStructureBEM.buildBlock("<div>", [
+                    {"select": pageInfoElements.appearance.$showIn}
+                ]);
 
-                pageInfoElements.appearance.$documentAlias = componentsBuilder.texts.textBox("<div>", {
-                        name: "alias",
-                        text: "Document alias",
-                        placeholder: "this-doc-alias"
-                    });
+                pageInfoElements.appearance.$documentAlias = components.texts.textBox("<div>", {
+                    name: "alias",
+                    text: "Document alias",
+                    placeholder: "this-doc-alias"
+                });
 
-                var $documentAliasContainer = pageInfoInnerStructureBEM.buildBlock("<div>",
-                    [{"text-box": pageInfoElements.appearance.$documentAlias}]);
+                var $documentAliasContainer = pageInfoInnerStructureBEM.buildBlock("<div>", [
+                    {"text-box": pageInfoElements.appearance.$documentAlias}
+                ]);
 
                 var tabElements = [
                     $engCheckboxContainer,
@@ -216,39 +223,42 @@ Imcms.define("imcms-page-info-builder",
 
                 pageInfoElements.lifeCycle = {};
 
-                pageInfoElements.lifeCycle.$docStatusSelect = componentsBuilder.selects.imcmsSelect("<div>", {
-                        id: "doc-status",
-                        text: "Status",
-                        name: "status"
-                    }, [{
-                        text: "In Process",
-                        "data-value": "0"
-                    }, {
-                        text: "Disapproved",
-                        "data-value": "1"
-                    }, {
-                        text: "Approved",
-                        "data-value": "2"
-                    }]);
+                pageInfoElements.lifeCycle.$docStatusSelect = components.selects.imcmsSelect("<div>", {
+                    id: "doc-status",
+                    text: "Status",
+                    name: "status"
+                }, [{
+                    text: "In Process",
+                    "data-value": "0"
+                }, {
+                    text: "Disapproved",
+                    "data-value": "1"
+                }, {
+                    text: "Approved",
+                    "data-value": "2"
+                }]);
 
-                var $docStatusSelectContainer = lifeCycleInnerStructureBEM.buildBlock("<div>", [{"select": pageInfoElements.lifeCycle.$docStatusSelect}]),
+                var $docStatusSelectContainer = lifeCycleInnerStructureBEM.buildBlock("<div>", [
+                        {"select": pageInfoElements.lifeCycle.$docStatusSelect}
+                    ]),
 
                     // published date-time row
                     $publishedTitle = lifeCycleInnerStructureBEM.buildElement("title", "<div>", {text: "Published"}),
-                    $publishDate = componentsBuilder.dateTime.datePickerCalendar({title: "Set published date"}),
-                    $publishTime = componentsBuilder.dateTime.timePickerClock({title: "Set published time"}),
-                    $setPublishTimeNowBtn = componentsBuilder.buttons.neutralButton({
+                    $publishDate = components.dateTime.datePickerCalendar({title: "Set published date"}),
+                    $publishTime = components.dateTime.timePickerClock({title: "Set published time"}),
+                    $setPublishTimeNowBtn = components.buttons.neutralButton({
                         text: "Now",
                         click: onTimeNowButtonClick
                     }),
-                    $setPublishTimeNowContainer = componentsBuilder.buttons.buttonsContainer("<div>", [$setPublishTimeNowBtn]),
+                    $setPublishTimeNowContainer = components.buttons.buttonsContainer("<div>", [$setPublishTimeNowBtn]),
 
-                    $publishDateTime = componentsBuilder.dateTime.dateTimeReadOnly({title: "Saved publish date-time"}),
+                    $publishDateTime = components.dateTime.dateTimeReadOnly({title: "Saved publish date-time"}),
 
-                    $clearPublishTimeBtn = componentsBuilder.buttons.neutralButton({
+                    $clearPublishTimeBtn = components.buttons.neutralButton({
                         text: "Clear",
                         click: onTimeClearButtonClick
-                    });
+                    })
+                ;
 
                 pageInfoElements.lifeCycle.publishTime = new TimePicker($publishTime);
                 pageInfoElements.lifeCycle.publishDate = new DatePicker($publishDate);
@@ -256,7 +266,7 @@ Imcms.define("imcms-page-info-builder",
                 pageInfoElements.lifeCycle.publishDateTime.date = new DatePicker($publishDateTime);
                 pageInfoElements.lifeCycle.publishDateTime.time = new TimePicker($publishDateTime);
 
-                var $clearPublishTimeContainer = componentsBuilder.buttons.buttonsContainer("<div>", [$clearPublishTimeBtn]),
+                var $clearPublishTimeContainer = components.buttons.buttonsContainer("<div>", [$clearPublishTimeBtn]),
 
                     $publishedDateTimeContainer = lifeCycleInnerStructureBEM.buildBlock("<div>", [
                         {"title": $publishedTitle},
@@ -281,20 +291,21 @@ Imcms.define("imcms-page-info-builder",
                     // archived date-time row
 
                     $archivedTitle = lifeCycleInnerStructureBEM.buildElement("title", "<div>", {text: "Archived"}),
-                    $archivedDate = componentsBuilder.dateTime.datePickerCalendar({title: "Set archived date"}),
-                    $archivedTime = componentsBuilder.dateTime.timePickerClock({title: "Set archived time"}),
-                    $setArchivedTimeNowBtn = componentsBuilder.buttons.neutralButton({
+                    $archivedDate = components.dateTime.datePickerCalendar({title: "Set archived date"}),
+                    $archivedTime = components.dateTime.timePickerClock({title: "Set archived time"}),
+                    $setArchivedTimeNowBtn = components.buttons.neutralButton({
                         text: "Now",
                         click: onTimeNowButtonClick
                     }),
-                    $setArchivedTimeNowContainer = componentsBuilder.buttons.buttonsContainer("<div>", [$setArchivedTimeNowBtn]),
+                    $setArchivedTimeNowContainer = components.buttons.buttonsContainer("<div>", [$setArchivedTimeNowBtn]),
 
-                    $archivedDateTime = componentsBuilder.dateTime.dateTimeReadOnly({title: "Saved archived date-time"}),
+                    $archivedDateTime = components.dateTime.dateTimeReadOnly({title: "Saved archived date-time"}),
 
-                    $clearArchivedTimeBtn = componentsBuilder.buttons.neutralButton({
+                    $clearArchivedTimeBtn = components.buttons.neutralButton({
                         text: "Clear",
                         click: onTimeClearButtonClick
-                    });
+                    })
+                ;
 
                 pageInfoElements.lifeCycle.archivedTime = new TimePicker($archivedTime);
                 pageInfoElements.lifeCycle.archivedDate = new DatePicker($archivedDate);
@@ -302,7 +313,7 @@ Imcms.define("imcms-page-info-builder",
                 pageInfoElements.lifeCycle.archivedDateTime.date = new DatePicker($archivedDateTime);
                 pageInfoElements.lifeCycle.archivedDateTime.time = new TimePicker($archivedDateTime);
 
-                var $clearArchivedTimeContainer = componentsBuilder.buttons.buttonsContainer("<div>", [$clearArchivedTimeBtn]),
+                var $clearArchivedTimeContainer = components.buttons.buttonsContainer("<div>", [$clearArchivedTimeBtn]),
 
                     $archivedDateTimeContainer = lifeCycleInnerStructureBEM.buildBlock("<div>", [
                         {"title": $archivedTitle},
@@ -326,27 +337,33 @@ Imcms.define("imcms-page-info-builder",
 
                     // publication date-time row
 
-                    $publishEndTitle = lifeCycleInnerStructureBEM.buildElement("title", "<div>", {text: "Publication end"}),
-                    $publishEndDate = componentsBuilder.dateTime.datePickerCalendar({title: "Set publication end date"}),
-                    $publishEndTime = componentsBuilder.dateTime.timePickerClock({title: "Set publication end time"}),
+                    $publishEndTitle = lifeCycleInnerStructureBEM.buildElement("title", "<div>", {
+                        text: "Publication end"
+                    }),
+                    $publishEndDate = components.dateTime.datePickerCalendar({title: "Set publication end date"}),
+                    $publishEndTime = components.dateTime.timePickerClock({title: "Set publication end time"}),
 
-                    $setPublishEndTimeNowBtn = componentsBuilder.buttons.neutralButton({
+                    $setPublishEndTimeNowBtn = components.buttons.neutralButton({
                         text: "Now",
                         click: onTimeNowButtonClick
                     }),
 
-                    $setPublishEndTimeNowContainer = componentsBuilder.buttons.buttonsContainer("<div>", [$setPublishEndTimeNowBtn]),
+                    $setPublishEndTimeNowContainer = components.buttons.buttonsContainer("<div>", [
+                        $setPublishEndTimeNowBtn
+                    ]),
 
-                    $publishEndDateTime = componentsBuilder.dateTime.dateTimeReadOnly({
+                    $publishEndDateTime = components.dateTime.dateTimeReadOnly({
                         title: "Saved publication end date-time"
                     }),
 
-                    $clearPublishEndTimeBtn = componentsBuilder.buttons.neutralButton({
+                    $clearPublishEndTimeBtn = components.buttons.neutralButton({
                         text: "Clear",
                         click: onTimeClearButtonClick
                     }),
 
-                    $clearPublishEndTimeContainer = componentsBuilder.buttons.buttonsContainer("<div>", [$clearPublishEndTimeBtn]),
+                    $clearPublishEndTimeContainer = components.buttons.buttonsContainer("<div>", [
+                        $clearPublishEndTimeBtn
+                    ]),
 
                     $publishEndDateTimeContainer = lifeCycleInnerStructureBEM.buildBlock("<div>", [
                         {"title": $publishEndTitle},
@@ -366,7 +383,8 @@ Imcms.define("imcms-page-info-builder",
                             "item": $clearPublishEndTimeContainer,
                             modifiers: itemModifiers
                         }
-                    ]);
+                    ])
+                ;
 
                 pageInfoElements.lifeCycle.publishEndTime = new TimePicker($publishEndTime);
                 pageInfoElements.lifeCycle.publishEndDate = new DatePicker($publishEndDate);
@@ -376,55 +394,63 @@ Imcms.define("imcms-page-info-builder",
 
                 // publisher select row
 
-                pageInfoElements.lifeCycle.$publisherSelect = componentsBuilder.selects.imcmsSelect("<div>", {
-                        id: "doc-publisher",
-                        text: "Publisher",
-                        name: "publisher"
-                    }, []);
+                pageInfoElements.lifeCycle.$publisherSelect = components.selects.imcmsSelect("<div>", {
+                    id: "doc-publisher",
+                    text: "Publisher",
+                    name: "publisher"
+                });
                 usersRestApi.read(null, function (users) {
                     var usersDataMapped = users.map(function (user) {
-                        return {
-                            text: user.username,
-                            "data-value": user.id
-                        }
-                    });
-                    pageInfoElements.lifeCycle.$publisherSelect.append(componentsBuilder.selects.mapOptionsToSelectItems(usersDataMapped));
+                            return {
+                                text: user.username,
+                                "data-value": user.id
+                            }
+                        }),
+                        usersDataAsSelectItems = components.selects.mapOptionsToSelectItems(usersDataMapped)
+                    ;
+
+                    pageInfoElements.lifeCycle.$publisherSelect.append(usersDataAsSelectItems);
                 });// todo receive users with specific role admin
-                var $publisherSelectContainer = lifeCycleInnerStructureBEM.buildBlock("<div>", [{"select": pageInfoElements.lifeCycle.$publisherSelect}]),
 
-                    // languages row
+                var $publisherSelectContainer = lifeCycleInnerStructureBEM.buildBlock("<div>", [
+                    {"select": pageInfoElements.lifeCycle.$publisherSelect}
+                ]);
 
-                    $languagesTitle = lifeCycleInnerStructureBEM.buildElement("title", "<div>", {
-                        text: "If requested language is missing:"
-                    });
-                pageInfoElements.lifeCycle.$showDefaultLang = componentsBuilder.radios.imcmsRadio("<div>", {
-                        text: "Show in default language if enabled",
-                        name: "langSetting",
-                        value: "SHOW_DEFAULT",
-                        checked: "checked"
-                    });
-                pageInfoElements.lifeCycle.$doNotShow = componentsBuilder.radios.imcmsRadio("<div>", {
-                        text: "Don't show at all",
-                        name: "langSetting",
-                        value: "DO_NOT_SHOW"
-                    });
+                // languages row
+
+                var $languagesTitle = lifeCycleInnerStructureBEM.buildElement("title", "<div>", {
+                    text: "If requested language is missing:"
+                });
+
+                pageInfoElements.lifeCycle.$showDefaultLang = components.radios.imcmsRadio("<div>", {
+                    text: "Show in default language if enabled",
+                    name: "langSetting",
+                    value: "SHOW_DEFAULT",
+                    checked: "checked"
+                });
+                pageInfoElements.lifeCycle.$doNotShow = components.radios.imcmsRadio("<div>", {
+                    text: "Don't show at all",
+                    name: "langSetting",
+                    value: "DO_NOT_SHOW"
+                });
+
                 var $languagesContainer = lifeCycleInnerStructureBEM.buildBlock("<div>", [
-                        {"title": $languagesTitle},
-                        {"item": pageInfoElements.lifeCycle.$showDefaultLang},
-                        {"item": pageInfoElements.lifeCycle.$doNotShow}
-                    ]),
+                    {"title": $languagesTitle},
+                    {"item": pageInfoElements.lifeCycle.$showDefaultLang},
+                    {"item": pageInfoElements.lifeCycle.$doNotShow}
+                ]);
 
-                    // current version row
+                // current version row
 
-                    $currentVersionRowTitle = lifeCycleInnerStructureBEM.buildElement("title", "<div>", {
-                        text: "Current version:"
-                    });
-                pageInfoElements.lifeCycle.$currentVersionNumber = componentsBuilder.texts.textBox("<div>", {
-                        readonly: "readonly",
-                        value: "0"
-                    });
+                var $currentVersionRowTitle = lifeCycleInnerStructureBEM.buildElement("title", "<div>", {
+                    text: "Current version:"
+                });
+                pageInfoElements.lifeCycle.$currentVersionNumber = components.texts.textBox("<div>", {
+                    readonly: "readonly",
+                    value: "0"
+                });
 
-                var $docVersionSaveDateTime = componentsBuilder.dateTime.dateTimeReadOnly(),
+                var $docVersionSaveDateTime = components.dateTime.dateTimeReadOnly(),
                     $docVersionContainer = lifeCycleInnerStructureBEM.buildBlock("<div>", [
                         {"title": $currentVersionRowTitle},
                         {
@@ -439,15 +465,16 @@ Imcms.define("imcms-page-info-builder",
                     // doc versions info row
 
                     // todo implement appearance logic for this text
-                    $offlineVersionInfo = componentsBuilder.texts.infoText("<div>", "This offline version has changes."),
-                    $savingVersionInfo = componentsBuilder.texts.infoText("<div>",
+                    $offlineVersionInfo = components.texts.infoText("<div>", "This offline version has changes."),
+                    $savingVersionInfo = components.texts.infoText("<div>",
                         "Please press \"Save and publish this version\" to publish as: version 0000.", {
                             id: "save-as-new-version-message"
                         }),
                     $docVersionsInfoContainer = lifeCycleInnerStructureBEM.buildBlock("<div>", [
                         {"item": $offlineVersionInfo},
                         {"item": $savingVersionInfo}
-                    ]);
+                    ])
+                ;
 
                 pageInfoElements.lifeCycle.docVersionSaveDateTime = {};
                 pageInfoElements.lifeCycle.docVersionSaveDateTime.date = new DatePicker($docVersionSaveDateTime);
@@ -471,19 +498,20 @@ Imcms.define("imcms-page-info-builder",
             buildTab: function (index) {
                 pageInfoElements.keywords = {};
 
-                pageInfoElements.keywords.$keywordsBox = componentsBuilder.keywords.keywordsBox("<div>", {
+                pageInfoElements.keywords.$keywordsBox = components.keywords.keywordsBox("<div>", {
                     "input-id": "keyword",
                     title: "Keywords",
                     placeholder: "keyword",
                     "button-text": "ADD+"
                 });
-                pageInfoElements.keywords.$searchDisableCheckbox = componentsBuilder.checkboxes.imcmsCheckbox("<div>", {
+                pageInfoElements.keywords.$searchDisableCheckbox = components.checkboxes.imcmsCheckbox("<div>", {
                     id: "isSearchDisabled",
                     name: "isSearchDisabled",
                     text: "Disable search"
                 });
-                var $checkboxField = componentsBuilder.checkboxes.checkboxContainerField("<div>",
-                    [pageInfoElements.keywords.$searchDisableCheckbox]);
+                var $checkboxField = components.checkboxes.checkboxContainerField("<div>", [
+                    pageInfoElements.keywords.$searchDisableCheckbox
+                ]);
 
                 return buildFormBlock([pageInfoElements.keywords.$keywordsBox, $checkboxField], index);
             }
@@ -500,18 +528,17 @@ Imcms.define("imcms-page-info-builder",
                         var $categoryType,
                             categoryTypeQualifier = "category-type-" + categoryType.id;
 
-                        pageInfoElements.categories.descriptor= [];
+                        pageInfoElements.categories.descriptor = [];
 
                         if (categoryType.multi_select) {
                             pageInfoElements.categories[categoryTypeQualifier] = {};
                             categoryType.categories.forEach(function (category) {
-                                var $categoryCheckbox = componentsBuilder.checkboxes.imcmsCheckbox("<div>", {
-                                    name: categoryTypeQualifier,
-                                    value: category.id,
-                                    text: category.name
-                                });
-
-                                pageInfoElements.categories[categoryTypeQualifier][category.id] = $categoryCheckbox;
+                                pageInfoElements.categories[categoryTypeQualifier][category.id] = components.checkboxes
+                                    .imcmsCheckbox("<div>", {
+                                        name: categoryTypeQualifier,
+                                        value: category.id,
+                                        text: category.name
+                                    });
 
                                 pageInfoElements.categories.descriptor.push({
                                     category_ids: [category.id],
@@ -521,7 +548,8 @@ Imcms.define("imcms-page-info-builder",
                                 });
                             });
 
-                            $categoryType = componentsBuilder.checkboxes.checkboxContainerField("<div>", Object.values(pageInfoElements.categories[categoryTypeQualifier]),
+                            $categoryType = components.checkboxes.checkboxContainerField("<div>",
+                                Object.values(pageInfoElements.categories[categoryTypeQualifier]),
                                 {title: categoryType.name}
                             );
                         } else {
@@ -532,7 +560,7 @@ Imcms.define("imcms-page-info-builder",
                                 }
                             });
 
-                            $categoryType = componentsBuilder.selects.selectContainer("<div>", {
+                            $categoryType = components.selects.selectContainer("<div>", {
                                 id: categoryTypeQualifier,
                                 text: categoryType.name
                             }, mappedCategoriesForSelectContainer);
@@ -540,7 +568,9 @@ Imcms.define("imcms-page-info-builder",
                             pageInfoElements.categories[categoryTypeQualifier] = $categoryType;
 
                             pageInfoElements.categories.descriptor.push({
-                                category_ids: categoryType.categories.map(function (category) {return category.id;}),
+                                category_ids: categoryType.categories.map(function (category) {
+                                    return category.id;
+                                }),
                                 access_key_category_type_qualifier: categoryTypeQualifier,
                                 member_of_multi_select: false
                             });
@@ -716,9 +746,9 @@ Imcms.define("imcms-page-info-builder",
                     })
                 ;
 
-                var $addRoleSelect = componentsBuilder.selects.imcmsSelect("<div>", {
+                var $addRoleSelect = components.selects.imcmsSelect("<div>", {
                     id: "select3"
-                }, []);
+                });
 
                 rolesRestApi.read(null, function (roles) {
                     var rolesDataMapped = roles.map(function (role) {
@@ -727,10 +757,10 @@ Imcms.define("imcms-page-info-builder",
                             "data-value": role.id
                         }
                     });
-                    $addRoleSelect.append(componentsBuilder.selects.mapOptionsToSelectItems(rolesDataMapped));
+                    $addRoleSelect.append(components.selects.mapOptionsToSelectItems(rolesDataMapped));
                 });
 
-                var $addRoleButton = componentsBuilder.buttons.neutralButton({
+                var $addRoleButton = components.buttons.neutralButton({
                         text: "Add role",
                         click: function () {
                             console.log("%c Not implemented feature: add role.", "color: red;")
@@ -753,7 +783,7 @@ Imcms.define("imcms-page-info-builder",
 
                 function buildTestCheckboxes(attributesArr) {
                     return attributesArr.map(function (attributes) {
-                        return componentsBuilder.checkboxes.imcmsCheckbox("<div>", attributes);
+                        return components.checkboxes.imcmsCheckbox("<div>", attributes);
                     });
                 }
 
@@ -780,8 +810,10 @@ Imcms.define("imcms-page-info-builder",
                     name: "editDocInfo1",
                     text: "Edit doc info"
                 }]);
-                var $restrictedRole1Rights = componentsBuilder.checkboxes
-                    .checkboxContainer("<div>", pageInfoElements.permissions.$restrictedCheckboxes1, {title: "Restricted 1"});
+                var $restrictedRole1Rights = components.checkboxes.checkboxContainer("<div>",
+                    pageInfoElements.permissions.$restrictedCheckboxes1,
+                    {title: "Restricted 1"}
+                );
 
                 pageInfoElements.permissions.$restrictedCheckboxes2 = buildTestCheckboxes([{
                     name: "editText2",
@@ -799,8 +831,10 @@ Imcms.define("imcms-page-info-builder",
                     name: "editDocInfo2",
                     text: "Edit doc info"
                 }]);
-                var $restrictedRole2Rights = componentsBuilder.checkboxes
-                    .checkboxContainer("<div>", pageInfoElements.permissions.$restrictedCheckboxes2, {title: "Restricted 2"});
+                var $restrictedRole2Rights = components.checkboxes.checkboxContainer("<div>",
+                    pageInfoElements.permissions.$restrictedCheckboxes2,
+                    {title: "Restricted 2"}
+                );
 
                 var $permissionsWrapper = fieldItemBEM.buildBlock("<div>", [{
                     "item": $restrictedRole1Rights,
@@ -817,15 +851,15 @@ Imcms.define("imcms-page-info-builder",
             buildTab: function (index) {
                 pageInfoElements.templates = {};
 
-                pageInfoElements.templates.$templateSelect = componentsBuilder.selects.selectContainer("<div>", {
+                pageInfoElements.templates.$templateSelect = components.selects.selectContainer("<div>", {
                     name: "template",
                     text: "Template"
-                }, []);
+                });
 
-                pageInfoElements.templates.$defaultChildTemplateSelect = componentsBuilder.selects.selectContainer("<div>", {
+                pageInfoElements.templates.$defaultChildTemplateSelect = components.selects.selectContainer("<div>", {
                     name: "childTemplate",
                     text: "Default child template"
-                }, []);
+                });
 
                 templatesRestApi.read(null, function (templates) {
                     var templatesDataMapped = templates.map(function (template) {
@@ -835,12 +869,17 @@ Imcms.define("imcms-page-info-builder",
                         }
                     });
 
-                    var $selectItems = componentsBuilder.selects.mapOptionsToSelectItems(templatesDataMapped);
+                    var $selectItems = components.selects.mapOptionsToSelectItems(templatesDataMapped);
                     pageInfoElements.templates.$templateSelect.find(".imcms-select").append($selectItems);
-                    pageInfoElements.templates.$defaultChildTemplateSelect.find(".imcms-select").append($selectItems.clone(true, true));
+                    pageInfoElements.templates.$defaultChildTemplateSelect.find(".imcms-select")
+                        .append($selectItems.clone(true, true));
                 });
 
-                return buildFormBlock([pageInfoElements.templates.$templateSelect, pageInfoElements.templates.$defaultChildTemplateSelect], index);
+                var blockElements = [
+                    pageInfoElements.templates.$templateSelect,
+                    pageInfoElements.templates.$defaultChildTemplateSelect
+                ];
+                return buildFormBlock(blockElements, index);
             }
         }, {
             name: "status",
@@ -863,8 +902,8 @@ Imcms.define("imcms-page-info-builder",
                 // created by
 
                 var $createdTimeTitle = statusItemBEM.buildElement("label", "<div>", {text: "Created"});
-                pageInfoElements.status.$createdDate = componentsBuilder.dateTime.dateBoxReadOnly({id: "createdDate"});
-                pageInfoElements.status.$createdTime = componentsBuilder.dateTime.timeBoxReadOnly({id: "createdTime"});
+                pageInfoElements.status.$createdDate = components.dateTime.dateBoxReadOnly({id: "createdDate"});
+                pageInfoElements.status.$createdTime = components.dateTime.timeBoxReadOnly({id: "createdTime"});
 
                 var $createdDateTimeField = statusItemBEM.buildBlock("<div>", [{
                     "label": $createdTimeTitle
@@ -877,7 +916,7 @@ Imcms.define("imcms-page-info-builder",
                 }]);
 
                 var $createdByTitle = statusItemBEM.buildElement("label", "<div>", {text: "By"});
-                pageInfoElements.status.$createdBy = componentsBuilder.texts.textBox("<div>", {
+                pageInfoElements.status.$createdBy = components.texts.textBox("<div>", {
                     id: "createdBy",
                     readonly: "readonly"
                 });
@@ -903,8 +942,8 @@ Imcms.define("imcms-page-info-builder",
                 // modified by
 
                 var $modifiedTimeTitle = statusItemBEM.buildElement("label", "<div>", {text: "Modified"});
-                pageInfoElements.status.$modifiedDate = componentsBuilder.dateTime.dateBoxReadOnly({id: "modifiedDate"});
-                pageInfoElements.status.$modifiedTime = componentsBuilder.dateTime.timeBoxReadOnly({id: "modifiedTime"});
+                pageInfoElements.status.$modifiedDate = components.dateTime.dateBoxReadOnly({id: "modifiedDate"});
+                pageInfoElements.status.$modifiedTime = components.dateTime.timeBoxReadOnly({id: "modifiedTime"});
 
                 var $modifiedDateTimeField = statusItemBEM.buildBlock("<div>", [{
                     "label": $modifiedTimeTitle
@@ -917,7 +956,7 @@ Imcms.define("imcms-page-info-builder",
                 }]);
 
                 var $modifiedByTitle = statusItemBEM.buildElement("label", "<div>", {text: "By"});
-                pageInfoElements.status.$modifiedBy = componentsBuilder.texts.textBox("<div>", {
+                pageInfoElements.status.$modifiedBy = components.texts.textBox("<div>", {
                     id: "modifiedBy",
                     readonly: "readonly"
                 });
@@ -943,8 +982,8 @@ Imcms.define("imcms-page-info-builder",
                 // archived
 
                 var $archivedTimeTitle = statusItemBEM.buildElement("label", "<div>", {text: "Archived"});
-                pageInfoElements.status.$archivedDate = componentsBuilder.dateTime.dateBoxReadOnly({id: "archivedDate"});
-                pageInfoElements.status.$archivedTime = componentsBuilder.dateTime.timeBoxReadOnly({id: "archivedTime"});
+                pageInfoElements.status.$archivedDate = components.dateTime.dateBoxReadOnly({id: "archivedDate"});
+                pageInfoElements.status.$archivedTime = components.dateTime.timeBoxReadOnly({id: "archivedTime"});
 
                 var $archivedDateTimeField = statusItemBEM.buildBlock("<div>", [{
                     "label": $archivedTimeTitle
@@ -957,7 +996,7 @@ Imcms.define("imcms-page-info-builder",
                 }]);
 
                 var $archivedByTitle = statusItemBEM.buildElement("label", "<div>", {text: "By"});
-                pageInfoElements.status.$archivedBy = componentsBuilder.texts.textBox("<div>", {
+                pageInfoElements.status.$archivedBy = components.texts.textBox("<div>", {
                     id: "archivedBy",
                     readonly: "readonly"
                 });
@@ -983,8 +1022,8 @@ Imcms.define("imcms-page-info-builder",
                 // published
 
                 var $publishedTimeTitle = statusItemBEM.buildElement("label", "<div>", {text: "Published"});
-                pageInfoElements.status.$publishedDate = componentsBuilder.dateTime.dateBoxReadOnly({id: "publishedDate"});
-                pageInfoElements.status.$publishedTime = componentsBuilder.dateTime.timeBoxReadOnly({id: "publishedTime"});
+                pageInfoElements.status.$publishedDate = components.dateTime.dateBoxReadOnly({id: "publishedDate"});
+                pageInfoElements.status.$publishedTime = components.dateTime.timeBoxReadOnly({id: "publishedTime"});
 
                 var $publishedDateTimeField = statusItemBEM.buildBlock("<div>", [{
                     "label": $publishedTimeTitle
@@ -997,7 +1036,7 @@ Imcms.define("imcms-page-info-builder",
                 }]);
 
                 var $publishedByTitle = statusItemBEM.buildElement("label", "<div>", {text: "By"});
-                pageInfoElements.status.$publishedBy = componentsBuilder.texts.textBox("<div>", {
+                pageInfoElements.status.$publishedBy = components.texts.textBox("<div>", {
                     id: "publishedBy",
                     readonly: "readonly"
                 });
@@ -1023,8 +1062,8 @@ Imcms.define("imcms-page-info-builder",
                 // publish end
 
                 var $publishEndTimeTitle = statusItemBEM.buildElement("label", "<div>", {text: "Publish end"});
-                pageInfoElements.status.$publishEndDate = componentsBuilder.dateTime.dateBoxReadOnly({id: "publishEndDate"});
-                pageInfoElements.status.$publishEndTime = componentsBuilder.dateTime.timeBoxReadOnly({id: "publishEndTime"});
+                pageInfoElements.status.$publishEndDate = components.dateTime.dateBoxReadOnly({id: "publishEndDate"});
+                pageInfoElements.status.$publishEndTime = components.dateTime.timeBoxReadOnly({id: "publishEndTime"});
 
                 var $publishEndDateTimeField = statusItemBEM.buildBlock("<div>", [{
                     "label": $publishEndTimeTitle
@@ -1037,7 +1076,7 @@ Imcms.define("imcms-page-info-builder",
                 }]);
 
                 var $publishEndByTitle = statusItemBEM.buildElement("label", "<div>", {text: "By"});
-                pageInfoElements.status.$publishEndBy = componentsBuilder.texts.textBox("<div>", {
+                pageInfoElements.status.$publishEndBy = components.texts.textBox("<div>", {
                     id: "publishEndBy",
                     readonly: "readonly"
                 });
@@ -1075,7 +1114,7 @@ Imcms.define("imcms-page-info-builder",
         function buildPageInfoTabs() {
             function getOnTabClick(index) {
                 return function () {
-                    $("[data-menu=pageInfo]").find(".imcms-title--active").removeClass("imcms-title--active");
+                    $pageInfo.find(".imcms-title--active").removeClass("imcms-title--active");
                     $(this).addClass("imcms-title--active");
                     $(".imcms-form").css("display", "none");
                     showPanel(index);
@@ -1127,7 +1166,7 @@ Imcms.define("imcms-page-info-builder",
                 clearPageInfoData();
             }
 
-            var $saveBtn = componentsBuilder.buttons.positiveButton({
+            var $saveBtn = components.buttons.positiveButton({
                 text: "ok",
                 click: function () {
                     // todo: save things
@@ -1135,7 +1174,7 @@ Imcms.define("imcms-page-info-builder",
                 }
             });
 
-            var $cancelBtn = componentsBuilder.buttons.negativeButton({
+            var $cancelBtn = components.buttons.negativeButton({
                 text: "cancel",
                 click: function () {
                     // todo: cancel things
@@ -1143,7 +1182,7 @@ Imcms.define("imcms-page-info-builder",
                 }
             });
 
-            var $saveAndPublishBtn = componentsBuilder.buttons.saveButton({
+            var $saveAndPublishBtn = components.buttons.saveButton({
                 text: "save and publish this version",
                 click: function () {
                     // todo: save and publish
@@ -1231,7 +1270,7 @@ Imcms.define("imcms-page-info-builder",
 
                 lifeCycleTab.$publisherSelect.selectValue(document.publisher);
 
-                componentsBuilder.radios
+                components.radios
                     .group(lifeCycleTab.$showDefaultLang, lifeCycleTab.$doNotShow)
                     .checkAmongGroup(document.if_requested_lang_missing_doc_opts);
 
@@ -1254,10 +1293,6 @@ Imcms.define("imcms-page-info-builder",
                 // access
 
                 //todo based on callback after build
-
-
-
-
             });
         }
 
