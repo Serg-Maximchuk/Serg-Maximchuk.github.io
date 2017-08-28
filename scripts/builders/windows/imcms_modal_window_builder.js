@@ -84,7 +84,7 @@ Imcms.define("imcms-modal-window-builder",
         }
 
         return {
-            showModalWindow: function (question, callback) {
+            buildModalWindow: function (question, callback) {
                 $modal = createModalWindow(question, callback);
                 $shadow = createLayout();
 

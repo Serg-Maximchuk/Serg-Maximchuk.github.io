@@ -129,7 +129,7 @@ Imcms.define("imcms-menu-editor-builder",
                     currentMenuItemName = currentMenuItem.find(".imcms-menu-item__info").text();
 
                 var question = "Do you want to remove menu item \"" + currentMenuItemName + "\"?";
-                imcmsModalWindow.showModalWindow(question, function (answer) {
+                imcmsModalWindow.buildModalWindow(question, function (answer) {
                     if (answer) {
                         var submenuItem = currentMenuItem.parent().find(".imcms-menu-items"),
                             parentMenuItem = currentMenuItem.closest(".imcms-menu-items"),
