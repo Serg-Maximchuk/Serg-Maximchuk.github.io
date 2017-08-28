@@ -147,22 +147,25 @@ Imcms.define("imcms-document-editor-builder",
                 elements: {"control": "imcms-control"}
             });
 
-            var $controlRemove = controlsBuilder.remove(function () {
-                removeDocument.call(this, documentId);
-            });
-
-            var $controlRename = controlsBuilder.edit(pageInfoBuilder.build);
-
-            var controls = [
-                {"control": $controlRemove},
-                {"control": $controlRename}
-            ];
+            var controls = [];
 
             if (opts && opts.moveEnable) {
                 var $controlMove = controlsBuilder.move(function () {
                     console.log("%c Not implemented feature: move doc", "color: red;");
                 });
-                controls.unshift({"control": $controlMove});
+                controls.push({"control": $controlMove});
+            }
+
+            if (opts && opts.removeEnable) {
+                var $controlRemove = controlsBuilder.remove(function () {
+                    removeDocument.call(this, documentId);
+                });
+                controls.push({"control": $controlRemove});
+            }
+
+            if (opts && opts.editEnable) {
+                var $controlEdit = controlsBuilder.edit(pageInfoBuilder.build);
+                controls.push({"control": $controlEdit});
             }
 
             return docControlsBEM.buildBlock("<div>", controls);
@@ -288,7 +291,10 @@ Imcms.define("imcms-document-editor-builder",
                 $body = buildBody(),
                 $footer = buildFooter();
 
-            setTimeout(loadDocumentEditorContent);
+            loadDocumentEditorContent.applyAsync([{
+                editEnable: true,
+                removeEnable: true
+            }]);
 
             return documentEditorBEM.buildBlock("<div>", [
                 {"head": $head},
