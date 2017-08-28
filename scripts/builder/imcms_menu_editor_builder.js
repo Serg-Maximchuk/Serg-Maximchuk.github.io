@@ -126,7 +126,7 @@ Imcms.define("imcms-menu-editor-builder",
         function buildMenuEditorContent(menuElementsTree) {
             function removeMenuItem() {
                 var currentMenuItem = $(this).closest(".imcms-menu-item"),
-                    currentMenuItemName = currentMenuItem.find(".imcms-menu-item__info-title").text();
+                    currentMenuItemName = currentMenuItem.find(".imcms-menu-item__info").text();
 
                 var question = "Do you want to remove menu item \"" + currentMenuItemName + "\"?";
                 imcmsModalWindow.showModalWindow(question, function (answer) {
