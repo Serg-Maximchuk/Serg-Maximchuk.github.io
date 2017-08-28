@@ -4,7 +4,7 @@
  */
 Imcms.define("imcms-menu-editor-builder",
     [
-        "imcms-bem-builder", "imcms-components-builder", "imcms-document-editor-builder", "imcms-modal-window",
+        "imcms-bem-builder", "imcms-components-builder", "imcms-document-editor-builder", "imcms-modal-window-builder",
         "imcms-window-components-builder", "jquery"
     ],
     function (BEM, components, documentEditorBuilder, imcmsModalWindow, windowComponents, $) {
@@ -126,10 +126,10 @@ Imcms.define("imcms-menu-editor-builder",
         function buildMenuEditorContent(menuElementsTree) {
             function removeMenuItem() {
                 var currentMenuItem = $(this).closest(".imcms-menu-item"),
-                    currentMenuItemName = currentMenuItem.find(".imcms-menu-item__info-title").text();
+                    currentMenuItemName = currentMenuItem.find(".imcms-menu-item__info").text();
 
                 var question = "Do you want to remove menu item \"" + currentMenuItemName + "\"?";
-                imcmsModalWindow.showModalWindow(question, function (answer) {
+                imcmsModalWindow.buildModalWindow(question, function (answer) {
                     if (answer) {
                         var submenuItem = currentMenuItem.parent().find(".imcms-menu-items"),
                             parentMenuItem = currentMenuItem.closest(".imcms-menu-items"),

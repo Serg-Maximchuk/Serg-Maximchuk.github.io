@@ -5,13 +5,52 @@
 Imcms.define("imcms-image-editor-builder",
     ["imcms-bem-builder", "imcms-window-components-builder", "imcms-components-builder", "jquery"],
     function (BEM, windowComponents, components, $) {
-        var $editor, $imageContainer;
+        var $editor, $imageContainer, $shadow, $cropArea, $editableImageArea, $rightSidePanel, $bottomPanel;
 
         function closeEditor() {
             $editor.css("display", "none");
         }
 
         function buildBodyHead() {
+            function showHidePanel(panelOpts) {
+                var panelAnimationOpts = {};
+
+                if (panelOpts.$btn.data("state")) {
+                    panelAnimationOpts[panelOpts.panelSide] = "-" + panelOpts.newPanelSideValue + "px";
+                    panelOpts.$panel.animate(panelAnimationOpts, 300);
+                    panelOpts.$btn.data("state", false);
+                    panelOpts.$btn.text("show bottom panel");
+
+                } else {
+                    panelAnimationOpts[panelOpts.panelSide] = 0;
+                    panelOpts.$panel.animate(panelAnimationOpts, 300);
+                    panelOpts.$btn.data("state", true);
+                    panelOpts.$btn.text("hide bottom panel");
+                }
+            }
+
+            function showHideRightPanel() {
+                showHidePanel({
+                    $btn: $(this),
+                    newPanelSideValue: $rightSidePanel.width(),
+                    $panel: $rightSidePanel,
+                    panelSide: "right",
+                    textHide: "hide right panel",
+                    textShow: "show right panel"
+                });
+            }
+
+            function showHideBottomPanel() {
+                showHidePanel({
+                    $btn: $(this),
+                    newPanelSideValue: $bottomPanel.height(),
+                    $panel: $bottomPanel,
+                    panelSide: "bottom",
+                    textHide: "hide bottom panel",
+                    textShow: "show bottom panel"
+                });
+            }
+
             var bodyHeadBEM = new BEM({
                 block: "imcms-image-characteristics",
                 elements: {
@@ -24,14 +63,16 @@ Imcms.define("imcms-image-editor-builder",
 
             var $showHideBottomPanelBtn = components.buttons.neutralButton({
                 "class": "imcms-image-characteristic",
-                text: "Show bottom panel"
+                text: "Show bottom panel",
+                click: showHideBottomPanel
             });
 
             var $imageTitle = bodyHeadBEM.buildElement("img-title", "<div>", {text: "img1.jpg"}); // todo: print correct image name
 
             var $showHideRightPanelBtn = components.buttons.neutralButton({
                 "class": "imcms-image-characteristic",
-                text: "Show right panel"
+                text: "Show right panel",
+                click: showHideRightPanel
             });
 
             var $imgUrl = bodyHeadBEM.buildElement("img-url", "<div>", {
@@ -124,11 +165,11 @@ Imcms.define("imcms-image-editor-builder",
                     width: "1436px",
                     height: "773px"
                 });
-                var $shadow = editableImgAreaBEM.buildElement("layout", "<div>").css({
+                $shadow = editableImgAreaBEM.buildElement("layout", "<div>").css({
                     width: "1436px",
                     height: "773px"
                 });
-                var $cropArea = buildCropArea().css({
+                $cropArea = buildCropArea().css({
                     width: "649px",
                     height: "496px"
                 });
@@ -181,24 +222,60 @@ Imcms.define("imcms-image-editor-builder",
                 ]);
             }
 
+            function resizeImage(newWidth, newHeight, backgroundSizeVal) {
+                $imageContainer.animate({
+                    "width": newWidth + "px",
+                    "height": newHeight + "px"
+                }, 200).css({"background-size": backgroundSizeVal});
+
+                $shadow.animate({
+                    "width": newWidth + "px",
+                    "height": newHeight + "px"
+                }, 200);
+
+                $cropArea.css({"background-size": backgroundSizeVal});
+            }
+
+            function zoom(zoomCoefficient) {
+                var newHeight = ~~($imageContainer.height() * zoomCoefficient),
+                    newWidth = ~~($imageContainer.width() * zoomCoefficient),
+                    backgroundSizeVal = "" + newWidth + "px " + newHeight + "px"
+                ;
+                resizeImage(newWidth, newHeight, backgroundSizeVal);
+            }
+
             function zoomPlus() {
-                // todo: implement!
+                zoom(1.1);
             }
 
             function zoomMinus() {
-                // todo: implement!
+                zoom(0.9);
             }
 
             function zoomContain() {
-                // todo: implement!
+                // fixme: save proportions! now image becomes just as editable area
+                // only one side should be as area's side and one as needed to save proportions
+                var newHeight = $editableImageArea.height(),
+                    newWidth = $editableImageArea.width(),
+                    backgroundSizeVal = "" + newWidth + "px " + "auto"
+                ;
+                resizeImage(newWidth, newHeight, backgroundSizeVal);
+            }
+
+            var angle = 0;
+
+            function rotate(angleDelta) {
+                angle += angleDelta;
+                $imageContainer.css({"transform": "rotate(" + angle + "deg)"});
+                $cropArea.css({"transform": "rotate(" + angle + "deg)"});
             }
 
             function rotateLeft() {
-                // todo: implement!
+                rotate(-90);
             }
 
             function rotateRight() {
-                // todo: implement!
+                rotate(90);
             }
 
             function buildScaleAndRotateControls() {
@@ -262,8 +339,8 @@ Imcms.define("imcms-image-editor-builder",
                 ]);
             }
 
-            var $editableImageArea = buildEditableImageArea();
-            var $bottomPanel = buildBottomPanel();
+            $editableImageArea = buildEditableImageArea();
+            $bottomPanel = buildBottomPanel();
 
             return $("<div>").append($editableImageArea, $bottomPanel);
         }
@@ -573,13 +650,13 @@ Imcms.define("imcms-image-editor-builder",
             var $head = windowComponents.buildHead("Image Editor", closeEditor);
             var $bodyHead = buildBodyHead();
             var $leftSide = buildLeftSide();
-            var $rightSide = buildRightSide(imageEditorBEM);
+            $rightSidePanel = buildRightSide(imageEditorBEM);
 
             return imageEditorBEM.buildBlock("<div>", [
                 {"head": $head},
                 {"image-characteristics": $bodyHead},
                 {"left-side": $leftSide},
-                {"right-side": $rightSide}
+                {"right-side": $rightSidePanel}
             ]).addClass("imcms-editor-window");
         }
 

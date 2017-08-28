@@ -20,46 +20,44 @@ Imcms = {
                 path: "./libs/jquery.mask.min.js",
                 addon: "jquery-mask"
             },
-            // components
-            "imcms-date-picker": "imcms_date_picker.js",
-            "imcms-calendar": "imcms_calendar.js",
-            "imcms-time-picker": "imcms_time_picker.js",
             "imcms-tests": "imcms_tests.js",
-            "imcms-modal-window": "modal_window/imcms_modal_window.js",
-            "imcms-uuid-generator": "imcms_uuid_generator.js",
-            // editors (old)
-            "imcms-image-editor-crop": "image_editor/imcms_image_editor_crop.js",
-            "imcms-image-editor-bottom-panel": "image_editor/imcms_image_editor_bottom_panel.js",
-            "imcms-image-editor": "image_editor/imcms_image_editor.js",
-            // builders
             // components
-            "imcms-components-builder": "builder/imcms_components_builder.js",
-            "imcms-buttons-builder": "builder/imcms_buttons_builder.js",
-            "imcms-flags-builder": "builder/imcms_flags_builder.js",
-            "imcms-bem-builder": "builder/imcms_bem_builder.js",
-            "imcms-checkboxes-builder": "builder/imcms_checkboxes_builder.js",
-            "imcms-radio-buttons-builder": "builder/imcms_radio_buttons_builder.js",
-            "imcms-selects-builder": "builder/imcms_selects_builder.js",
-            "imcms-texts-builder": "builder/imcms_texts_builder.js",
-            "imcms-switch-builder": "builder/imcms_switch_builder.js",
-            "imcms-choose-image-builder": "builder/imcms_choose_image_builder.js",
-            "imcms-keywords-builder": "builder/imcms_keywords_builder.js",
-            "imcms-primitives-builder": "builder/imcms_primitives_builder.js",
-            "imcms-date-time-builder": "builder/imcms_date_time_builder.js",
-            "imcms-window-components-builder": "builder/imcms_window_components_builder.js",
-            "imcms-image-content-builder": "builder/imcms_image_content_builder.js",
-            "imcms-controls-builder": "builder/imcms_controls_builder.js",
-            // admin panel
-            "imcms-admin-panel-builder": "builder/imcms_admin_panel_builder.js",
-            // page info
-            "imcms-page-info-builder": "builder/imcms_page_info_builder.js",
+            "imcms-calendar": "components/imcms_calendar.js",
+            "imcms-date-picker": "components/imcms_date_picker.js",
+            "imcms-time-picker": "components/imcms_time_picker.js",
+            "imcms-uuid-generator": "components/imcms_uuid_generator.js",
+            // <builders>
+            // basic components builders
+            "imcms-buttons-builder": "builders/components/imcms_buttons_builder.js",
+            "imcms-flags-builder": "builders/components/imcms_flags_builder.js",
+            "imcms-checkboxes-builder": "builders/components/imcms_checkboxes_builder.js",
+            "imcms-radio-buttons-builder": "builders/components/imcms_radio_buttons_builder.js",
+            "imcms-selects-builder": "builders/components/imcms_selects_builder.js",
+            "imcms-texts-builder": "builders/components/imcms_texts_builder.js",
+            "imcms-switch-builder": "builders/components/imcms_switch_builder.js",
+            "imcms-choose-image-builder": "builders/components/imcms_choose_image_builder.js",
+            "imcms-keywords-builder": "builders/components/imcms_keywords_builder.js",
+            "imcms-date-time-builder": "builders/components/imcms_date_time_builder.js",
+            "imcms-controls-builder": "builders/components/imcms_controls_builder.js",
+            // other components
+            "imcms-primitives-builder": "builders/imcms_primitives_builder.js",
+            "imcms-components-builder": "builders/imcms_components_builder.js",
+            "imcms-window-components-builder": "builders/imcms_window_components_builder.js",
+            // <windows>
+            "imcms-modal-window-builder": "builders/windows/imcms_modal_window_builder.js",
+            "imcms-page-info-builder": "builders/windows/imcms_page_info_builder.js",
+            "imcms-content-manager-builder": "builders/windows/imcms_content_manager_builder.js",
             // editors
-            "imcms-editors-builder": "builder/imcms_editors_builder.js",
-            "imcms-menu-editor-builder": "builder/imcms_menu_editor_builder.js",
-            "imcms-document-editor-builder": "builder/imcms_document_editor_builder.js",
-            "imcms-image-editor-builder": "builder/imcms_image_editor_builder.js",
-            // content manager
-            "imcms-content-manager-builder": "builder/imcms_content_manager_builder.js",
+            "imcms-menu-editor-builder": "builders/windows/editors/imcms_menu_editor_builder.js",
+            "imcms-document-editor-builder": "builders/windows/editors/imcms_document_editor_builder.js",
+            "imcms-image-editor-builder": "builders/windows/editors/imcms_image_editor_builder.js",
+            // </windows>
+            // other builders
+            "imcms-bem-builder": "builders/imcms_bem_builder.js",
+            "imcms-editors-builder": "builders/imcms_editors_builder.js",
+            "imcms-image-content-builder": "builders/imcms_image_content_builder.js",
+            "imcms-admin-panel-builder": "builders/imcms_admin_panel_builder.js",
+            // </builders>
             // rest api
             "imcms-rest-api": "rest/imcms_rest_api.js",
             "imcms-files-rest-api": "rest/imcms_files_rest_api.js",
@@ -136,16 +134,14 @@ Function.prototype.applyAsync = function (args, context) {
         var loader;
 
         switch (typeof dependency) {
-            case "string": {
+            case "string":
                 if (dependency.indexOf(".") !== 0) {
                     dependency = Imcms.config.basePath + "/" + dependency;
                 }
                 loader = loadModuleAsync;
                 break;
-            }
-            case "object": {
+            case "object":
                 loader = loadScriptAsync;
-            }
         }
 
         loader(dependency);
@@ -332,18 +328,15 @@ Function.prototype.applyAsync = function (args, context) {
         var requires;
 
         switch (id.constructor) {
-            case String : {
+            case String :
                 requires = [id];
                 break;
-            }
-            case Array : {
+            case Array :
                 requires = id;
                 break;
-            }
-            default : {
+            default :
                 console.error("Wrong type: ");
                 console.error(id);
-            }
         }
 
         Imcms.requiresQueue.push({
@@ -396,7 +389,7 @@ Function.prototype.applyAsync = function (args, context) {
     }
 
     function getMainScriptPath() {
-        var imcmsMainScripts = Array.prototype.slice.apply(document.scripts).filter(function (script) {
+        var imcmsMainScripts = Array.prototype.slice.call(document.scripts).filter(function (script) {
             return script.attributes["data-name"] && script.attributes["data-name"].value === "imcms";
         });
 

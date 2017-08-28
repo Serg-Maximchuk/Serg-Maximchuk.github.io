@@ -111,19 +111,19 @@ Imcms.define("imcms-buttons-builder", ["imcms-bem-builder"], function (bemBuilde
         proportionsButton: function (attributes) {
             return this.proportions("<button>", setAttributesTypeButton(attributes));
         },
-        zoomPlusButton: function (tag, attributes) {
+        zoomPlusButton: function (attributes) {
             return this.zoomPlus("<button>", setAttributesTypeButton(attributes));
         },
-        zoomMinusButton: function (tag, attributes) {
+        zoomMinusButton: function (attributes) {
             return this.zoomMinus("<button>", setAttributesTypeButton(attributes));
         },
-        zoomContainButton: function (tag, attributes) {
+        zoomContainButton: function (attributes) {
             return this.zoomContain("<button>", setAttributesTypeButton(attributes));
         },
-        rotateLeftButton: function (tag, attributes) {
+        rotateLeftButton: function (attributes) {
             return this.rotateLeft("<button>", setAttributesTypeButton(attributes));
         },
-        rotateRightButton: function (tag, attributes) {
+        rotateRightButton: function (attributes) {
             return this.rotateRight("<button>", setAttributesTypeButton(attributes));
         },
         buttonsContainer: function (tag, elements, attributes) {
