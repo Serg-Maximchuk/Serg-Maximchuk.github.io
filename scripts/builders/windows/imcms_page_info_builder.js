@@ -31,11 +31,9 @@ Imcms.define("imcms-page-info-builder",
                 }
             });
 
-            pageInfoElements.$title = pageInfoHeadBEM.buildElement("title", "<div>", {});
+            pageInfoElements.$title = pageInfoHeadBEM.buildElement("title", "<div>");
 
-            return pageInfoHeadBEM.buildBlock("<div>", [
-                {"title": pageInfoElements.$title}
-            ]);
+            return pageInfoHeadBEM.buildBlock("<div>", [{"title": pageInfoElements.$title}]);
         }
 
         function showPanel(index) {
@@ -44,9 +42,7 @@ Imcms.define("imcms-page-info-builder",
 
         var formsBEM = new BEM({
             block: "imcms-form",
-            elements: {
-                "field": "imcms-field"
-            }
+            elements: {"field": "imcms-field"}
         });
 
         function buildFormBlock(elements, index) {
