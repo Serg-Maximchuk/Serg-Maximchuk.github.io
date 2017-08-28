@@ -2,6 +2,40 @@ Imcms.define("imcms-documents-rest-api", ["imcms-rest-api"], function (rest) {
 
     var api = new rest.API("/api/documents");
 
+
+    var currentTime = (function getCurrentTime() {
+        var currentDate = new Date(),
+            hour = currentDate.getHours(),
+            minute = currentDate.getMinutes()
+        ;
+
+        if (hour < 10) {
+            hour = "0" + hour;
+        }
+        if (minute < 10) {
+            minute = "0" + minute;
+        }
+
+        return hour + ":" + minute;
+    })();
+
+    var currentDate = (function getCurrentDate() {
+        var currentDate = new Date(),
+            year = currentDate.getFullYear(),
+            month = currentDate.getMonth() + 1,
+            date = currentDate.getDate()
+        ;
+
+        if (month < 10) {
+            month = "0" + month;
+        }
+        if (date < 10) {
+            date = "0" + date;
+        }
+
+        return year + "-" + month + "-" + date;
+    })();
+
     //mock data
     var docListMock = [{
         id: 1001,
@@ -25,7 +59,20 @@ Imcms.define("imcms-documents-rest-api", ["imcms-rest-api"], function (rest) {
                 title: "Titeltext",
                 menu_text: "Menytext"
             }
-        }
+        },
+        status: 1,
+        published_date: currentDate,
+        published_time: currentTime,
+        archived_date: currentDate,
+        archived_time: currentTime,
+        publication_end_date: currentDate,
+        publication_end_time: currentTime,
+        publisher: 2,
+        if_requested_lang_missing_doc_opts: "DO_NOT_SHOW",
+        currentVersion: 24,
+        currentVersionDate: currentDate,
+        currentVersionTime: currentTime
+
     }, {
         id: 1002,
         title: "Second page",

@@ -10,40 +10,6 @@ Imcms.define("imcms-page-info-builder",
               rolesRestApi, templatesRestApi, documentsRestApi, usersRestApi,
               categoriesTypesRestApi, $) {
 
-        var mockTimeReceivedFromServer = +function getCurrentDate() {
-            var currentDate = new Date(),
-                year = currentDate.getFullYear(),
-                month = currentDate.getMonth() + 1,
-                date = currentDate.getDate()
-            ;
-
-            if (month < 10) {
-                month = "0" + month;
-            }
-            if (date < 10) {
-                date = "0" + date;
-            }
-
-            return year + "-" + month + "-" + date;
-        }();
-
-        var mockDateReceivedFromServer = +function getCurrentDate() {
-            var currentDate = new Date(),
-                year = currentDate.getFullYear(),
-                month = currentDate.getMonth() + 1,
-                date = currentDate.getDate()
-            ;
-
-            if (month < 10) {
-                month = "0" + month;
-            }
-            if (date < 10) {
-                date = "0" + date;
-            }
-
-            return year + "-" + month + "-" + date;
-        }();
-
         var pageInfoBEM = new BEM({
             block: "imcms-pop-up-modal",
             elements: {
@@ -1244,6 +1210,34 @@ Imcms.define("imcms-page-info-builder",
 
                 // life cycle
 
+                var lifeCycleTab = pageInfoElements.lifeCycle;
+
+                lifeCycleTab.$docStatusSelect.selectValue(document.status);
+
+                lifeCycleTab.publishDate.setDate(document.published_date);
+                lifeCycleTab.publishTime.setTime(document.published_time);
+                lifeCycleTab.publishDateTime.date.setDate(document.published_date);
+                lifeCycleTab.publishDateTime.time.setTime(document.published_time);
+
+                lifeCycleTab.archivedDate.setDate(document.archived_date);
+                lifeCycleTab.archivedTime.setTime(document.archived_time);
+                lifeCycleTab.archivedDateTime.date.setDate(document.archived_date);
+                lifeCycleTab.archivedDateTime.time.setTime(document.archived_time);
+
+                lifeCycleTab.publishEndDate.setDate(document.publication_end_date);
+                lifeCycleTab.publishEndTime.setTime(document.publication_end_time);
+                lifeCycleTab.publishEndDateTime.date.setDate(document.publication_end_date);
+                lifeCycleTab.publishEndDateTime.time.setTime(document.publication_end_time);
+
+                lifeCycleTab.$publisherSelect.selectValue(document.publisher);
+
+                componentsBuilder.radios
+                    .group(lifeCycleTab.$showDefaultLang, lifeCycleTab.$doNotShow)
+                    .checkAmongGroup(document.if_requested_lang_missing_doc_opts);
+
+                pageInfoElements.lifeCycle.$currentVersionNumber.setValue(document.currentVersion);
+                pageInfoElements.lifeCycle.docVersionSaveDateTime.date.setDate(document.currentVersionDate);
+                pageInfoElements.lifeCycle.docVersionSaveDateTime.time.setTime(document.currentVersionTime);
 
 
             });
