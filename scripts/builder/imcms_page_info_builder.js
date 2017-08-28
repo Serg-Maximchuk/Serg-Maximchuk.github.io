@@ -10,25 +10,7 @@ Imcms.define("imcms-page-info-builder",
               rolesRestApi, templatesRestApi, documentsRestApi, usersRestApi,
               categoriesTypesRestApi, $) {
 
-        // todo: receive date and time from server
-
-        function getCurrentTime() {
-            var currentDate = new Date(),
-                hour = currentDate.getHours(),
-                minute = currentDate.getMinutes()
-            ;
-
-            if (hour < 10) {
-                hour = "0" + hour;
-            }
-            if (minute < 10) {
-                minute = "0" + minute;
-            }
-
-            return hour + ":" + minute;
-        }
-
-        function getCurrentDate() {
+        var mockTimeReceivedFromServer = +function getCurrentDate() {
             var currentDate = new Date(),
                 year = currentDate.getFullYear(),
                 month = currentDate.getMonth() + 1,
@@ -43,10 +25,24 @@ Imcms.define("imcms-page-info-builder",
             }
 
             return year + "-" + month + "-" + date;
-        }
+        }();
 
-        var mockTimeReceivedFromServer = getCurrentTime();
-        var mockDateReceivedFromServer = getCurrentDate();
+        var mockDateReceivedFromServer = +function getCurrentDate() {
+            var currentDate = new Date(),
+                year = currentDate.getFullYear(),
+                month = currentDate.getMonth() + 1,
+                date = currentDate.getDate()
+            ;
+
+            if (month < 10) {
+                month = "0" + month;
+            }
+            if (date < 10) {
+                date = "0" + date;
+            }
+
+            return year + "-" + month + "-" + date;
+        }();
 
         var pageInfoBEM = new BEM({
             block: "imcms-pop-up-modal",
@@ -119,23 +115,23 @@ Imcms.define("imcms-page-info-builder",
                         "checkboxes": $engCheckboxWrapper
                     }]);
 
-                pageInfoElements.appearance.$pageTitle = componentsBuilder.texts.textBox("<div>", {
+                pageInfoElements.appearance.$engPageTitle = componentsBuilder.texts.textBox("<div>", {
                         name: "title",
                         text: "Title",
                         placeholder: "Start page"
                     });
 
                 var $pageTitleContainer = pageInfoInnerStructureBEM.buildBlock("<div>",
-                    [{"text-box": pageInfoElements.appearance.$pageTitle}]);
+                    [{"text-box": pageInfoElements.appearance.$engPageTitle}]);
 
-                pageInfoElements.appearance.$menuText = componentsBuilder.texts.textArea("<div>", {
+                pageInfoElements.appearance.$engMenuText = componentsBuilder.texts.textArea("<div>", {
                         text: "Menu text",
                         name: "menu-text"
                     });
 
-                var $menuTextContainer = pageInfoInnerStructureBEM.buildBlock("<div>", [{"text-area": pageInfoElements.appearance.$menuText}]);
+                var $menuTextContainer = pageInfoInnerStructureBEM.buildBlock("<div>", [{"text-area": pageInfoElements.appearance.$engMenuText}]);
 
-                pageInfoElements.appearance.$linkToImage = componentsBuilder.chooseImage.container("<div>", {
+                pageInfoElements.appearance.$engLinkToImage = componentsBuilder.chooseImage.container("<div>", {
                         id: "path-to-image",
                         name: "image",
                         placeholder: "Image path",
@@ -144,7 +140,7 @@ Imcms.define("imcms-page-info-builder",
                     });
 
                 var $linkToImageContainer = pageInfoInnerStructureBEM.buildBlock("<div>", [{
-                        "choose-image": pageInfoElements.appearance.$linkToImage
+                        "choose-image": pageInfoElements.appearance.$engLinkToImage
                     }]);
 
                 pageInfoElements.appearance.$sweCheckbox = componentsBuilder.checkboxes.imcmsCheckbox("<div>", {
@@ -158,23 +154,23 @@ Imcms.define("imcms-page-info-builder",
                         "checkboxes": $sweCheckboxWrapper
                     }]);
 
-                pageInfoElements.appearance.$pageTitleSwe = componentsBuilder.texts.textBox("<div>", {
+                pageInfoElements.appearance.$swePageTitle = componentsBuilder.texts.textBox("<div>", {
                         name: "title",
                         text: "Title",
                         placeholder: "Startsida"
                     });
 
                 var $pageTitleSweContainer = pageInfoInnerStructureBEM.buildBlock("<div>", [{
-                        "text-box": pageInfoElements.appearance.$pageTitleSwe
+                        "text-box": pageInfoElements.appearance.$swePageTitle
                     }]);
 
-                pageInfoElements.appearance.$menuTextSwe = componentsBuilder.texts.textArea("<div>", {
+                pageInfoElements.appearance.$sweMenuText = componentsBuilder.texts.textArea("<div>", {
                         text: "Menu text",
                         name: "menu-text"
                     });
 
                 var $menuTextSweContainer = pageInfoInnerStructureBEM.buildBlock("<div>", [{
-                        "text-area": pageInfoElements.appearance.$menuTextSwe
+                        "text-area": pageInfoElements.appearance.$sweMenuText
                     }]);
 
                 pageInfoElements.appearance.$linkToImageSwe = componentsBuilder.chooseImage.container("<div>", {
@@ -1222,10 +1218,34 @@ Imcms.define("imcms-page-info-builder",
             );
         }
 
-        function loadPageInfoDataFrom(docId) {
-
+        function loadPageInfoDataFromDocumentBy(docId) {
             documentsRestApi.read(docId, function (document) {
                 pageInfoElements.$title.text("document " + document.id);
+
+                // appearance
+
+                var appearanceTab = pageInfoElements.appearance,
+                    englishLanguage = document.languages["eng"],
+                    swedishLanguage = document.languages["swe"];
+
+                appearanceTab.$engCheckbox.setLabelText(englishLanguage.name)
+                    .setValue(englishLanguage.enabled);
+                appearanceTab.$engPageTitle.setValue(englishLanguage.title);
+                appearanceTab.$engMenuText.setValue(englishLanguage.menu_text);
+
+                appearanceTab.$sweCheckbox.setLabelText(swedishLanguage.name)
+                    .setValue(swedishLanguage.enabled);
+                appearanceTab.$swePageTitle.setValue(swedishLanguage.title);
+                appearanceTab.$sweMenuText.setValue(swedishLanguage.menu_text);
+
+                appearanceTab.$showIn.selectValue(document.show_in);
+
+                appearanceTab.$documentAlias.setValue(document.alias);
+
+                // life cycle
+
+
+
             });
         }
 
@@ -1243,7 +1263,7 @@ Imcms.define("imcms-page-info-builder",
 
                 $pageInfo.css({"display": "block"});
 
-                docId && loadPageInfoDataFrom(docId);
+                docId && loadPageInfoDataFromDocumentBy(docId);
             }
         }
     }

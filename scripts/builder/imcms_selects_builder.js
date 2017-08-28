@@ -86,8 +86,20 @@ Imcms.define("imcms-selects-builder",
 
                 $selectElements.push($selectedValInput);
 
-                return selectBEM.buildBlock("<div>", blockElements, (attributes["class"] ? {"class": attributes["class"]} : {}))
+                var resultImcmsSelect = selectBEM.buildBlock("<div>", blockElements, (attributes["class"] ? {"class": attributes["class"]} : {}))
                     .append($selectElements);
+
+                resultImcmsSelect.selectValue = function (value) {
+                    var selectCandidate = resultImcmsSelect.find("[data-value='" + value + "']");
+                    if (selectCandidate.length) {
+                        onOptionSelected.call(selectCandidate);
+                        $selectedValInput.val(value);
+                    } else {
+                        throw new Error("Value '" + value + "' for select doesn't exist");
+                    }
+                };
+
+                return resultImcmsSelect;
             },
             mapOptionsToSelectItems: function (options) {
                 var $itemsArr = options.map(function (option) {

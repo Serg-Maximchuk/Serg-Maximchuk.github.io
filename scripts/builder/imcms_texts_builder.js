@@ -111,7 +111,13 @@ Imcms.define("imcms-texts-builder",
                 blockElements.unshift({"label": $label});
             }
 
-            return structureBEM.buildBlock("<div>", blockElements);
+            var resultTextBox = structureBEM.buildBlock("<div>", blockElements);
+
+            resultTextBox.setValue = function (value) {
+                $input.val(value);
+                return resultTextBox;
+            };
+            return resultTextBox;
         }
 
         return {

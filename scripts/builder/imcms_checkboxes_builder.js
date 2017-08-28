@@ -39,10 +39,24 @@ Imcms.define("imcms-checkboxes-builder",
                     text: attributes.text,
                     click: attributes.click
                 });
-                return checkboxBEM.buildBlock(tag, [
+
+
+                var imcmsCheckboxResult = checkboxBEM.buildBlock(tag, [
                     {"checkbox": $input},
                     {"label": $label}
                 ]);
+
+                imcmsCheckboxResult.setLabelText = function (text) {
+                    $label.text(text);
+                    return imcmsCheckboxResult;
+                };
+
+                imcmsCheckboxResult.setValue = function (value) {
+                    value ? $input.prop("checked", "checked") : $input.removeProp("checked");
+                    return imcmsCheckboxResult;
+                };
+
+                return imcmsCheckboxResult;
             },
             checkboxContainer: function (tag, elements, attributes) {
                 elements = elements.map(function (element) {

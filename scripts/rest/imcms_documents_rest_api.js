@@ -7,7 +7,25 @@ Imcms.define("imcms-documents-rest-api", ["imcms-rest-api"], function (rest) {
         id: 1001,
         title: "Start page",
         alias: "start-page",
-        type: "text"
+        type: "text",
+        show_in: "_blank",
+        languages: {
+            "eng": {
+                name: "English",
+                enabled: true,
+                code: "eng",
+                title: "Title text",
+                menu_text: "Menu text"
+
+            },
+            "swe": {
+                name: "Swedish",
+                enabled: true,
+                code: "swe",
+                title: "Titeltext",
+                menu_text: "Menytext"
+            }
+        }
     }, {
         id: 1002,
         title: "Second page",
