@@ -3,8 +3,8 @@
  * 27.07.17.
  */
 Imcms.define("imcms-keywords-builder",
-    ["imcms-bem-builder", "imcms-texts-builder", "imcms-buttons-builder", "imcms-primitives-builder", "jquery"],
-    function (BEM, texts, buttons, primitives, $) {
+    ["imcms-bem-builder", "imcms-texts-builder", "imcms-buttons-builder", "imcms-primitives-builder", "imcms-uuid-generator", "jquery"],
+    function (BEM, texts, buttons, primitives, uuidGenerator, $) {
         function createRemoveKeywordButton() {
             return buttons.closeButton({click: removeKeyword});
         }
@@ -56,9 +56,10 @@ Imcms.define("imcms-keywords-builder",
 
         return {
             keywordsBox: function (tag, attributes) {
-                var $label = primitives.imcmsLabel(attributes["input-id"], attributes.title),
+                var inputId = attributes["input-id"] && uuidGenerator.generateUUID(),
+                    $label = primitives.imcmsLabel(inputId, attributes.title),
                     $input = primitives.imcmsInputText({
-                        id: attributes["input-id"], // todo: it would be great to generate unique id if not specified
+                        id: inputId,
                         placeholder: attributes.placeholder
                     }, ["wide"]),
                     $addKeywordButton = buttons.neutralButton({
