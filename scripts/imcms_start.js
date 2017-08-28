@@ -1,4 +1,6 @@
 /**
+ * An initial point for admin in view/preview modes
+ *
  * Created by Serhii Maksymchuk from Ubrainians for imCode
  * 07.08.17.
  */

@@ -132,16 +132,14 @@ Function.prototype.applyAsync = function (args, context) {
         var loader;
 
         switch (typeof dependency) {
-            case "string": {
+            case "string":
                 if (dependency.indexOf(".") !== 0) {
                     dependency = Imcms.config.basePath + "/" + dependency;
                 }
                 loader = loadModuleAsync;
                 break;
-            }
-            case "object": {
+            case "object":
                 loader = loadScriptAsync;
-            }
         }
 
         loader(dependency);
@@ -328,18 +326,15 @@ Function.prototype.applyAsync = function (args, context) {
         var requires;
 
         switch (id.constructor) {
-            case String : {
+            case String :
                 requires = [id];
                 break;
-            }
-            case Array : {
+            case Array :
                 requires = id;
                 break;
-            }
-            default : {
+            default :
                 console.error("Wrong type: ");
                 console.error(id);
-            }
         }
 
         Imcms.requiresQueue.push({
@@ -392,7 +387,7 @@ Function.prototype.applyAsync = function (args, context) {
     }
 
     function getMainScriptPath() {
-        var imcmsMainScripts = Array.prototype.slice.apply(document.scripts).filter(function (script) {
+        var imcmsMainScripts = Array.prototype.slice.call(document.scripts).filter(function (script) {
             return script.attributes["data-name"] && script.attributes["data-name"].value === "imcms";
         });
 
