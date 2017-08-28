@@ -221,12 +221,20 @@ Imcms.define("imcms-image-editor-builder",
                 resizeImage(newWidth, newHeight, backgroundSizeVal);
             }
 
+            var angle = 0;
+
+            function rotate(angleDelta) {
+                angle += angleDelta;
+                $imageContainer.css({"transform": "rotate(" + angle + "deg)"});
+                $cropArea.css({"transform": "rotate(" + angle + "deg)"});
+            }
+
             function rotateLeft() {
-                // todo: implement!
+                rotate(-90);
             }
 
             function rotateRight() {
-                // todo: implement!
+                rotate(90);
             }
 
             function buildScaleAndRotateControls() {
