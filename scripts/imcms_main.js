@@ -27,25 +27,25 @@ Imcms = {
             "imcms-uuid-generator": "components/imcms_uuid_generator.js",
             // <builders>
             // basic components
-            "imcms-buttons-builder": "builders/imcms_buttons_builder.js",
-            "imcms-flags-builder": "builders/imcms_flags_builder.js",
-            "imcms-checkboxes-builder": "builders/imcms_checkboxes_builder.js",
-            "imcms-radio-buttons-builder": "builders/imcms_radio_buttons_builder.js",
-            "imcms-selects-builder": "builders/imcms_selects_builder.js",
-            "imcms-texts-builder": "builders/imcms_texts_builder.js",
-            "imcms-switch-builder": "builders/imcms_switch_builder.js",
-            "imcms-choose-image-builder": "builders/imcms_choose_image_builder.js",
-            "imcms-keywords-builder": "builders/imcms_keywords_builder.js",
-            "imcms-date-time-builder": "builders/imcms_date_time_builder.js",
-            "imcms-controls-builder": "builders/imcms_controls_builder.js",
+            "imcms-buttons-builder": "builders/components/imcms_buttons_builder.js",
+            "imcms-flags-builder": "builders/components/imcms_flags_builder.js",
+            "imcms-checkboxes-builder": "builders/components/imcms_checkboxes_builder.js",
+            "imcms-radio-buttons-builder": "builders/components/imcms_radio_buttons_builder.js",
+            "imcms-selects-builder": "builders/components/imcms_selects_builder.js",
+            "imcms-texts-builder": "builders/components/imcms_texts_builder.js",
+            "imcms-switch-builder": "builders/components/imcms_switch_builder.js",
+            "imcms-choose-image-builder": "builders/components/imcms_choose_image_builder.js",
+            "imcms-keywords-builder": "builders/components/imcms_keywords_builder.js",
+            "imcms-date-time-builder": "builders/components/imcms_date_time_builder.js",
+            "imcms-controls-builder": "builders/components/imcms_controls_builder.js",
+            // other components
             "imcms-primitives-builder": "builders/imcms_primitives_builder.js",
             "imcms-components-builder": "builders/imcms_components_builder.js",
-            // other components
-            "imcms-bem-builder": "builders/imcms_bem_builder.js",
             "imcms-window-components-builder": "builders/imcms_window_components_builder.js",
+            // other builders
+            "imcms-bem-builder": "builders/imcms_bem_builder.js",
             "imcms-modal-window-builder": "builders/imcms_modal_window_builder.js",
             "imcms-image-content-builder": "builders/imcms_image_content_builder.js",
-            // admin panel
             "imcms-admin-panel-builder": "builders/imcms_admin_panel_builder.js",
             // page info
             "imcms-page-info-builder": "builders/imcms_page_info_builder.js",
