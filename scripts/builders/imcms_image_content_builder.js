@@ -114,7 +114,7 @@ Imcms.define("imcms-image-content-builder",
         function removeFolder() { // this == folder
             modalWindow.showModalWindow("Do you want to remove folder \"" + this.name + "\"?", function (answer) {
                 if (answer) {
-                    fileREST.remove(this.path, this.$folder.detach.bind(this.$folder));
+                    fileREST.remove(this.path + this.name, this.$folder.detach.bind(this.$folder));
                 }
             }.bind(this));
         }
