@@ -74,7 +74,7 @@ Imcms.define("imcms-selects-builder",
 
                 var $selectElements = [];
 
-                if (options.length) {
+                if (options && options.length) {
                     $selectElements.push(this.mapOptionsToSelectItems(options));
                 }
 
