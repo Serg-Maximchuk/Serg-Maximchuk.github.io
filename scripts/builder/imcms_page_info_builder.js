@@ -1245,7 +1245,18 @@ Imcms.define("imcms-page-info-builder",
 
                 document.keywords.forEach(keywordsTab.$keywordsBox.addKeyword);
 
-                keywordsTab.$searchDisableCheckbox.setValue(document.disable_search)
+                keywordsTab.$searchDisableCheckbox.setValue(document.disable_search);
+
+                // categories
+
+                //todo based on callback after build
+
+                // access
+
+                //todo based on callback after build
+
+
+
 
             });
         }
