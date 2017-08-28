@@ -26,7 +26,7 @@ Imcms = {
             "imcms-time-picker": "components/imcms_time_picker.js",
             "imcms-uuid-generator": "components/imcms_uuid_generator.js",
             // <builders>
-            // basic components
+            // basic components builders
             "imcms-buttons-builder": "builders/components/imcms_buttons_builder.js",
             "imcms-flags-builder": "builders/components/imcms_flags_builder.js",
             "imcms-checkboxes-builder": "builders/components/imcms_checkboxes_builder.js",
@@ -42,20 +42,20 @@ Imcms = {
             "imcms-primitives-builder": "builders/imcms_primitives_builder.js",
             "imcms-components-builder": "builders/imcms_components_builder.js",
             "imcms-window-components-builder": "builders/imcms_window_components_builder.js",
+            // <windows>
+            "imcms-modal-window-builder": "builders/windows/imcms_modal_window_builder.js",
+            "imcms-page-info-builder": "builders/windows/imcms_page_info_builder.js",
+            "imcms-content-manager-builder": "builders/windows/imcms_content_manager_builder.js",
+            // editors
+            "imcms-menu-editor-builder": "builders/windows/editors/imcms_menu_editor_builder.js",
+            "imcms-document-editor-builder": "builders/windows/editors/imcms_document_editor_builder.js",
+            "imcms-image-editor-builder": "builders/windows/editors/imcms_image_editor_builder.js",
+            // </windows>
             // other builders
             "imcms-bem-builder": "builders/imcms_bem_builder.js",
-            "imcms-modal-window-builder": "builders/imcms_modal_window_builder.js",
+            "imcms-editors-builder": "builders/imcms_editors_builder.js",
             "imcms-image-content-builder": "builders/imcms_image_content_builder.js",
             "imcms-admin-panel-builder": "builders/imcms_admin_panel_builder.js",
-            // page info
-            "imcms-page-info-builder": "builders/imcms_page_info_builder.js",
-            // editors
-            "imcms-editors-builder": "builders/imcms_editors_builder.js",
-            "imcms-menu-editor-builder": "builders/imcms_menu_editor_builder.js",
-            "imcms-document-editor-builder": "builders/imcms_document_editor_builder.js",
-            "imcms-image-editor-builder": "builders/imcms_image_editor_builder.js",
-            // content manager
-            "imcms-content-manager-builder": "builders/imcms_content_manager_builder.js",
             // </builders>
             // rest api
             "imcms-rest-api": "rest/imcms_rest_api.js",
