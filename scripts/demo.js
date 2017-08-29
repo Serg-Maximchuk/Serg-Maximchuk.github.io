@@ -31,10 +31,15 @@ Imcms.require(
                 text: "menu editor",
                 click: editors.buildMenuEditor
             }),
+            $loopEditorBtn = buttons.positiveButton({
+                text: "loop editor",
+                click: editors.buildLoopEditor
+            }),
             $demoEditorsBtnsContainer = buttons.buttonsContainer("<div>", [
                 $chooseImgLink,
                 $imageEditorLink,
-                $menuEditorBtn
+                $menuEditorBtn,
+                $loopEditorBtn
             ])
         ;
 
