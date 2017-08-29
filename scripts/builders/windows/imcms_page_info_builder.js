@@ -1257,8 +1257,7 @@ Imcms.define("imcms-page-info-builder",
 
                 lifeCycleTab.$publisherSelect.selectValue(document.publisher);
 
-                components.radios
-                    .group(lifeCycleTab.$showDefaultLang, lifeCycleTab.$doNotShow)
+                components.radios.group(lifeCycleTab.$showDefaultLang, lifeCycleTab.$doNotShow)
                     .checkAmongGroup(document.if_requested_lang_missing_doc_opts);
 
                 pageInfoElements.lifeCycle.$currentVersionNumber.setValue(document.currentVersion);
@@ -1283,12 +1282,10 @@ Imcms.define("imcms-page-info-builder",
 
                 // permissions
 
-                var permissions = pageInfoElements.permissions,
-                    restrictedCheckboxes = {};
-                permissions.restrictedCheckboxes.forEach(function (permission) {
-                    restrictedCheckboxes[permission
-                        .find("input")
-                        .prop("name")] = permission;
+                var restrictedCheckboxes = {};
+
+                pageInfoElements.permissions.restrictedCheckboxes.forEach(function (permission) {
+                    restrictedCheckboxes[permission.find("input").prop("name")] = permission;
                 });
 
                 document.permissions.forEach(function (permission, index) {
