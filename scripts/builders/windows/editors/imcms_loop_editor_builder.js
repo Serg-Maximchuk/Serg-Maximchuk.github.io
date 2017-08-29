@@ -2,51 +2,60 @@
  * Created by Serhii Maksymchuk from Ubrainians for imCode
  * 29.08.17
  */
-Imcms.define("imcms-loop-editor-builder", ["imcms-bem-builder"], function (BEM) {
-    var $editor;
+Imcms.define("imcms-loop-editor-builder",
+    ["imcms-bem-builder", "imcms-components-builder"],
+    function (BEM, components) {
+        var $editor;
 
-    function buildEditor() {
-        function buildHead() {
-            var headBEM = new BEM({
-                block: "imcms-head",
+        function buildEditor() {
+            function closeEditor() {
+                $editor.css("display", "none");
+            }
+
+            function buildHead() {
+                var headBEM = new BEM({
+                    block: "imcms-head",
+                    elements: {
+                        "title": "imcms-title",
+                        "button": "imcms-button"
+                    }
+                });
+
+                var $title = headBEM.buildElement("title", "<div>", {text: "Loop editor"}); // todo: add doc id and loop id
+                var $closeBtn = components.buttons.closeButton({click: closeEditor});
+
+                return headBEM.buildBlock("<div>", [
+                    {"title": $title},
+                    {"button": $closeBtn}
+                ]);
+            }
+
+            var editorBEM = new BEM({
+                block: "imcms-loop-editor",
                 elements: {
-                    "title": "imcms-title",
-                    "button": "imcms-button"
+                    "head": "imcms-head",
+                    "body": "imcms-loop-editor-body",
+                    "footer": "imcms-footer"
                 }
             });
 
-            var $title = headBEM.buildElement("title", "<div>", {text: "Loop editor"}); // todo: add doc id and loop id
+            var $head = buildHead();
 
-            return headBEM.buildBlock("<div>", [
-                {"title": $title}
-            ]);
+            return editorBEM.buildBlock("<div>", [
+                    {"head": $head}
+                ],
+                {"class": "imcms-editor-window"}
+            );
         }
 
-        var editorBEM = new BEM({
-            block: "imcms-loop-editor",
-            elements: {
-                "head": "imcms-head",
-                "body": "imcms-loop-editor-body",
-                "footer": "imcms-footer"
+        return {
+            build: function () {
+                if (!$editor) {
+                    $editor = buildEditor().appendTo("body");
+                }
+
+                $editor.css("display", "block");
             }
-        });
-
-        var $head = buildHead();
-
-        return editorBEM.buildBlock("<div>", [
-                {"head": $head}
-            ],
-            {"class": "imcms-editor-window"}
-        );
-    }
-
-    return {
-        build: function () {
-            if (!$editor) {
-                $editor = buildEditor().appendTo("body");
-            }
-
-            $editor.css("display", "block");
         }
     }
-});
+);
