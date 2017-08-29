@@ -73,7 +73,22 @@ Imcms.define("imcms-documents-rest-api", ["imcms-rest-api"], function (rest) {
         currentVersionDate: currentDate,
         currentVersionTime: currentTime,
         keywords: ["test", "keyword 1", "document"],
-        disable_search: true
+        disable_search: true,
+        permissions: [
+            {
+                edit_text: true,
+                edit_menu: false,
+                edit_image: true,
+                edit_loop: false,
+                edit_doc_info: true
+            }, {
+                edit_text: false,
+                edit_menu: true,
+                edit_image: false,
+                edit_loop: true,
+                edit_doc_info: false
+            }
+        ]
     }, {
         id: 1002,
         title: "Second page",

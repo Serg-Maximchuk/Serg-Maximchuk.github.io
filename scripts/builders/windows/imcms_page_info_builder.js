@@ -777,7 +777,26 @@ Imcms.define("imcms-page-info-builder",
             buildTab: function (index) {
                 pageInfoElements.permissions = {};
 
-                function buildTestCheckboxes(attributesArr) {
+                function createRestrictedCheckboxesDependingOnIndex(index) {
+                    return mapCheckboxesFromAttributesArray([{
+                        name: "edit_text" + index,
+                        text: "Edit text"
+                    }, {
+                        name: "edit_menu" + index,
+                        text: "Edit menu"
+                    }, {
+                        name: "edit_image" + index,
+                        text: "Edit image"
+                    }, {
+                        name: "edit_loop" + index,
+                        text: "Edit loop"
+                    }, {
+                        name: "edit_doc_info" + index,
+                        text: "Edit doc info"
+                    }]);
+                }
+
+                function mapCheckboxesFromAttributesArray(attributesArr) {
                     return attributesArr.map(function (attributes) {
                         return components.checkboxes.imcmsCheckbox("<div>", attributes);
                     });
@@ -790,47 +809,19 @@ Imcms.define("imcms-page-info-builder",
                     }
                 });
 
-                pageInfoElements.permissions.$restrictedCheckboxes1 = buildTestCheckboxes([{
-                    name: "editText1",
-                    text: "Edit text"
-                }, {
-                    name: "editMenu1",
-                    text: "Edit menu"
-                }, {
-                    name: "editImage1",
-                    text: "Edit image"
-                }, {
-                    name: "editLoop1",
-                    text: "Edit loop"
-                }, {
-                    name: "editDocInfo1",
-                    text: "Edit doc info"
-                }]);
+                var restrictedCheckboxes0 = createRestrictedCheckboxesDependingOnIndex(0);
                 var $restrictedRole1Rights = components.checkboxes.checkboxContainer("<div>",
-                    pageInfoElements.permissions.$restrictedCheckboxes1,
+                    restrictedCheckboxes0,
                     {title: "Restricted 1"}
                 );
 
-                pageInfoElements.permissions.$restrictedCheckboxes2 = buildTestCheckboxes([{
-                    name: "editText2",
-                    text: "Edit text"
-                }, {
-                    name: "editMenu2",
-                    text: "Edit menu"
-                }, {
-                    name: "editImage2",
-                    text: "Edit image"
-                }, {
-                    name: "editLoop2",
-                    text: "Edit loop"
-                }, {
-                    name: "editDocInfo2",
-                    text: "Edit doc info"
-                }]);
+                var restrictedCheckboxes1 = createRestrictedCheckboxesDependingOnIndex(1);
                 var $restrictedRole2Rights = components.checkboxes.checkboxContainer("<div>",
-                    pageInfoElements.permissions.$restrictedCheckboxes2,
+                    restrictedCheckboxes1,
                     {title: "Restricted 2"}
                 );
+
+                pageInfoElements.permissions.restrictedCheckboxes = restrictedCheckboxes0.concat(restrictedCheckboxes1);
 
                 var $permissionsWrapper = fieldItemBEM.buildBlock("<div>", [{
                     "item": $restrictedRole1Rights,
@@ -1289,6 +1280,30 @@ Imcms.define("imcms-page-info-builder",
                 // access
 
                 //todo based on callback after build
+
+                // permissions
+
+                var permissions = pageInfoElements.permissions,
+                    restrictedCheckboxes = {};
+                permissions.restrictedCheckboxes.forEach(function (permission) {
+                    restrictedCheckboxes[permission
+                        .find("input")
+                        .prop("name")] = permission;
+                });
+
+                document.permissions.forEach(function (permission, index) {
+                    var edit_text = "edit_text",
+                        edit_menu = "edit_menu",
+                        edit_image = "edit_image",
+                        edit_loop = "edit_loop",
+                        edit_doc_info = "edit_doc_info";
+
+                    restrictedCheckboxes[edit_text + index].setValue(permission[edit_text]);
+                    restrictedCheckboxes[edit_menu + index].setValue(permission[edit_menu]);
+                    restrictedCheckboxes[edit_image + index].setValue(permission[edit_image]);
+                    restrictedCheckboxes[edit_loop + index].setValue(permission[edit_loop]);
+                    restrictedCheckboxes[edit_doc_info + index].setValue(permission[edit_doc_info]);
+                });
             });
         }
 
