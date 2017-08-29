@@ -10,6 +10,7 @@
 
 .imcms-loop-item__info {
     cursor: pointer;
+    height: 45px;
     line-height: 45px;
     text-transform: none;
     text-align: left;
