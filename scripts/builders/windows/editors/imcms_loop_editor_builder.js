@@ -3,8 +3,8 @@
  * 29.08.17
  */
 Imcms.define("imcms-loop-editor-builder",
-    ["imcms-bem-builder", "imcms-components-builder", "imcms-window-components-builder"],
-    function (BEM, components, windowComponents) {
+    ["imcms-bem-builder", "imcms-components-builder", "imcms-window-components-builder", "imcms-loop-rest-api"],
+    function (BEM, components, windowComponents, loopREST) {
         var $editor, $title, $body;
 
         function buildEditor() {
@@ -55,7 +55,7 @@ Imcms.define("imcms-loop-editor-builder",
             );
         }
 
-        function loadData(opts) {
+        function buildData(loop) {
             function buildTitles() {
                 var titlesBEM = new BEM({
                     block: "imcms-loop-list-titles",
@@ -80,7 +80,18 @@ Imcms.define("imcms-loop-editor-builder",
                 ]);
             }
 
-            function buildLoopList() {
+            function buildItems(loop) {
+                var itemsBEM = new BEM({
+                    block: "imcms-loop-items",
+                    elements: {
+                        "item": "imcms-loop-item"
+                    }
+                });
+
+                return itemsBEM.buildBlock("<div>", []);
+            }
+
+            function buildLoopList(loop) {
                 var listBEM = new BEM({
                     block: "imcms-loop-list",
                     elements: {
@@ -90,14 +101,15 @@ Imcms.define("imcms-loop-editor-builder",
                 });
 
                 var $titles = buildTitles();
-                // todo: build items here
+                var $items = buildItems(loop);
 
                 return listBEM.buildBlock("<div>", [
-                    {"titles": $titles}
+                    {"titles": $titles},
+                    {"items": $items}
                 ]);
             }
 
-            addHeadData(opts);
+            addHeadData(loop);
 
             var bodyBEM = new BEM({
                 block: "imcms-loop-editor-body",
@@ -106,16 +118,20 @@ Imcms.define("imcms-loop-editor-builder",
                 }
             });
 
-            var $list = bodyBEM.makeBlockElement("list", buildLoopList());
+            var $list = bodyBEM.makeBlockElement("list", buildLoopList(loop));
             $body.append($list);
         }
 
-        function addHeadData(opts) {
-            $title.append(": " + opts.docId + "-" + opts.loopId);
+        function addHeadData(loop) {
+            $title.append(": " + loop.docId + "-" + loop.loopId);
         }
 
         function clearData() {
             $title.text("Loop Editor");
+        }
+
+        function loadData(opts) {
+            loopREST.read(opts, buildData);
         }
 
         return {
@@ -124,7 +140,7 @@ Imcms.define("imcms-loop-editor-builder",
                     $editor = buildEditor().appendTo("body");
                 }
 
-                loadData(opts);
+                loadData.applyAsync([opts]);
                 $editor.css("display", "block");
             }
         }
