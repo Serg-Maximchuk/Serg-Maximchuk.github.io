@@ -12,6 +12,18 @@ Imcms.define("imcms-loop-editor-builder",
                 $editor.css("display", "none");
             }
 
+            function buildLoopList() {
+                var listBEM = new BEM({
+                    block: "imcms-loop-list",
+                    elements: {
+                        "titles": "imcms-loop-list-titles",
+                        "items": "imcms-loop-items"
+                    }
+                });
+
+                return listBEM.buildBlock("<div>", []);
+            }
+
             function buildBody() {
                 var bodyBEM = new BEM({
                     block: "imcms-loop-editor-body",
@@ -20,7 +32,9 @@ Imcms.define("imcms-loop-editor-builder",
                     }
                 });
 
-                return bodyBEM.buildBlock("<div>", []);
+                var $list = buildLoopList();
+
+                return bodyBEM.buildBlock("<div>", [{"list": $list}]);
             }
 
             var editorBEM = new BEM({
