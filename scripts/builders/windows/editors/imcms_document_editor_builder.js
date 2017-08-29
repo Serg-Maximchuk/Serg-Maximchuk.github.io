@@ -69,7 +69,7 @@ Imcms.define("imcms-document-editor-builder",
             var $usersFilterSelect = components.selects.imcmsSelect("<div>", {
                 id: "users-filter",
                 name: "users-filter"
-            }, []);
+            });
 
             usersRestApi.read(null, function (users) {
                 var usersDataMapped = users.map(function (user) {
@@ -86,7 +86,7 @@ Imcms.define("imcms-document-editor-builder",
             var $categoriesFilterSelect = components.selects.imcmsSelect("<div>", {
                 id: "categories-filter",
                 name: "categories-filter"
-            }, []);
+            });
 
             categoriesRestApi.read(null, function (categories) {
                 var categoriesDataMapped = categories.map(function (category) {
