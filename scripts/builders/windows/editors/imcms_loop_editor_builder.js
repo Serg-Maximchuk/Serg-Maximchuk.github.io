@@ -12,6 +12,15 @@ Imcms.define("imcms-loop-editor-builder",
                 $editor.css("display", "none");
             }
 
+            function buildTitles() {
+                var titlesBEM = new BEM({
+                    block: "imcms-loop-list-titles",
+                    elements: {"title": ""}
+                });
+
+                return titlesBEM.buildBlock("<div>", []);
+            }
+
             function buildLoopList() {
                 var listBEM = new BEM({
                     block: "imcms-loop-list",
@@ -21,7 +30,11 @@ Imcms.define("imcms-loop-editor-builder",
                     }
                 });
 
-                return listBEM.buildBlock("<div>", []);
+                var $titles = buildTitles();
+
+                return listBEM.buildBlock("<div>", [
+                    {"titles": $titles}
+                ]);
             }
 
             function buildBody() {
