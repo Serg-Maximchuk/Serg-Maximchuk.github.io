@@ -5,7 +5,7 @@
 Imcms.define("imcms-loop-editor-builder",
     ["imcms-bem-builder", "imcms-components-builder", "imcms-window-components-builder"],
     function (BEM, components, windowComponents) {
-        var $editor;
+        var $editor, $head;
 
         function buildEditor() {
             function closeEditor() {
@@ -83,7 +83,7 @@ Imcms.define("imcms-loop-editor-builder",
                 }
             });
 
-            var $head = windowComponents.buildHead("Loop Editor", closeEditor);
+            $head = windowComponents.buildHead("Loop Editor", closeEditor);
             var $body = buildBody();
             var $footer = windowComponents.buildFooter([
                 components.buttons.positiveButton({
@@ -105,12 +105,17 @@ Imcms.define("imcms-loop-editor-builder",
             );
         }
 
+        function loadData(opts) {
+            $head.find(".imcms-title").append(": " + opts.docId + "-" + opts.loopId);
+        }
+
         return {
-            build: function () {
+            build: function (opts) {
                 if (!$editor) {
                     $editor = buildEditor().appendTo("body");
                 }
 
+                loadData(opts);
                 $editor.css("display", "block");
             }
         }

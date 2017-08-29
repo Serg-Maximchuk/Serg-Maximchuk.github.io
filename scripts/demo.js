@@ -33,7 +33,12 @@ Imcms.require(
             }),
             $loopEditorBtn = buttons.positiveButton({
                 text: "loop editor",
-                click: editors.buildLoopEditor
+                click: function () {
+                    editors.buildLoopEditor({
+                        docId: 1001,
+                        loopId: 1
+                    });
+                }
             }),
             $demoEditorsBtnsContainer = buttons.buttonsContainer("<div>", [
                 $chooseImgLink,
