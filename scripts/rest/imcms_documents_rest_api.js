@@ -88,7 +88,9 @@ Imcms.define("imcms-documents-rest-api", ["imcms-rest-api"], function (rest) {
                 edit_loop: true,
                 edit_doc_info: false
             }
-        ]
+        ],
+        template: 2,
+        child_template: 3
     }, {
         id: 1002,
         title: "Second page",
