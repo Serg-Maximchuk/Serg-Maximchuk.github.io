@@ -3,9 +3,20 @@
  * 29.08.17
  */
 Imcms.define("imcms-loop-editor-builder",
-    ["imcms-bem-builder", "imcms-components-builder", "imcms-window-components-builder", "imcms-loop-rest-api"],
-    function (BEM, components, windowComponents, loopREST) {
+    [
+        "imcms-bem-builder", "imcms-components-builder", "imcms-window-components-builder", "imcms-loop-rest-api",
+        "imcms-controls-builder"
+    ],
+    function (BEM, components, windowComponents, loopREST, controls) {
         var $editor, $title, $body;
+
+        var modifiers = {
+            ID: ["col-1"],
+            CONTENT: ["col-10"],
+            CONTROLS: ["col-1"]
+        };
+
+        var docId, loopId;
 
         function buildEditor() {
             function closeEditor() {
@@ -56,6 +67,9 @@ Imcms.define("imcms-loop-editor-builder",
         }
 
         function buildData(loop) {
+            docId = loop.docId;
+            loopId = loop.loopId;
+
             function buildTitles() {
                 var titlesBEM = new BEM({
                     block: "imcms-loop-list-titles",
@@ -69,15 +83,32 @@ Imcms.define("imcms-loop-editor-builder",
                 return titlesBEM.buildBlock("<div>", [
                     {
                         "title": $id,
-                        modifiers: ["col-1"]
+                        modifiers: modifiers.ID
                     }, {
                         "title": $content,
-                        modifiers: ["col-10"]
+                        modifiers: modifiers.CONTENT
                     }, {
                         "title": $isEnabled,
-                        modifiers: ["col-1"]
+                        modifiers: modifiers.CONTROLS
                     }
                 ]);
+            }
+
+            function removeLoopEntry(loopEntry) {
+                //todo: implement!
+            }
+
+            function buildControls(loopEntry) {
+                var controlsBEM = new BEM({
+                    block: "imcms-controls",
+                    elements: {
+                        "control": "imcms-control"
+                    }
+                });
+
+                var $remove = controls.remove(removeLoopEntry.bindArgs(loopEntry));
+
+                return controlsBEM.buildBlock("<div>", [{"control": $remove}])
             }
 
             function buildItem(loopEntry) {
@@ -89,7 +120,28 @@ Imcms.define("imcms-loop-editor-builder",
                     }
                 });
 
-                return itemBEM.buildBlock("<div>", []);
+                var $no = itemBEM.buildElement("info", "<div>", {text: loopEntry.no});
+                var $content = itemBEM.buildElement("info", "<div>", {text: loopEntry.content});
+                var $isEnabled = components.checkboxes.imcmsCheckbox("<div>", {
+                    name: "isEnabled" + loopEntry.no,
+                    checked: loopEntry.enabled ? "checked" : undefined
+                });
+                var $deleteBtn = buildControls(loopEntry);
+
+                return itemBEM.buildBlock("<div>", [
+                    {
+                        "info": $no,
+                        modifiers: modifiers.ID
+                    }, {
+                        "info": $content,
+                        modifiers: modifiers.CONTENT
+                    }, {
+                        "info": $isEnabled,
+                        modifiers: modifiers.CONTROLS
+                    }, {
+                        "controls": $deleteBtn
+                    }
+                ]);
             }
 
             function buildItems(loop) {
