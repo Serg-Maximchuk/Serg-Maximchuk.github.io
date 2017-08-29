@@ -5,9 +5,9 @@
 Imcms.define("imcms-loop-editor-builder",
     [
         "imcms-bem-builder", "imcms-components-builder", "imcms-window-components-builder", "imcms-loop-rest-api",
-        "imcms-controls-builder"
+        "imcms-controls-builder", "jquery"
     ],
-    function (BEM, components, windowComponents, loopREST, controls) {
+    function (BEM, components, windowComponents, loopREST, controls, $) {
         var $editor, $title, $body;
 
         var modifiers = {
@@ -94,8 +94,16 @@ Imcms.define("imcms-loop-editor-builder",
                 ]);
             }
 
-            function removeLoopEntry(loopEntry) {
-                //todo: implement!
+            function removeLoopEntry(response) {
+                if (response.code !== 200) {
+                    return;
+                }
+
+                $(this).detach();
+            }
+
+            function onRemoveLoopEntryClicked(loopEntry) {
+                loopREST.remove(loopEntry, removeLoopEntry.bind(this));
             }
 
             function buildControls(loopEntry) {
@@ -106,7 +114,10 @@ Imcms.define("imcms-loop-editor-builder",
                     }
                 });
 
-                var $remove = controls.remove(removeLoopEntry.bindArgs(loopEntry));
+                var $remove = controls.remove(function () {
+                    var $item = $remove.parents(".imcms-loop-item");
+                    onRemoveLoopEntryClicked.call($item, loopEntry);
+                });
 
                 return controlsBEM.buildBlock("<div>", [{"control": $remove}])
             }

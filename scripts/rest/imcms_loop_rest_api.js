@@ -50,5 +50,15 @@ Imcms.define("imcms-loop-rest-api", ["imcms-rest-api"], function (rest) {
         });
     };
 
+    api.remove = function (data, callback) {
+        console.log("%c Removing (not really) loop entry:", "color: blue");
+        console.log(data);
+
+        callback({
+            code: 200,
+            status: "OK"
+        });
+    };
+
     return api;
 });
