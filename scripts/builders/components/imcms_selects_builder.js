@@ -128,8 +128,12 @@ Imcms.define("imcms-selects-builder",
                     delete attributes["class"];
                 }
 
-                var $select = this.imcmsSelect("<div>", attributes, options);
-                return fieldBEM.buildBlock("<div>", [$select], (clas ? {"class": clas} : {}), "select");
+                var $select = this.imcmsSelect("<div>", attributes, options),
+                    resultContainer = fieldBEM.buildBlock("<div>", [$select], (clas ? {"class": clas} : {}), "select");
+
+                resultContainer.selectValue = $select.selectValue;
+
+                return resultContainer;
             }
         }
     }

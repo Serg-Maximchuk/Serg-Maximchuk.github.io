@@ -1301,6 +1301,17 @@ Imcms.define("imcms-page-info-builder",
                     restrictedCheckboxes[edit_loop + index].setValue(permission[edit_loop]);
                     restrictedCheckboxes[edit_doc_info + index].setValue(permission[edit_doc_info]);
                 });
+
+                // templates
+
+                var templatesTab = pageInfoElements.templates;
+
+                templatesTab.$templateSelect.selectValue(document.template);
+                templatesTab.$defaultChildTemplateSelect.selectValue(document.child_template);
+
+                // status
+
+
             });
         }
 
