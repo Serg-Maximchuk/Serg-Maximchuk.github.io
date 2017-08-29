@@ -52,6 +52,15 @@ Imcms.define("imcms-loop-editor-builder",
                 ]);
             }
 
+            function onCreateNewClicked() {
+                // todo: implement!!!1!
+            }
+
+            function onSaveAndCloseClicked() {
+                closeEditor();
+                // todo: implement saving, for now it's just closing!!1
+            }
+
             function buildBody() {
                 var bodyBEM = new BEM({
                     block: "imcms-loop-editor-body",
@@ -76,10 +85,21 @@ Imcms.define("imcms-loop-editor-builder",
 
             var $head = windowComponents.buildHead("Loop Editor", closeEditor);
             var $body = buildBody();
+            var $footer = windowComponents.buildFooter([
+                components.buttons.positiveButton({
+                    text: "Create new",
+                    click: onCreateNewClicked
+                }),
+                components.buttons.saveButton({
+                    text: "Save and close",
+                    click: onSaveAndCloseClicked
+                })
+            ]);
 
             return editorBEM.buildBlock("<div>", [
                     {"head": $head},
-                    {"body": $body}
+                    {"body": $body},
+                    {"footer": $footer}
                 ],
                 {"class": "imcms-editor-window"}
             );
