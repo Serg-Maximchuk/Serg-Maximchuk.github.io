@@ -80,6 +80,18 @@ Imcms.define("imcms-loop-editor-builder",
                 ]);
             }
 
+            function buildItem(loopEntry) {
+                var itemBEM = new BEM({
+                    block: "imcms-loop-item",
+                    elements: {
+                        "info": "imcms-title",
+                        "controls": "imcms-controls"
+                    }
+                });
+
+                return itemBEM.buildBlock("<div>", []);
+            }
+
             function buildItems(loop) {
                 var itemsBEM = new BEM({
                     block: "imcms-loop-items",
@@ -88,7 +100,12 @@ Imcms.define("imcms-loop-editor-builder",
                     }
                 });
 
-                return itemsBEM.buildBlock("<div>", []);
+                var blockElements = loop.entries.map(buildItem)
+                    .map(function ($item) {
+                        return {"item": $item};
+                    });
+
+                return itemsBEM.buildBlock("<div>", blockElements);
             }
 
             function buildLoopList(loop) {
