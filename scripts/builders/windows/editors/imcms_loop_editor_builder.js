@@ -3,31 +3,13 @@
  * 29.08.17
  */
 Imcms.define("imcms-loop-editor-builder",
-    ["imcms-bem-builder", "imcms-components-builder"],
-    function (BEM, components) {
+    ["imcms-bem-builder", "imcms-components-builder", "imcms-window-components-builder"],
+    function (BEM, components, windowComponents) {
         var $editor;
 
         function buildEditor() {
             function closeEditor() {
                 $editor.css("display", "none");
-            }
-
-            function buildHead() {
-                var headBEM = new BEM({
-                    block: "imcms-head",
-                    elements: {
-                        "title": "imcms-title",
-                        "button": "imcms-button"
-                    }
-                });
-
-                var $title = headBEM.buildElement("title", "<div>", {text: "Loop editor"}); // todo: add doc id and loop id
-                var $closeBtn = components.buttons.closeButton({click: closeEditor});
-
-                return headBEM.buildBlock("<div>", [
-                    {"title": $title},
-                    {"button": $closeBtn}
-                ]);
             }
 
             var editorBEM = new BEM({
@@ -39,7 +21,7 @@ Imcms.define("imcms-loop-editor-builder",
                 }
             });
 
-            var $head = buildHead();
+            var $head = windowComponents.buildHead("Loop Editor", closeEditor);
 
             return editorBEM.buildBlock("<div>", [
                     {"head": $head}
