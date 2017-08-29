@@ -5,11 +5,12 @@
 Imcms.define("imcms-loop-editor-builder",
     ["imcms-bem-builder", "imcms-components-builder", "imcms-window-components-builder"],
     function (BEM, components, windowComponents) {
-        var $editor, $head, $body;
+        var $editor, $title, $body;
 
         function buildEditor() {
             function closeEditor() {
                 $editor.css("display", "none");
+                clearData();
             }
 
             function onCreateNewClicked() {
@@ -30,8 +31,10 @@ Imcms.define("imcms-loop-editor-builder",
                 }
             });
 
-            $head = windowComponents.buildHead("Loop Editor", closeEditor);
+            var $head = windowComponents.buildHead("Loop Editor", closeEditor);
+            $title = $head.find(".imcms-title");
             $body = editorBEM.buildElement("body", "<div>");
+
             var $footer = windowComponents.buildFooter([
                 components.buttons.positiveButton({
                     text: "Create new",
@@ -94,7 +97,7 @@ Imcms.define("imcms-loop-editor-builder",
                 ]);
             }
 
-            $head.find(".imcms-title").append(": " + opts.docId + "-" + opts.loopId);
+            addHeadData(opts);
 
             var bodyBEM = new BEM({
                 block: "imcms-loop-editor-body",
@@ -105,6 +108,14 @@ Imcms.define("imcms-loop-editor-builder",
 
             var $list = bodyBEM.makeBlockElement("list", buildLoopList());
             $body.append($list);
+        }
+
+        function addHeadData(opts) {
+            $title.append(": " + opts.docId + "-" + opts.loopId);
+        }
+
+        function clearData() {
+            $title.text("Loop Editor");
         }
 
         return {
