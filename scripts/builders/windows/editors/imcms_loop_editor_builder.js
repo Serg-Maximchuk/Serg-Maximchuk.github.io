@@ -6,6 +6,18 @@ Imcms.define("imcms-loop-editor-builder", ["imcms-bem-builder"], function (BEM) 
     var $editor;
 
     function buildEditor() {
+        function buildHead() {
+            var headBEM = new BEM({
+                block: "imcms-head",
+                elements: {
+                    "title": "imcms-title",
+                    "button": "imcms-button"
+                }
+            });
+
+            return headBEM.buildBlock("<div>", []);
+        }
+
         var editorBEM = new BEM({
             block: "imcms-loop-editor",
             elements: {
@@ -15,7 +27,13 @@ Imcms.define("imcms-loop-editor-builder", ["imcms-bem-builder"], function (BEM) 
             }
         });
 
-        return editorBEM.buildBlock("<div>", [], {"class": "imcms-editor-window"});
+        var $head = buildHead();
+
+        return editorBEM.buildBlock("<div>", [
+                {"head": $head}
+            ],
+            {"class": "imcms-editor-window"}
+        );
     }
 
     return {
