@@ -18,7 +18,22 @@ Imcms.define("imcms-loop-editor-builder",
                     elements: {"title": ""}
                 });
 
-                return titlesBEM.buildBlock("<div>", []);
+                var $id = titlesBEM.buildElement("title", "<div>", {text: "id"});
+                var $content = titlesBEM.buildElement("title", "<div>", {text: "text content"});
+                var $isEnabled = titlesBEM.buildElement("title", "<div>", {text: "is enabled"});
+
+                return titlesBEM.buildBlock("<div>", [
+                    {
+                        "title": $id,
+                        modifiers: ["col-1"]
+                    }, {
+                        "title": $content,
+                        modifiers: ["col-10"]
+                    }, {
+                        "title": $isEnabled,
+                        modifiers: ["col-1"]
+                    }
+                ]);
             }
 
             function buildLoopList() {
