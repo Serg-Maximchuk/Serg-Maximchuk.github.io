@@ -60,5 +60,15 @@ Imcms.define("imcms-loop-rest-api", ["imcms-rest-api"], function (rest) {
         });
     };
 
+    api.create = function (data, callback) {
+        console.log("%c Creating (not really) new loop entry:", "color: blue");
+        console.log(data);
+
+        callback({
+            code: 200,
+            status: "OK"
+        });
+    };
+
     return api;
 });
