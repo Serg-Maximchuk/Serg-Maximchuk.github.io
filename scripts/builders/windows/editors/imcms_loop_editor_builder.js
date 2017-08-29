@@ -12,6 +12,17 @@ Imcms.define("imcms-loop-editor-builder",
                 $editor.css("display", "none");
             }
 
+            function buildBody() {
+                var bodyBEM = new BEM({
+                    block: "imcms-loop-editor-body",
+                    elements: {
+                        "list": "imcms-loop-list"
+                    }
+                });
+
+                return bodyBEM.buildBlock("<div>", []);
+            }
+
             var editorBEM = new BEM({
                 block: "imcms-loop-editor",
                 elements: {
@@ -22,9 +33,11 @@ Imcms.define("imcms-loop-editor-builder",
             });
 
             var $head = windowComponents.buildHead("Loop Editor", closeEditor);
+            var $body = buildBody();
 
             return editorBEM.buildBlock("<div>", [
-                    {"head": $head}
+                    {"head": $head},
+                    {"body": $body}
                 ],
                 {"class": "imcms-editor-window"}
             );
