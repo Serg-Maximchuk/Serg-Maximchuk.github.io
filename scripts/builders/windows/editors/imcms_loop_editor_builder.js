@@ -15,7 +15,11 @@ Imcms.define("imcms-loop-editor-builder", ["imcms-bem-builder"], function (BEM) 
                 }
             });
 
-            return headBEM.buildBlock("<div>", []);
+            var $title = headBEM.buildElement("title", "<div>", {text: "Loop editor"}); // todo: add doc id and loop id
+
+            return headBEM.buildBlock("<div>", [
+                {"title": $title}
+            ]);
         }
 
         var editorBEM = new BEM({
