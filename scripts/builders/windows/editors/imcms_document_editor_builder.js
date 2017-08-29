@@ -36,7 +36,10 @@ Imcms.define("imcms-document-editor-builder",
 
             var $createNewDocButton = components.buttons.negativeButton({
                 text: "New",
-                click: pageInfoBuilder.build
+                click: function (e) {
+                    e.preventDefault();
+                    pageInfoBuilder.build();
+                }
             });
 
             var $newDocButtonContainer = toolBEM.buildBlock("<div>", [{"button": $createNewDocButton}]);
