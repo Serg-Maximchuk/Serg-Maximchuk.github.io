@@ -51,6 +51,7 @@ Imcms = {
             "imcms-menu-editor-builder": "builders/windows/editors/imcms_menu_editor_builder.js",
             "imcms-document-editor-builder": "builders/windows/editors/imcms_document_editor_builder.js",
             "imcms-image-editor-builder": "builders/windows/editors/imcms_image_editor_builder.js",
+            "imcms-loop-editor-builder": "builders/windows/editors/imcms_loop_editor_builder.js",
             // </windows>
             // other builders
             "imcms-bem-builder": "builders/imcms_bem_builder.js",
