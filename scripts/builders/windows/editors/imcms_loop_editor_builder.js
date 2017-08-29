@@ -5,9 +5,9 @@
 Imcms.define("imcms-loop-editor-builder",
     [
         "imcms-bem-builder", "imcms-components-builder", "imcms-window-components-builder", "imcms-loop-rest-api",
-        "imcms-controls-builder", "jquery"
+        "imcms-controls-builder"
     ],
-    function (BEM, components, windowComponents, loopREST, controls, $) {
+    function (BEM, components, windowComponents, loopREST, controls) {
         var $editor, $title, $body;
 
         var modifiers = {
@@ -99,7 +99,7 @@ Imcms.define("imcms-loop-editor-builder",
                     return;
                 }
 
-                $(this).detach();
+                this.detach();
             }
 
             function onRemoveLoopEntryClicked(loopEntry) {
