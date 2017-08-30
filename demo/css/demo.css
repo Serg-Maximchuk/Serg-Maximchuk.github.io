@@ -103,3 +103,17 @@
     text-transform: uppercase;
     color: whitesmoke;
 }
+
+.demo-loop-content__text-area {
+    display: block;
+    padding: 20px 0;
+}
+
+.demo-loop-texts__text-area {
+    display: inline-block;
+    width: 45%;
+}
+
+.demo-text-area--right {
+    float: right;
+}
