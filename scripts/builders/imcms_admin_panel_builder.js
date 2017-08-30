@@ -40,7 +40,7 @@ Imcms.define("imcms-admin-panel-builder",
                 }, buttonData.modifiers);
             }
 
-            var buttonsData = [
+            var buttons = [
                 {
                     content: "public",
                     onClick: getNotImplementedButtonClick("public view click"),
@@ -76,9 +76,8 @@ Imcms.define("imcms-admin-panel-builder",
                     }),
                     modifiers: ["logout"]
                 }
-            ];
+            ].map(buildPanelButton);
 
-            var buttons = buttonsData.map(buildPanelButton);
             var $buttonsWrapper = $("<ul>").append(buttons);
 
             return panelButtonsBEM.buildBlock("<div>", [{"items": $buttonsWrapper}]);
@@ -107,6 +106,7 @@ Imcms.define("imcms-admin-panel-builder",
 
             var $logo = adminPanelBEM.buildBlockElement("logo", "<a>", {href: ""}); // fixme: link to start doc?
             var $logoItem = $("<div>").append($logo);
+
             var $title = adminPanelBEM.buildBlockElement("title", "<div>", {text: Imcms.version});
             var $titleItem = $("<div>").append($title);
 
