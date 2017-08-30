@@ -132,3 +132,19 @@
     display: inline-block;
     width: 30%;
 }
+
+.demo-element__image {
+    height: 150px;
+}
+
+.demo-img1 {
+    background: url(../img/demo2.png) no-repeat center;
+}
+
+.demo-img2 {
+    background: url(../img/demo3.png) no-repeat center;
+}
+
+.demo-img3 {
+    background: url(../img/demo4.png) no-repeat center;
+}

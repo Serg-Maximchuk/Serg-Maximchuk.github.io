@@ -1,16 +1,17 @@
 .imcms-editor-area {
     background-color: white;
     padding: 10px;
-    display: block;
+    display: inline-block;
     margin: 10px;
 }
 
 .imcms-editor-area__content {
-    width: 98%;
+    max-width: 98%;
     display: inline-block;
 }
 
 .imcms-editor-area__control-edit {
     display: inline-block;
     float: right;
+    margin-left: 10px;
 }
