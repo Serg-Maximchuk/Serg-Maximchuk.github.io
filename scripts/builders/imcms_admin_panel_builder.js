@@ -5,23 +5,6 @@
 Imcms.define("imcms-admin-panel-builder",
     ["imcms-bem-builder", "imcms-components-builder", "imcms-editors-builder", "jquery"],
     function (BEM, componentsBuilder, editors, $) {
-        var adminPanelBEM = new BEM({
-            block: "imcms-admin-panel",
-            elements: {
-                "item": "",
-                "logo": "",
-                "title": ""
-            }
-        });
-
-        var panelButtonsBEM = new BEM({
-            block: "imcms-menu",
-            elements: {
-                "items": "",
-                "item": "imcms-menu__item"
-            }
-        });
-
         var $panel;
 
         function logNotImplementedFeature(feature) {
@@ -37,6 +20,23 @@ Imcms.define("imcms-admin-panel-builder",
         }
 
         function createAdminPanel() {
+            var adminPanelBEM = new BEM({
+                block: "imcms-admin-panel",
+                elements: {
+                    "item": "",
+                    "logo": "",
+                    "title": ""
+                }
+            });
+
+            var panelButtonsBEM = new BEM({
+                block: "imcms-menu",
+                elements: {
+                    "items": "",
+                    "item": "imcms-menu__item"
+                }
+            });
+
             var $logo = adminPanelBEM.buildBlockElement("logo", "<a>", {
                 href: "#" // maybe it should be the link to the start page?
             });
