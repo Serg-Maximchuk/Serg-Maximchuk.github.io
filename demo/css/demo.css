@@ -122,3 +122,13 @@
     font-weight: 500;
     font-size: 22px;
 }
+
+.imcms-demo-content__images-texts-demo {
+    padding: 20px 50px 100px;
+    display: block;
+}
+
+.demo-row__column {
+    display: inline-block;
+    width: 30%;
+}
