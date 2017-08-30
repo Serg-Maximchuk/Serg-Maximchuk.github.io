@@ -79,15 +79,15 @@
     content
 
 */
+.imcms-demo-page__content {
+    margin: 0 150px;
+}
+
 .imcms-demo-content__title {
     margin: 30px;
     text-align: center;
     font-weight: 500;
     font-size: 24px;
-}
-
-.imcms-demo-content__loop-content {
-    margin: 0 150px;
 }
 
 .demo-loop-content__image {

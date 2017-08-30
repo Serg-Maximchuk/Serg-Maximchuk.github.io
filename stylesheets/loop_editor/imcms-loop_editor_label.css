@@ -1,0 +1,15 @@
+.imcms-editor-area {
+    background-color: white;
+    padding: 10px;
+    display: block;
+}
+
+.imcms-editor-area__content {
+    width: 98%;
+    display: inline-block;
+}
+
+.imcms-editor-area__control-edit {
+    display: inline-block;
+    float: right;
+}
