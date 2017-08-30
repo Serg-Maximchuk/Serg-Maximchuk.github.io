@@ -59,7 +59,7 @@ Imcms.define("imcms-admin-panel-builder",
                     }
                 })
             ]);
-            var $menuItems = $("<ul>");
+            var $buttonsWrapper = $("<ul>");
             var $publicViewButton = panelButtonsBEM.buildBlockElement("item", "<li>", {
                 text: "public",
                 click: function (e) {
@@ -120,7 +120,7 @@ Imcms.define("imcms-admin-panel-builder",
                 })
             }, ["logout"]);
 
-            $menuItems.append($publicViewButton)
+            $buttonsWrapper.append($publicViewButton)
                 .append($editPageButton)
                 .append($previewButton)
                 .append($publishOfflineVersionButton)
@@ -129,15 +129,15 @@ Imcms.define("imcms-admin-panel-builder",
                 .append($adminPageButton)
                 .append($logoutButton);
 
-            var $menuItem = panelButtonsBEM.buildBlock("<div>", [
-                {"items": $menuItems}
+            var $buttonsContainer = panelButtonsBEM.buildBlock("<div>", [
+                {"items": $buttonsWrapper}
             ]);
 
             return adminPanelBEM.buildBlock("<div>", [
                 {"item": $logoItem},
                 {"item": $titleItem},
                 {"item": $flagsItem},
-                {"item": $menuItem}
+                {"item": $buttonsContainer}
             ]);
         }
 
