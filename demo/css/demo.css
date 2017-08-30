@@ -2,12 +2,18 @@
     height: 100%;
     width: 100%;
     background-color: #f2f2fc;
+    font-family: 'Source Sans Pro', sans-serif;
 }
 
 .imcms-demo-page hr {
     margin: 0;
 }
 
+/*
+
+   menu
+
+ */
 .imcms-demo-page__menu {
     width: 100%;
     height: 45px;
@@ -60,30 +66,24 @@
     width: 100%;
     line-height: 40px;
     display: inline-block;
-    font-family: 'Source Sans Pro', sans-serif;
     font-weight: 600;
     font-size: 14px;
 }
 
+/*
 
+   /menu
 
+ */
 
+/*
 
+    content
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+*/
+.imcms-demo-content__title {
+    margin: 30px;
+    text-align: center;
+    font-weight: 500;
+    font-size: 24px;
+}
