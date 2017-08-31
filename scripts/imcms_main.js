@@ -22,6 +22,7 @@ Imcms = {
             },
             "imcms-tests": "imcms_tests.js",
             // components
+            "imcms-promise": "components/imcms_promise.js",
             "imcms-calendar": "components/imcms_calendar.js",
             "imcms-date-picker": "components/imcms_date_picker.js",
             "imcms-time-picker": "components/imcms_time_picker.js",
