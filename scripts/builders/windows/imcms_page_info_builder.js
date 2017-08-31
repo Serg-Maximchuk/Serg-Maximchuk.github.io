@@ -195,6 +195,26 @@ Imcms.define("imcms-page-info-builder",
                 ];
 
                 return buildFormBlock(tabElements, index);
+            },
+            fillTabDataFromDocument: function (document) {
+                var appearanceTab = pageInfoElements.appearance,
+
+                    englishLanguage = document.languages["eng"],
+                    swedishLanguage = document.languages["swe"];
+
+                appearanceTab.$engCheckbox.setLabelText(englishLanguage.name)
+                    .setValue(englishLanguage.enabled);
+                appearanceTab.$engPageTitle.setValue(englishLanguage.title);
+                appearanceTab.$engMenuText.setValue(englishLanguage.menu_text);
+
+                appearanceTab.$sweCheckbox.setLabelText(swedishLanguage.name)
+                    .setValue(swedishLanguage.enabled);
+                appearanceTab.$swePageTitle.setValue(swedishLanguage.title);
+                appearanceTab.$sweMenuText.setValue(swedishLanguage.menu_text);
+
+                appearanceTab.$showIn.selectValue(document.show_in);
+
+                appearanceTab.$documentAlias.setValue(document.alias);
             }
         }, {
             name: "life cycle",
@@ -488,6 +508,35 @@ Imcms.define("imcms-page-info-builder",
                 ];
 
                 return buildFormBlock(formElements, index);
+            },
+            fillTabDataFromDocument: function (document) {
+                var lifeCycleTab = pageInfoElements.lifeCycle;
+
+                lifeCycleTab.$docStatusSelect.selectValue(document.status);
+
+                lifeCycleTab.publishDate.setDate(document.published_date);
+                lifeCycleTab.publishTime.setTime(document.published_time);
+                lifeCycleTab.publishDateTime.date.setDate(document.published_date);
+                lifeCycleTab.publishDateTime.time.setTime(document.published_time);
+
+                lifeCycleTab.archivedDate.setDate(document.archived_date);
+                lifeCycleTab.archivedTime.setTime(document.archived_time);
+                lifeCycleTab.archivedDateTime.date.setDate(document.archived_date);
+                lifeCycleTab.archivedDateTime.time.setTime(document.archived_time);
+
+                lifeCycleTab.publishEndDate.setDate(document.publication_end_date);
+                lifeCycleTab.publishEndTime.setTime(document.publication_end_time);
+                lifeCycleTab.publishEndDateTime.date.setDate(document.publication_end_date);
+                lifeCycleTab.publishEndDateTime.time.setTime(document.publication_end_time);
+
+                lifeCycleTab.$publisherSelect.selectValue(document.publisher);
+
+                components.radios.group(lifeCycleTab.$showDefaultLang, lifeCycleTab.$doNotShow)
+                    .checkAmongGroup(document.if_requested_lang_missing_doc_opts);
+
+                lifeCycleTab.$currentVersionNumber.setValue(document.currentVersion);
+                lifeCycleTab.docVersionSaveDateTime.date.setDate(document.currentVersionDate);
+                lifeCycleTab.docVersionSaveDateTime.time.setTime(document.currentVersionTime);
             }
         }, {
             name: "keywords",
@@ -510,6 +559,14 @@ Imcms.define("imcms-page-info-builder",
                 ]);
 
                 return buildFormBlock([pageInfoElements.keywords.$keywordsBox, $checkboxField], index);
+            },
+            fillTabDataFromDocument: function (document) {
+                var keywordsTab = pageInfoElements.keywords;
+
+                document.keywords.forEach(keywordsTab.$keywordsBox.addKeyword);
+
+                keywordsTab.$searchDisableCheckbox.setValue(document.disable_search);
+
             }
         }, {
             name: "categories",
@@ -579,6 +636,9 @@ Imcms.define("imcms-page-info-builder",
                 });
 
                 return $categoriesBlock;
+            },
+            fillTabDataFromDocument: function (document) {
+                //todo categories based on callback after build
             }
         }, {
             name: "access",
@@ -771,6 +831,9 @@ Imcms.define("imcms-page-info-builder",
 
                 pageInfoElements.access.$accessBlock = buildFormBlock([$addRoleContainer], index);
                 return pageInfoElements.access.$accessBlock;
+            },
+            fillTabDataFromDocument: function (document) {
+                //todo access based on callback after build
             }
         }, {
             name: "permissions",
@@ -832,6 +895,29 @@ Imcms.define("imcms-page-info-builder",
                 }]);
 
                 return buildFormBlock([$permissionsWrapper], index);
+            },
+            fillTabDataFromDocument: function (document) {
+                var permissionsTab = pageInfoElements.permissions,
+
+                    restrictedCheckboxes = {};
+
+                permissionsTab.restrictedCheckboxes.forEach(function (permission) {
+                    restrictedCheckboxes[permission.find("input").prop("name")] = permission;
+                });
+
+                document.permissions.forEach(function (permission, index) {
+                    var edit_text = "edit_text",
+                        edit_menu = "edit_menu",
+                        edit_image = "edit_image",
+                        edit_loop = "edit_loop",
+                        edit_doc_info = "edit_doc_info";
+
+                    restrictedCheckboxes[edit_text + index].setValue(permission[edit_text]);
+                    restrictedCheckboxes[edit_menu + index].setValue(permission[edit_menu]);
+                    restrictedCheckboxes[edit_image + index].setValue(permission[edit_image]);
+                    restrictedCheckboxes[edit_loop + index].setValue(permission[edit_loop]);
+                    restrictedCheckboxes[edit_doc_info + index].setValue(permission[edit_doc_info]);
+                });
             }
         }, {
             name: "templates",
@@ -867,6 +953,12 @@ Imcms.define("imcms-page-info-builder",
                     pageInfoElements.templates.$defaultChildTemplateSelect
                 ];
                 return buildFormBlock(blockElements, index);
+            },
+            fillTabDataFromDocument: function (document) {
+                var templatesTab = pageInfoElements.templates;
+
+                templatesTab.$templateSelect.selectValue(document.template);
+                templatesTab.$defaultChildTemplateSelect.selectValue(document.child_template);
             }
         }, {
             name: "status",
@@ -1095,6 +1187,29 @@ Imcms.define("imcms-page-info-builder",
                 ];
 
                 return buildFormBlock(blockElements, index);
+            },
+            fillTabDataFromDocument: function (document) {
+                var statusTab = pageInfoElements.status;
+
+                statusTab.createdDate.setDate(document.created_date);
+                statusTab.createdTime.setTime(document.created_time);
+                statusTab.$createdBy.setValue(document.created_by);
+
+                statusTab.modifiedDate.setDate(document.modified_date);
+                statusTab.modifiedTime.setTime(document.modified_time);
+                statusTab.$modifiedBy.setValue(document.modified_by);
+
+                statusTab.archivedDate.setDate(document.archived_date);
+                statusTab.archivedTime.setTime(document.archived_time);
+                statusTab.$archivedBy.setValue(document.archived_by);
+
+                statusTab.publishedDate.setDate(document.published_date);
+                statusTab.publishedTime.setTime(document.published_time);
+                statusTab.$publishedBy.setValue(document.published_by);
+
+                statusTab.publicationEndDate.setDate(document.publication_end_date);
+                statusTab.publicationEndTime.setTime(document.publication_end_time);
+                statusTab.$publicationEndBy.setValue(document.publication_end_by);
             }
         }];
 
@@ -1213,114 +1328,9 @@ Imcms.define("imcms-page-info-builder",
         function loadPageInfoDataFromDocumentBy(docId) {
             documentsRestApi.read(docId, function (document) {
                 pageInfoElements.$title.text("document " + document.id);
-
-
-                var appearanceTab = pageInfoElements.appearance,
-
-                    englishLanguage = document.languages["eng"],
-                    swedishLanguage = document.languages["swe"];
-
-                appearanceTab.$engCheckbox.setLabelText(englishLanguage.name)
-                    .setValue(englishLanguage.enabled);
-                appearanceTab.$engPageTitle.setValue(englishLanguage.title);
-                appearanceTab.$engMenuText.setValue(englishLanguage.menu_text);
-
-                appearanceTab.$sweCheckbox.setLabelText(swedishLanguage.name)
-                    .setValue(swedishLanguage.enabled);
-                appearanceTab.$swePageTitle.setValue(swedishLanguage.title);
-                appearanceTab.$sweMenuText.setValue(swedishLanguage.menu_text);
-
-                appearanceTab.$showIn.selectValue(document.show_in);
-
-                appearanceTab.$documentAlias.setValue(document.alias);
-
-                var lifeCycleTab = pageInfoElements.lifeCycle;
-
-                lifeCycleTab.$docStatusSelect.selectValue(document.status);
-
-                lifeCycleTab.publishDate.setDate(document.published_date);
-                lifeCycleTab.publishTime.setTime(document.published_time);
-                lifeCycleTab.publishDateTime.date.setDate(document.published_date);
-                lifeCycleTab.publishDateTime.time.setTime(document.published_time);
-
-                lifeCycleTab.archivedDate.setDate(document.archived_date);
-                lifeCycleTab.archivedTime.setTime(document.archived_time);
-                lifeCycleTab.archivedDateTime.date.setDate(document.archived_date);
-                lifeCycleTab.archivedDateTime.time.setTime(document.archived_time);
-
-                lifeCycleTab.publishEndDate.setDate(document.publication_end_date);
-                lifeCycleTab.publishEndTime.setTime(document.publication_end_time);
-                lifeCycleTab.publishEndDateTime.date.setDate(document.publication_end_date);
-                lifeCycleTab.publishEndDateTime.time.setTime(document.publication_end_time);
-
-                lifeCycleTab.$publisherSelect.selectValue(document.publisher);
-
-                components.radios.group(lifeCycleTab.$showDefaultLang, lifeCycleTab.$doNotShow)
-                    .checkAmongGroup(document.if_requested_lang_missing_doc_opts);
-
-                pageInfoElements.lifeCycle.$currentVersionNumber.setValue(document.currentVersion);
-                pageInfoElements.lifeCycle.docVersionSaveDateTime.date.setDate(document.currentVersionDate);
-                pageInfoElements.lifeCycle.docVersionSaveDateTime.time.setTime(document.currentVersionTime);
-
-                var keywordsTab = pageInfoElements.keywords;
-
-                document.keywords.forEach(keywordsTab.$keywordsBox.addKeyword);
-
-                keywordsTab.$searchDisableCheckbox.setValue(document.disable_search);
-
-                //todo categories based on callback after build
-
-                //todo access based on callback after build
-
-                var permissionsTab = pageInfoElements.permissions,
-
-                    restrictedCheckboxes = {};
-
-                permissionsTab.restrictedCheckboxes.forEach(function (permission) {
-                    restrictedCheckboxes[permission.find("input").prop("name")] = permission;
+                tabsData.forEach(function (tab) {
+                    tab.fillTabDataFromDocument(document);
                 });
-
-                document.permissions.forEach(function (permission, index) {
-                    var edit_text = "edit_text",
-                        edit_menu = "edit_menu",
-                        edit_image = "edit_image",
-                        edit_loop = "edit_loop",
-                        edit_doc_info = "edit_doc_info";
-
-                    restrictedCheckboxes[edit_text + index].setValue(permission[edit_text]);
-                    restrictedCheckboxes[edit_menu + index].setValue(permission[edit_menu]);
-                    restrictedCheckboxes[edit_image + index].setValue(permission[edit_image]);
-                    restrictedCheckboxes[edit_loop + index].setValue(permission[edit_loop]);
-                    restrictedCheckboxes[edit_doc_info + index].setValue(permission[edit_doc_info]);
-                });
-
-                var templatesTab = pageInfoElements.templates;
-
-                templatesTab.$templateSelect.selectValue(document.template);
-                templatesTab.$defaultChildTemplateSelect.selectValue(document.child_template);
-
-                var statusTab = pageInfoElements.status;
-
-                statusTab.createdDate.setDate(document.created_date);
-                statusTab.createdTime.setTime(document.created_time);
-                statusTab.$createdBy.setValue(document.created_by);
-
-                statusTab.modifiedDate.setDate(document.modified_date);
-                statusTab.modifiedTime.setTime(document.modified_time);
-                statusTab.$modifiedBy.setValue(document.modified_by);
-
-                statusTab.archivedDate.setDate(document.archived_date);
-                statusTab.archivedTime.setTime(document.archived_time);
-                statusTab.$archivedBy.setValue(document.archived_by);
-
-                statusTab.publishedDate.setDate(document.published_date);
-                statusTab.publishedTime.setTime(document.published_time);
-                statusTab.$publishedBy.setValue(document.published_by);
-
-                statusTab.publicationEndDate.setDate(document.publication_end_date);
-                statusTab.publicationEndTime.setTime(document.publication_end_time);
-                statusTab.$publicationEndBy.setValue(document.publication_end_by);
-
             });
         }
 
