@@ -195,6 +195,26 @@ Imcms.define("imcms-page-info-builder",
                 ];
 
                 return buildFormBlock(tabElements, index);
+            },
+            fillTabDataFromDocument: function (document) {
+                var appearanceTab = pageInfoElements.appearance,
+
+                    englishLanguage = document.languages["eng"],
+                    swedishLanguage = document.languages["swe"];
+
+                appearanceTab.$engCheckbox.setLabelText(englishLanguage.name)
+                    .setValue(englishLanguage.enabled);
+                appearanceTab.$engPageTitle.setValue(englishLanguage.title);
+                appearanceTab.$engMenuText.setValue(englishLanguage.menu_text);
+
+                appearanceTab.$sweCheckbox.setLabelText(swedishLanguage.name)
+                    .setValue(swedishLanguage.enabled);
+                appearanceTab.$swePageTitle.setValue(swedishLanguage.title);
+                appearanceTab.$sweMenuText.setValue(swedishLanguage.menu_text);
+
+                appearanceTab.$showIn.selectValue(document.show_in);
+
+                appearanceTab.$documentAlias.setValue(document.alias);
             }
         }, {
             name: "life cycle",
@@ -488,6 +508,35 @@ Imcms.define("imcms-page-info-builder",
                 ];
 
                 return buildFormBlock(formElements, index);
+            },
+            fillTabDataFromDocument: function (document) {
+                var lifeCycleTab = pageInfoElements.lifeCycle;
+
+                lifeCycleTab.$docStatusSelect.selectValue(document.status);
+
+                lifeCycleTab.publishDate.setDate(document.published_date);
+                lifeCycleTab.publishTime.setTime(document.published_time);
+                lifeCycleTab.publishDateTime.date.setDate(document.published_date);
+                lifeCycleTab.publishDateTime.time.setTime(document.published_time);
+
+                lifeCycleTab.archivedDate.setDate(document.archived_date);
+                lifeCycleTab.archivedTime.setTime(document.archived_time);
+                lifeCycleTab.archivedDateTime.date.setDate(document.archived_date);
+                lifeCycleTab.archivedDateTime.time.setTime(document.archived_time);
+
+                lifeCycleTab.publishEndDate.setDate(document.publication_end_date);
+                lifeCycleTab.publishEndTime.setTime(document.publication_end_time);
+                lifeCycleTab.publishEndDateTime.date.setDate(document.publication_end_date);
+                lifeCycleTab.publishEndDateTime.time.setTime(document.publication_end_time);
+
+                lifeCycleTab.$publisherSelect.selectValue(document.publisher);
+
+                components.radios.group(lifeCycleTab.$showDefaultLang, lifeCycleTab.$doNotShow)
+                    .checkAmongGroup(document.if_requested_lang_missing_doc_opts);
+
+                lifeCycleTab.$currentVersionNumber.setValue(document.currentVersion);
+                lifeCycleTab.docVersionSaveDateTime.date.setDate(document.currentVersionDate);
+                lifeCycleTab.docVersionSaveDateTime.time.setTime(document.currentVersionTime);
             }
         }, {
             name: "keywords",
@@ -510,6 +559,14 @@ Imcms.define("imcms-page-info-builder",
                 ]);
 
                 return buildFormBlock([pageInfoElements.keywords.$keywordsBox, $checkboxField], index);
+            },
+            fillTabDataFromDocument: function (document) {
+                var keywordsTab = pageInfoElements.keywords;
+
+                document.keywords.forEach(keywordsTab.$keywordsBox.addKeyword);
+
+                keywordsTab.$searchDisableCheckbox.setValue(document.disable_search);
+
             }
         }, {
             name: "categories",
@@ -579,6 +636,9 @@ Imcms.define("imcms-page-info-builder",
                 });
 
                 return $categoriesBlock;
+            },
+            fillTabDataFromDocument: function (document) {
+                //todo categories based on callback after build
             }
         }, {
             name: "access",
@@ -771,6 +831,9 @@ Imcms.define("imcms-page-info-builder",
 
                 pageInfoElements.access.$accessBlock = buildFormBlock([$addRoleContainer], index);
                 return pageInfoElements.access.$accessBlock;
+            },
+            fillTabDataFromDocument: function (document) {
+                //todo access based on callback after build
             }
         }, {
             name: "permissions",
@@ -832,6 +895,29 @@ Imcms.define("imcms-page-info-builder",
                 }]);
 
                 return buildFormBlock([$permissionsWrapper], index);
+            },
+            fillTabDataFromDocument: function (document) {
+                var permissionsTab = pageInfoElements.permissions,
+
+                    restrictedCheckboxes = {};
+
+                permissionsTab.restrictedCheckboxes.forEach(function (permission) {
+                    restrictedCheckboxes[permission.find("input").prop("name")] = permission;
+                });
+
+                document.permissions.forEach(function (permission, index) {
+                    var edit_text = "edit_text",
+                        edit_menu = "edit_menu",
+                        edit_image = "edit_image",
+                        edit_loop = "edit_loop",
+                        edit_doc_info = "edit_doc_info";
+
+                    restrictedCheckboxes[edit_text + index].setValue(permission[edit_text]);
+                    restrictedCheckboxes[edit_menu + index].setValue(permission[edit_menu]);
+                    restrictedCheckboxes[edit_image + index].setValue(permission[edit_image]);
+                    restrictedCheckboxes[edit_loop + index].setValue(permission[edit_loop]);
+                    restrictedCheckboxes[edit_doc_info + index].setValue(permission[edit_doc_info]);
+                });
             }
         }, {
             name: "templates",
@@ -867,6 +953,12 @@ Imcms.define("imcms-page-info-builder",
                     pageInfoElements.templates.$defaultChildTemplateSelect
                 ];
                 return buildFormBlock(blockElements, index);
+            },
+            fillTabDataFromDocument: function (document) {
+                var templatesTab = pageInfoElements.templates;
+
+                templatesTab.$templateSelect.selectValue(document.template);
+                templatesTab.$defaultChildTemplateSelect.selectValue(document.child_template);
             }
         }, {
             name: "status",
@@ -888,213 +980,236 @@ Imcms.define("imcms-page-info-builder",
 
                 // created by
 
-                var $createdTimeTitle = statusItemBEM.buildElement("label", "<div>", {text: "Created"});
-                pageInfoElements.status.$createdDate = components.dateTime.dateBoxReadOnly({id: "createdDate"});
-                pageInfoElements.status.$createdTime = components.dateTime.timeBoxReadOnly({id: "createdTime"});
-
-                var $createdDateTimeField = statusItemBEM.buildBlock("<div>", [{
-                    "label": $createdTimeTitle
-                }, {
-                    "input": pageInfoElements.status.$createdDate,
-                    modifiers: boxModifiers
-                }, {
-                    "input": pageInfoElements.status.$createdTime,
-                    modifiers: boxModifiers
-                }]);
-
-                var $createdByTitle = statusItemBEM.buildElement("label", "<div>", {text: "By"});
-                pageInfoElements.status.$createdBy = components.texts.textBox("<div>", {
-                    id: "createdBy",
-                    readonly: "readonly"
-                });
-
-                var $createdByField = statusItemBEM.buildBlock("<div>", [{
-                        "label": $createdByTitle
+                var $createdTimeTitle = statusItemBEM.buildElement("label", "<div>", {text: "Created"}),
+                    $createdDate = components.dateTime.dateBoxReadOnly({id: "createdDate"}),
+                    $createdTime = components.dateTime.timeBoxReadOnly({id: "createdTime"}),
+                    $createdDateTimeField = statusItemBEM.buildBlock("<div>", [{
+                        "label": $createdTimeTitle
                     }, {
-                        "input": pageInfoElements.status.$createdBy,
+                        "input": $createdDate,
                         modifiers: boxModifiers
-                    }]
-                );
-
-                var $created = statusFieldBEM.buildBlock("<div>", [
-                    {
-                        "item": $createdDateTimeField,
-                        modifiers: ["col-3", "float-l"]
                     }, {
-                        "item": $createdByField,
-                        modifiers: ["col-2-3", "float-l"]
-                    }]
-                );
+                        "input": $createdTime,
+                        modifiers: boxModifiers
+                    }]),
+                    $createdByTitle = statusItemBEM.buildElement("label", "<div>", {text: "By"}),
+                    $createdBy = components.texts.textBox("<div>", {
+                        id: "createdBy",
+                        readonly: "readonly"
+                    }),
+                    $createdByField = statusItemBEM.buildBlock("<div>", [{
+                            "label": $createdByTitle
+                        }, {
+                            "input": $createdBy,
+                            modifiers: boxModifiers
+                        }]
+                    ),
+                    $created = statusFieldBEM.buildBlock("<div>", [
+                        {
+                            "item": $createdDateTimeField,
+                            modifiers: ["col-3", "float-l"]
+                        }, {
+                            "item": $createdByField,
+                            modifiers: ["col-2-3", "float-l"]
+                        }]
+                    );
+
+                pageInfoElements.status.createdDate = new DatePicker($createdDate);
+                pageInfoElements.status.createdTime = new TimePicker($createdTime);
+                pageInfoElements.status.$createdBy = $createdBy;
 
                 // modified by
 
-                var $modifiedTimeTitle = statusItemBEM.buildElement("label", "<div>", {text: "Modified"});
-                pageInfoElements.status.$modifiedDate = components.dateTime.dateBoxReadOnly({id: "modifiedDate"});
-                pageInfoElements.status.$modifiedTime = components.dateTime.timeBoxReadOnly({id: "modifiedTime"});
-
-                var $modifiedDateTimeField = statusItemBEM.buildBlock("<div>", [{
-                    "label": $modifiedTimeTitle
-                }, {
-                    "input": pageInfoElements.status.$modifiedDate,
-                    modifiers: boxModifiers
-                }, {
-                    "input": pageInfoElements.status.$modifiedTime,
-                    modifiers: boxModifiers
-                }]);
-
-                var $modifiedByTitle = statusItemBEM.buildElement("label", "<div>", {text: "By"});
-                pageInfoElements.status.$modifiedBy = components.texts.textBox("<div>", {
-                    id: "modifiedBy",
-                    readonly: "readonly"
-                });
-
-                var $modifiedByField = statusItemBEM.buildBlock("<div>", [{
-                        "label": $modifiedByTitle
+                var $modifiedTimeTitle = statusItemBEM.buildElement("label", "<div>", {text: "Modified"}),
+                    $modifiedDate = components.dateTime.dateBoxReadOnly({id: "modifiedDate"}),
+                    $modifiedTime = components.dateTime.timeBoxReadOnly({id: "modifiedTime"}),
+                    $modifiedDateTimeField = statusItemBEM.buildBlock("<div>", [{
+                        "label": $modifiedTimeTitle
                     }, {
-                        "input": pageInfoElements.status.$modifiedBy,
+                        "input": $modifiedDate,
                         modifiers: boxModifiers
-                    }]
-                );
-
-                var $modified = statusFieldBEM.buildBlock("<div>", [
-                    {
-                        "item": $modifiedDateTimeField,
-                        modifiers: ["col-3", "float-l"]
                     }, {
-                        "item": $modifiedByField,
-                        modifiers: ["col-2-3", "float-l"]
-                    }]
-                );
+                        "input": $modifiedTime,
+                        modifiers: boxModifiers
+                    }]),
+                    $modifiedByTitle = statusItemBEM.buildElement("label", "<div>", {text: "By"}),
+                    $modifiedBy = components.texts.textBox("<div>", {
+                        id: "modifiedBy",
+                        readonly: "readonly"
+                    }),
+                    $modifiedByField = statusItemBEM.buildBlock("<div>", [{
+                            "label": $modifiedByTitle
+                        }, {
+                            "input": $modifiedBy,
+                            modifiers: boxModifiers
+                        }]
+                    ),
+                    $modified = statusFieldBEM.buildBlock("<div>", [
+                        {
+                            "item": $modifiedDateTimeField,
+                            modifiers: ["col-3", "float-l"]
+                        }, {
+                            "item": $modifiedByField,
+                            modifiers: ["col-2-3", "float-l"]
+                        }]
+                    );
+
+                pageInfoElements.status.modifiedDate = new DatePicker($modifiedDate);
+                pageInfoElements.status.modifiedTime = new TimePicker($modifiedTime);
+                pageInfoElements.status.$modifiedBy = $modifiedBy;
 
                 // archived
 
-                var $archivedTimeTitle = statusItemBEM.buildElement("label", "<div>", {text: "Archived"});
-                pageInfoElements.status.$archivedDate = components.dateTime.dateBoxReadOnly({id: "archivedDate"});
-                pageInfoElements.status.$archivedTime = components.dateTime.timeBoxReadOnly({id: "archivedTime"});
-
-                var $archivedDateTimeField = statusItemBEM.buildBlock("<div>", [{
-                    "label": $archivedTimeTitle
-                }, {
-                    "input": pageInfoElements.status.$archivedDate,
-                    modifiers: boxModifiers
-                }, {
-                    "input": pageInfoElements.status.$archivedTime,
-                    modifiers: boxModifiers
-                }]);
-
-                var $archivedByTitle = statusItemBEM.buildElement("label", "<div>", {text: "By"});
-                pageInfoElements.status.$archivedBy = components.texts.textBox("<div>", {
-                    id: "archivedBy",
-                    readonly: "readonly"
-                });
-
-                var $archivedByField = statusItemBEM.buildBlock("<div>", [{
-                        "label": $archivedByTitle
+                var $archivedTimeTitle = statusItemBEM.buildElement("label", "<div>", {text: "Archived"}),
+                    $archivedDate = components.dateTime.dateBoxReadOnly({id: "archivedDate"}),
+                    $archivedTime = components.dateTime.timeBoxReadOnly({id: "archivedTime"}),
+                    $archivedDateTimeField = statusItemBEM.buildBlock("<div>", [{
+                        "label": $archivedTimeTitle
                     }, {
-                        "input": pageInfoElements.status.$archivedBy,
+                        "input": $archivedDate,
                         modifiers: boxModifiers
-                    }]
-                );
-
-                var $archived = statusFieldBEM.buildBlock("<div>", [
-                    {
-                        "item": $archivedDateTimeField,
-                        modifiers: ["col-3", "float-l"]
                     }, {
-                        "item": $archivedByField,
-                        modifiers: ["col-2-3", "float-l"]
-                    }]
-                );
+                        "input": $archivedTime,
+                        modifiers: boxModifiers
+                    }]),
+                    $archivedByTitle = statusItemBEM.buildElement("label", "<div>", {text: "By"}),
+                    $archivedBy = components.texts.textBox("<div>", {
+                        id: "archivedBy",
+                        readonly: "readonly"
+                    }),
+                    $archivedByField = statusItemBEM.buildBlock("<div>", [{
+                            "label": $archivedByTitle
+                        }, {
+                            "input": $archivedBy,
+                            modifiers: boxModifiers
+                        }]
+                    ),
+                    $archived = statusFieldBEM.buildBlock("<div>", [
+                        {
+                            "item": $archivedDateTimeField,
+                            modifiers: ["col-3", "float-l"]
+                        }, {
+                            "item": $archivedByField,
+                            modifiers: ["col-2-3", "float-l"]
+                        }]
+                    );
+
+                pageInfoElements.status.archivedDate = new DatePicker($archivedDate);
+                pageInfoElements.status.archivedTime = new TimePicker($archivedTime);
+                pageInfoElements.status.$archivedBy = $archivedBy;
 
                 // published
 
-                var $publishedTimeTitle = statusItemBEM.buildElement("label", "<div>", {text: "Published"});
-                pageInfoElements.status.$publishedDate = components.dateTime.dateBoxReadOnly({id: "publishedDate"});
-                pageInfoElements.status.$publishedTime = components.dateTime.timeBoxReadOnly({id: "publishedTime"});
-
-                var $publishedDateTimeField = statusItemBEM.buildBlock("<div>", [{
-                    "label": $publishedTimeTitle
-                }, {
-                    "input": pageInfoElements.status.$publishedDate,
-                    modifiers: boxModifiers
-                }, {
-                    "input": pageInfoElements.status.$publishedTime,
-                    modifiers: boxModifiers
-                }]);
-
-                var $publishedByTitle = statusItemBEM.buildElement("label", "<div>", {text: "By"});
-                pageInfoElements.status.$publishedBy = components.texts.textBox("<div>", {
-                    id: "publishedBy",
-                    readonly: "readonly"
-                });
-
-                var $publishedByField = statusItemBEM.buildBlock("<div>", [{
-                        "label": $publishedByTitle
+                var $publishedTimeTitle = statusItemBEM.buildElement("label", "<div>", {text: "Published"}),
+                    $publishedDate = components.dateTime.dateBoxReadOnly({id: "publishedDate"}),
+                    $publishedTime = components.dateTime.timeBoxReadOnly({id: "publishedTime"}),
+                    $publishedDateTimeField = statusItemBEM.buildBlock("<div>", [{
+                        "label": $publishedTimeTitle
                     }, {
-                        "input": pageInfoElements.status.$publishedBy,
+                        "input": $publishedDate,
                         modifiers: boxModifiers
-                    }]
-                );
-
-                var $published = statusFieldBEM.buildBlock("<div>", [
-                    {
-                        "item": $publishedDateTimeField,
-                        modifiers: ["col-3", "float-l"]
                     }, {
-                        "item": $publishedByField,
-                        modifiers: ["col-2-3", "float-l"]
-                    }]
-                );
-
-                // publish end
-
-                var $publishEndTimeTitle = statusItemBEM.buildElement("label", "<div>", {text: "Publish end"});
-                pageInfoElements.status.$publishEndDate = components.dateTime.dateBoxReadOnly({id: "publishEndDate"});
-                pageInfoElements.status.$publishEndTime = components.dateTime.timeBoxReadOnly({id: "publishEndTime"});
-
-                var $publishEndDateTimeField = statusItemBEM.buildBlock("<div>", [{
-                    "label": $publishEndTimeTitle
-                }, {
-                    "input": pageInfoElements.status.$publishEndDate,
-                    modifiers: boxModifiers
-                }, {
-                    "input": pageInfoElements.status.$publishEndTime,
-                    modifiers: boxModifiers
-                }]);
-
-                var $publishEndByTitle = statusItemBEM.buildElement("label", "<div>", {text: "By"});
-                pageInfoElements.status.$publishEndBy = components.texts.textBox("<div>", {
-                    id: "publishEndBy",
-                    readonly: "readonly"
-                });
-
-                var $publishEndByField = statusItemBEM.buildBlock("<div>", [{
-                        "label": $publishEndByTitle
-                    }, {
-                        "input": pageInfoElements.status.$publishEndBy,
+                        "input": $publishedTime,
                         modifiers: boxModifiers
-                    }]
-                );
+                    }]),
+                    $publishedByTitle = statusItemBEM.buildElement("label", "<div>", {text: "By"}),
+                    $publishedBy = components.texts.textBox("<div>", {
+                        id: "publishedBy",
+                        readonly: "readonly"
+                    }),
+                    $publishedByField = statusItemBEM.buildBlock("<div>", [{
+                            "label": $publishedByTitle
+                        }, {
+                            "input": $publishedBy,
+                            modifiers: boxModifiers
+                        }]
+                    ),
+                    $published = statusFieldBEM.buildBlock("<div>", [
+                        {
+                            "item": $publishedDateTimeField,
+                            modifiers: ["col-3", "float-l"]
+                        }, {
+                            "item": $publishedByField,
+                            modifiers: ["col-2-3", "float-l"]
+                        }]
+                    );
 
-                var $publishEnd = statusFieldBEM.buildBlock("<div>", [
-                    {
-                        "item": $publishEndDateTimeField,
-                        modifiers: ["col-3", "float-l"]
+                pageInfoElements.status.publishedDate = new DatePicker($publishedDate);
+                pageInfoElements.status.publishedTime = new TimePicker($publishedTime);
+                pageInfoElements.status.$publishedBy = $publishedBy;
+
+                // publication end
+
+                var $publicationEndTimeTitle = statusItemBEM.buildElement("label", "<div>", {text: "Publication end"}),
+                    $publicationEndDate = components.dateTime.dateBoxReadOnly({id: "publishEndDate"}),
+                    $publicationEndTime = components.dateTime.timeBoxReadOnly({id: "publishEndTime"}),
+                    $publicationEndDateTimeField = statusItemBEM.buildBlock("<div>", [{
+                        "label": $publicationEndTimeTitle
                     }, {
-                        "item": $publishEndByField,
-                        modifiers: ["col-2-3", "float-l"]
-                    }]
-                );
+                        "input": $publicationEndDate,
+                        modifiers: boxModifiers
+                    }, {
+                        "input": $publicationEndTime,
+                        modifiers: boxModifiers
+                    }]),
+                    $publicationEndByTitle = statusItemBEM.buildElement("label", "<div>", {text: "By"}),
+                    $publicationEndBy = components.texts.textBox("<div>", {
+                        id: "publishEndBy",
+                        readonly: "readonly"
+                    }),
+                    $publicationEndByField = statusItemBEM.buildBlock("<div>", [{
+                            "label": $publicationEndByTitle
+                        }, {
+                            "input": $publicationEndBy,
+                            modifiers: boxModifiers
+                        }]
+                    ),
+                    $publicationEnd = statusFieldBEM.buildBlock("<div>", [
+                        {
+                            "item": $publicationEndDateTimeField,
+                            modifiers: ["col-3", "float-l"]
+                        }, {
+                            "item": $publicationEndByField,
+                            modifiers: ["col-2-3", "float-l"]
+                        }]
+                    );
+
+                pageInfoElements.status.publicationEndDate = new DatePicker($publicationEndDate);
+                pageInfoElements.status.publicationEndTime = new TimePicker($publicationEndTime);
+                pageInfoElements.status.$publicationEndBy = $publicationEndBy;
 
                 var blockElements = [
                     $created,
                     $modified,
                     $archived,
                     $published,
-                    $publishEnd
+                    $publicationEnd
                 ];
 
                 return buildFormBlock(blockElements, index);
+            },
+            fillTabDataFromDocument: function (document) {
+                var statusTab = pageInfoElements.status;
+
+                statusTab.createdDate.setDate(document.created_date);
+                statusTab.createdTime.setTime(document.created_time);
+                statusTab.$createdBy.setValue(document.created_by);
+
+                statusTab.modifiedDate.setDate(document.modified_date);
+                statusTab.modifiedTime.setTime(document.modified_time);
+                statusTab.$modifiedBy.setValue(document.modified_by);
+
+                statusTab.archivedDate.setDate(document.archived_date);
+                statusTab.archivedTime.setTime(document.archived_time);
+                statusTab.$archivedBy.setValue(document.archived_by);
+
+                statusTab.publishedDate.setDate(document.published_date);
+                statusTab.publishedTime.setTime(document.published_time);
+                statusTab.$publishedBy.setValue(document.published_by);
+
+                statusTab.publicationEndDate.setDate(document.publication_end_date);
+                statusTab.publicationEndTime.setTime(document.publication_end_time);
+                statusTab.$publicationEndBy.setValue(document.publication_end_by);
             }
         }];
 
@@ -1213,105 +1328,9 @@ Imcms.define("imcms-page-info-builder",
         function loadPageInfoDataFromDocumentBy(docId) {
             documentsRestApi.read(docId, function (document) {
                 pageInfoElements.$title.text("document " + document.id);
-
-                // appearance
-
-                var appearanceTab = pageInfoElements.appearance,
-                    englishLanguage = document.languages["eng"],
-                    swedishLanguage = document.languages["swe"];
-
-                appearanceTab.$engCheckbox.setLabelText(englishLanguage.name)
-                    .setValue(englishLanguage.enabled);
-                appearanceTab.$engPageTitle.setValue(englishLanguage.title);
-                appearanceTab.$engMenuText.setValue(englishLanguage.menu_text);
-
-                appearanceTab.$sweCheckbox.setLabelText(swedishLanguage.name)
-                    .setValue(swedishLanguage.enabled);
-                appearanceTab.$swePageTitle.setValue(swedishLanguage.title);
-                appearanceTab.$sweMenuText.setValue(swedishLanguage.menu_text);
-
-                appearanceTab.$showIn.selectValue(document.show_in);
-
-                appearanceTab.$documentAlias.setValue(document.alias);
-
-                // life cycle
-
-                var lifeCycleTab = pageInfoElements.lifeCycle;
-
-                lifeCycleTab.$docStatusSelect.selectValue(document.status);
-
-                lifeCycleTab.publishDate.setDate(document.published_date);
-                lifeCycleTab.publishTime.setTime(document.published_time);
-                lifeCycleTab.publishDateTime.date.setDate(document.published_date);
-                lifeCycleTab.publishDateTime.time.setTime(document.published_time);
-
-                lifeCycleTab.archivedDate.setDate(document.archived_date);
-                lifeCycleTab.archivedTime.setTime(document.archived_time);
-                lifeCycleTab.archivedDateTime.date.setDate(document.archived_date);
-                lifeCycleTab.archivedDateTime.time.setTime(document.archived_time);
-
-                lifeCycleTab.publishEndDate.setDate(document.publication_end_date);
-                lifeCycleTab.publishEndTime.setTime(document.publication_end_time);
-                lifeCycleTab.publishEndDateTime.date.setDate(document.publication_end_date);
-                lifeCycleTab.publishEndDateTime.time.setTime(document.publication_end_time);
-
-                lifeCycleTab.$publisherSelect.selectValue(document.publisher);
-
-                components.radios.group(lifeCycleTab.$showDefaultLang, lifeCycleTab.$doNotShow)
-                    .checkAmongGroup(document.if_requested_lang_missing_doc_opts);
-
-                pageInfoElements.lifeCycle.$currentVersionNumber.setValue(document.currentVersion);
-                pageInfoElements.lifeCycle.docVersionSaveDateTime.date.setDate(document.currentVersionDate);
-                pageInfoElements.lifeCycle.docVersionSaveDateTime.time.setTime(document.currentVersionTime);
-
-                // keywords
-
-                var keywordsTab = pageInfoElements.keywords;
-
-                document.keywords.forEach(keywordsTab.$keywordsBox.addKeyword);
-
-                keywordsTab.$searchDisableCheckbox.setValue(document.disable_search);
-
-                // categories
-
-                //todo based on callback after build
-
-                // access
-
-                //todo based on callback after build
-
-                // permissions
-
-                var restrictedCheckboxes = {};
-
-                pageInfoElements.permissions.restrictedCheckboxes.forEach(function (permission) {
-                    restrictedCheckboxes[permission.find("input").prop("name")] = permission;
+                tabsData.forEach(function (tab) {
+                    tab.fillTabDataFromDocument(document);
                 });
-
-                document.permissions.forEach(function (permission, index) {
-                    var edit_text = "edit_text",
-                        edit_menu = "edit_menu",
-                        edit_image = "edit_image",
-                        edit_loop = "edit_loop",
-                        edit_doc_info = "edit_doc_info";
-
-                    restrictedCheckboxes[edit_text + index].setValue(permission[edit_text]);
-                    restrictedCheckboxes[edit_menu + index].setValue(permission[edit_menu]);
-                    restrictedCheckboxes[edit_image + index].setValue(permission[edit_image]);
-                    restrictedCheckboxes[edit_loop + index].setValue(permission[edit_loop]);
-                    restrictedCheckboxes[edit_doc_info + index].setValue(permission[edit_doc_info]);
-                });
-
-                // templates
-
-                var templatesTab = pageInfoElements.templates;
-
-                templatesTab.$templateSelect.selectValue(document.template);
-                templatesTab.$defaultChildTemplateSelect.selectValue(document.child_template);
-
-                // status
-
-
             });
         }
 
