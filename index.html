@@ -63,7 +63,7 @@
                     <div class="demo-loop-content__image">Lorem ipsum dolor sit amet, consectetur adipiscing</div>
                     <div class="demo-loop-content__text-area demo-loop-texts">
                         <div class="demo-loop-texts__text-area demo-text-area demo-text-area--left">
-                            <div class="imcms-text-edit-area">
+                            <div class="imcms-text-edit-area imcms-text-edit-area--form">
                                 <p>Title Name 1</p>
 
                                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent ultrices dui ac mauris
@@ -79,7 +79,7 @@
                             </div>
                         </div>
                         <div class="demo-loop-texts__text-area demo-text-area demo-text-area--right">
-                            <div class="imcms-text-edit-area">
+                            <div class="imcms-text-edit-area imcms-text-edit-area--form">
                                 <p>Title Name 2</p>
 
                                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent ultrices dui ac mauris
@@ -106,7 +106,7 @@
                 </div>
                 <div class="imcms-editor-area">
                     <div class="imcms-editor-area__content imcms-editor-content">
-                        <div class="imcms-text-edit-area">
+                        <div class="imcms-text-edit-area imcms-text-edit-area--inline">
                             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent ultrices dui ac mauris
                             facilisis ornare. Morbi congue mauris non eros ultrices porta.
                         </div>
@@ -125,7 +125,7 @@
                 </div>
                 <div class="imcms-editor-area">
                     <div class="imcms-editor-area__content imcms-editor-content">
-                        <div class="imcms-text-edit-area">
+                        <div class="imcms-text-edit-area imcms-text-edit-area--inline">
                             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent ultrices dui ac mauris
                             facilisis ornare. Morbi congue mauris non eros ultrices porta.
                         </div>
@@ -144,7 +144,7 @@
                 </div>
                 <div class="imcms-editor-area">
                     <div class="imcms-editor-area__content imcms-editor-content">
-                        <div class="imcms-text-edit-area">
+                        <div class="imcms-text-edit-area imcms-text-edit-area--inline">
                             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent ultrices dui ac mauris
                             facilisis ornare. Morbi congue mauris non eros ultrices porta.
                         </div>
@@ -162,8 +162,19 @@
 <script async src="scripts/imcms_main.js" data-name="imcms" data-main="scripts/demo.js"></script>
 <script>
     tinymce.init({
-        selector: '.imcms-text-edit-area',
+        selector: '.imcms-text-edit-area--inline',
         inline: true,
+        skin: 'white',
+        plugins: [
+            'advlist autolink link image lists charmap preview hr anchor pagebreak spellchecker',
+            'searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime nonbreaking',
+            'save table contextmenu directionality paste'
+        ],
+        toolbar: 'code | bold italic underline strikethrough | bullist numlist | alignleft aligncenter alignright alignjustify | link image | fullscreen | save',
+        menubar: false
+    });
+    tinymce.init({
+        selector: '.imcms-text-edit-area--form',
         skin: 'white',
         plugins: [
             'advlist autolink link image lists charmap preview hr anchor pagebreak spellchecker',
