@@ -164,7 +164,14 @@
     tinymce.init({
         selector: '.imcms-text-edit-area',
         inline: true,
-        skin: 'white'
+        skin: 'white',
+        plugins: [
+            'advlist autolink link image lists charmap preview hr anchor pagebreak spellchecker',
+            'searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime nonbreaking',
+            'save table contextmenu directionality paste'
+        ],
+        toolbar: 'code | bold italic underline strikethrough | bullist numlist | alignleft aligncenter alignright alignjustify | link image | fullscreen | save',
+        menubar: false
     });
 </script>
 </html>
