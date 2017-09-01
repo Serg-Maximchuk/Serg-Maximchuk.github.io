@@ -189,11 +189,11 @@ Imcms.define("imcms-image-content-builder",
                     onConfirm({
                         path: opts.folder.path,
                         name: folderName
-                    })
-                        .done(onSuccess.bind({
+                    }).done(onSuccess.bind({
                             parentLevel: opts.level,
                             $block: $folderCreationBlock
-                        }));
+                        })
+                    );
                 }
             });
 
