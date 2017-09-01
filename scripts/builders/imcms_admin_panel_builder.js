@@ -25,7 +25,11 @@ Imcms.define("imcms-admin-panel-builder",
         }
 
         function goToEditMode() {
-            window.location = "edit_mode.html";
+            window.location = "edit_mode.html"; // todo: temporary demo pages, should be changed!!!1
+        }
+
+        function goToPublicMode() {
+            window.location = "index.html"; // todo: temporary demo pages, should be changed!!!1
         }
 
         function buildPanelButtons() {
@@ -47,7 +51,7 @@ Imcms.define("imcms-admin-panel-builder",
             var buttons = [
                 {
                     content: "public",
-                    onClick: getNotImplementedButtonClick("public view click"),
+                    onClick: goToPublicMode,
                     modifiers: ["public"]
                 }, {
                     content: "edit",
