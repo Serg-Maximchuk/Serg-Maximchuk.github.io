@@ -21,19 +21,17 @@ Imcms.define("imcms-page-info-builder",
             }
         });
 
-        var pageInfoElements = {};
-
         function buildPageInfoHead() {
             var pageInfoHeadBEM = new BEM({
-                block: "imcms-head",
-                elements: {
-                    "title": "imcms-title"
-                }
-            });
+                    block: "imcms-head",
+                    elements: {
+                        "title": "imcms-title"
+                    }
+                }),
 
-            pageInfoElements.$title = pageInfoHeadBEM.buildElement("title", "<div>");
+                $title = pageInfoHeadBEM.buildElement("title", "<div>", {id: "page-info-title"});
 
-            return pageInfoHeadBEM.buildBlock("<div>", [{"title": pageInfoElements.$title}]);
+            return pageInfoHeadBEM.buildBlock("<div>", [{"title": $title}]);
         }
 
         function showPanel(index) {
@@ -51,6 +49,7 @@ Imcms.define("imcms-page-info-builder",
 
         var tabsData = [{
             name: "appearance",
+            data: {},
             buildTab: function (index) {
                 var pageInfoInnerStructureBEM = new BEM({
                     block: "imcms-field",
@@ -63,41 +62,39 @@ Imcms.define("imcms-page-info-builder",
                     }
                 });
 
-                pageInfoElements.appearance = {};
-
-                pageInfoElements.appearance.$engCheckbox = components.checkboxes.imcmsCheckbox("<div>", {
+                this.data.$engCheckbox = components.checkboxes.imcmsCheckbox("<div>", {
                     name: "english",
                     text: "English",
                     checked: "checked"
                 });
 
                 var $engCheckboxWrapper = components.checkboxes.checkboxContainer("<div>", [
-                    pageInfoElements.appearance.$engCheckbox
+                    this.data.$engCheckbox
                 ]);
                 var $engCheckboxContainer = pageInfoInnerStructureBEM.buildBlock("<div>", [{
                     "checkboxes": $engCheckboxWrapper
                 }]);
 
-                pageInfoElements.appearance.$engPageTitle = components.texts.textBox("<div>", {
+                this.data.$engPageTitle = components.texts.textBox("<div>", {
                     name: "title",
                     text: "Title",
                     placeholder: "Start page"
                 });
 
                 var $pageTitleContainer = pageInfoInnerStructureBEM.buildBlock("<div>", [
-                    {"text-box": pageInfoElements.appearance.$engPageTitle}
+                    {"text-box": this.data.$engPageTitle}
                 ]);
 
-                pageInfoElements.appearance.$engMenuText = components.texts.textArea("<div>", {
+                this.data.$engMenuText = components.texts.textArea("<div>", {
                     text: "Menu text",
                     name: "menu-text"
                 });
 
                 var $menuTextContainer = pageInfoInnerStructureBEM.buildBlock("<div>", [
-                    {"text-area": pageInfoElements.appearance.$engMenuText}
+                    {"text-area": this.data.$engMenuText}
                 ]);
 
-                pageInfoElements.appearance.$engLinkToImage = components.chooseImage.container("<div>", {
+                this.data.$engLinkToImage = components.chooseImage.container("<div>", {
                     id: "path-to-image",
                     name: "image",
                     placeholder: "Image path",
@@ -106,41 +103,41 @@ Imcms.define("imcms-page-info-builder",
                 });
 
                 var $linkToImageContainer = pageInfoInnerStructureBEM.buildBlock("<div>", [{
-                    "choose-image": pageInfoElements.appearance.$engLinkToImage
+                    "choose-image": this.data.$engLinkToImage
                 }]);
 
-                pageInfoElements.appearance.$sweCheckbox = components.checkboxes.imcmsCheckbox("<div>", {
+                this.data.$sweCheckbox = components.checkboxes.imcmsCheckbox("<div>", {
                     name: "swedish",
                     text: "Swedish"
                 });
 
                 var $sweCheckboxWrapper = components.checkboxes.checkboxContainer("<div>", [
-                        pageInfoElements.appearance.$sweCheckbox
+                        this.data.$sweCheckbox
                     ]),
                     $sweCheckboxContainer = pageInfoInnerStructureBEM.buildBlock("<div>", [{
                         "checkboxes": $sweCheckboxWrapper
                     }]);
 
-                pageInfoElements.appearance.$swePageTitle = components.texts.textBox("<div>", {
+                this.data.$swePageTitle = components.texts.textBox("<div>", {
                     name: "title",
                     text: "Title",
                     placeholder: "Startsida"
                 });
 
                 var $pageTitleSweContainer = pageInfoInnerStructureBEM.buildBlock("<div>", [{
-                    "text-box": pageInfoElements.appearance.$swePageTitle
+                    "text-box": this.data.$swePageTitle
                 }]);
 
-                pageInfoElements.appearance.$sweMenuText = components.texts.textArea("<div>", {
+                this.data.$sweMenuText = components.texts.textArea("<div>", {
                     text: "Menu text",
                     name: "menu-text"
                 });
 
                 var $menuTextSweContainer = pageInfoInnerStructureBEM.buildBlock("<div>", [{
-                    "text-area": pageInfoElements.appearance.$sweMenuText
+                    "text-area": this.data.$sweMenuText
                 }]);
 
-                pageInfoElements.appearance.$linkToImageSwe = components.chooseImage.container("<div>", {
+                this.data.$linkToImageSwe = components.chooseImage.container("<div>", {
                     id: "path-to-image-swe",
                     name: "image",
                     placeholder: "Image path",
@@ -149,10 +146,10 @@ Imcms.define("imcms-page-info-builder",
                 });
 
                 var $linkToImageSweContainer = pageInfoInnerStructureBEM.buildBlock("<div>", [{
-                    "choose-image": pageInfoElements.appearance.$linkToImageSwe
+                    "choose-image": this.data.$linkToImageSwe
                 }]);
 
-                pageInfoElements.appearance.$showIn = components.selects.imcmsSelect("<div>", {
+                this.data.$showIn = components.selects.imcmsSelect("<div>", {
                     id: "show-in",
                     text: "Show in",
                     name: "show-in"
@@ -168,17 +165,17 @@ Imcms.define("imcms-page-info-builder",
                 }]);
 
                 var $showInContainer = pageInfoInnerStructureBEM.buildBlock("<div>", [
-                    {"select": pageInfoElements.appearance.$showIn}
+                    {"select": this.data.$showIn}
                 ]);
 
-                pageInfoElements.appearance.$documentAlias = components.texts.textBox("<div>", {
+                this.data.$documentAlias = components.texts.textBox("<div>", {
                     name: "alias",
                     text: "Document alias",
                     placeholder: "this-doc-alias"
                 });
 
                 var $documentAliasContainer = pageInfoInnerStructureBEM.buildBlock("<div>", [
-                    {"text-box": pageInfoElements.appearance.$documentAlias}
+                    {"text-box": this.data.$documentAlias}
                 ]);
 
                 var tabElements = [
@@ -197,7 +194,7 @@ Imcms.define("imcms-page-info-builder",
                 return buildFormBlock(tabElements, index);
             },
             fillTabDataFromDocument: function (document) {
-                var appearanceTab = pageInfoElements.appearance,
+                var appearanceTab = this.data,
 
                     englishLanguage = document.languages["eng"],
                     swedishLanguage = document.languages["swe"];
@@ -218,6 +215,7 @@ Imcms.define("imcms-page-info-builder",
             }
         }, {
             name: "life cycle",
+            data: {},
             buildTab: function (index) {
                 var lifeCycleInnerStructureBEM = new BEM({
                         block: "imcms-field",
@@ -237,9 +235,7 @@ Imcms.define("imcms-page-info-builder",
                     console.log("%c Not implemented feature: clear time.", "color: red;")
                 }
 
-                pageInfoElements.lifeCycle = {};
-
-                pageInfoElements.lifeCycle.$docStatusSelect = components.selects.imcmsSelect("<div>", {
+                this.data.$docStatusSelect = components.selects.imcmsSelect("<div>", {
                     id: "doc-status",
                     text: "Status",
                     name: "status"
@@ -255,7 +251,7 @@ Imcms.define("imcms-page-info-builder",
                 }]);
 
                 var $docStatusSelectContainer = lifeCycleInnerStructureBEM.buildBlock("<div>", [
-                        {"select": pageInfoElements.lifeCycle.$docStatusSelect}
+                        {"select": this.data.$docStatusSelect}
                     ]),
 
                     // published date-time row
@@ -276,11 +272,11 @@ Imcms.define("imcms-page-info-builder",
                     })
                 ;
 
-                pageInfoElements.lifeCycle.publishTime = new TimePicker($publishTime);
-                pageInfoElements.lifeCycle.publishDate = new DatePicker($publishDate);
-                pageInfoElements.lifeCycle.publishDateTime = {};
-                pageInfoElements.lifeCycle.publishDateTime.date = new DatePicker($publishDateTime);
-                pageInfoElements.lifeCycle.publishDateTime.time = new TimePicker($publishDateTime);
+                this.data.publishTime = new TimePicker($publishTime);
+                this.data.publishDate = new DatePicker($publishDate);
+                this.data.publishDateTime = {};
+                this.data.publishDateTime.date = new DatePicker($publishDateTime);
+                this.data.publishDateTime.time = new TimePicker($publishDateTime);
 
                 var $clearPublishTimeContainer = components.buttons.buttonsContainer("<div>", [$clearPublishTimeBtn]),
 
@@ -323,11 +319,11 @@ Imcms.define("imcms-page-info-builder",
                     })
                 ;
 
-                pageInfoElements.lifeCycle.archivedTime = new TimePicker($archivedTime);
-                pageInfoElements.lifeCycle.archivedDate = new DatePicker($archivedDate);
-                pageInfoElements.lifeCycle.archivedDateTime = {};
-                pageInfoElements.lifeCycle.archivedDateTime.date = new DatePicker($archivedDateTime);
-                pageInfoElements.lifeCycle.archivedDateTime.time = new TimePicker($archivedDateTime);
+                this.data.archivedTime = new TimePicker($archivedTime);
+                this.data.archivedDate = new DatePicker($archivedDate);
+                this.data.archivedDateTime = {};
+                this.data.archivedDateTime.date = new DatePicker($archivedDateTime);
+                this.data.archivedDateTime.time = new TimePicker($archivedDateTime);
 
                 var $clearArchivedTimeContainer = components.buttons.buttonsContainer("<div>", [$clearArchivedTimeBtn]),
 
@@ -402,19 +398,20 @@ Imcms.define("imcms-page-info-builder",
                     ])
                 ;
 
-                pageInfoElements.lifeCycle.publishEndTime = new TimePicker($publishEndTime);
-                pageInfoElements.lifeCycle.publishEndDate = new DatePicker($publishEndDate);
-                pageInfoElements.lifeCycle.publishEndDateTime = {};
-                pageInfoElements.lifeCycle.publishEndDateTime.date = new DatePicker($publishEndDateTime);
-                pageInfoElements.lifeCycle.publishEndDateTime.time = new TimePicker($publishEndDateTime);
+                this.data.publishEndTime = new TimePicker($publishEndTime);
+                this.data.publishEndDate = new DatePicker($publishEndDate);
+                this.data.publishEndDateTime = {};
+                this.data.publishEndDateTime.date = new DatePicker($publishEndDateTime);
+                this.data.publishEndDateTime.time = new TimePicker($publishEndDateTime);
 
                 // publisher select row
 
-                pageInfoElements.lifeCycle.$publisherSelect = components.selects.imcmsSelect("<div>", {
+                this.data.$publisherSelect = components.selects.imcmsSelect("<div>", {
                     id: "doc-publisher",
                     text: "Publisher",
                     name: "publisher"
                 });
+                var parentContext = this;
                 usersRestApi.read(null, function (users) {
                     var usersDataMapped = users.map(function (user) {
                             return {
@@ -425,11 +422,11 @@ Imcms.define("imcms-page-info-builder",
                         usersDataAsSelectItems = components.selects.mapOptionsToSelectItems(usersDataMapped)
                     ;
 
-                    pageInfoElements.lifeCycle.$publisherSelect.append(usersDataAsSelectItems);
+                    parentContext.data.$publisherSelect.append(usersDataAsSelectItems);
                 });// todo receive users with specific role admin
 
                 var $publisherSelectContainer = lifeCycleInnerStructureBEM.buildBlock("<div>", [
-                    {"select": pageInfoElements.lifeCycle.$publisherSelect}
+                    {"select": this.data.$publisherSelect}
                 ]);
 
                 // languages row
@@ -438,13 +435,13 @@ Imcms.define("imcms-page-info-builder",
                     text: "If requested language is missing:"
                 });
 
-                pageInfoElements.lifeCycle.$showDefaultLang = components.radios.imcmsRadio("<div>", {
+                this.data.$showDefaultLang = components.radios.imcmsRadio("<div>", {
                     text: "Show in default language if enabled",
                     name: "langSetting",
                     value: "SHOW_DEFAULT",
                     checked: "checked"
                 });
-                pageInfoElements.lifeCycle.$doNotShow = components.radios.imcmsRadio("<div>", {
+                this.data.$doNotShow = components.radios.imcmsRadio("<div>", {
                     text: "Don't show at all",
                     name: "langSetting",
                     value: "DO_NOT_SHOW"
@@ -452,8 +449,8 @@ Imcms.define("imcms-page-info-builder",
 
                 var $languagesContainer = lifeCycleInnerStructureBEM.buildBlock("<div>", [
                     {"title": $languagesTitle},
-                    {"item": pageInfoElements.lifeCycle.$showDefaultLang},
-                    {"item": pageInfoElements.lifeCycle.$doNotShow}
+                    {"item": this.data.$showDefaultLang},
+                    {"item": this.data.$doNotShow}
                 ]);
 
                 // current version row
@@ -461,7 +458,7 @@ Imcms.define("imcms-page-info-builder",
                 var $currentVersionRowTitle = lifeCycleInnerStructureBEM.buildElement("title", "<div>", {
                     text: "Current version:"
                 });
-                pageInfoElements.lifeCycle.$currentVersionNumber = components.texts.textBox("<div>", {
+                this.data.$currentVersionNumber = components.texts.textBox("<div>", {
                     readonly: "readonly",
                     value: "0"
                 });
@@ -470,7 +467,7 @@ Imcms.define("imcms-page-info-builder",
                     $docVersionContainer = lifeCycleInnerStructureBEM.buildBlock("<div>", [
                         {"title": $currentVersionRowTitle},
                         {
-                            "item": pageInfoElements.lifeCycle.$currentVersionNumber,
+                            "item": this.data.$currentVersionNumber,
                             modifiers: itemModifiers.concat("short")
                         }, {
                             "item": $docVersionSaveDateTime,
@@ -492,9 +489,9 @@ Imcms.define("imcms-page-info-builder",
                     ])
                 ;
 
-                pageInfoElements.lifeCycle.docVersionSaveDateTime = {};
-                pageInfoElements.lifeCycle.docVersionSaveDateTime.date = new DatePicker($docVersionSaveDateTime);
-                pageInfoElements.lifeCycle.docVersionSaveDateTime.time = new TimePicker($docVersionSaveDateTime);
+                this.data.docVersionSaveDateTime = {};
+                this.data.docVersionSaveDateTime.date = new DatePicker($docVersionSaveDateTime);
+                this.data.docVersionSaveDateTime.time = new TimePicker($docVersionSaveDateTime);
 
                 var formElements = [
                     $docStatusSelectContainer,
@@ -510,7 +507,7 @@ Imcms.define("imcms-page-info-builder",
                 return buildFormBlock(formElements, index);
             },
             fillTabDataFromDocument: function (document) {
-                var lifeCycleTab = pageInfoElements.lifeCycle;
+                var lifeCycleTab = this.data;
 
                 lifeCycleTab.$docStatusSelect.selectValue(document.status);
 
@@ -540,28 +537,27 @@ Imcms.define("imcms-page-info-builder",
             }
         }, {
             name: "keywords",
+            data: {},
             buildTab: function (index) {
-                pageInfoElements.keywords = {};
-
-                pageInfoElements.keywords.$keywordsBox = components.keywords.keywordsBox("<div>", {
+                this.data.$keywordsBox = components.keywords.keywordsBox("<div>", {
                     "input-id": "keyword",
                     title: "Keywords",
                     placeholder: "keyword",
                     "button-text": "ADD+"
                 });
-                pageInfoElements.keywords.$searchDisableCheckbox = components.checkboxes.imcmsCheckbox("<div>", {
+                this.data.$searchDisableCheckbox = components.checkboxes.imcmsCheckbox("<div>", {
                     id: "isSearchDisabled",
                     name: "isSearchDisabled",
                     text: "Disable search"
                 });
                 var $checkboxField = components.checkboxes.checkboxContainerField("<div>", [
-                    pageInfoElements.keywords.$searchDisableCheckbox
+                    this.data.$searchDisableCheckbox
                 ]);
 
-                return buildFormBlock([pageInfoElements.keywords.$keywordsBox, $checkboxField], index);
+                return buildFormBlock([this.data.$keywordsBox, $checkboxField], index);
             },
             fillTabDataFromDocument: function (document) {
-                var keywordsTab = pageInfoElements.keywords;
+                var keywordsTab = this.data;
 
                 document.keywords.forEach(keywordsTab.$keywordsBox.addKeyword);
 
@@ -570,30 +566,30 @@ Imcms.define("imcms-page-info-builder",
             }
         }, {
             name: "categories",
+            data: {},
             buildTab: function (index) {
-                pageInfoElements.categories = {};
-
-                var $categoriesBlock = buildFormBlock([], index);
-                var categoriesBlockElements = [];
+                var $categoriesBlock = buildFormBlock([], index),
+                    categoriesBlockElements = [],
+                    parentContext = this;
 
                 categoriesTypesRestApi.read(null, function (categoriesTypes) {
                     categoriesTypes.forEach(function (categoryType) {
                         var $categoryType,
                             categoryTypeQualifier = "category-type-" + categoryType.id;
 
-                        pageInfoElements.categories.descriptor = [];
+                        parentContext.data.descriptor = [];
 
                         if (categoryType.multi_select) {
-                            pageInfoElements.categories[categoryTypeQualifier] = {};
+                            parentContext.data[categoryTypeQualifier] = {};
                             categoryType.categories.forEach(function (category) {
-                                pageInfoElements.categories[categoryTypeQualifier][category.id] = components.checkboxes
+                                parentContext.data[categoryTypeQualifier][category.id] = components.checkboxes
                                     .imcmsCheckbox("<div>", {
                                         name: categoryTypeQualifier,
                                         value: category.id,
                                         text: category.name
                                     });
 
-                                pageInfoElements.categories.descriptor.push({
+                                parentContext.data.descriptor.push({
                                     category_ids: [category.id],
                                     access_key_category_type_qualifier: categoryTypeQualifier,
                                     access_key_category_id: category.id,
@@ -602,7 +598,7 @@ Imcms.define("imcms-page-info-builder",
                             });
 
                             $categoryType = components.checkboxes.checkboxContainerField("<div>",
-                                Object.values(pageInfoElements.categories[categoryTypeQualifier]),
+                                Object.values(parentContext.data[categoryTypeQualifier]),
                                 {title: categoryType.name}
                             );
                         } else {
@@ -618,9 +614,9 @@ Imcms.define("imcms-page-info-builder",
                                 text: categoryType.name
                             }, mappedCategoriesForSelectContainer);
 
-                            pageInfoElements.categories[categoryTypeQualifier] = $categoryType;
+                            parentContext.data[categoryTypeQualifier] = $categoryType;
 
-                            pageInfoElements.categories.descriptor.push({
+                            parentContext.data.descriptor.push({
                                 category_ids: categoryType.categories.map(function (category) {
                                     return category.id;
                                 }),
@@ -642,9 +638,8 @@ Imcms.define("imcms-page-info-builder",
             }
         }, {
             name: "access",
+            data: {},
             buildTab: function (index) {
-                pageInfoElements.access = {};
-
 
                 // var rolesBEM = new BEM({
                 //         block: "imcms-access-role",
@@ -829,17 +824,16 @@ Imcms.define("imcms-page-info-builder",
                     $addRoleContainer = addRoleContainerBEM.buildBlock("<div>", [{"access-role": $addRoleInnerBlock}])
                 ;
 
-                pageInfoElements.access.$accessBlock = buildFormBlock([$addRoleContainer], index);
-                return pageInfoElements.access.$accessBlock;
+                this.data.$accessBlock = buildFormBlock([$addRoleContainer], index);
+                return this.data.$accessBlock;
             },
             fillTabDataFromDocument: function (document) {
                 //todo access based on callback after build
             }
         }, {
             name: "permissions",
+            data: {},
             buildTab: function (index) {
-                pageInfoElements.permissions = {};
-
                 function createRestrictedCheckboxesDependingOnIndex(index) {
                     return mapCheckboxesFromAttributesArray([{
                         name: "edit_text" + index,
@@ -884,7 +878,7 @@ Imcms.define("imcms-page-info-builder",
                     {title: "Restricted 2"}
                 );
 
-                pageInfoElements.permissions.restrictedCheckboxes = restrictedCheckboxes0.concat(restrictedCheckboxes1);
+                this.data.restrictedCheckboxes = restrictedCheckboxes0.concat(restrictedCheckboxes1);
 
                 var $permissionsWrapper = fieldItemBEM.buildBlock("<div>", [{
                     "item": $restrictedRole1Rights,
@@ -897,7 +891,7 @@ Imcms.define("imcms-page-info-builder",
                 return buildFormBlock([$permissionsWrapper], index);
             },
             fillTabDataFromDocument: function (document) {
-                var permissionsTab = pageInfoElements.permissions,
+                var permissionsTab = this.data,
 
                     restrictedCheckboxes = {};
 
@@ -921,19 +915,19 @@ Imcms.define("imcms-page-info-builder",
             }
         }, {
             name: "templates",
+            data: {},
             buildTab: function (index) {
-                pageInfoElements.templates = {};
-
-                pageInfoElements.templates.$templateSelect = components.selects.selectContainer("<div>", {
+                this.data.$templateSelect = components.selects.selectContainer("<div>", {
                     name: "template",
                     text: "Template"
                 });
 
-                pageInfoElements.templates.$defaultChildTemplateSelect = components.selects.selectContainer("<div>", {
+                this.data.$defaultChildTemplateSelect = components.selects.selectContainer("<div>", {
                     name: "childTemplate",
                     text: "Default child template"
                 });
 
+                var parentContext = this;
                 templatesRestApi.read(null, function (templates) {
                     var templatesDataMapped = templates.map(function (template) {
                         return {
@@ -943,28 +937,27 @@ Imcms.define("imcms-page-info-builder",
                     });
 
                     var $selectItems = components.selects.mapOptionsToSelectItems(templatesDataMapped);
-                    pageInfoElements.templates.$templateSelect.find(".imcms-select").append($selectItems);
-                    pageInfoElements.templates.$defaultChildTemplateSelect.find(".imcms-select")
+                    parentContext.data.$templateSelect.find(".imcms-select").append($selectItems);
+                    parentContext.data.$defaultChildTemplateSelect.find(".imcms-select")
                         .append($selectItems.clone(true, true));
                 });
 
                 var blockElements = [
-                    pageInfoElements.templates.$templateSelect,
-                    pageInfoElements.templates.$defaultChildTemplateSelect
+                    this.data.$templateSelect,
+                    this.data.$defaultChildTemplateSelect
                 ];
                 return buildFormBlock(blockElements, index);
             },
             fillTabDataFromDocument: function (document) {
-                var templatesTab = pageInfoElements.templates;
+                var templatesTab = this.data;
 
                 templatesTab.$templateSelect.selectValue(document.template);
                 templatesTab.$defaultChildTemplateSelect.selectValue(document.child_template);
             }
         }, {
             name: "status",
+            data: {},
             buildTab: function (index) {
-                pageInfoElements.status = {};
-
                 var statusFieldBEM = new BEM({
                         block: "imcms-field",
                         elements: {"item": "imcms-item"}
@@ -1014,9 +1007,9 @@ Imcms.define("imcms-page-info-builder",
                         }]
                     );
 
-                pageInfoElements.status.createdDate = new DatePicker($createdDate);
-                pageInfoElements.status.createdTime = new TimePicker($createdTime);
-                pageInfoElements.status.$createdBy = $createdBy;
+                this.data.createdDate = new DatePicker($createdDate);
+                this.data.createdTime = new TimePicker($createdTime);
+                this.data.$createdBy = $createdBy;
 
                 // modified by
 
@@ -1054,9 +1047,9 @@ Imcms.define("imcms-page-info-builder",
                         }]
                     );
 
-                pageInfoElements.status.modifiedDate = new DatePicker($modifiedDate);
-                pageInfoElements.status.modifiedTime = new TimePicker($modifiedTime);
-                pageInfoElements.status.$modifiedBy = $modifiedBy;
+                this.data.modifiedDate = new DatePicker($modifiedDate);
+                this.data.modifiedTime = new TimePicker($modifiedTime);
+                this.data.$modifiedBy = $modifiedBy;
 
                 // archived
 
@@ -1094,9 +1087,9 @@ Imcms.define("imcms-page-info-builder",
                         }]
                     );
 
-                pageInfoElements.status.archivedDate = new DatePicker($archivedDate);
-                pageInfoElements.status.archivedTime = new TimePicker($archivedTime);
-                pageInfoElements.status.$archivedBy = $archivedBy;
+                this.data.archivedDate = new DatePicker($archivedDate);
+                this.data.archivedTime = new TimePicker($archivedTime);
+                this.data.$archivedBy = $archivedBy;
 
                 // published
 
@@ -1134,9 +1127,9 @@ Imcms.define("imcms-page-info-builder",
                         }]
                     );
 
-                pageInfoElements.status.publishedDate = new DatePicker($publishedDate);
-                pageInfoElements.status.publishedTime = new TimePicker($publishedTime);
-                pageInfoElements.status.$publishedBy = $publishedBy;
+                this.data.publishedDate = new DatePicker($publishedDate);
+                this.data.publishedTime = new TimePicker($publishedTime);
+                this.data.$publishedBy = $publishedBy;
 
                 // publication end
 
@@ -1174,9 +1167,9 @@ Imcms.define("imcms-page-info-builder",
                         }]
                     );
 
-                pageInfoElements.status.publicationEndDate = new DatePicker($publicationEndDate);
-                pageInfoElements.status.publicationEndTime = new TimePicker($publicationEndTime);
-                pageInfoElements.status.$publicationEndBy = $publicationEndBy;
+                this.data.publicationEndDate = new DatePicker($publicationEndDate);
+                this.data.publicationEndTime = new TimePicker($publicationEndTime);
+                this.data.$publicationEndBy = $publicationEndBy;
 
                 var blockElements = [
                     $created,
@@ -1189,7 +1182,7 @@ Imcms.define("imcms-page-info-builder",
                 return buildFormBlock(blockElements, index);
             },
             fillTabDataFromDocument: function (document) {
-                var statusTab = pageInfoElements.status;
+                var statusTab = this.data;
 
                 statusTab.createdDate.setDate(document.created_date);
                 statusTab.createdTime.setTime(document.created_time);
@@ -1327,7 +1320,7 @@ Imcms.define("imcms-page-info-builder",
 
         function loadPageInfoDataFromDocumentBy(docId) {
             documentsRestApi.read(docId, function (document) {
-                pageInfoElements.$title.text("document " + document.id);
+                $("#page-info-title").text("document " + document.id);
                 tabsData.forEach(function (tab) {
                     tab.fillTabDataFromDocument(document);
                 });
