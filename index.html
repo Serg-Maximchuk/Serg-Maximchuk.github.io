@@ -165,24 +165,19 @@
         selector: '.imcms-text-edit-area--inline',
         inline: true,
         skin: 'white',
-        plugins: [
-            'advlist autolink link image lists charmap preview hr anchor pagebreak spellchecker',
-            'searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime nonbreaking',
-            'save table contextmenu directionality paste'
-        ],
-        toolbar: 'code | bold italic underline strikethrough | bullist numlist | alignleft aligncenter alignright alignjustify | link image | fullscreen | save',
-        menubar: false
+        plugins: ['autolink link image lists hr code fullscreen save table contextmenu'],
+        toolbar: 'code | bold italic underline | bullist numlist | hr | alignleft aligncenter alignright alignjustify | link image | fullscreen | save',
+        menubar: false,
+        statusbar: false
     });
     tinymce.init({
         selector: '.imcms-text-edit-area--form',
         skin: 'white',
-        plugins: [
-            'advlist autolink link image lists charmap preview hr anchor pagebreak spellchecker',
-            'searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime nonbreaking',
-            'save table contextmenu directionality paste'
-        ],
-        toolbar: 'code | bold italic underline strikethrough | bullist numlist | alignleft aligncenter alignright alignjustify | link image | fullscreen | save',
-        menubar: false
+        plugins: ['autolink link image lists hr code fullscreen save table contextmenu autoresize'],
+        toolbar: 'code | bold italic underline | bullist numlist | hr | alignleft aligncenter alignright alignjustify | link image | fullscreen | save',
+        autoresize_bottom_margin: 20,
+        menubar: false,
+        statusbar: false
     });
 </script>
 </html>
