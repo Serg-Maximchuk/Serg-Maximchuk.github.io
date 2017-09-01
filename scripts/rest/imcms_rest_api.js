@@ -1,12 +1,12 @@
 Imcms.define("imcms-rest-api", ["jquery"], function ($) {
     function ajax(data, callback) {
         var url = this.url;
-        // path variable case handling, it should be at the end of url
+        // path variable case handling, it should be at the end of the url
         if (typeof data === "string" || typeof data === "number") {
             url += '/' + data;
             data = {};
         }
-        $.ajax({
+        return $.ajax({
             url: url,
             type: this.type,
             data: data,
