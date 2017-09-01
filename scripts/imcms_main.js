@@ -21,7 +21,7 @@ Imcms = {
                 addon: "jquery-mask"
             },
             "tinyMCE": {
-                path: "./libs/tinymce/js/tinymce/tinymce.min.js",
+                path: "//cdn.tinymce.com/4/tinymce.min.js",
                 addon: "tinyMCE",
                 init: function () {
                     var tinyMCE = window.tinyMCE;
