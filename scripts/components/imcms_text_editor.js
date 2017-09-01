@@ -31,10 +31,17 @@ Imcms.define("imcms-text-editor", ["tinyMCE", "jquery"], function (tinyMCE, $) {
         defaultEditorConfig
     );
 
+    function initTextEditor(selector, config) {
+        config = $.extend({selector: selector}, config);
+        tinyMCE.init(config);
+    }
+
     return {
-        initTextEditor: function (selector, isInline) {
-            var config = $.extend({selector: selector}, isInline ? inlineEditorConfig : classicEditorConfig);
-            tinyMCE.init(config);
+        initTextEditorInline: function (selector) {
+            initTextEditor(selector, inlineEditorConfig);
+        },
+        initTextEditorClassic: function (selector) {
+            initTextEditor(selector, classicEditorConfig);
         }
     };
 });
