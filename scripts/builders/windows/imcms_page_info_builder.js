@@ -569,74 +569,78 @@ Imcms.define("imcms-page-info-builder",
             name: "categories",
             data: {},
             buildTab: function (index) {
-                var $categoriesBlock = buildFormBlock([], index),
-                    categoriesBlockElements = [],
+                this.data.$categoriesBlock = buildFormBlock([], index);
+                return this.data.$categoriesBlock;
+            },
+            fillTabDataFromDocument: function (document) {
+
+                function isDocumentContainsCategory(document, category) {
+                    var docCategoriesIds = document.categories.map(function (category) {
+                        return category.id;
+                    });
+
+                    return docCategoriesIds.indexOf(category.id) !== -1;
+                }
+
+                function createMultiSelectCategoryType(categoryType, document) {
+
+                    var categoryTypeAsCheckboxGroup = categoryType.categories.map(function (category) {
+                        return components.checkboxes
+                            .imcmsCheckbox("<div>", {
+                                name: "category-type-" + categoryType.id,
+                                value: category.id,
+                                text: category.name
+                            })
+                            .setValue(isDocumentContainsCategory(document, category));
+                    });
+
+                    return components.checkboxes.checkboxContainerField("<div>",
+                        categoryTypeAsCheckboxGroup,
+                        {title: categoryType.name}
+                    );
+                }
+
+                function createSingleSelectCategoryType(categoryType, document) {
+                    var mappedCategoriesForSelectContainer = categoryType.categories.map(function (category) {
+                        return {
+                            text: category.name,
+                            "data-value": category.id
+                        };
+                    });
+
+                    var $selectContainer = components.selects.selectContainer("<div>", {
+                        id: "category-type-" + categoryType.id,
+                        text: categoryType.name
+                    }, mappedCategoriesForSelectContainer);
+
+                    categoryType.categories.filter(function (category) {
+                        return isDocumentContainsCategory(document, category);
+                    }).forEach(function (category) {
+                        $selectContainer.selectValue(category.id);
+                    });
+
+                    return $selectContainer;
+                }
+
+                var categoriesBlockElements = [],
                     parentContext = this;
 
                 categoriesTypesRestApi.read(null)
                     .done(function (categoriesTypes) {
                         categoriesTypes.forEach(function (categoryType) {
-                            var $categoryType,
-                                categoryTypeQualifier = "category-type-" + categoryType.id;
-
-                            parentContext.data.descriptor = [];
-
+                            var $categoryType;
                             if (categoryType.multi_select) {
-                                parentContext.data[categoryTypeQualifier] = {};
-                                categoryType.categories.forEach(function (category) {
-                                    parentContext.data[categoryTypeQualifier][category.id] = components.checkboxes
-                                        .imcmsCheckbox("<div>", {
-                                            name: categoryTypeQualifier,
-                                            value: category.id,
-                                            text: category.name
-                                        });
-
-                                    parentContext.data.descriptor.push({
-                                        category_ids: [category.id],
-                                        access_key_category_type_qualifier: categoryTypeQualifier,
-                                        access_key_category_id: category.id,
-                                        member_of_multi_select: true
-                                    });
-                                });
-
-                                $categoryType = components.checkboxes.checkboxContainerField("<div>",
-                                    Object.values(parentContext.data[categoryTypeQualifier]),
-                                    {title: categoryType.name}
-                                );
+                                $categoryType = createMultiSelectCategoryType(categoryType, document);
                             } else {
-                                var mappedCategoriesForSelectContainer = categoryType.categories.map(function (category) {
-                                    return {
-                                        text: category.name,
-                                        value: category.id
-                                    }
-                                });
-
-                                $categoryType = components.selects.selectContainer("<div>", {
-                                    id: categoryTypeQualifier,
-                                    text: categoryType.name
-                                }, mappedCategoriesForSelectContainer);
-
-                                parentContext.data[categoryTypeQualifier] = $categoryType;
-
-                                parentContext.data.descriptor.push({
-                                    category_ids: categoryType.categories.map(function (category) {
-                                        return category.id;
-                                    }),
-                                    access_key_category_type_qualifier: categoryTypeQualifier,
-                                    member_of_multi_select: false
-                                });
+                                $categoryType = createSingleSelectCategoryType(categoryType, document);
                             }
 
                             categoriesBlockElements.push($categoryType);
 
-                            $categoriesBlock.append(categoriesBlockElements);
+                            parentContext.data.$categoriesBlock.append(categoriesBlockElements);
                         });
                     });
 
-                return $categoriesBlock;
-            },
-            fillTabDataFromDocument: function (document) {
-                //todo categories based on callback after build
             }
         }, {
             name: "access",

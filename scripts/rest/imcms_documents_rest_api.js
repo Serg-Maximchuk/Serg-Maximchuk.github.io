@@ -78,6 +78,20 @@ Imcms.define("imcms-documents-rest-api", ["imcms-rest-api"], function (rest) {
         currentVersionTime: currentTime,
         keywords: ["test", "keyword 1", "document"],
         disable_search: true,
+        categories: [
+            {
+                id: 1
+            },
+            {
+                id: 4
+            },
+            {
+                id: 5
+            },
+            {
+                id: 7
+            }
+        ],
         permissions: [
             {
                 edit_text: true,
