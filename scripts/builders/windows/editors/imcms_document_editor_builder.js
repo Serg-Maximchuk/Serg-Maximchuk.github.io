@@ -71,15 +71,16 @@ Imcms.define("imcms-document-editor-builder",
                 name: "users-filter"
             });
 
-            usersRestApi.read(null, function (users) {
-                var usersDataMapped = users.map(function (user) {
-                    return {
-                        text: user.username,
-                        "data-value": user.id
-                    }
+            usersRestApi.read(null)
+                .done(function (users) {
+                    var usersDataMapped = users.map(function (user) {
+                        return {
+                            text: user.username,
+                            "data-value": user.id
+                        }
+                    });
+                    $usersFilterSelect.append(components.selects.mapOptionsToSelectItems(usersDataMapped));
                 });
-                $usersFilterSelect.append(components.selects.mapOptionsToSelectItems(usersDataMapped));
-            });
 
             var $usersFilter = toolBEM.buildBlock("<div>", [{"select": $usersFilterSelect}]);
 
@@ -88,15 +89,16 @@ Imcms.define("imcms-document-editor-builder",
                 name: "categories-filter"
             });
 
-            categoriesRestApi.read(null, function (categories) {
-                var categoriesDataMapped = categories.map(function (category) {
-                    return {
-                        text: category.name,
-                        "data-value": category.id
-                    }
+            categoriesRestApi.read(null)
+                .done(function (categories) {
+                    var categoriesDataMapped = categories.map(function (category) {
+                        return {
+                            text: category.name,
+                            "data-value": category.id
+                        }
+                    });
+                    $categoriesFilterSelect.append(components.selects.mapOptionsToSelectItems(categoriesDataMapped));
                 });
-                $categoriesFilterSelect.append(components.selects.mapOptionsToSelectItems(categoriesDataMapped));
-            });
 
             var $categoriesFilter = toolBEM.buildBlock("<div>", [{"select": $categoriesFilterSelect}]);
 
@@ -274,10 +276,11 @@ Imcms.define("imcms-document-editor-builder",
         }
 
         function loadDocumentEditorContent(opts) {
-            docRestApi.read(null, function (documentList) {
-                var $editorBody = buildEditorBody(documentList, opts);
-                $documentsContainer.append($editorBody);
-            });
+            docRestApi.read(null)
+                .done(function (documentList) {
+                    var $editorBody = buildEditorBody(documentList, opts);
+                    $documentsContainer.append($editorBody);
+                });
         }
 
         function buildDocumentEditor() {
@@ -308,9 +311,10 @@ Imcms.define("imcms-document-editor-builder",
 
         function removeDocument(documentId) {
             var documentRow = this.parentElement.parentElement;
-            docRestApi.remove(documentId, function (responseCode) {
-                responseCode === 200 && documentRow.remove();
-            });
+            docRestApi.remove(documentId)
+                .done(function (responseCode) {
+                    responseCode === 200 && documentRow.remove();
+                });
         }
 
         return {

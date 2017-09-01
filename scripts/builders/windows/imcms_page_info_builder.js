@@ -412,18 +412,19 @@ Imcms.define("imcms-page-info-builder",
                     name: "publisher"
                 });
                 var parentContext = this;
-                usersRestApi.read(null, function (users) {
-                    var usersDataMapped = users.map(function (user) {
-                            return {
-                                text: user.username,
-                                "data-value": user.id
-                            }
-                        }),
-                        usersDataAsSelectItems = components.selects.mapOptionsToSelectItems(usersDataMapped)
-                    ;
+                usersRestApi.read(null)
+                    .done(function (users) {
+                        var usersDataMapped = users.map(function (user) {
+                                return {
+                                    text: user.username,
+                                    "data-value": user.id
+                                }
+                            }),
+                            usersDataAsSelectItems = components.selects.mapOptionsToSelectItems(usersDataMapped)
+                        ;
 
-                    parentContext.data.$publisherSelect.append(usersDataAsSelectItems);
-                });// todo receive users with specific role admin
+                        parentContext.data.$publisherSelect.append(usersDataAsSelectItems);
+                    });// todo receive users with specific role admin
 
                 var $publisherSelectContainer = lifeCycleInnerStructureBEM.buildBlock("<div>", [
                     {"select": this.data.$publisherSelect}
@@ -572,64 +573,65 @@ Imcms.define("imcms-page-info-builder",
                     categoriesBlockElements = [],
                     parentContext = this;
 
-                categoriesTypesRestApi.read(null, function (categoriesTypes) {
-                    categoriesTypes.forEach(function (categoryType) {
-                        var $categoryType,
-                            categoryTypeQualifier = "category-type-" + categoryType.id;
+                categoriesTypesRestApi.read(null)
+                    .done(function (categoriesTypes) {
+                        categoriesTypes.forEach(function (categoryType) {
+                            var $categoryType,
+                                categoryTypeQualifier = "category-type-" + categoryType.id;
 
-                        parentContext.data.descriptor = [];
+                            parentContext.data.descriptor = [];
 
-                        if (categoryType.multi_select) {
-                            parentContext.data[categoryTypeQualifier] = {};
-                            categoryType.categories.forEach(function (category) {
-                                parentContext.data[categoryTypeQualifier][category.id] = components.checkboxes
-                                    .imcmsCheckbox("<div>", {
-                                        name: categoryTypeQualifier,
-                                        value: category.id,
-                                        text: category.name
+                            if (categoryType.multi_select) {
+                                parentContext.data[categoryTypeQualifier] = {};
+                                categoryType.categories.forEach(function (category) {
+                                    parentContext.data[categoryTypeQualifier][category.id] = components.checkboxes
+                                        .imcmsCheckbox("<div>", {
+                                            name: categoryTypeQualifier,
+                                            value: category.id,
+                                            text: category.name
+                                        });
+
+                                    parentContext.data.descriptor.push({
+                                        category_ids: [category.id],
+                                        access_key_category_type_qualifier: categoryTypeQualifier,
+                                        access_key_category_id: category.id,
+                                        member_of_multi_select: true
                                     });
+                                });
+
+                                $categoryType = components.checkboxes.checkboxContainerField("<div>",
+                                    Object.values(parentContext.data[categoryTypeQualifier]),
+                                    {title: categoryType.name}
+                                );
+                            } else {
+                                var mappedCategoriesForSelectContainer = categoryType.categories.map(function (category) {
+                                    return {
+                                        text: category.name,
+                                        value: category.id
+                                    }
+                                });
+
+                                $categoryType = components.selects.selectContainer("<div>", {
+                                    id: categoryTypeQualifier,
+                                    text: categoryType.name
+                                }, mappedCategoriesForSelectContainer);
+
+                                parentContext.data[categoryTypeQualifier] = $categoryType;
 
                                 parentContext.data.descriptor.push({
-                                    category_ids: [category.id],
+                                    category_ids: categoryType.categories.map(function (category) {
+                                        return category.id;
+                                    }),
                                     access_key_category_type_qualifier: categoryTypeQualifier,
-                                    access_key_category_id: category.id,
-                                    member_of_multi_select: true
+                                    member_of_multi_select: false
                                 });
-                            });
+                            }
 
-                            $categoryType = components.checkboxes.checkboxContainerField("<div>",
-                                Object.values(parentContext.data[categoryTypeQualifier]),
-                                {title: categoryType.name}
-                            );
-                        } else {
-                            var mappedCategoriesForSelectContainer = categoryType.categories.map(function (category) {
-                                return {
-                                    text: category.name,
-                                    value: category.id
-                                }
-                            });
+                            categoriesBlockElements.push($categoryType);
 
-                            $categoryType = components.selects.selectContainer("<div>", {
-                                id: categoryTypeQualifier,
-                                text: categoryType.name
-                            }, mappedCategoriesForSelectContainer);
-
-                            parentContext.data[categoryTypeQualifier] = $categoryType;
-
-                            parentContext.data.descriptor.push({
-                                category_ids: categoryType.categories.map(function (category) {
-                                    return category.id;
-                                }),
-                                access_key_category_type_qualifier: categoryTypeQualifier,
-                                member_of_multi_select: false
-                            });
-                        }
-
-                        categoriesBlockElements.push($categoryType);
-
-                        $categoriesBlock.append(categoriesBlockElements);
+                            $categoriesBlock.append(categoriesBlockElements);
+                        });
                     });
-                });
 
                 return $categoriesBlock;
             },
@@ -801,15 +803,16 @@ Imcms.define("imcms-page-info-builder",
                     id: "select3"
                 });
 
-                rolesRestApi.read(null, function (roles) {
-                    var rolesDataMapped = roles.map(function (role) {
-                        return {
-                            text: role.name,
-                            "data-value": role.id
-                        }
+                rolesRestApi.read(null)
+                    .done(function (roles) {
+                        var rolesDataMapped = roles.map(function (role) {
+                            return {
+                                text: role.name,
+                                "data-value": role.id
+                            }
+                        });
+                        $addRoleSelect.append(components.selects.mapOptionsToSelectItems(rolesDataMapped));
                     });
-                    $addRoleSelect.append(components.selects.mapOptionsToSelectItems(rolesDataMapped));
-                });
 
                 var $addRoleButton = components.buttons.neutralButton({
                         text: "Add role",
@@ -928,19 +931,20 @@ Imcms.define("imcms-page-info-builder",
                 });
 
                 var parentContext = this;
-                templatesRestApi.read(null, function (templates) {
-                    var templatesDataMapped = templates.map(function (template) {
-                        return {
-                            text: template.name,
-                            "data-value": template.id
-                        }
-                    });
+                templatesRestApi.read(null)
+                    .done(function (templates) {
+                        var templatesDataMapped = templates.map(function (template) {
+                            return {
+                                text: template.name,
+                                "data-value": template.id
+                            }
+                        });
 
-                    var $selectItems = components.selects.mapOptionsToSelectItems(templatesDataMapped);
-                    parentContext.data.$templateSelect.find(".imcms-select").append($selectItems);
-                    parentContext.data.$defaultChildTemplateSelect.find(".imcms-select")
-                        .append($selectItems.clone(true, true));
-                });
+                        var $selectItems = components.selects.mapOptionsToSelectItems(templatesDataMapped);
+                        parentContext.data.$templateSelect.find(".imcms-select").append($selectItems);
+                        parentContext.data.$defaultChildTemplateSelect.find(".imcms-select")
+                            .append($selectItems.clone(true, true));
+                    });
 
                 var blockElements = [
                     this.data.$templateSelect,
@@ -1319,12 +1323,13 @@ Imcms.define("imcms-page-info-builder",
         }
 
         function loadPageInfoDataFromDocumentBy(docId) {
-            documentsRestApi.read(docId, function (document) {
-                $("#page-info-title").text("document " + document.id);
-                tabsData.forEach(function (tab) {
-                    tab.fillTabDataFromDocument(document);
+            documentsRestApi.read(docId)
+                .done(function (document) {
+                    $("#page-info-title").text("document " + document.id);
+                    tabsData.forEach(function (tab) {
+                        tab.fillTabDataFromDocument(document);
+                    });
                 });
-            });
         }
 
         function clearPageInfoData() {

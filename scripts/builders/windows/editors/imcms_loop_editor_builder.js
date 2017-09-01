@@ -38,7 +38,8 @@ Imcms.define("imcms-loop-editor-builder",
                     enabled: true
                 };
 
-                loopREST.create(newLoopEntry, function (response) {
+                loopREST.create(newLoopEntry)
+                    .done(function (response) {
                     if (response.code !== 200) {
                         return;
                     }
@@ -119,10 +120,10 @@ Imcms.define("imcms-loop-editor-builder",
 
         function onRemoveLoopEntryClicked(loopEntry) {
             loopREST.remove({
-                    docId: docId,
-                    loopId: loopId,
-                    entryNo: loopEntry.no
-                },
+                docId: docId,
+                loopId: loopId,
+                entryNo: loopEntry.no
+            }).done(
                 removeLoopEntry.bind(this)
             );
         }
@@ -230,7 +231,8 @@ Imcms.define("imcms-loop-editor-builder",
         }
 
         function loadData(opts) {
-            loopREST.read(opts, buildData);
+            loopREST.read(opts)
+                .done(buildData);
         }
 
         return {

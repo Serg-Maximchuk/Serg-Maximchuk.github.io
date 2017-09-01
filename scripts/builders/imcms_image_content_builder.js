@@ -114,7 +114,8 @@ Imcms.define("imcms-image-content-builder",
         function removeFolder() { // this == folder
             modalWindow.buildModalWindow("Do you want to remove folder \"" + this.name + "\"?", function (answer) {
                 if (answer) {
-                    fileREST.remove(this.path + this.name, this.$folder.detach.bind(this.$folder));
+                    fileREST.remove(this.path + this.name)
+                        .done(this.$folder.detach.bind(this.$folder));
                 }
             }.bind(this));
         }
@@ -188,10 +189,11 @@ Imcms.define("imcms-image-content-builder",
                     onConfirm({
                         path: opts.folder.path,
                         name: folderName
-                    }, onSuccess.bind({
-                        parentLevel: opts.level,
-                        $block: $folderCreationBlock
-                    }));
+                    })
+                        .done(onSuccess.bind({
+                            parentLevel: opts.level,
+                            $block: $folderCreationBlock
+                        }));
                 }
             });
 
@@ -329,9 +331,10 @@ Imcms.define("imcms-image-content-builder",
         }
 
         function onImageDelete(imageFile) {
-            fileREST.remove(imageFile.path, function () {
-                $(this).parent().parent().detach();
-            }.bind(this));
+            fileREST.remove(imageFile.path)
+                .done(function () {
+                    $(this).parent().parent().detach();
+                }.bind(this));
         }
 
         function buildImageDescription(imageFile) {
@@ -414,7 +417,8 @@ Imcms.define("imcms-image-content-builder",
                 $foldersContainer = options.foldersContainer;
                 $imagesContainer = options.imagesContainer;
 
-                fileREST.read("/images", loadImageFoldersContent);
+                fileREST.read("/images")
+                    .done(loadImageFoldersContent);
             }
         };
     }
