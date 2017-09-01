@@ -24,6 +24,10 @@ Imcms.define("imcms-admin-panel-builder",
             editors.buildDocumentEditor();
         }
 
+        function goToEditMode() {
+            window.location = "edit_mode.html";
+        }
+
         function buildPanelButtons() {
             var panelButtonsBEM = new BEM({
                 block: "imcms-menu",
@@ -47,7 +51,7 @@ Imcms.define("imcms-admin-panel-builder",
                     modifiers: ["public"]
                 }, {
                     content: "edit",
-                    onClick: getNotImplementedButtonClick("edit click"),
+                    onClick: goToEditMode,
                     modifiers: ["edit"]
                 }, {
                     content: "preview",
