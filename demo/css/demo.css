@@ -130,6 +130,7 @@
 
 .demo-row__column {
     display: inline-block;
+    padding: 10px;
     width: 33%;
 }
 
