@@ -7,7 +7,6 @@
     <!--style files-->
     <link rel="stylesheet" href="stylesheets/imcms-imports_files.css">
     <link rel="stylesheet" href="demo/css/demo.css">
-    <script src="libs/tinymce/js/tinymce/tinymce.min.js"></script>
 </head>
 <body>
 
@@ -164,25 +163,5 @@
 
 </body>
 <!--script files-->
-<script async src="scripts/imcms_main.js" data-name="imcms" data-main="scripts/demo.js"></script>
-<script>
-    tinymce.init({
-        selector: '.imcms-text-edit-area--inline',
-        inline: true,
-        skin: 'white',
-        plugins: ['autolink link image lists hr code fullscreen save table contextmenu'],
-        toolbar: 'code | bold italic underline | bullist numlist | hr | alignleft aligncenter alignright alignjustify | link image | fullscreen | save',
-        menubar: false,
-        statusbar: false
-    });
-    tinymce.init({
-        selector: '.imcms-text-edit-area--form',
-        skin: 'white',
-        plugins: ['autolink link image lists hr code fullscreen save table contextmenu autoresize'],
-        toolbar: 'code | bold italic underline | bullist numlist | hr | alignleft aligncenter alignright alignjustify | link image | fullscreen | save',
-        autoresize_bottom_margin: 20,
-        menubar: false,
-        statusbar: false
-    });
-</script>
+<script async src="scripts/imcms_main.js" data-name="imcms" data-main="scripts/demo_edit.js"></script>
 </html>
