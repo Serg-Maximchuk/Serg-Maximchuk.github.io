@@ -20,6 +20,18 @@ Imcms = {
                 path: "./libs/jquery.mask.min.js",
                 addon: "jquery-mask"
             },
+            "tinyMCE": {
+                path: "./libs/tinymce/js/tinymce/tinymce.min.js",
+                addon: "tinyMCE",
+                init: function () {
+                    var tinyMCE = window.tinyMCE;
+
+                    delete window.tinyMCE;
+                    delete window.tinymce;
+
+                    return tinyMCE;
+                }
+            },
             "imcms-tests": "imcms_tests.js",
             // components
             "imcms-promise": "components/imcms_promise.js",
