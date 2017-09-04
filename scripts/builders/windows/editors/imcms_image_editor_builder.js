@@ -667,9 +667,14 @@ Imcms.define("imcms-image-editor-builder",
             // todo: implement
         }
 
+        function clearData() {
+            // todo: implement
+        }
+
         var imageWindowBuilder = new WindowBuilder({
             factory: buildEditor,
-            loadDataStrategy: loadData
+            loadDataStrategy: loadData,
+            clearDataStrategy: clearData
         });
 
         return {
