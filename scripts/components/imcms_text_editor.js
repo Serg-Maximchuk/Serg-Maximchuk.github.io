@@ -20,14 +20,19 @@ Imcms.define("imcms-text-editor", ["tinyMCE"], function (tinyMCE) {
         statusbar: false
     };
 
+    function setEditorFocus(editor) {
+        editor.$()
+            .parents('.imcms-editor-area--text')
+            .find('.imcms-control--text')
+            .on('click', function () {
+                editor.focus();
+            });
+    }
+
     return {
         init: function () {
             tinyMCE.init(inlineEditorConfig).then(function (editors) {
-                editors.forEach(function (editor) {
-                    editor.$().parents('.imcms-editor-area--text').find('.imcms-control--text').on('click', function () {
-                        editor.focus();
-                    });
-                });
+                editors.forEach(setEditorFocus);
             });
         }
     };
