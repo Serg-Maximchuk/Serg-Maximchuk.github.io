@@ -2,7 +2,7 @@
  * Created by Serhii Maksymchuk from Ubrainians for imCode
  * 01.09.17
  */
-Imcms.define("imcms-text-editor", ["tinyMCE"], function (tinyMCE) {
+Imcms.define("imcms-text-editor-initializer", ["tinyMCE"], function (tinyMCE) {
     // stupid way to get contextPath! todo: receive from server
     var relativePath = window.location.pathname;
     var contextPath = ((relativePath.lastIndexOf("/") === 0) ? "" : "/" + relativePath.split("/")[1]);
@@ -30,7 +30,7 @@ Imcms.define("imcms-text-editor", ["tinyMCE"], function (tinyMCE) {
     }
 
     return {
-        init: function () {
+        initEditor: function () {
             tinyMCE.init(inlineEditorConfig).then(function (editors) {
                 editors.forEach(setEditorFocus);
             });

@@ -40,7 +40,7 @@ Imcms = {
             "imcms-time-picker": "components/imcms_time_picker.js",
             "imcms-uuid-generator": "components/imcms_uuid_generator.js",
             // editors initializer
-            "imcms-text-editor": "editor_initializer/imcms_text_editor_initializer.js",
+            "imcms-text-editor-initializer": "editor_initializer/imcms_text_editor_initializer.js",
             "imcms-editors-initializer": "editor_initializer/imcms_editors_initializer.js",
             // <builders>
             // basic components builders
