@@ -2,46 +2,33 @@
  * Created by Serhii Maksymchuk from Ubrainians for imCode
  * 01.09.17
  */
-Imcms.define("imcms-text-editor", ["tinyMCE", "jquery"], function (tinyMCE, $) {
+Imcms.define("imcms-text-editor", ["tinyMCE"], function (tinyMCE) {
     // stupid way to get contextPath! todo: receive from server
     var relativePath = window.location.pathname;
     var contextPath = ((relativePath.lastIndexOf("/") === 0) ? "" : "/" + relativePath.split("/")[1]);
 
-    var defaultEditorConfig = {
+    var inlineEditorConfig = {
+        selector: '.imcms-editor-content--text',
         skin_url: (contextPath + '/libs/tinymce/skins/white'),
         cache_suffix: '?v=0.0.1',
         branding: false,
         skin: 'white',
+        inline: true,
+        plugins: ['autolink link image lists hr code fullscreen save table contextmenu'],
         toolbar: 'code | bold italic underline | bullist numlist | hr | alignleft aligncenter alignright alignjustify | link image | fullscreen | save',
         menubar: false,
         statusbar: false
     };
 
-    var inlineEditorConfig = $.extend(
-        {
-            inline: true,
-            plugins: ['autolink link image lists hr code fullscreen save table contextmenu']
-        },
-        defaultEditorConfig
-    );
-
-    // not used now
-    var classicEditorConfig = $.extend(
-        {
-            plugins: ['autolink link image lists hr code fullscreen save table contextmenu autoresize'],
-            autoresize_bottom_margin: 20
-        },
-        defaultEditorConfig
-    );
-
-    function initTextEditor(selector, config) {
-        config = $.extend({selector: selector}, config);
-        tinyMCE.init(config);
-    }
-
     return {
-        initTextEditorInline: function (selector) {
-            initTextEditor(selector, inlineEditorConfig);
+        init: function () {
+            tinyMCE.init(inlineEditorConfig).then(function (editors) {
+                editors.forEach(function (editor) {
+                    editor.$().parents('.imcms-editor-area--text').find('.imcms-control--text').on('click', function () {
+                        editor.focus();
+                    });
+                });
+            });
         }
     };
 });
