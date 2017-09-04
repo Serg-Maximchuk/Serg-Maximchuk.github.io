@@ -661,7 +661,8 @@ Imcms.define("imcms-image-editor-builder",
         }
 
         return {
-            build: function () {
+            build: function (imageId) {
+                // todo: use image id to load data from server
                 if (!$editor) {
                     $editor = buildEditor().appendTo("body");
                 }
