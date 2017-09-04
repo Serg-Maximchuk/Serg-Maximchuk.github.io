@@ -145,7 +145,7 @@ Imcms.define("imcms-admin-panel-builder",
 
         function setShowPanelRule() {
             $(document).mousemove(function (event) {
-                if ((event.pageY >= 0) && (event.pageY <= panelSensitivePixels)) {
+                if ((event.clientY >= 0) && (event.clientY <= panelSensitivePixels)) {
                     showPanel();
                 }
             });
