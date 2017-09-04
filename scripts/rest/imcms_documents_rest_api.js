@@ -61,16 +61,31 @@ Imcms.define("imcms-documents-rest-api", ["imcms-rest-api"], function (rest) {
             }
         },
         status: 1,
-        published_date: currentDate,
-        published_time: currentTime,
-        archived_date: currentDate,
-        archived_time: currentTime,
-        publication_end_date: currentDate,
-        publication_end_time: currentTime,
-        modified_date: currentDate,
-        modified_time: currentTime,
-        created_date: currentDate,
-        created_time: currentTime,
+        published: {
+            by: "james_cameron",
+            date: currentDate,
+            time: currentTime
+        },
+        archived: {
+            by: "t_1000",
+            date: currentDate,
+            time: currentTime
+        },
+        publication_end: {
+            by: "alan_taylor",
+            date: currentDate,
+            time: currentTime
+        },
+        modified: {
+            by: "john_connor",
+            date: currentDate,
+            time: currentTime
+        },
+        created: {
+            by: "sarah_connor",
+            date: currentDate,
+            time: currentTime
+        },
         publisher: 2,
         if_requested_lang_missing_doc_opts: "DO_NOT_SHOW",
         currentVersion: 24,
@@ -130,12 +145,7 @@ Imcms.define("imcms-documents-rest-api", ["imcms-rest-api"], function (rest) {
             }
         ],
         template: 2,
-        child_template: 3,
-        created_by: "sarah_connor",
-        modified_by: "john_connor",
-        archived_by: "t_1000",
-        published_by: "james_cameron",
-        publication_end_by: "alan_taylor"
+        child_template: 3
     }, {
         id: 1002,
         title: "Second page",

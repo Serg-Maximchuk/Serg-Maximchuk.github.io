@@ -512,20 +512,20 @@ Imcms.define("imcms-page-info-builder",
 
                 lifeCycleTab.$docStatusSelect.selectValue(document.status);
 
-                lifeCycleTab.publishDate.setDate(document.published_date);
-                lifeCycleTab.publishTime.setTime(document.published_time);
-                lifeCycleTab.publishDateTime.date.setDate(document.published_date);
-                lifeCycleTab.publishDateTime.time.setTime(document.published_time);
+                lifeCycleTab.publishDate.setDate(document.published.date);
+                lifeCycleTab.publishTime.setTime(document.published.time);
+                lifeCycleTab.publishDateTime.date.setDate(document.published.date);
+                lifeCycleTab.publishDateTime.time.setTime(document.published.time);
 
-                lifeCycleTab.archivedDate.setDate(document.archived_date);
-                lifeCycleTab.archivedTime.setTime(document.archived_time);
-                lifeCycleTab.archivedDateTime.date.setDate(document.archived_date);
-                lifeCycleTab.archivedDateTime.time.setTime(document.archived_time);
+                lifeCycleTab.archivedDate.setDate(document.archived.date);
+                lifeCycleTab.archivedTime.setTime(document.archived.time);
+                lifeCycleTab.archivedDateTime.date.setDate(document.archived.date);
+                lifeCycleTab.archivedDateTime.time.setTime(document.archived.time);
 
-                lifeCycleTab.publishEndDate.setDate(document.publication_end_date);
-                lifeCycleTab.publishEndTime.setTime(document.publication_end_time);
-                lifeCycleTab.publishEndDateTime.date.setDate(document.publication_end_date);
-                lifeCycleTab.publishEndDateTime.time.setTime(document.publication_end_time);
+                lifeCycleTab.publishEndDate.setDate(document.publication_end.date);
+                lifeCycleTab.publishEndTime.setTime(document.publication_end.time);
+                lifeCycleTab.publishEndDateTime.date.setDate(document.publication_end.date);
+                lifeCycleTab.publishEndDateTime.time.setTime(document.publication_end.time);
 
                 lifeCycleTab.$publisherSelect.selectValue(document.publisher);
 
@@ -1141,25 +1141,25 @@ Imcms.define("imcms-page-info-builder",
             fillTabDataFromDocument: function (document) {
                 var statusTab = this.data;
 
-                statusTab.createdDate.setDate(document.created_date);
-                statusTab.createdTime.setTime(document.created_time);
-                statusTab.$createdBy.setValue(document.created_by);
+                statusTab.createdDate.setDate(document.created.date);
+                statusTab.createdTime.setTime(document.created.time);
+                statusTab.$createdBy.setValue(document.created.by);
 
-                statusTab.modifiedDate.setDate(document.modified_date);
-                statusTab.modifiedTime.setTime(document.modified_time);
-                statusTab.$modifiedBy.setValue(document.modified_by);
+                statusTab.modifiedDate.setDate(document.modified.date);
+                statusTab.modifiedTime.setTime(document.modified.time);
+                statusTab.$modifiedBy.setValue(document.modified.by);
 
-                statusTab.archivedDate.setDate(document.archived_date);
-                statusTab.archivedTime.setTime(document.archived_time);
-                statusTab.$archivedBy.setValue(document.archived_by);
+                statusTab.archivedDate.setDate(document.archived.date);
+                statusTab.archivedTime.setTime(document.archived.time);
+                statusTab.$archivedBy.setValue(document.archived.by);
 
-                statusTab.publishedDate.setDate(document.published_date);
-                statusTab.publishedTime.setTime(document.published_time);
-                statusTab.$publishedBy.setValue(document.published_by);
+                statusTab.publishedDate.setDate(document.published.date);
+                statusTab.publishedTime.setTime(document.published.time);
+                statusTab.$publishedBy.setValue(document.published.by);
 
-                statusTab.publicationEndDate.setDate(document.publication_end_date);
-                statusTab.publicationEndTime.setTime(document.publication_end_time);
-                statusTab.$publicationEndBy.setValue(document.publication_end_by);
+                statusTab.publicationEndDate.setDate(document.publication_end.date);
+                statusTab.publicationEndTime.setTime(document.publication_end.time);
+                statusTab.$publicationEndBy.setValue(document.publication_end.by);
             }
         }];
 
