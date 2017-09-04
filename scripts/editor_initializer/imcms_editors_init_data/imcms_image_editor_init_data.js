@@ -10,8 +10,8 @@ Imcms.define("imcms-image-editor-init-data", ["imcms-editors-builder"], function
             return $dataContainer.data("imageId");
         },
         getEditorBuildStrategy: function () {
-            return function (opts) {
-                editorsBuilder.buildImageEditor(opts);
+            return function (editorData) {
+                editorsBuilder.buildImageEditor(editorData);
             }
         }
     }
