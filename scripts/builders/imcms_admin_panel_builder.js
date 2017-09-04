@@ -3,8 +3,8 @@
  * 07.08.17.
  */
 Imcms.define("imcms-admin-panel-builder",
-    ["imcms-bem-builder", "imcms-components-builder", "imcms-editors-builder", "jquery"],
-    function (BEM, componentsBuilder, editors, $) {
+    ["imcms-bem-builder", "imcms-components-builder", "imcms-page-info-builder", "imcms-document-editor-builder", "jquery"],
+    function (BEM, componentsBuilder, pageInfoBuilder, documentEditorBuilder, $) {
         var $panel;
 
         var panelSensitivePixels = 15;
@@ -17,11 +17,11 @@ Imcms.define("imcms-admin-panel-builder",
         }
 
         function showPageInfo() {
-            editors.buildPageInfo(Imcms.currentDocId);
+            pageInfoBuilder.build(Imcms.currentDocId);
         }
 
         function initDocumentEditor() {
-            editors.buildDocumentEditor();
+            documentEditorBuilder.build();
         }
 
         function goToEditMode() {

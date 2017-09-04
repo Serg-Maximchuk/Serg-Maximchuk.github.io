@@ -93,7 +93,6 @@ Imcms = {
             // </windows>
             // other builders
             "imcms-bem-builder": "builders/imcms_bem_builder.js",
-            "imcms-editors-builder": "builders/imcms_editors_builder.js",
             "imcms-image-content-builder": "builders/imcms_image_content_builder.js",
             "imcms-admin-panel-builder": "builders/imcms_admin_panel_builder.js",
             // </builders>

@@ -2,7 +2,7 @@
  * Created by Serhii Maksymchuk from Ubrainians for imCode
  * 04.09.17
  */
-Imcms.define("imcms-menu-editor-init-data", ["imcms-editors-builder"], function (editorsBuilder) {
+Imcms.define("imcms-menu-editor-init-data", ["imcms-menu-editor-builder"], function (menuEditorBuilder) {
     return {
         EDIT_AREA_SELECTOR: ".imcms-editor-area--menu",
         CONTROL_SELECTOR: ".imcms-control--menu",
@@ -17,7 +17,7 @@ Imcms.define("imcms-menu-editor-init-data", ["imcms-editors-builder"], function 
         },
         getEditorBuildStrategy: function () {
             return function (editorData) {
-                editorsBuilder.buildMenuEditor(editorData);
+                menuEditorBuilder.build(editorData);
             }
         }
     }
