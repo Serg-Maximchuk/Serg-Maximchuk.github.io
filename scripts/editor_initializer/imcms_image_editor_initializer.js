@@ -3,17 +3,17 @@
  * 04.09.17
  */
 Imcms.define("imcms-image-editor-initializer", ["imcms-editors-builder", "jquery"], function (editorsBuilder, $) {
+    var IMAGE_EDIT_AREA_CLASS = ".imcms-editor-area--image";
+
     function openEditor() {
-        var imageId = $(this).parents(".imcms-editor-area--image")
-            .find(".imcms-editor-content")
-            .data("imageId");
+        var imageId = $(this).parents(IMAGE_EDIT_AREA_CLASS).data("imageId");
 
         editorsBuilder.buildImageEditor(imageId);
     }
 
     return {
         initEditor: function () {
-            $(".imcms-editor-area--image").find(".imcms-control--image").click(openEditor);
+            $(IMAGE_EDIT_AREA_CLASS).find(".imcms-control--image").click(openEditor);
         }
     }
 });
