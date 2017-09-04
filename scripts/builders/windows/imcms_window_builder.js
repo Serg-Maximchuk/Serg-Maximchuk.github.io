@@ -3,5 +3,22 @@
  * 04.09.17
  */
 Imcms.define("imcms-window-builder", [], function () {
-    return {};
+    var WindowBuilder = function (opts) {
+        this.factory = opts.factory;
+        this.loadDataStrategy = opts.loadDataStrategy;
+        this.$editor = undefined;
+    };
+
+    WindowBuilder.prototype = {
+        buildWindow: function (windowInitData) {
+            if (!this.$editor) {
+                this.$editor = this.factory(windowInitData).appendTo("body");
+            }
+
+            this.loadDataStrategy.applyAsync(arguments);
+            this.$editor.css("display", "block");
+        }
+    };
+
+    return WindowBuilder;
 });
