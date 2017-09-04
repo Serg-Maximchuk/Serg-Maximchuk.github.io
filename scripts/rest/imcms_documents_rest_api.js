@@ -107,6 +107,28 @@ Imcms.define("imcms-documents-rest-api", ["imcms-rest-api"], function (rest) {
                 edit_doc_info: false
             }
         ],
+        roles: [
+            {
+                name: "Useradmin",
+                descriptor: "user_admin",
+                permission_name: "VIEW"
+            },
+            {
+                name: "Users",
+                descriptor: "users",
+                permission_name: "EDIT"
+            },
+            {
+                name: "Test role",
+                descriptor: "test_role",
+                permission_name: "RESTRICTED_1"
+            },
+            {
+                name: "User role",
+                descriptor: "user_role",
+                permission_name: "RESTRICTED_2"
+            }
+        ],
         template: 2,
         child_template: 3,
         created_by: "sarah_connor",
