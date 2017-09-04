@@ -14,6 +14,7 @@ Imcms.define("imcms-text-editor-initializer", ["tinyMCE"], function (tinyMCE) {
         branding: false,
         skin: 'white',
         inline: true,
+        toolbar_items_size: 'small',
         plugins: ['autolink link image lists hr code fullscreen save table contextmenu'],
         toolbar: 'code | bold italic underline | bullist numlist | hr |' +
         ' alignleft aligncenter alignright alignjustify | link image | fullscreen | save',
