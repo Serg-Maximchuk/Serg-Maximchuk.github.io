@@ -69,6 +69,7 @@ Imcms = {
             "imcms-components-builder": "builders/imcms_components_builder.js",
             "imcms-window-components-builder": "builders/imcms_window_components_builder.js",
             // <windows>
+            "imcms-window-builder": "builders/windows/imcms_window_builder.js",
             "imcms-modal-window-builder": "builders/windows/imcms_modal_window_builder.js",
             "imcms-content-manager-builder": "builders/windows/imcms_content_manager_builder.js",
             "imcms-page-info-builder": "builders/windows/imcms_page_info_builder.js",
