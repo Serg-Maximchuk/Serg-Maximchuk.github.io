@@ -3,8 +3,11 @@
  * 21.08.17
  */
 Imcms.define("imcms-image-editor-builder",
-    ["imcms-bem-builder", "imcms-window-components-builder", "imcms-components-builder", "jquery"],
-    function (BEM, windowComponents, components, $) {
+    [
+        "imcms-bem-builder", "imcms-window-components-builder", "imcms-components-builder",
+        "imcms-window-builder", "jquery"
+    ],
+    function (BEM, windowComponents, components, WindowBuilder, $) {
         var $editor, $imageContainer, $shadow, $cropArea, $editableImageArea, $rightSidePanel, $bottomPanel;
 
         function closeEditor() {
@@ -660,14 +663,19 @@ Imcms.define("imcms-image-editor-builder",
             ]).addClass("imcms-editor-window");
         }
 
+        function loadData(imageId) {
+            // todo: implement
+        }
+
+        var imageWindowBuilder = new WindowBuilder({
+            factory: buildEditor,
+            loadDataStrategy: loadData
+        });
+
         return {
             build: function (imageId) {
                 // todo: use image id to load data from server
-                if (!$editor) {
-                    $editor = buildEditor().appendTo("body");
-                }
-
-                $editor.css("display", "block");
+                imageWindowBuilder.buildWindow.applyAsync(arguments, imageWindowBuilder);
             }
         };
     }
