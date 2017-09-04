@@ -7,6 +7,7 @@ Imcms.define("imcms-loop-editor-initializer", ["imcms-editors-builder", "jquery"
         var $parent = $(this).parents(".imcms-editor-area--loop");
         var docId = $parent.data("docId");
         var loopId = $parent.data("loopId");
+
         editorsBuilder.buildLoopEditor({
             docId: docId,
             loopId: loopId

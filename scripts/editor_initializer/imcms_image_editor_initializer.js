@@ -4,7 +4,10 @@
  */
 Imcms.define("imcms-image-editor-initializer", ["imcms-editors-builder", "jquery"], function (editorsBuilder, $) {
     function openEditor() {
-        var imageId = $(this).parents(".imcms-editor-area--image").find(".imcms-editor-content").data("imageId");
+        var imageId = $(this).parents(".imcms-editor-area--image")
+            .find(".imcms-editor-content")
+            .data("imageId");
+
         editorsBuilder.buildImageEditor(imageId);
     }
 
