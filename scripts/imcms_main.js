@@ -62,8 +62,20 @@ Imcms = {
             "imcms-window-components-builder": "builders/imcms_window_components_builder.js",
             // <windows>
             "imcms-modal-window-builder": "builders/windows/imcms_modal_window_builder.js",
-            "imcms-page-info-builder": "builders/windows/imcms_page_info_builder.js",
             "imcms-content-manager-builder": "builders/windows/imcms_content_manager_builder.js",
+            "imcms-page-info-builder": "builders/windows/imcms_page_info_builder.js",
+            // <page_info_tabs>
+            "imcms-page-info-tabs-builder": "builders/windows/page_info_tabs/imcms_page_info_tabs_builder.js",
+            "imcms-page-info-tabs-linker": "builders/windows/page_info_tabs/imcms_page_info_tabs_linker.js",
+            "imcms-appearance-tab-builder": "builders/windows/page_info_tabs/imcms_appearance_tab_builder.js",
+            "imcms-life-cycle-tab-builder": "builders/windows/page_info_tabs/imcms_life_cycle_tab_builder.js",
+            "imcms-keywords-tab-builder": "builders/windows/page_info_tabs/imcms_keywords_tab_builder.js",
+            "imcms-categories-tab-builder": "builders/windows/page_info_tabs/imcms_categories_tab_builder.js",
+            "imcms-access-tab-builder": "builders/windows/page_info_tabs/imcms_access_tab_builder.js",
+            "imcms-permissions-tab-builder": "builders/windows/page_info_tabs/imcms_permissions_tab_builder.js",
+            "imcms-templates-tab-builder": "builders/windows/page_info_tabs/imcms_templates_tab_builder.js",
+            "imcms-status-tab-builder": "builders/windows/page_info_tabs/imcms_status_tab_builder.js",
+            // </page_info_tabs>
             // editors
             "imcms-menu-editor-builder": "builders/windows/editors/imcms_menu_editor_builder.js",
             "imcms-document-editor-builder": "builders/windows/editors/imcms_document_editor_builder.js",
