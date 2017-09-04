@@ -32,7 +32,7 @@ Imcms.define("imcms-admin-panel-builder",
             window.location = "index.html"; // todo: temporary demo pages, should be changed!!!1
         }
 
-        function buildPanelButtons() {
+        function buildPanelButtons(opts) {
             var panelButtonsBEM = new BEM({
                 block: "imcms-menu",
                 elements: {
@@ -42,42 +42,56 @@ Imcms.define("imcms-admin-panel-builder",
             });
 
             function buildPanelButton(buttonData) {
-                return panelButtonsBEM.buildBlockElement("item", "<li>", {
+                var attributes = {
                     html: buttonData.content,
                     click: buttonData.onClick
-                }, buttonData.modifiers);
+                };
+
+                if (opts && opts.active === buttonData.name) {
+                    attributes["class"] = "imcms-menu__item--active";
+                }
+
+                return panelButtonsBEM.buildBlockElement("item", "<li>", attributes, buttonData.modifiers);
             }
 
             var buttons = [
                 {
+                    name: 'public',
                     content: "public",
                     onClick: goToPublicMode,
                     modifiers: ["public"]
                 }, {
+                    name: 'edit',
                     content: "edit",
                     onClick: goToEditMode,
                     modifiers: ["edit"]
                 }, {
+                    name: 'preview',
                     content: "preview",
                     onClick: getNotImplementedButtonClick("preview click"),
                     modifiers: ["preview"]
                 }, {
+                    name: 'publish_offline',
                     content: "publish offline",
                     onClick: getNotImplementedButtonClick("publish offline version click"),
                     modifiers: ["publish-of"]
                 }, {
+                    name: 'page_info',
                     content: "page info",
                     onClick: showPageInfo,
                     modifiers: ["page-info"]
                 }, {
+                    name: 'document',
                     content: "document",
                     onClick: initDocumentEditor,
                     modifiers: ["document"]
                 }, {
+                    name: 'admin',
                     content: "admin",
                     onClick: getNotImplementedButtonClick("admin click"),
                     modifiers: ["admin"]
                 }, {
+                    name: 'logout',
                     content: componentsBuilder.buttons.positiveButton({
                         text: "log out",
                         click: getNotImplementedButtonClick("logout click")
@@ -102,7 +116,7 @@ Imcms.define("imcms-admin-panel-builder",
             ]);
         }
 
-        function createAdminPanel() {
+        function createAdminPanel(opts) {
             var adminPanelBEM = new BEM({
                 block: "imcms-admin-panel",
                 elements: {
@@ -119,7 +133,7 @@ Imcms.define("imcms-admin-panel-builder",
             var $titleItem = $("<div>").append($title);
 
             var $flagsItem = buildFlags();
-            var $buttonsContainer = buildPanelButtons();
+            var $buttonsContainer = buildPanelButtons(opts);
 
             return adminPanelBEM.buildBlock("<div>", [
                 {"item": $logoItem},
@@ -161,10 +175,10 @@ Imcms.define("imcms-admin-panel-builder",
         }
 
         return {
-            buildPanel: function () {
+            buildPanel: function (opts) {
                 $panel = $("<div>", {
                     "class": "imcms-admin",
-                    html: createAdminPanel()
+                    html: createAdminPanel(opts)
                 });
 
                 setShowPanelRule();

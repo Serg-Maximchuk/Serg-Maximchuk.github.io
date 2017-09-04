@@ -11,7 +11,7 @@ Imcms.require(
         Imcms.tests = tests;
         console.info("%c Tests loaded.", "color: green");
 
-        panelBuilder.buildPanel();
+        panelBuilder.buildPanel({active: 'edit'});
 
         var buttons = componentsBuilder.buttons;
 

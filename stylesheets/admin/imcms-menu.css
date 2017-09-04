@@ -35,6 +35,7 @@
     width: 155px;
 }
 
+.imcms-menu__item--active:before,
 .imcms-menu__item:hover:before {
     content: "";
     background-color: #0b94d8;
