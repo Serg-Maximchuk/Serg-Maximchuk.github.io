@@ -47,6 +47,7 @@ Imcms = {
             "imcms-menu-editor-initializer": "editor_initializer/imcms_menu_editor_initializer.js",
             // editors init data modules
             "imcms-image-editor-init-data": "editor_initializer/imcms_editors_init_data/imcms_image_editor_init_data.js",
+            "imcms-menu-editor-init-data": "editor_initializer/imcms_editors_init_data/imcms_menu_editor_init_data.js",
             // init strategy
             "imcms-editor-init-strategy": "editor_initializer/imcms_editor_init_strategy.js",
             // <builders>
