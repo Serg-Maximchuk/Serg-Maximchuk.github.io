@@ -42,6 +42,7 @@ Imcms = {
             // editors initializer
             "imcms-text-editor-initializer": "editor_initializer/imcms_text_editor_initializer.js",
             "imcms-editors-initializer": "editor_initializer/imcms_editors_initializer.js",
+            "imcms-image-editor-initializer": "editor_initializer/imcms_image_editor_initializer.js",
             // <builders>
             // basic components builders
             "imcms-buttons-builder": "builders/components/imcms_buttons_builder.js",
