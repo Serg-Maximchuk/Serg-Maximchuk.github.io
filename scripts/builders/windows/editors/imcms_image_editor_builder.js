@@ -8,10 +8,10 @@ Imcms.define("imcms-image-editor-builder",
         "imcms-window-builder", "jquery"
     ],
     function (BEM, windowComponents, components, WindowBuilder, $) {
-        var $editor, $imageContainer, $shadow, $cropArea, $editableImageArea, $rightSidePanel, $bottomPanel;
+        var $imageContainer, $shadow, $cropArea, $editableImageArea, $rightSidePanel, $bottomPanel;
 
         function closeEditor() {
-            $editor.css("display", "none");
+            imageWindowBuilder.closeWindow();
         }
 
         function buildBodyHead() {
