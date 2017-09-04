@@ -25,6 +25,7 @@ Imcms.define("imcms-text-editor", ["tinyMCE", "jquery"], function (tinyMCE, $) {
         defaultEditorConfig
     );
 
+    // not used now
     var classicEditorConfig = $.extend(
         {
             plugins: ['autolink link image lists hr code fullscreen save table contextmenu autoresize'],
@@ -41,9 +42,6 @@ Imcms.define("imcms-text-editor", ["tinyMCE", "jquery"], function (tinyMCE, $) {
     return {
         initTextEditorInline: function (selector) {
             initTextEditor(selector, inlineEditorConfig);
-        },
-        initTextEditorClassic: function (selector) {
-            initTextEditor(selector, classicEditorConfig);
         }
     };
 });

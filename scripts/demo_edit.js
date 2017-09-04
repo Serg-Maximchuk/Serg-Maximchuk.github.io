@@ -46,8 +46,7 @@ Imcms.require(
 
         $("#links-as-buttons").append($demoEditorsBtnsContainer);
 
-        textEditor.initTextEditorClassic('.imcms-text-edit-area--form');
-        textEditor.initTextEditorInline('.imcms-text-edit-area--inline');
+        textEditor.initTextEditorInline('.imcms-text-edit-area');
 
         console.timeEnd("imCMS JS loaded");
     }
