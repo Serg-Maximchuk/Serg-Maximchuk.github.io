@@ -45,6 +45,8 @@ Imcms = {
             "imcms-image-editor-initializer": "editor_initializer/imcms_image_editor_initializer.js",
             "imcms-loop-editor-initializer": "editor_initializer/imcms_loop_editor_initializer.js",
             "imcms-menu-editor-initializer": "editor_initializer/imcms_menu_editor_initializer.js",
+            // editors init data modules
+            "imcms-image-editor-init-data": "editor_initializer/imcms_editors_init_data/imcms_image_editor_init_data.js",
             // <builders>
             // basic components builders
             "imcms-buttons-builder": "builders/components/imcms_buttons_builder.js",
