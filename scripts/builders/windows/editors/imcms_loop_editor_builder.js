@@ -5,10 +5,10 @@
 Imcms.define("imcms-loop-editor-builder",
     [
         "imcms-bem-builder", "imcms-components-builder", "imcms-window-components-builder", "imcms-loop-rest-api",
-        "imcms-controls-builder"
+        "imcms-window-builder", "imcms-controls-builder"
     ],
-    function (BEM, components, windowComponents, loopREST, controls) {
-        var $editor, $title, $body, $listItems;
+    function (BEM, components, windowComponents, loopREST, WindowBuilder, controls) {
+        var $title, $body, $listItems;
 
         var modifiers = {
             ID: ["col-1"],
@@ -27,8 +27,7 @@ Imcms.define("imcms-loop-editor-builder",
 
         function buildEditor() {
             function closeEditor() {
-                $editor.css("display", "none");
-                clearData();
+                loopWindowBuilder.closeWindow();
             }
 
             function onCreateNewClicked() {
@@ -234,14 +233,15 @@ Imcms.define("imcms-loop-editor-builder",
             loopREST.read(opts).done(buildData);
         }
 
+        var loopWindowBuilder = new WindowBuilder({
+            factory: buildEditor,
+            loadDataStrategy: loadData,
+            clearDataStrategy: clearData
+        });
+
         return {
             build: function (opts) {
-                if (!$editor) {
-                    $editor = buildEditor().appendTo("body");
-                }
-
-                loadData.applyAsync([opts]);
-                $editor.css("display", "block");
+                loopWindowBuilder.buildWindow.applyAsync(arguments, loopWindowBuilder);
             }
         }
     }
