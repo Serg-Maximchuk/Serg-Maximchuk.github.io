@@ -1,10 +1,11 @@
 .imcms-editor-area {
-    width: 100%;
+    background-color: white;
     border: 2px solid #f2f2fc;
     border-radius: 5px;
-    background-color: white;
-    padding: 10px;
     display: inline-block;
+    padding: 10px 25px 10px 10px;
+    position: relative;
+    width: 100%;
 }
 
 .imcms-editor-area--image {
@@ -14,12 +15,54 @@
 .imcms-editor-area__content-wrap,
 .imcms-editor-area__content {
     width: 100%;
-    max-width: calc(100% - 30px);
     display: inline-block;
 }
 
+.imcms-editor-area__control-wrap {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}
+
 .imcms-editor-area__control-edit {
-    display: inline-block;
+    display: block;
     float: right;
-    margin-left: 10px;
+
+}
+
+.imcms-editor-area__control-title {
+    background: #2e3f47;
+    border-radius: 5px;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 40px;
+    text-align: center;
+    display: none;
+    position: absolute;
+    top: -47px;
+    left: -46px;
+    width: 120px;
+    height: 40px;
+    z-index: 25;
+}
+
+.imcms-editor-area__control-title:before {
+    content: '';
+    background: #2e3f47;
+    display: block;
+    position: absolute;
+    bottom: -5px;
+    left: 51px;
+    width: 10px;
+    height: 10px;
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+
+.imcms-editor-area__control-wrap:hover .imcms-editor-area__control-title {
+    display: block;
 }
