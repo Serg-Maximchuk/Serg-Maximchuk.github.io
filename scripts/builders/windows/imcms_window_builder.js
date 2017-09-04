@@ -6,6 +6,7 @@ Imcms.define("imcms-window-builder", [], function () {
     var WindowBuilder = function (opts) {
         this.factory = opts.factory;
         this.loadDataStrategy = opts.loadDataStrategy;
+        this.clearDataStrategy = opts.clearDataStrategy;
         this.$editor = undefined;
     };
 
@@ -20,6 +21,7 @@ Imcms.define("imcms-window-builder", [], function () {
         },
         closeWindow: function () {
             this.$editor.css("display", "none");
+            this.clearDataStrategy && this.clearDataStrategy.call();
         }
     };
 
