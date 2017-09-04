@@ -233,7 +233,7 @@ Imcms.define("imcms-life-cycle-tab-builder",
                     text: "Show in default language if enabled",
                     name: "langSetting",
                     value: "SHOW_DEFAULT",
-                    checked: "checked"
+                    checked: "checked" // default value
                 });
                 this.data.$doNotShow = components.radios.imcmsRadio("<div>", {
                     text: "Don't show at all",
@@ -352,9 +352,7 @@ Imcms.define("imcms-life-cycle-tab-builder",
 
                 lifeCycleTab.$publisherSelect.selectFirst();
 
-                lifeCycleTab.$showDefaultLang
-                    .check(true) //others unchecked
-                    .check(false);//this one unchecked
+                lifeCycleTab.$showDefaultLang.setChecked(true); //default value
 
                 lifeCycleTab.$currentVersionNumber.setValue(emptyString);
                 lifeCycleTab.docVersionSaveDateTime.date.setDate(emptyString);

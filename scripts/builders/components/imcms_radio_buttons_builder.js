@@ -40,8 +40,8 @@ Imcms.define("imcms-radio-buttons-builder",
                     {"label": $label}
                 ]);
 
-                buildBlock.check = function (check) {
-                    check ? $input.prop("checked", "checked") : $input.removeProp("checked");
+                buildBlock.setChecked = function (isChecked) {
+                    isChecked ? $input.prop("checked", "checked") : $input.removeProp("checked");
                     return this;
                 };
 

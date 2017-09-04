@@ -89,9 +89,7 @@ Imcms.define("imcms-permissions-tab-builder",
                 });
             },
             clearTabData: function () {
-                var permissionsTab = this.data;
-
-                permissionsTab.restrictedCheckboxes.forEach(function (checkbox) {
+                this.data.restrictedCheckboxes.forEach(function (checkbox) {
                     checkbox.setValue(false);
                 });
             }
