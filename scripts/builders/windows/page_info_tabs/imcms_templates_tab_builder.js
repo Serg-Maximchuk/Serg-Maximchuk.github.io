@@ -46,6 +46,12 @@ Imcms.define("imcms-templates-tab-builder",
 
                 templatesTab.$templateSelect.selectValue(document.template);
                 templatesTab.$defaultChildTemplateSelect.selectValue(document.child_template);
+            },
+            clearTabData: function () {
+                var templatesTab = this.data;
+
+                templatesTab.$templateSelect.selectFirst();
+                templatesTab.$defaultChildTemplateSelect.selectFirst();
             }
         };
     }

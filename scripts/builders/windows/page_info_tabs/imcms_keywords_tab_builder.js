@@ -33,6 +33,16 @@ Imcms.define("imcms-keywords-tab-builder",
 
                 keywordsTab.$searchDisableCheckbox.setValue(document.disable_search);
 
+            },
+            clearTabData: function () {
+                var keywordsTab = this.data;
+
+                keywordsTab.$keywordsBox
+                    .find('.imcms-keyword__keywords')
+                    .find('.imcms-button--close')
+                    .click();
+
+                keywordsTab.$searchDisableCheckbox.setValue(false);
             }
         };
     }

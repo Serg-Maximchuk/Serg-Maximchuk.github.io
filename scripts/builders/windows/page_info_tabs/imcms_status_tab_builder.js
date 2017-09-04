@@ -255,6 +255,30 @@ Imcms.define("imcms-status-tab-builder",
                 statusTab.publicationEndDate.setDate(document.publication_end.date);
                 statusTab.publicationEndTime.setTime(document.publication_end.time);
                 statusTab.$publicationEndBy.setValue(document.publication_end.by);
+            },
+            clearTabData: function () {
+                var statusTab = this.data,
+                    emptyString = '';
+
+                statusTab.createdDate.setDate(emptyString);
+                statusTab.createdTime.setTime(emptyString);
+                statusTab.$createdBy.setValue(emptyString);
+
+                statusTab.modifiedDate.setDate(emptyString);
+                statusTab.modifiedTime.setTime(emptyString);
+                statusTab.$modifiedBy.setValue(emptyString);
+
+                statusTab.archivedDate.setDate(emptyString);
+                statusTab.archivedTime.setTime(emptyString);
+                statusTab.$archivedBy.setValue(emptyString);
+
+                statusTab.publishedDate.setDate(emptyString);
+                statusTab.publishedTime.setTime(emptyString);
+                statusTab.$publishedBy.setValue(emptyString);
+
+                statusTab.publicationEndDate.setDate(emptyString);
+                statusTab.publicationEndTime.setTime(emptyString);
+                statusTab.$publicationEndBy.setValue(emptyString);
             }
         };
     }

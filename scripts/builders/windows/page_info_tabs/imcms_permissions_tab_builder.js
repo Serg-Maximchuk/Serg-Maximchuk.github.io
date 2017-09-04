@@ -87,6 +87,13 @@ Imcms.define("imcms-permissions-tab-builder",
                     restrictedCheckboxes[edit_loop + index].setValue(permission[edit_loop]);
                     restrictedCheckboxes[edit_doc_info + index].setValue(permission[edit_doc_info]);
                 });
+            },
+            clearTabData: function () {
+                var permissionsTab = this.data;
+
+                permissionsTab.restrictedCheckboxes.forEach(function (checkbox) {
+                    checkbox.setValue(false);
+                });
             }
         };
     }

@@ -8,13 +8,36 @@ Imcms.define("imcms-categories-tab-builder",
         return {
             name: "categories",
             data: {},
-            buildTab: function (index) {
+            buildTab: function (index, docId) {
                 this.data.$categoriesBlock = linker.buildFormBlock([], index);
+                docId || this.fillTabDataFromDocument();
                 return this.data.$categoriesBlock;
             },
             fillTabDataFromDocument: function (document) {
+                var categoriesBlockElements = [],
+                    parentContext = this;
+
+                categoriesTypesRestApi.read(null)
+                    .done(function (categoriesTypes) {
+                        categoriesTypes.forEach(function (categoryType) {
+                            var $categoryType;
+                            if (categoryType.multi_select) {
+                                $categoryType = createMultiSelectCategoryType(categoryType, document);
+                            } else {
+                                $categoryType = createSingleSelectCategoryType(categoryType, document);
+                            }
+
+                            categoriesBlockElements.push($categoryType);
+
+                            parentContext.data.$categoriesBlock.append(categoriesBlockElements);
+                        });
+                    });
 
                 function isDocumentContainsCategory(document, category) {
+                    if (!document) {
+                        return false;
+                    }
+
                     var docCategoriesIds = document.categories.map(function (category) {
                         return category.id;
                     });
@@ -61,26 +84,10 @@ Imcms.define("imcms-categories-tab-builder",
 
                     return $selectContainer;
                 }
-
-                var categoriesBlockElements = [],
-                    parentContext = this;
-
-                categoriesTypesRestApi.read(null)
-                    .done(function (categoriesTypes) {
-                        categoriesTypes.forEach(function (categoryType) {
-                            var $categoryType;
-                            if (categoryType.multi_select) {
-                                $categoryType = createMultiSelectCategoryType(categoryType, document);
-                            } else {
-                                $categoryType = createSingleSelectCategoryType(categoryType, document);
-                            }
-
-                            categoriesBlockElements.push($categoryType);
-
-                            parentContext.data.$categoriesBlock.append(categoriesBlockElements);
-                        });
-                    });
-
+            },
+            clearTabData: function () {
+                this.data.$categoriesBlock && this.data.$categoriesBlock.empty();
+                this.fillTabDataFromDocument();
             }
         };
     }

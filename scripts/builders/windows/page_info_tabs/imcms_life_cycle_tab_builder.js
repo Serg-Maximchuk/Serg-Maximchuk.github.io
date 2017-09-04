@@ -328,6 +328,38 @@ Imcms.define("imcms-life-cycle-tab-builder",
                 lifeCycleTab.$currentVersionNumber.setValue(document.currentVersion);
                 lifeCycleTab.docVersionSaveDateTime.date.setDate(document.currentVersionDate);
                 lifeCycleTab.docVersionSaveDateTime.time.setTime(document.currentVersionTime);
+            },
+            clearTabData: function () {
+                var lifeCycleTab = this.data,
+                    emptyString = '';
+
+                lifeCycleTab.$docStatusSelect.selectFirst();
+
+                lifeCycleTab.publishDate.setDate(emptyString);
+                lifeCycleTab.publishTime.setTime(emptyString);
+                lifeCycleTab.publishDateTime.date.setDate(emptyString);
+                lifeCycleTab.publishDateTime.time.setTime(emptyString);
+
+                lifeCycleTab.archivedDate.setDate(emptyString);
+                lifeCycleTab.archivedTime.setTime(emptyString);
+                lifeCycleTab.archivedDateTime.date.setDate(emptyString);
+                lifeCycleTab.archivedDateTime.time.setTime(emptyString);
+
+                lifeCycleTab.publishEndDate.setDate(emptyString);
+                lifeCycleTab.publishEndTime.setTime(emptyString);
+                lifeCycleTab.publishEndDateTime.date.setDate(emptyString);
+                lifeCycleTab.publishEndDateTime.time.setTime(emptyString);
+
+                lifeCycleTab.$publisherSelect.selectFirst();
+
+                lifeCycleTab.$showDefaultLang
+                    .check(true) //others unchecked
+                    .check(false);//this one unchecked
+
+                lifeCycleTab.$currentVersionNumber.setValue(emptyString);
+                lifeCycleTab.docVersionSaveDateTime.date.setDate(emptyString);
+                lifeCycleTab.docVersionSaveDateTime.time.setTime(emptyString);
+
             }
         };
     }

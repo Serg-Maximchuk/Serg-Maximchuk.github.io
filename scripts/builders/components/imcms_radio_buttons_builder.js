@@ -35,10 +35,17 @@ Imcms.define("imcms-radio-buttons-builder",
                     text: attributes.text,
                     click: attributes.click
                 });
-                return radioBEM.buildBlock(tag, [
+                var buildBlock = radioBEM.buildBlock(tag, [
                     {"input": $input},
                     {"label": $label}
                 ]);
+
+                buildBlock.check = function (check) {
+                    check ? $input.prop("checked", "checked") : $input.removeProp("checked");
+                    return this;
+                };
+
+                return buildBlock;
             },
             group: function () {
                 var args = arguments;

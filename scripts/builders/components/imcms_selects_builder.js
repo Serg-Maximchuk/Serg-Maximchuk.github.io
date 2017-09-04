@@ -98,6 +98,15 @@ Imcms.define("imcms-selects-builder",
                         throw new Error("Value '" + value + "' for select doesn't exist");
                     }
                 };
+                resultImcmsSelect.selectFirst = function () {
+                    var selectCandidate = resultImcmsSelect.find(".imcms-drop-down-list__items")
+                        .find(".imcms-drop-down-list__item").first();
+                    if (selectCandidate.length) {
+                        onOptionSelected.call(selectCandidate);
+                    } else {
+                        throw new Error("Select is empty, nothing to choose");
+                    }
+                };
 
                 return resultImcmsSelect;
             },
@@ -132,6 +141,7 @@ Imcms.define("imcms-selects-builder",
                     resultContainer = fieldBEM.buildBlock("<div>", [$select], (clas ? {"class": clas} : {}), "select");
 
                 resultContainer.selectValue = $select.selectValue;
+                resultContainer.selectFirst = $select.selectFirst;
 
                 return resultContainer;
             }

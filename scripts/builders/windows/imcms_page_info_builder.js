@@ -76,9 +76,9 @@ Imcms.define("imcms-page-info-builder",
             return pageInfoLeftSideTabsBEM.buildBlock("<div>", [{"tabs": $tabsContainer}]);
         }
 
-        function buildPageInfoPanels() {
+        function buildPageInfoPanels(docId) {
             var $forms = pageInfoTabs.data.map(function (tabData, index) {
-                return tabData.buildTab(index).css("display", (index === 0 ? "block" : "none"));
+                return tabData.buildTab(index, docId).css("display", (index === 0 ? "block" : "none"));
             });
 
             return pageInfoBEM.buildElement("right-side", "<div>").append($forms);
@@ -132,10 +132,10 @@ Imcms.define("imcms-page-info-builder",
         var $pageInfo;
         var $shadow;
 
-        function buildPageInfo() {
+        function buildPageInfo(docId) {
             var $head = buildPageInfoHead(),
                 $tabs = buildPageInfoTabs(),
-                $panels = buildPageInfoPanels(),
+                $panels = buildPageInfoPanels(docId),
                 $footer = buildPageInfoFooter();
 
             return pageInfoBEM.buildBlock("<div>", [
@@ -159,7 +159,9 @@ Imcms.define("imcms-page-info-builder",
         }
 
         function clearPageInfoData() {
-
+            pageInfoTabs.data.forEach(function (tab) {
+                tab.clearTabData();
+            });
         }
 
         return {
@@ -167,7 +169,7 @@ Imcms.define("imcms-page-info-builder",
                 $shadow = buildShadow();
 
                 if (!$pageInfo) {
-                    $pageInfo = buildPageInfo().appendTo("body");
+                    $pageInfo = buildPageInfo(docId).appendTo("body");
                 }
 
                 $pageInfo.css({"display": "block"});

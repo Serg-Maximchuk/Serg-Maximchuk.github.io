@@ -168,6 +168,22 @@ Imcms.define("imcms-appearance-tab-builder",
                 appearanceTab.$showIn.selectValue(document.show_in);
 
                 appearanceTab.$documentAlias.setValue(document.alias);
+            },
+            clearTabData: function () {
+                var appearanceTab = this.data,
+                    emptyString = '';
+
+                appearanceTab.$engCheckbox.setValue(true);
+                appearanceTab.$engPageTitle.setValue(emptyString);
+                appearanceTab.$engMenuText.setValue(emptyString);
+
+                appearanceTab.$sweCheckbox.setValue(false);
+                appearanceTab.$swePageTitle.setValue(emptyString);
+                appearanceTab.$sweMenuText.setValue(emptyString);
+
+                appearanceTab.$showIn.selectFirst();
+
+                appearanceTab.$documentAlias.setValue(emptyString);
             }
         };
     }

@@ -98,6 +98,7 @@ Imcms.define("imcms-access-tab-builder",
                     $rolesField = rolesContainerBEM.buildBlock("<div>", [{"access-role": $rolesTable}])
                 ;
 
+                this.data.$rolesField = $rolesField;
                 this.data.$accessBlock.prepend($rolesField);
 
                 function generateRoles(rolesBEM, document) {
@@ -148,6 +149,9 @@ Imcms.define("imcms-access-tab-builder",
                         ]);
                     });
                 }
+            },
+            clearTabData: function () {
+                this.data.$rolesField && this.data.$rolesField.remove();
             }
         };
     }
