@@ -512,20 +512,20 @@ Imcms.define("imcms-page-info-builder",
 
                 lifeCycleTab.$docStatusSelect.selectValue(document.status);
 
-                lifeCycleTab.publishDate.setDate(document.published_date);
-                lifeCycleTab.publishTime.setTime(document.published_time);
-                lifeCycleTab.publishDateTime.date.setDate(document.published_date);
-                lifeCycleTab.publishDateTime.time.setTime(document.published_time);
+                lifeCycleTab.publishDate.setDate(document.published.date);
+                lifeCycleTab.publishTime.setTime(document.published.time);
+                lifeCycleTab.publishDateTime.date.setDate(document.published.date);
+                lifeCycleTab.publishDateTime.time.setTime(document.published.time);
 
-                lifeCycleTab.archivedDate.setDate(document.archived_date);
-                lifeCycleTab.archivedTime.setTime(document.archived_time);
-                lifeCycleTab.archivedDateTime.date.setDate(document.archived_date);
-                lifeCycleTab.archivedDateTime.time.setTime(document.archived_time);
+                lifeCycleTab.archivedDate.setDate(document.archived.date);
+                lifeCycleTab.archivedTime.setTime(document.archived.time);
+                lifeCycleTab.archivedDateTime.date.setDate(document.archived.date);
+                lifeCycleTab.archivedDateTime.time.setTime(document.archived.time);
 
-                lifeCycleTab.publishEndDate.setDate(document.publication_end_date);
-                lifeCycleTab.publishEndTime.setTime(document.publication_end_time);
-                lifeCycleTab.publishEndDateTime.date.setDate(document.publication_end_date);
-                lifeCycleTab.publishEndDateTime.time.setTime(document.publication_end_time);
+                lifeCycleTab.publishEndDate.setDate(document.publication_end.date);
+                lifeCycleTab.publishEndTime.setTime(document.publication_end.time);
+                lifeCycleTab.publishEndDateTime.date.setDate(document.publication_end.date);
+                lifeCycleTab.publishEndDateTime.time.setTime(document.publication_end.time);
 
                 lifeCycleTab.$publisherSelect.selectValue(document.publisher);
 
@@ -569,221 +569,83 @@ Imcms.define("imcms-page-info-builder",
             name: "categories",
             data: {},
             buildTab: function (index) {
-                var $categoriesBlock = buildFormBlock([], index),
-                    categoriesBlockElements = [],
+                this.data.$categoriesBlock = buildFormBlock([], index);
+                return this.data.$categoriesBlock;
+            },
+            fillTabDataFromDocument: function (document) {
+
+                function isDocumentContainsCategory(document, category) {
+                    var docCategoriesIds = document.categories.map(function (category) {
+                        return category.id;
+                    });
+
+                    return docCategoriesIds.indexOf(category.id) !== -1;
+                }
+
+                function createMultiSelectCategoryType(categoryType, document) {
+
+                    var categoryTypeAsCheckboxGroup = categoryType.categories.map(function (category) {
+                        return components.checkboxes
+                            .imcmsCheckbox("<div>", {
+                                name: "category-type-" + categoryType.id,
+                                value: category.id,
+                                text: category.name
+                            })
+                            .setValue(isDocumentContainsCategory(document, category));
+                    });
+
+                    return components.checkboxes.checkboxContainerField("<div>",
+                        categoryTypeAsCheckboxGroup,
+                        {title: categoryType.name}
+                    );
+                }
+
+                function createSingleSelectCategoryType(categoryType, document) {
+                    var mappedCategoriesForSelectContainer = categoryType.categories.map(function (category) {
+                        return {
+                            text: category.name,
+                            "data-value": category.id
+                        };
+                    });
+
+                    var $selectContainer = components.selects.selectContainer("<div>", {
+                        id: "category-type-" + categoryType.id,
+                        text: categoryType.name
+                    }, mappedCategoriesForSelectContainer);
+
+                    categoryType.categories.filter(function (category) {
+                        return isDocumentContainsCategory(document, category);
+                    }).forEach(function (category) {
+                        $selectContainer.selectValue(category.id);
+                    });
+
+                    return $selectContainer;
+                }
+
+                var categoriesBlockElements = [],
                     parentContext = this;
 
                 categoriesTypesRestApi.read(null)
                     .done(function (categoriesTypes) {
                         categoriesTypes.forEach(function (categoryType) {
-                            var $categoryType,
-                                categoryTypeQualifier = "category-type-" + categoryType.id;
-
-                            parentContext.data.descriptor = [];
-
+                            var $categoryType;
                             if (categoryType.multi_select) {
-                                parentContext.data[categoryTypeQualifier] = {};
-                                categoryType.categories.forEach(function (category) {
-                                    parentContext.data[categoryTypeQualifier][category.id] = components.checkboxes
-                                        .imcmsCheckbox("<div>", {
-                                            name: categoryTypeQualifier,
-                                            value: category.id,
-                                            text: category.name
-                                        });
-
-                                    parentContext.data.descriptor.push({
-                                        category_ids: [category.id],
-                                        access_key_category_type_qualifier: categoryTypeQualifier,
-                                        access_key_category_id: category.id,
-                                        member_of_multi_select: true
-                                    });
-                                });
-
-                                $categoryType = components.checkboxes.checkboxContainerField("<div>",
-                                    Object.values(parentContext.data[categoryTypeQualifier]),
-                                    {title: categoryType.name}
-                                );
+                                $categoryType = createMultiSelectCategoryType(categoryType, document);
                             } else {
-                                var mappedCategoriesForSelectContainer = categoryType.categories.map(function (category) {
-                                    return {
-                                        text: category.name,
-                                        value: category.id
-                                    }
-                                });
-
-                                $categoryType = components.selects.selectContainer("<div>", {
-                                    id: categoryTypeQualifier,
-                                    text: categoryType.name
-                                }, mappedCategoriesForSelectContainer);
-
-                                parentContext.data[categoryTypeQualifier] = $categoryType;
-
-                                parentContext.data.descriptor.push({
-                                    category_ids: categoryType.categories.map(function (category) {
-                                        return category.id;
-                                    }),
-                                    access_key_category_type_qualifier: categoryTypeQualifier,
-                                    member_of_multi_select: false
-                                });
+                                $categoryType = createSingleSelectCategoryType(categoryType, document);
                             }
 
                             categoriesBlockElements.push($categoryType);
 
-                            $categoriesBlock.append(categoriesBlockElements);
+                            parentContext.data.$categoriesBlock.append(categoriesBlockElements);
                         });
                     });
 
-                return $categoriesBlock;
-            },
-            fillTabDataFromDocument: function (document) {
-                //todo categories based on callback after build
             }
         }, {
             name: "access",
             data: {},
             buildTab: function (index) {
-
-                // var rolesBEM = new BEM({
-                //         block: "imcms-access-role",
-                //         elements: {
-                //             "head": "",
-                //             "title": "imcms-title",
-                //             "body": "",
-                //             "row": "",
-                //             "column-title": "imcms-title",
-                //             "column": "imcms-radio",
-                //             "button": "imcms-button"
-                //         }
-                //     }),
-                //     rolesContainerBEM = new BEM({
-                //         block: "imcms-field",
-                //         elements: {
-                //             "access-role": "imcms-access-role"
-                //         }
-                //     })
-                // ;
-                //
-                // var $titleRole = rolesBEM.buildBlockElement("title", "<div>", {text: "role"}),
-                //     $titleView = rolesBEM.buildBlockElement("title", "<div>", {text: "view"}),
-                //     $titleEdit = rolesBEM.buildBlockElement("title", "<div>", {text: "edit"}),
-                //     $titleRestricted1 = rolesBEM.buildBlockElement("title", "<div>", {text: "restricted 1"}),
-                //     $titleRestricted2 = rolesBEM.buildBlockElement("title", "<div>", {text: "restricted 2"}),
-                //     $rolesHead = rolesBEM.buildElement("head", "<div>").append([
-                //         $titleRole,
-                //         $titleView,
-                //         $titleEdit,
-                //         $titleRestricted1,
-                //         $titleRestricted2
-                //     ]),
-                //     $userAdminTitle = rolesBEM.buildBlockElement("column-title", "<div>", {text: "Useradmin"}),
-                //     userAdminRadioName = "useradmin0",
-                //     $userAdminView = rolesBEM.makeBlockElement("column", componentsBuilder.radios.imcmsRadio("<div>", {
-                //         id: "view01",
-                //         name: userAdminRadioName,
-                //         checked: "checked"
-                //     })),
-                //     $userAdminEdit = rolesBEM.makeBlockElement("column", componentsBuilder.radios.imcmsRadio("<div>", {
-                //         id: "edit01",
-                //         name: userAdminRadioName
-                //     })),
-                //     $userAdminRestricted1 = rolesBEM.makeBlockElement("column", componentsBuilder.radios.imcmsRadio("<div>", {
-                //         id: "restricted011",
-                //         name: userAdminRadioName
-                //     })),
-                //     $userAdminRestricted2 = rolesBEM.makeBlockElement("column", componentsBuilder.radios.imcmsRadio("<div>", {
-                //         id: "restricted021",
-                //         name: userAdminRadioName
-                //     })),
-                //     $userAdminDeleteRoleButton = rolesBEM.makeBlockElement("button", componentsBuilder.buttons.closeButton({
-                //         click: function () {
-                //             console.log("%c Not implemented feature: delete role.", "color: red;")
-                //         }
-                //     })),
-                //     $userAdminRow = rolesBEM.buildBlockElement("row", "<div>").append([
-                //         $userAdminTitle,
-                //         $userAdminView,
-                //         $userAdminEdit,
-                //         $userAdminRestricted1,
-                //         $userAdminRestricted2,
-                //         $userAdminDeleteRoleButton
-                //     ]),
-                //     $userTitle = rolesBEM.buildBlockElement("column-title", "<div>", {text: "Users"}),
-                //     usersRadioName = "users0",
-                //     $userView = rolesBEM.makeBlockElement("column", componentsBuilder.radios.imcmsRadio("<div>", {
-                //         id: "view02",
-                //         name: usersRadioName,
-                //         checked: "checked"
-                //     })),
-                //     $userEdit = rolesBEM.makeBlockElement("column", componentsBuilder.radios.imcmsRadio("<div>", {
-                //         id: "edit02",
-                //         name: usersRadioName
-                //     })),
-                //     $userRestricted1 = rolesBEM.makeBlockElement("column", componentsBuilder.radios.imcmsRadio("<div>", {
-                //         id: "restricted012",
-                //         name: usersRadioName
-                //     })),
-                //     $userRestricted2 = rolesBEM.makeBlockElement("column", componentsBuilder.radios.imcmsRadio("<div>", {
-                //         id: "restricted022",
-                //         name: usersRadioName
-                //     })),
-                //     $userDeleteRoleButton = rolesBEM.makeBlockElement("button", componentsBuilder.buttons.closeButton({
-                //         click: function () {
-                //             console.log("%c Not implemented feature: delete role.", "color: red;")
-                //         }
-                //     })),
-                //     $userRow = rolesBEM.buildBlockElement("row", "<div>").append([
-                //         $userTitle,
-                //         $userView,
-                //         $userEdit,
-                //         $userRestricted1,
-                //         $userRestricted2,
-                //         $userDeleteRoleButton
-                //     ]),
-                //     $testRoleTitle = rolesBEM.buildBlockElement("column-title", "<div>", {text: "Test role"}),
-                //     testRoleRadioName = "testrole0",
-                //     $testRoleView = rolesBEM.makeBlockElement("column", componentsBuilder.radios.imcmsRadio("<div>", {
-                //         id: "view03",
-                //         name: testRoleRadioName,
-                //         checked: "checked"
-                //     })),
-                //     $testRoleEdit = rolesBEM.makeBlockElement("column", componentsBuilder.radios.imcmsRadio("<div>", {
-                //         id: "edit03",
-                //         name: testRoleRadioName
-                //     })),
-                //     $testRoleRestricted1 = rolesBEM.makeBlockElement("column", componentsBuilder.radios.imcmsRadio("<div>", {
-                //         id: "restricted013",
-                //         name: testRoleRadioName
-                //     })),
-                //     $testRoleRestricted2 = rolesBEM.makeBlockElement("column", componentsBuilder.radios.imcmsRadio("<div>", {
-                //         id: "restricted023",
-                //         name: testRoleRadioName
-                //     })),
-                //     $testRoleDeleteRoleButton = rolesBEM.makeBlockElement("button", componentsBuilder.buttons.closeButton({
-                //         click: function () {
-                //             console.log("%c Not implemented feature: delete role.", "color: red;")
-                //         }
-                //     })),
-                //     $testRoleRow = rolesBEM.buildBlockElement("row", "<div>").append([
-                //         $testRoleTitle,
-                //         $testRoleView,
-                //         $testRoleEdit,
-                //         $testRoleRestricted1,
-                //         $testRoleRestricted2,
-                //         $testRoleDeleteRoleButton
-                //     ]),
-                //     $rolesBody = rolesBEM.buildElement("body", "<div>").append([
-                //         $userAdminRow,
-                //         $userRow,
-                //         $testRoleRow
-                //     ]),
-                //     $rolesTable = rolesBEM.buildBlock("<div>", [
-                //         {"head": $rolesHead},
-                //         {"body": $rolesBody}
-                //     ]),
-                //     $rolesField = rolesContainerBEM.buildBlock("<div>", [{"access-role": $rolesTable}])
-                // ;
-                // add role
-
                 var addRoleContainerBEM = new BEM({
                         block: "imcms-field",
                         elements: {
@@ -831,7 +693,98 @@ Imcms.define("imcms-page-info-builder",
                 return this.data.$accessBlock;
             },
             fillTabDataFromDocument: function (document) {
-                //todo access based on callback after build
+
+                var rolesBEM = new BEM({
+                        block: "imcms-access-role",
+                        elements: {
+                            "head": "",
+                            "title": "imcms-title",
+                            "body": "",
+                            "row": "",
+                            "column-title": "imcms-title",
+                            "column": "imcms-radio",
+                            "button": "imcms-button"
+                        }
+                    }),
+                    rolesContainerBEM = new BEM({
+                        block: "imcms-field",
+                        elements: {
+                            "access-role": "imcms-access-role"
+                        }
+                    })
+                ;
+
+                var $titleRole = rolesBEM.buildBlockElement("title", "<div>", {text: "role"}),
+                    $titleView = rolesBEM.buildBlockElement("title", "<div>", {text: "view"}),
+                    $titleEdit = rolesBEM.buildBlockElement("title", "<div>", {text: "edit"}),
+                    $titleRestricted1 = rolesBEM.buildBlockElement("title", "<div>", {text: "restricted 1"}),
+                    $titleRestricted2 = rolesBEM.buildBlockElement("title", "<div>", {text: "restricted 2"}),
+                    $rolesHead = rolesBEM.buildElement("head", "<div>").append([
+                        $titleRole,
+                        $titleView,
+                        $titleEdit,
+                        $titleRestricted1,
+                        $titleRestricted2
+                    ]),
+                    roles = generateRoles(rolesBEM, document),
+                    $rolesBody = rolesBEM.buildElement("body", "<div>").append(roles),
+                    $rolesTable = rolesBEM.buildBlock("<div>", [
+                        {"head": $rolesHead},
+                        {"body": $rolesBody}
+                    ]),
+                    $rolesField = rolesContainerBEM.buildBlock("<div>", [{"access-role": $rolesTable}])
+                ;
+
+                this.data.$accessBlock.prepend($rolesField);
+
+                function generateRoles(rolesBEM, document) {
+
+                    function checkIfRoleNamePermittedInRole(roleName, role) {
+                        return roleName === role.permission_name ? "checked" : undefined;
+                    }
+
+                    return document.roles.map(function (role) {
+                        var $roleTitle = rolesBEM.buildBlockElement("column-title", "<div>", {text: role.name}),
+                            viewRoleName = "VIEW",
+                            $roleView = rolesBEM.makeBlockElement("column", components.radios.imcmsRadio("<div>", {
+                                name: role.descriptor,
+                                "data-value": viewRoleName,
+                                checked: checkIfRoleNamePermittedInRole(viewRoleName, role)
+                            })),
+                            editRoleName = "EDIT",
+                            $roleEdit = rolesBEM.makeBlockElement("column", components.radios.imcmsRadio("<div>", {
+                                name: role.descriptor,
+                                "data-value": editRoleName,
+                                checked: checkIfRoleNamePermittedInRole(editRoleName, role)
+                            })),
+                            restricted1RoleName = "RESTRICTED_1",
+                            $roleRestricted1 = rolesBEM.makeBlockElement("column", components.radios.imcmsRadio("<div>", {
+                                name: role.descriptor,
+                                "data-value": restricted1RoleName,
+                                checked: checkIfRoleNamePermittedInRole(restricted1RoleName, role)
+                            })),
+                            restricted2RoleName = "RESTRICTED_2",
+                            $roleRestricted2 = rolesBEM.makeBlockElement("column", components.radios.imcmsRadio("<div>", {
+                                name: role.descriptor,
+                                "data-value": restricted2RoleName,
+                                checked: checkIfRoleNamePermittedInRole(restricted2RoleName, role)
+                            })),
+                            $deleteRoleButton = rolesBEM.makeBlockElement("button", components.buttons.closeButton({
+                                click: function () {
+                                    console.log("%c Not implemented feature: delete role.", "color: red;")
+                                }
+                            }));
+
+                        return rolesBEM.buildBlockElement("row", "<div>").append([
+                            $roleTitle,
+                            $roleView,
+                            $roleEdit,
+                            $roleRestricted1,
+                            $roleRestricted2,
+                            $deleteRoleButton
+                        ]);
+                    });
+                }
             }
         }, {
             name: "permissions",
@@ -1188,25 +1141,25 @@ Imcms.define("imcms-page-info-builder",
             fillTabDataFromDocument: function (document) {
                 var statusTab = this.data;
 
-                statusTab.createdDate.setDate(document.created_date);
-                statusTab.createdTime.setTime(document.created_time);
-                statusTab.$createdBy.setValue(document.created_by);
+                statusTab.createdDate.setDate(document.created.date);
+                statusTab.createdTime.setTime(document.created.time);
+                statusTab.$createdBy.setValue(document.created.by);
 
-                statusTab.modifiedDate.setDate(document.modified_date);
-                statusTab.modifiedTime.setTime(document.modified_time);
-                statusTab.$modifiedBy.setValue(document.modified_by);
+                statusTab.modifiedDate.setDate(document.modified.date);
+                statusTab.modifiedTime.setTime(document.modified.time);
+                statusTab.$modifiedBy.setValue(document.modified.by);
 
-                statusTab.archivedDate.setDate(document.archived_date);
-                statusTab.archivedTime.setTime(document.archived_time);
-                statusTab.$archivedBy.setValue(document.archived_by);
+                statusTab.archivedDate.setDate(document.archived.date);
+                statusTab.archivedTime.setTime(document.archived.time);
+                statusTab.$archivedBy.setValue(document.archived.by);
 
-                statusTab.publishedDate.setDate(document.published_date);
-                statusTab.publishedTime.setTime(document.published_time);
-                statusTab.$publishedBy.setValue(document.published_by);
+                statusTab.publishedDate.setDate(document.published.date);
+                statusTab.publishedTime.setTime(document.published.time);
+                statusTab.$publishedBy.setValue(document.published.by);
 
-                statusTab.publicationEndDate.setDate(document.publication_end_date);
-                statusTab.publicationEndTime.setTime(document.publication_end_time);
-                statusTab.$publicationEndBy.setValue(document.publication_end_by);
+                statusTab.publicationEndDate.setDate(document.publication_end.date);
+                statusTab.publicationEndTime.setTime(document.publication_end.time);
+                statusTab.$publicationEndBy.setValue(document.publication_end.by);
             }
         }];
 
