@@ -144,8 +144,14 @@ Imcms.define("imcms-admin-panel-builder",
         }
 
         function setShowPanelRule() {
+            var $body = $("body");
             $(document).mousemove(function (event) {
                 if ((event.clientY >= 0) && (event.clientY <= panelSensitivePixels)) {
+                    if($body.scrollTop() === 0) {
+                        $body.css({"padding-top": "90px"})
+                    } else {
+                        $body.css({"padding-top": "0px"})
+                    }
                     showPanel();
                 }
             });
@@ -156,7 +162,7 @@ Imcms.define("imcms-admin-panel-builder",
                 if ($(event.target).closest(".imcms-admin").length) {
                     return;
                 }
-
+                $("body").css({"padding-top": "0px"});
                 event.stopPropagation();
                 hidePanel();
             });
