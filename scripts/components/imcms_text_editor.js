@@ -9,6 +9,8 @@ Imcms.define("imcms-text-editor", ["tinyMCE", "jquery"], function (tinyMCE, $) {
 
     var defaultEditorConfig = {
         skin_url: (contextPath + '/libs/tinymce/skins/white'),
+        cache_suffix: '?v=0.0.1',
+        branding: false,
         skin: 'white',
         toolbar: 'code | bold italic underline | bullist numlist | hr | alignleft aligncenter alignright alignjustify | link image | fullscreen | save',
         menubar: false,
