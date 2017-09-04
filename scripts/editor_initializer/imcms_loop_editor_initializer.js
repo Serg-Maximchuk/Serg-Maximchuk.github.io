@@ -3,8 +3,10 @@
  * 04.09.17
  */
 Imcms.define("imcms-loop-editor-initializer", ["imcms-editors-builder", "jquery"], function (editorsBuilder, $) {
+    var EDIT_AREA_CLASS = ".imcms-editor-area--loop";
+
     function openEditor() {
-        var $parent = $(this).parents(".imcms-editor-area--loop");
+        var $parent = $(this).parents(EDIT_AREA_CLASS);
         var docId = $parent.data("docId");
         var loopId = $parent.data("loopId");
 
@@ -16,7 +18,7 @@ Imcms.define("imcms-loop-editor-initializer", ["imcms-editors-builder", "jquery"
 
     return {
         initEditor: function () {
-            $(".imcms-editor-area--loop").find(".imcms-control--loop").click(openEditor);
+            $(EDIT_AREA_CLASS).find(".imcms-control--loop").click(openEditor);
         }
     }
 });
