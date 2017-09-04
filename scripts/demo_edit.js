@@ -5,9 +5,9 @@
 Imcms.require(
     [
         "imcms-date-picker", "imcms-time-picker", "imcms-tests", "imcms-components-builder", "imcms-bem-builder",
-        "imcms-editors-builder", "imcms-admin-panel-builder", "imcms-text-editor", "jquery"
+        "imcms-editors-builder", "imcms-admin-panel-builder", "imcms-editors-initializer", "jquery"
     ],
-    function (DatePicker, TimePicker, tests, componentsBuilder, BEM, editors, panelBuilder, textEditor, $) {
+    function (DatePicker, TimePicker, tests, componentsBuilder, BEM, editors, panelBuilder, editorsInit, $) {
         Imcms.tests = tests;
         console.info("%c Tests loaded.", "color: green");
 
@@ -46,7 +46,7 @@ Imcms.require(
 
         $("#links-as-buttons").append($demoEditorsBtnsContainer);
 
-        textEditor.init();
+        editorsInit.initEditors();
 
         console.timeEnd("imCMS JS loaded");
     }
