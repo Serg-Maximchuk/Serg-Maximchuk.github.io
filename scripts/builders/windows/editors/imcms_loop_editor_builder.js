@@ -231,8 +231,7 @@ Imcms.define("imcms-loop-editor-builder",
         }
 
         function loadData(opts) {
-            loopREST.read(opts)
-                .done(buildData);
+            loopREST.read(opts).done(buildData);
         }
 
         return {
