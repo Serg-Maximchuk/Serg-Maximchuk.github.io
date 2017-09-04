@@ -12,18 +12,18 @@ Imcms = {
         dependencies: {
             "jquery": {
                 path: "//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js",
-                init: function ($) {
+                onLoad: function ($) {
                     return $.noConflict(true);
                 }
             },
             "jquery-mask": {
                 path: "./libs/jquery.mask.min.js",
-                addon: "jquery-mask"
+                moduleName: "jquery-mask"
             },
             "tinyMCE": {
                 path: "//cdn.tinymce.com/4/tinymce.min.js",
-                addon: "tinyMCE",
-                init: function () {
+                moduleName: "tinyMCE",
+                onLoad: function () {
                     var tinyMCE = window.tinyMCE;
 
                     delete window.tinyMCE;
@@ -103,8 +103,8 @@ Function.prototype.applyAsync = function (args, context) {
             return;
         }
 
-        if (Imcms.config.dependencies[id] && Imcms.config.dependencies[id].init) {
-            module = Imcms.config.dependencies[id].init.call(null, module);
+        if (Imcms.config.dependencies[id] && Imcms.config.dependencies[id].onLoad) {
+            module = Imcms.config.dependencies[id].onLoad.call(null, module);
         }
 
         Imcms.modules[id] = module;
@@ -118,18 +118,14 @@ Function.prototype.applyAsync = function (args, context) {
         return Imcms.config.dependencies[id];
     }
 
-    function loadModuleAsync(path) {
-        setTimeout(appendScript.bindArgs(path));
-    }
-
-    function loadScriptAsync(dependency) {
+    function loadScript(dependency) {
         var onLoad;
 
-        if (dependency.addon) {
-            onLoad = registerModule.bindArgs(dependency.addon, true);
+        if (dependency.moduleName) {
+            onLoad = registerModule.bindArgs(dependency.moduleName, true);
         }
 
-        setTimeout(getScript.bindArgs(dependency.path, onLoad));
+        getScript(dependency.path, onLoad);
     }
 
     function loadDependencyById(id) {
@@ -154,10 +150,10 @@ Function.prototype.applyAsync = function (args, context) {
                 if (dependency.indexOf(".") !== 0) {
                     dependency = Imcms.config.basePath + "/" + dependency;
                 }
-                loader = loadModuleAsync;
+                loader = appendScript;
                 break;
             case "object":
-                loader = loadScriptAsync;
+                loader = loadScript;
         }
 
         loader(dependency);
@@ -218,19 +214,20 @@ Function.prototype.applyAsync = function (args, context) {
         script.async = true;
         script.setAttribute("data-loader", "imcms");
 
+        var onLoad = function () {
+            console.info('module ' + url + " loaded successfully.");
+            callback && callback.call();
+        };
+
         if (script.readyState) {  // IE support
             script.onreadystatechange = function () {
                 if (script.readyState === "loaded" || script.readyState === "complete") {
                     script.onreadystatechange = null;
-                    console.info('script ' + url + " appended successfully.");
-                    callback && callback.call();
+                    onLoad();
                 }
             };
         } else {  // Other normal browsers
-            script.onload = function () {
-                console.info('module ' + url + " loaded successfully.");
-                callback && callback.call();
-            };
+            script.onload = onLoad;
         }
 
         script.src = url;
@@ -428,5 +425,5 @@ Function.prototype.applyAsync = function (args, context) {
     }
 
     var mainScriptPath = getMainScriptPath();
-    loadModuleAsync(mainScriptPath);
+    appendScript(mainScriptPath);
 })();
