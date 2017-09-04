@@ -34,12 +34,13 @@ Imcms = {
             },
             "imcms-tests": "imcms_tests.js",
             // components
-            "imcms-text-editor": "components/imcms_text_editor.js",
             "imcms-promise": "components/imcms_promise.js",
             "imcms-calendar": "components/imcms_calendar.js",
             "imcms-date-picker": "components/imcms_date_picker.js",
             "imcms-time-picker": "components/imcms_time_picker.js",
             "imcms-uuid-generator": "components/imcms_uuid_generator.js",
+            // editors initializer
+            "imcms-text-editor": "editor_initializer/imcms_text_editor_initializer.js",
             // <builders>
             // basic components builders
             "imcms-buttons-builder": "builders/components/imcms_buttons_builder.js",
