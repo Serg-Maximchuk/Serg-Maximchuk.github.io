@@ -11,6 +11,7 @@
     width: fit-content;
 }
 
+.imcms-editor-area__content-wrap,
 .imcms-editor-area__content {
     width: 100%;
     max-width: calc(100% - 30px);
