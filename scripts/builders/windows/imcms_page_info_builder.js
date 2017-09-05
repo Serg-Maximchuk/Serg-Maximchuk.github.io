@@ -120,14 +120,12 @@ Imcms.define("imcms-page-info-builder",
         }
 
         function buildShadow() {
-            var $modal = $(".imcms-modal-layout");
-
-            if ($modal.length) {
-                $modal.css("display", "block");
-                return $modal;
+            if (!$shadow) {
+                $shadow = $("<div>", {"class": "imcms-modal-layout"}).appendTo("body");
             }
 
-            return $("<div>", {"class": "imcms-modal-layout"}).appendTo("body");
+            $shadow.css("display", "block");
+            return $shadow;
         }
 
         var $pageInfo;
@@ -167,7 +165,7 @@ Imcms.define("imcms-page-info-builder",
 
         return {
             build: function (docId) {
-                $shadow = buildShadow();
+                buildShadow();
 
                 if (!$pageInfo) {
                     $pageInfo = buildPageInfo(docId).appendTo("body");
