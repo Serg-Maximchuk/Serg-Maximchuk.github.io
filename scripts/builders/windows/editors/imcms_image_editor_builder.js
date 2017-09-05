@@ -78,7 +78,7 @@ Imcms.define("imcms-image-editor-builder",
 
             var $imgUrl = bodyHeadBEM.buildElement("img-url", "<div>", {
                 text: "Url: "
-            }).append($("<span>", {text: "/img/image_editor/img1.jpg"})); // todo: print correct image url
+            }).append(imageDataContainers.$imgUrl = $("<span>"));
 
             var characteristicBEM = new BEM({
                 block: "imcms-title imcms-image-characteristic",
@@ -665,6 +665,7 @@ Imcms.define("imcms-image-editor-builder",
 
         function fillData(imageData) {
             imageDataContainers.$imageTitle.text(imageData.name + "." + imageData.format);
+            imageDataContainers.$imgUrl.text(imageData.path);
         }
 
         function loadData(opts) {
