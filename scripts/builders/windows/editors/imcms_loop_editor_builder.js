@@ -39,12 +39,12 @@ Imcms.define("imcms-loop-editor-builder",
 
                 loopREST.create(newLoopEntry)
                     .done(function (response) {
-                    if (response.code !== 200) {
-                        return;
-                    }
+                        if (response.code !== 200) {
+                            return;
+                        }
 
-                    $listItems.append(itemsBEM.makeBlockElement("item", buildItem(newLoopEntry)));
-                });
+                        $listItems.append(itemsBEM.makeBlockElement("item", buildItem(newLoopEntry)));
+                    });
             }
 
             function onSaveAndCloseClicked() {
