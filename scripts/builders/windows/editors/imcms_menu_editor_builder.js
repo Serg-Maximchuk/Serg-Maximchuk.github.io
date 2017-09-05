@@ -76,15 +76,17 @@ Imcms.define("imcms-menu-editor-builder",
 
                 var question = "Do you want to remove menu item \"" + currentMenuItemName + "\"?";
                 imcmsModalWindow.buildModalWindow(question, function (answer) {
-                    if (answer) {
-                        menuRestApi.remove({
-                            docId: docId,
-                            menuId: menuId,
-                            menuItemDocId: menuItemDocId
-                        }).done(function () {
-                            removeMenuItemFromEditor(currentMenuItem)
-                        });
+                    if (!answer) {
+                        return;
                     }
+
+                    menuRestApi.remove({
+                        docId: docId,
+                        menuId: menuId,
+                        menuItemDocId: menuItemDocId
+                    }).done(function () {
+                        removeMenuItemFromEditor(currentMenuItem)
+                    });
                 });
             }
 
