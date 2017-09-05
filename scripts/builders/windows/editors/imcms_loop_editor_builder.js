@@ -4,10 +4,10 @@
  */
 Imcms.define("imcms-loop-editor-builder",
     [
-        "imcms-bem-builder", "imcms-components-builder", "imcms-window-components-builder", "imcms-loop-rest-api",
-        "imcms-window-builder", "imcms-controls-builder"
+        "imcms-bem-builder", "imcms-components-builder", "imcms-loop-rest-api", "imcms-window-builder",
+        "imcms-controls-builder"
     ],
-    function (BEM, components, windowComponents, loopREST, WindowBuilder, controls) {
+    function (BEM, components, loopREST, WindowBuilder, controls) {
         var $title, $body, $listItems;
 
         var modifiers = {
@@ -26,10 +26,6 @@ Imcms.define("imcms-loop-editor-builder",
         });
 
         function buildEditor() {
-            function closeEditor() {
-                loopWindowBuilder.closeWindow();
-            }
-
             function onCreateNewClicked() {
                 var newLoopEntry = {
                     no: ++$listItems.children().length,
@@ -48,8 +44,8 @@ Imcms.define("imcms-loop-editor-builder",
             }
 
             function onSaveAndCloseClicked() {
-                closeEditor();
                 // todo: implement saving, for now it's just closing!!1
+                loopWindowBuilder.closeWindow();
             }
 
             var editorBEM = new BEM({
@@ -61,11 +57,11 @@ Imcms.define("imcms-loop-editor-builder",
                 }
             });
 
-            var $head = windowComponents.buildHead("Loop Editor", closeEditor);
+            var $head = loopWindowBuilder.buildHead("Loop Editor");
             $title = $head.find(".imcms-title");
             $body = editorBEM.buildElement("body", "<div>");
 
-            var $footer = windowComponents.buildFooter([
+            var $footer = loopWindowBuilder.buildFooter([
                 components.buttons.positiveButton({
                     text: "Create new",
                     click: onCreateNewClicked
