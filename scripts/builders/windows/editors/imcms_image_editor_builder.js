@@ -132,7 +132,7 @@ Imcms.define("imcms-image-editor-builder",
         }
 
         function buildLeftSide() {
-            var $imageContainer, $shadow, $editableImageArea, $cropArea;
+            var $editableImageArea, $cropArea;
 
             function buildCropArea() {
                 var cropAreaBEM = new BEM({
@@ -163,12 +163,8 @@ Imcms.define("imcms-image-editor-builder",
                     }
                 });
 
-                // todo: set image specific width/height !!1!
-                $imageContainer = editableImgAreaBEM.buildElement("img", "<div>").css({
-                    width: "1436px",
-                    height: "773px"
-                });
-                $shadow = editableImgAreaBEM.buildElement("layout", "<div>").css({
+                imageDataContainers.$imageContainer = editableImgAreaBEM.buildElement("img", "<div>");
+                imageDataContainers.$shadow = editableImgAreaBEM.buildElement("layout", "<div>").css({
                     width: "1436px",
                     height: "773px"
                 });
@@ -178,8 +174,8 @@ Imcms.define("imcms-image-editor-builder",
                 });
 
                 return editableImgAreaBEM.buildBlock("<div>", [
-                    {"img": $imageContainer},
-                    {"layout": $shadow},
+                    {"img": imageDataContainers.$imageContainer},
+                    {"layout": imageDataContainers.$shadow},
                     {"crop-area": $cropArea}
                 ]);
             }
@@ -226,12 +222,12 @@ Imcms.define("imcms-image-editor-builder",
             }
 
             function resizeImage(newWidth, newHeight, backgroundSizeVal) {
-                $imageContainer.animate({
+                imageDataContainers.$imageContainer.animate({
                     "width": newWidth + "px",
                     "height": newHeight + "px"
                 }, 200).css({"background-size": backgroundSizeVal});
 
-                $shadow.animate({
+                imageDataContainers.$shadow.animate({
                     "width": newWidth + "px",
                     "height": newHeight + "px"
                 }, 200);
@@ -240,8 +236,8 @@ Imcms.define("imcms-image-editor-builder",
             }
 
             function zoom(zoomCoefficient) {
-                var newHeight = ~~($imageContainer.height() * zoomCoefficient),
-                    newWidth = ~~($imageContainer.width() * zoomCoefficient),
+                var newHeight = ~~(imageDataContainers.$imageContainer.height() * zoomCoefficient),
+                    newWidth = ~~(imageDataContainers.$imageContainer.width() * zoomCoefficient),
                     backgroundSizeVal = "" + newWidth + "px " + newHeight + "px"
                 ;
                 resizeImage(newWidth, newHeight, backgroundSizeVal);
@@ -269,7 +265,7 @@ Imcms.define("imcms-image-editor-builder",
 
             function rotate(angleDelta) {
                 angle += angleDelta;
-                $imageContainer.css({"transform": "rotate(" + angle + "deg)"});
+                imageDataContainers.$imageContainer.css({"transform": "rotate(" + angle + "deg)"});
                 $cropArea.css({"transform": "rotate(" + angle + "deg)"});
             }
 
@@ -663,11 +659,23 @@ Imcms.define("imcms-image-editor-builder",
             ]).addClass("imcms-editor-window");
         }
 
-        function fillData(imageData) {
+        function fillBodyHeadData(imageData) {
             imageDataContainers.$imageTitle.text(imageData.name + "." + imageData.format);
             imageDataContainers.$imgUrl.text(imageData.path);
             imageDataContainers.$heightValue.text(imageData.height);
             imageDataContainers.$widthValue.text(imageData.width);
+        }
+
+        function fillLeftSideData(imageData) {
+            imageDataContainers.$imageContainer.css({
+                width: imageData.width + "px",
+                height: imageData.height + "px"
+            });
+        }
+
+        function fillData(imageData) {
+            fillBodyHeadData(imageData);
+            fillLeftSideData(imageData);
         }
 
         function loadData(opts) {
