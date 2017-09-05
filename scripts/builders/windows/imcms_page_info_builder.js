@@ -4,10 +4,10 @@
  */
 Imcms.define("imcms-page-info-builder",
     [
-        "imcms-bem-builder", "imcms-components-builder", "imcms-documents-rest-api",
+        "imcms-bem-builder", "imcms-components-builder", "imcms-documents-rest-api", "imcms-window-builder",
         "imcms-page-info-tabs-builder", "jquery"
     ],
-    function (BEM, components, documentsRestApi, pageInfoTabs, $) {
+    function (BEM, components, documentsRestApi, WindowBuilder, pageInfoTabs, $) {
 
         var pageInfoBEM = new BEM({
             block: "imcms-pop-up-modal",
@@ -39,7 +39,7 @@ Imcms.define("imcms-page-info-builder",
         function buildPageInfoTabs() {
             function getOnTabClick(index) {
                 return function () {
-                    $pageInfo.find(".imcms-title--active").removeClass("imcms-title--active");
+                    $tabsContainer.find(".imcms-title--active").removeClass("imcms-title--active");
                     $(this).addClass("imcms-title--active");
                     $(".imcms-form").css("display", "none");
                     showPanel(index);
@@ -86,9 +86,8 @@ Imcms.define("imcms-page-info-builder",
 
         function buildPageInfoFooter() {
             function closePageInfo() {
-                $pageInfo.css({"display": "none"});
+                pageInfoWindowBuilder.closeWindow();
                 $shadow.css({"display": "none"});
-                clearPageInfoData();
             }
 
             function saveAndClose() {
@@ -128,7 +127,6 @@ Imcms.define("imcms-page-info-builder",
             return $shadow;
         }
 
-        var $pageInfo;
         var $shadow;
 
         function buildPageInfo(docId) {
@@ -163,17 +161,20 @@ Imcms.define("imcms-page-info-builder",
             });
         }
 
+        function loadData(docId) {
+            docId && loadPageInfoDataFromDocumentBy(docId);
+        }
+
+        var pageInfoWindowBuilder = new WindowBuilder({
+            factory: buildPageInfo,
+            loadDataStrategy: loadData,
+            clearDataStrategy: clearPageInfoData
+        });
+
         return {
             build: function (docId) {
                 buildShadow();
-
-                if (!$pageInfo) {
-                    $pageInfo = buildPageInfo(docId).appendTo("body");
-                }
-
-                $pageInfo.css({"display": "block"});
-
-                docId && loadPageInfoDataFromDocumentBy(docId);
+                pageInfoWindowBuilder.buildWindow.applyAsync(arguments, pageInfoWindowBuilder);
             }
         }
     }
