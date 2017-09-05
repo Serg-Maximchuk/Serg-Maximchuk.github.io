@@ -16,7 +16,7 @@ Imcms.define("imcms-window-builder", ["imcms-window-components-builder"], functi
                 this.$editor = this.factory(windowInitData).appendTo("body");
             }
 
-            this.loadDataStrategy.applyAsync(arguments);
+            this.loadDataStrategy && this.loadDataStrategy.applyAsync(arguments);
             this.$editor.css("display", "block");
         },
         closeWindow: function () {
