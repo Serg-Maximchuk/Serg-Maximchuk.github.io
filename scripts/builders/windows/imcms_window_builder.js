@@ -27,7 +27,7 @@ Imcms.define("imcms-window-builder", ["imcms-window-components-builder"], functi
             return windowComponents.buildHead(title, this.closeWindow.bind(this));
         },
         buildFooter: function (buttons) {
-            return windowComponents.apply(windowComponents, arguments);
+            return windowComponents.buildFooter.apply(windowComponents, arguments);
         }
     };
 
