@@ -39,7 +39,8 @@ Imcms.define("imcms-image-rest-api", ["imcms-rest-api"], function (rest) {
 
         return {
             done: function (onDone) {
-                onDone(mockData[data.docId][+data.imageId + 1]);
+                console.log(data);
+                onDone(mockData[data.docId][+data.imageId - 1]);
             }
         }
     };
