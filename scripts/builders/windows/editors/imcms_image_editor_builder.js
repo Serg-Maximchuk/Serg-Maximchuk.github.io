@@ -3,16 +3,9 @@
  * 21.08.17
  */
 Imcms.define("imcms-image-editor-builder",
-    [
-        "imcms-bem-builder", "imcms-window-components-builder", "imcms-components-builder",
-        "imcms-window-builder", "jquery"
-    ],
-    function (BEM, windowComponents, components, WindowBuilder, $) {
+    ["imcms-bem-builder", "imcms-components-builder", "imcms-window-builder", "jquery"],
+    function (BEM, components, WindowBuilder, $) {
         var $imageContainer, $shadow, $cropArea, $editableImageArea, $rightSidePanel, $bottomPanel;
-
-        function closeEditor() {
-            imageWindowBuilder.closeWindow();
-        }
 
         function buildBodyHead() {
             function showHidePanel(panelOpts) {
@@ -618,15 +611,25 @@ Imcms.define("imcms-image-editor-builder",
                 ]);
             }
 
+            function removeAndClose() {
+                // fixme: just closing for now, should be remove and close
+                imageWindowBuilder.closeWindow();
+            }
+
+            function saveAndClose() {
+                // fixme: just closing for now, should be save and close
+                imageWindowBuilder.closeWindow();
+            }
+
             function buildFooter() {
                 var $removeAndCloseButton = components.buttons.negativeButton({
                     text: "remove and close",
-                    click: closeEditor // fixme: just closing for now, should be remove and close
+                    click: removeAndClose
                 });
 
                 var $saveAndCloseButton = components.buttons.saveButton({
                     text: "save and close",
-                    click: closeEditor // fixme: just closing for now, should be save and close
+                    click: saveAndClose
                 });
 
                 return $("<div>").append($removeAndCloseButton, $saveAndCloseButton);
@@ -650,7 +653,7 @@ Imcms.define("imcms-image-editor-builder",
                 }
             });
 
-            var $head = windowComponents.buildHead("Image Editor", closeEditor);
+            var $head = imageWindowBuilder.buildHead("Image Editor");
             var $bodyHead = buildBodyHead();
             var $leftSide = buildLeftSide();
             $rightSidePanel = buildRightSide(imageEditorBEM);
