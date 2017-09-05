@@ -12,6 +12,83 @@ Imcms.define("imcms-document-editor-builder",
               categoriesRestApi) {
 
         function buildBodyHeadTools() {
+
+            function onNewDocButtonClick(e) {
+                e.preventDefault();
+                pageInfoBuilder.build();
+            }
+
+            function buildNewDocButton() {
+                return components.buttons.negativeButton({
+                    text: "New",
+                    click: onNewDocButtonClick
+                });
+            }
+
+            function buildSearchDocField() {
+                var searchBEM = new BEM({
+                    block: "imcms-input-search",
+                    elements: {
+                        "text-box": "imcms-input",
+                        "button": "imcms-button"
+                    }
+                });
+
+                var $searchButton = components.buttons.searchButton();
+                var $searchInput = primitives.imcmsInputText({
+                    id: "searchText",
+                    name: "search",
+                    placeholder: "Type to find document"
+                });
+
+                return searchBEM.buildBlock("<div>", [
+                    {"text-box": $searchInput},
+                    {"button": $searchButton}
+                ]);
+            }
+
+            function buildUsersFilterSelect() {
+                var $usersFilterSelect = components.selects.imcmsSelect("<div>", {
+                    id: "users-filter",
+                    name: "users-filter"
+                });
+
+                usersRestApi.read(null)
+                    .done(function (users) {
+                        var usersDataMapped = users.map(function (user) {
+                            return {
+                                text: user.username,
+                                "data-value": user.id
+                            }
+                        });
+                        var $usersSelectItems = components.selects.mapOptionsToSelectItems(usersDataMapped);
+                        $usersFilterSelect.append($usersSelectItems);
+                    });
+
+                return $usersFilterSelect;
+            }
+
+            function buildCategoriesFilterSelect() {
+                var $categoriesFilterSelect = components.selects.imcmsSelect("<div>", {
+                    id: "categories-filter",
+                    name: "categories-filter"
+                });
+
+                categoriesRestApi.read(null)
+                    .done(function (categories) {
+                        var categoriesDataMapped = categories.map(function (category) {
+                            return {
+                                text: category.name,
+                                "data-value": category.id
+                            }
+                        });
+                        var $categoriesSelectItems = components.selects.mapOptionsToSelectItems(categoriesDataMapped);
+                        $categoriesFilterSelect.append($categoriesSelectItems);
+                    });
+
+                return $categoriesFilterSelect;
+            }
+
             var headToolsBEM = new BEM({
                 block: "imcms-document-editor-head-tools",
                 elements: {
@@ -27,72 +104,16 @@ Imcms.define("imcms-document-editor-builder",
                 }
             });
 
-            var $createNewDocButton = components.buttons.negativeButton({
-                text: "New",
-                click: function (e) {
-                    e.preventDefault();
-                    pageInfoBuilder.build();
-                }
-            });
-
+            var $createNewDocButton = buildNewDocButton();
             var $newDocButtonContainer = toolBEM.buildBlock("<div>", [{"button": $createNewDocButton}]);
 
-            var searchBEM = new BEM({
-                block: "imcms-input-search",
-                elements: {
-                    "text-box": "imcms-input",
-                    "button": "imcms-button"
-                }
-            });
-
-            var $searchButton = components.buttons.searchButton();
-            var $searchInput = primitives.imcmsInputText({
-                id: "searchText",
-                name: "search",
-                placeholder: "Type to find document"
-            });
-
-            var $searchInputWrapper = searchBEM.buildBlock("<div>", [
-                {"text-box": $searchInput},
-                {"button": $searchButton}
-            ]);
-
+            var $searchInputWrapper = buildSearchDocField();
             var $searchContainer = toolBEM.buildBlock("<div>", [{"search": $searchInputWrapper}]);
 
-            var $usersFilterSelect = components.selects.imcmsSelect("<div>", {
-                id: "users-filter",
-                name: "users-filter"
-            });
-
-            usersRestApi.read(null)
-                .done(function (users) {
-                    var usersDataMapped = users.map(function (user) {
-                        return {
-                            text: user.username,
-                            "data-value": user.id
-                        }
-                    });
-                    $usersFilterSelect.append(components.selects.mapOptionsToSelectItems(usersDataMapped));
-                });
-
+            var $usersFilterSelect = buildUsersFilterSelect();
             var $usersFilter = toolBEM.buildBlock("<div>", [{"select": $usersFilterSelect}]);
 
-            var $categoriesFilterSelect = components.selects.imcmsSelect("<div>", {
-                id: "categories-filter",
-                name: "categories-filter"
-            });
-
-            categoriesRestApi.read(null)
-                .done(function (categories) {
-                    var categoriesDataMapped = categories.map(function (category) {
-                        return {
-                            text: category.name,
-                            "data-value": category.id
-                        }
-                    });
-                    $categoriesFilterSelect.append(components.selects.mapOptionsToSelectItems(categoriesDataMapped));
-                });
-
+            var $categoriesFilterSelect = buildCategoriesFilterSelect();
             var $categoriesFilter = toolBEM.buildBlock("<div>", [{"select": $categoriesFilterSelect}]);
 
             return headToolsBEM.buildBlock("<div>", [
@@ -159,23 +180,25 @@ Imcms.define("imcms-document-editor-builder",
 
             var controls = [];
 
-            if (opts && opts.moveEnable) {
-                var $controlMove = controlsBuilder.move(function () {
-                    console.log("%c Not implemented feature: move doc", "color: red;");
-                });
-                controls.push({"control": $controlMove});
-            }
+            if (opts) {
+                if (opts.moveEnable) {
+                    var $controlMove = controlsBuilder.move(function () {
+                        console.log("%c Not implemented feature: move doc", "color: red;");
+                    });
+                    controls.push({"control": $controlMove});
+                }
 
-            if (opts && opts.removeEnable) {
-                var $controlRemove = controlsBuilder.remove(function () {
-                    removeDocument.call(this, documentId);
-                });
-                controls.push({"control": $controlRemove});
-            }
+                if (opts.removeEnable) {
+                    var $controlRemove = controlsBuilder.remove(function () {
+                        removeDocument.call(this, documentId);
+                    });
+                    controls.push({"control": $controlRemove});
+                }
 
-            if (opts && opts.editEnable) {
-                var $controlEdit = controlsBuilder.edit(pageInfoBuilder.build);
-                controls.push({"control": $controlEdit});
+                if (opts.editEnable) {
+                    var $controlEdit = controlsBuilder.edit(pageInfoBuilder.build);
+                    controls.push({"control": $controlEdit});
+                }
             }
 
             return docControlsBEM.buildBlock("<div>", controls);
