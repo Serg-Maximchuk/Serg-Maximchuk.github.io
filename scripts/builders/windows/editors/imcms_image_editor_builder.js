@@ -8,7 +8,9 @@ Imcms.define("imcms-image-editor-builder",
         "imcms-image-rest-api", "jquery"
     ],
     function (BEM, components, WindowBuilder, contentManager, imageRestApi, $) {
-        var $imageContainer, $shadow, $cropArea, $editableImageArea, $rightSidePanel, $bottomPanel;
+        var $rightSidePanel, $bottomPanel;
+
+        var imageDataContainers = {};
 
         function buildBodyHead() {
             function showHidePanel(panelOpts) {
@@ -66,7 +68,7 @@ Imcms.define("imcms-image-editor-builder",
                 click: showHideBottomPanel
             });
 
-            var $imageTitle = bodyHeadBEM.buildElement("img-title", "<div>", {text: "img1.jpg"}); // todo: print correct image name
+            imageDataContainers.$imageTitle = bodyHeadBEM.buildElement("img-title", "<div>");
 
             var $showHideRightPanelBtn = components.buttons.neutralButton({
                 "class": "imcms-image-characteristic",
@@ -117,7 +119,7 @@ Imcms.define("imcms-image-editor-builder",
                     "button": $showHideBottomPanelBtn,
                     modifiers: ["bottom-panel"]
                 }, {
-                    "img-title": $imageTitle
+                    "img-title": imageDataContainers.$imageTitle
                 }, {
                     "button": $showHideRightPanelBtn,
                     modifiers: ["right-panel"]
@@ -130,6 +132,8 @@ Imcms.define("imcms-image-editor-builder",
         }
 
         function buildLeftSide() {
+            var $imageContainer, $shadow, $editableImageArea, $cropArea;
+
             function buildCropArea() {
                 var cropAreaBEM = new BEM({
                     block: "imcms-crop-area",
@@ -660,7 +664,7 @@ Imcms.define("imcms-image-editor-builder",
         }
 
         function fillData(imageData) {
-            // todo: implement!
+            imageDataContainers.$imageTitle.text(imageData.name + "." + imageData.format);
         }
 
         function loadData(opts) {
