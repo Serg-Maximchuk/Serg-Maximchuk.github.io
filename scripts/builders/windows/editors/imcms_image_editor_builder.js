@@ -3,8 +3,11 @@
  * 21.08.17
  */
 Imcms.define("imcms-image-editor-builder",
-    ["imcms-bem-builder", "imcms-components-builder", "imcms-window-builder", "imcms-content-manager-builder", "jquery"],
-    function (BEM, components, WindowBuilder, contentManager, $) {
+    [
+        "imcms-bem-builder", "imcms-components-builder", "imcms-window-builder", "imcms-content-manager-builder",
+        "imcms-image-rest-api", "jquery"
+    ],
+    function (BEM, components, WindowBuilder, contentManager, imageRestApi, $) {
         var $imageContainer, $shadow, $cropArea, $editableImageArea, $rightSidePanel, $bottomPanel;
 
         function buildBodyHead() {
@@ -656,8 +659,12 @@ Imcms.define("imcms-image-editor-builder",
             ]).addClass("imcms-editor-window");
         }
 
+        function fillData(imageData) {
+            // todo: implement!
+        }
+
         function loadData(opts) {
-            // todo: implement
+            imageRestApi.read(opts).done(fillData);
         }
 
         function clearData() {
