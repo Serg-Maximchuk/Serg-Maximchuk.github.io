@@ -226,11 +226,6 @@ Imcms.define("imcms-image-content-builder",
         }
 
         function buildControls(subfolder, level) {
-            var controlsBEM = new BEM({
-                block: "imcms-controls",
-                elements: {"control": "imcms-control"}
-            });
-
             var controlsElements = [
                 folderControlsBuilder.move(subfolder),
                 folderControlsBuilder.remove(subfolder),
@@ -238,7 +233,7 @@ Imcms.define("imcms-image-content-builder",
                 folderControlsBuilder.create(subfolder, level)
             ];
 
-            return controlsBEM.buildBlock("<div>", controlsElements, {}, "control");
+            return controlsBuilder.buildControlsBlock("<div>", controlsElements);
         }
 
         function openSubFolders() {

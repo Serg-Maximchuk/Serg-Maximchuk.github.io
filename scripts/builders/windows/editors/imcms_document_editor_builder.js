@@ -173,11 +173,6 @@ Imcms.define("imcms-document-editor-builder",
         }
 
         function buildDocItemControls(documentId, opts) {
-            var docControlsBEM = new BEM({
-                block: "imcms-controls",
-                elements: {"control": "imcms-control"}
-            });
-
             var controls = [];
 
             if (opts) {
@@ -185,23 +180,23 @@ Imcms.define("imcms-document-editor-builder",
                     var $controlMove = controlsBuilder.move(function () {
                         console.log("%c Not implemented feature: move doc", "color: red;");
                     });
-                    controls.push({"control": $controlMove});
+                    controls.push($controlMove);
                 }
 
                 if (opts.removeEnable) {
                     var $controlRemove = controlsBuilder.remove(function () {
                         removeDocument.call(this, documentId);
                     });
-                    controls.push({"control": $controlRemove});
+                    controls.push($controlRemove);
                 }
 
                 if (opts.editEnable) {
                     var $controlEdit = controlsBuilder.edit(pageInfoBuilder.build);
-                    controls.push({"control": $controlEdit});
+                    controls.push($controlEdit);
                 }
             }
 
-            return docControlsBEM.buildBlock("<div>", controls);
+            return controlsBuilder.buildControlsBlock("<div>", controls);
         }
 
         function buildDocItem(document, opts) {

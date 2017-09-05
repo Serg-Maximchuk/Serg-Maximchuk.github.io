@@ -128,19 +128,12 @@ Imcms.define("imcms-loop-editor-builder",
         }
 
         function buildControls(loopEntry) {
-            var controlsBEM = new BEM({
-                block: "imcms-controls",
-                elements: {
-                    "control": "imcms-control"
-                }
-            });
-
             var $remove = controls.remove(function () {
                 var $item = $remove.parents(".imcms-loop-item");
                 onRemoveLoopEntryClicked.call($item, loopEntry);
             });
 
-            return controlsBEM.buildBlock("<div>", [{"control": $remove}])
+            return controls.buildControlsBlock("<div>", [$remove]);
         }
 
         function buildItem(loopEntry) {

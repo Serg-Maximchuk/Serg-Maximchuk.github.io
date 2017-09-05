@@ -4,7 +4,7 @@
  */
 Imcms.define("imcms-controls-builder", ["imcms-bem-builder"], function (BEM) {
     var controlsBEM = new BEM({
-        // no block here
+        block: "imcms-controls",
         elements: {"control": "imcms-control"}
     });
 
@@ -24,6 +24,9 @@ Imcms.define("imcms-controls-builder", ["imcms-bem-builder"], function (BEM) {
         },
         create: function (onClick) {
             return buildControl("create", onClick);
+        },
+        buildControlsBlock: function (tag, controls) {
+            return controlsBEM.buildBlock(tag, controls, {}, "control");
         }
     };
 });

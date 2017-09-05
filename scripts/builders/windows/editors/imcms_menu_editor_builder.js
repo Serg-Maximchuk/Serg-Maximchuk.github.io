@@ -93,21 +93,16 @@ Imcms.define("imcms-menu-editor-builder",
             }
 
             function buildMenuItemControls(menuItemDocId) {
-                var menuControlsBEM = new BEM({
-                    block: "imcms-controls",
-                    elements: {"control": "imcms-control"}
-                });
-
                 var $controlMove = controls.move();
                 var $controlRemove = controls.remove(function () {
                     removeMenuItem.call(this, menuItemDocId);
                 });
                 var $controlEdit = controls.edit();
 
-                return menuControlsBEM.buildBlock("<div>", [
-                    {"control": $controlMove},
-                    {"control": $controlRemove},
-                    {"control": $controlEdit}
+                return controls.buildControlsBlock("<div>", [
+                    $controlMove,
+                    $controlRemove,
+                    $controlEdit
                 ]);
             }
 
