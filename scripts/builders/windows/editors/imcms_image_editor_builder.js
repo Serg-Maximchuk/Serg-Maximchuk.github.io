@@ -132,7 +132,7 @@ Imcms.define("imcms-image-editor-builder",
         }
 
         function buildLeftSide() {
-            var $editableImageArea, $cropArea;
+            var $editableImageArea;
 
             function buildCropArea() {
                 var cropAreaBEM = new BEM({
@@ -165,15 +165,12 @@ Imcms.define("imcms-image-editor-builder",
 
                 imageDataContainers.$imageContainer = editableImgAreaBEM.buildElement("img", "<div>");
                 imageDataContainers.$shadow = editableImgAreaBEM.buildElement("layout", "<div>");
-                $cropArea = buildCropArea().css({
-                    width: "649px",
-                    height: "496px"
-                });
+                imageDataContainers.$cropArea = buildCropArea();
 
                 return editableImgAreaBEM.buildBlock("<div>", [
                     {"img": imageDataContainers.$imageContainer},
                     {"layout": imageDataContainers.$shadow},
-                    {"crop-area": $cropArea}
+                    {"crop-area": imageDataContainers.$cropArea}
                 ]);
             }
 
@@ -229,7 +226,7 @@ Imcms.define("imcms-image-editor-builder",
                     "height": newHeight + "px"
                 }, 200);
 
-                $cropArea.css({"background-size": backgroundSizeVal});
+                imageDataContainers.$cropArea.css({"background-size": backgroundSizeVal});
             }
 
             function zoom(zoomCoefficient) {
@@ -263,7 +260,7 @@ Imcms.define("imcms-image-editor-builder",
             function rotate(angleDelta) {
                 angle += angleDelta;
                 imageDataContainers.$imageContainer.css({"transform": "rotate(" + angle + "deg)"});
-                $cropArea.css({"transform": "rotate(" + angle + "deg)"});
+                imageDataContainers.$cropArea.css({"transform": "rotate(" + angle + "deg)"});
             }
 
             function rotateLeft() {
@@ -665,6 +662,14 @@ Imcms.define("imcms-image-editor-builder",
 
         function fillLeftSideData(imageData) {
             imageDataContainers.$imageContainer.add(imageDataContainers.$shadow).css({
+                "background-image": "url(" + imageData.path + ")",
+                width: imageData.width + "px",
+                height: imageData.height + "px"
+            });
+
+            // todo: receive correct crop area
+            imageDataContainers.$cropArea.css({
+                "background-image": "url(" + imageData.path + ")",
                 width: imageData.width + "px",
                 height: imageData.height + "px"
             });
