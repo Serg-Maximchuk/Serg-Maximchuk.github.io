@@ -33,6 +33,15 @@ Imcms.define("imcms-roles-rest-api", ["imcms-rest-api"], function (rest) {
         }
     };
 
+    api.remove = function (roleId) {
+        return {
+            done: function (callback) {
+                console.log("%c Removing (not really) role with id=" + roleId, "color: blue");
+                callback();
+            }
+        }
+    };
+
     return api;
 
 });

@@ -42,7 +42,7 @@ Imcms.define("imcms-access-tab-builder",
                 var $addRoleButton = components.buttons.neutralButton({
                         text: "Add role",
                         click: function () {
-                            console.log("%c Not implemented feature: add role.", "color: red;")
+
                         }
                     }),
                     $addRoleInnerBlock = addRoleInnerBEM.buildBlock("<div>", [
@@ -117,13 +117,18 @@ Imcms.define("imcms-access-tab-builder",
                             $roleEdit = buildRole("EDIT", role, rolesBEM),
                             $roleRestricted1 = buildRole("RESTRICTED_1", role, rolesBEM),
                             $roleRestricted2 = buildRole("RESTRICTED_2", role, rolesBEM),
+                            $row = rolesBEM.buildBlockElement("row", "<div>"),
                             $deleteRoleButton = rolesBEM.makeBlockElement("button", components.buttons.closeButton({
                                 click: function () {
-                                    console.log("%c Not implemented feature: delete role.", "color: red;")
+                                    console.log(role);
+                                    rolesRestApi.remove(role.id)
+                                        .done(function () {
+                                            $row.detach();
+                                        })
                                 }
                             }));
 
-                        return rolesBEM.buildBlockElement("row", "<div>").append([
+                        return $row.append([
                             $roleTitle,
                             $roleView,
                             $roleEdit,

@@ -124,21 +124,25 @@ Imcms.define("imcms-documents-rest-api", ["imcms-rest-api"], function (rest) {
         ],
         roles: [
             {
+                id: 1,
                 name: "Useradmin",
                 descriptor: "user_admin",
                 permission_name: "VIEW"
             },
             {
+                id: 2,
                 name: "Users",
                 descriptor: "users",
                 permission_name: "EDIT"
             },
             {
+                id: 3,
                 name: "Test role",
                 descriptor: "test_role",
                 permission_name: "RESTRICTED_1"
             },
             {
+                id: 4,
                 name: "User role",
                 descriptor: "user_role",
                 permission_name: "RESTRICTED_2"
