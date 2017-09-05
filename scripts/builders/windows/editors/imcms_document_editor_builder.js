@@ -5,10 +5,10 @@
 Imcms.define("imcms-document-editor-builder",
     [
         "imcms-bem-builder", "imcms-page-info-builder", "imcms-components-builder", "imcms-primitives-builder",
-        "imcms-window-components-builder", "imcms-documents-rest-api", "imcms-controls-builder",
-        "imcms-users-rest-api", "imcms-categories-rest-api", "imcms-window-builder"
+        "imcms-documents-rest-api", "imcms-controls-builder", "imcms-users-rest-api", "imcms-categories-rest-api",
+        "imcms-window-builder"
     ],
-    function (BEM, pageInfoBuilder, components, primitives, windowComponents, docRestApi, controlsBuilder, usersRestApi,
+    function (BEM, pageInfoBuilder, components, primitives, docRestApi, controlsBuilder, usersRestApi,
               categoriesRestApi, WindowBuilder) {
 
         function buildBodyHeadTools() {
@@ -279,7 +279,7 @@ Imcms.define("imcms-document-editor-builder",
         }
 
         function buildFooter() {
-            return windowComponents.buildFooter();
+            return documentWindowBuilder.buildFooter();
         }
 
         function buildBody() {

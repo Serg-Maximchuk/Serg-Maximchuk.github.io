@@ -25,6 +25,9 @@ Imcms.define("imcms-window-builder", ["imcms-window-components-builder"], functi
         },
         buildHead: function (title) {
             return windowComponents.buildHead(title, this.closeWindow.bind(this));
+        },
+        buildFooter: function (buttons) {
+            return windowComponents.apply(windowComponents, arguments);
         }
     };
 
