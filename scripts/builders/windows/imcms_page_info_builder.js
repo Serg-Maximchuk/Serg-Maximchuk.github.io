@@ -95,23 +95,20 @@ Imcms.define("imcms-page-info-builder",
                 text: "ok",
                 click: function () {
                     // todo: save things
-                    closePageInfo.call(this);
+                    closePageInfo();
                 }
             });
 
             var $cancelBtn = components.buttons.negativeButton({
                 text: "cancel",
-                click: function () {
-                    // todo: cancel things
-                    closePageInfo.call(this);
-                }
+                click: closePageInfo
             });
 
             var $saveAndPublishBtn = components.buttons.saveButton({
                 text: "save and publish this version",
                 click: function () {
                     // todo: save and publish
-                    closePageInfo.call(this);
+                    closePageInfo();
                 }
             });
 
