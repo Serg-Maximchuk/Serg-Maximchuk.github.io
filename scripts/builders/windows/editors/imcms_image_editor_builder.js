@@ -103,10 +103,10 @@ Imcms.define("imcms-image-editor-builder",
             ]);
 
             var $widthTitle = originSizeBEM.buildElement("width-title", "<span>", {text: "W:"});
-            var $widthValue = originSizeBEM.buildElement("width-value", "<span>", {text: "1436"});
+            imageDataContainers.$widthValue = originSizeBEM.buildElement("width-value", "<span>");
             var $widthBlock = originSizeBEM.buildBlock("<div>", [
                 {"width-title": $widthTitle},
-                {"width-value": $widthValue}
+                {"width-value": imageDataContainers.$widthValue}
             ]);
 
             var $heightWidthBlock = characteristicBEM.buildBlock("<div>", [
@@ -667,6 +667,7 @@ Imcms.define("imcms-image-editor-builder",
             imageDataContainers.$imageTitle.text(imageData.name + "." + imageData.format);
             imageDataContainers.$imgUrl.text(imageData.path);
             imageDataContainers.$heightValue.text(imageData.height);
+            imageDataContainers.$widthValue.text(imageData.width);
         }
 
         function loadData(opts) {
