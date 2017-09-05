@@ -80,7 +80,7 @@ Imcms.define("imcms-modal-window-builder",
         }
 
         function createLayout() {
-            return $("<div>", {"class": "imcms-modal-layout"});
+            return $("<div>", {"class": "imcms-modal-layout imcms-modal-layout--front"});
         }
 
         return {
