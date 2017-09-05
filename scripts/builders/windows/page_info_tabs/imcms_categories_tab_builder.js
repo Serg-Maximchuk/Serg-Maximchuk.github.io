@@ -21,17 +21,14 @@ Imcms.define("imcms-categories-tab-builder",
                 categoriesTypesRestApi.read(null)
                     .done(function (categoriesTypes) {
                         categoriesTypes.forEach(function (categoryType) {
-                            var $categoryType;
-                            if (categoryType.multi_select) {
-                                $categoryType = createMultiSelectCategoryType(categoryType, document);
-                            } else {
-                                $categoryType = createSingleSelectCategoryType(categoryType, document);
-                            }
+                            var $categoryType = (categoryType.multi_select)
+                                ? createMultiSelectCategoryType(categoryType, document)
+                                : createSingleSelectCategoryType(categoryType, document);
 
                             categoriesBlockElements.push($categoryType);
-
-                            parentContext.data.$categoriesBlock.append(categoriesBlockElements);
                         });
+
+                        parentContext.data.$categoriesBlock.append(categoriesBlockElements);
                     });
 
                 function isDocumentContainsCategory(document, category) {
