@@ -103,36 +103,20 @@ Imcms.define("imcms-access-tab-builder",
 
                 function generateRoles(rolesBEM, document) {
 
-                    function checkIfRoleNamePermittedInRole(roleName, role) {
-                        return roleName === role.permission_name ? "checked" : undefined;
+                    function buildRole(roleName, role, rolesBEM) {
+                        return rolesBEM.makeBlockElement("column", components.radios.imcmsRadio("<div>", {
+                            name: role.descriptor,
+                            "data-value": roleName,
+                            checked: roleName === role.permission_name ? "checked" : undefined
+                        }));
                     }
 
                     return document.roles.map(function (role) {
                         var $roleTitle = rolesBEM.buildBlockElement("column-title", "<div>", {text: role.name}),
-                            viewRoleName = "VIEW",
-                            $roleView = rolesBEM.makeBlockElement("column", components.radios.imcmsRadio("<div>", {
-                                name: role.descriptor,
-                                "data-value": viewRoleName,
-                                checked: checkIfRoleNamePermittedInRole(viewRoleName, role)
-                            })),
-                            editRoleName = "EDIT",
-                            $roleEdit = rolesBEM.makeBlockElement("column", components.radios.imcmsRadio("<div>", {
-                                name: role.descriptor,
-                                "data-value": editRoleName,
-                                checked: checkIfRoleNamePermittedInRole(editRoleName, role)
-                            })),
-                            restricted1RoleName = "RESTRICTED_1",
-                            $roleRestricted1 = rolesBEM.makeBlockElement("column", components.radios.imcmsRadio("<div>", {
-                                name: role.descriptor,
-                                "data-value": restricted1RoleName,
-                                checked: checkIfRoleNamePermittedInRole(restricted1RoleName, role)
-                            })),
-                            restricted2RoleName = "RESTRICTED_2",
-                            $roleRestricted2 = rolesBEM.makeBlockElement("column", components.radios.imcmsRadio("<div>", {
-                                name: role.descriptor,
-                                "data-value": restricted2RoleName,
-                                checked: checkIfRoleNamePermittedInRole(restricted2RoleName, role)
-                            })),
+                            $roleView = buildRole("VIEW", role, rolesBEM),
+                            $roleEdit = buildRole("EDIT", role, rolesBEM),
+                            $roleRestricted1 = buildRole("RESTRICTED_1", role, rolesBEM),
+                            $roleRestricted2 = buildRole("RESTRICTED_2", role, rolesBEM),
                             $deleteRoleButton = rolesBEM.makeBlockElement("button", components.buttons.closeButton({
                                 click: function () {
                                     console.log("%c Not implemented feature: delete role.", "color: red;")
