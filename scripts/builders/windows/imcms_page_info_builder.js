@@ -91,12 +91,19 @@ Imcms.define("imcms-page-info-builder",
                 clearPageInfoData();
             }
 
+            function saveAndClose() {
+                // todo: save things
+                closePageInfo();
+            }
+
+            function saveAndPublish() {
+                // todo: save and publish
+                closePageInfo();
+            }
+
             var $saveBtn = components.buttons.positiveButton({
                 text: "ok",
-                click: function () {
-                    // todo: save things
-                    closePageInfo();
-                }
+                click: saveAndClose
             });
 
             var $cancelBtn = components.buttons.negativeButton({
@@ -106,10 +113,7 @@ Imcms.define("imcms-page-info-builder",
 
             var $saveAndPublishBtn = components.buttons.saveButton({
                 text: "save and publish this version",
-                click: function () {
-                    // todo: save and publish
-                    closePageInfo();
-                }
+                click: saveAndPublish
             });
 
             return pageInfoBEM.buildElement("footer", "<div>").append($saveAndPublishBtn, $cancelBtn, $saveBtn);
