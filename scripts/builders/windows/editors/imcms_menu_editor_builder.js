@@ -5,9 +5,11 @@
 Imcms.define("imcms-menu-editor-builder",
     [
         "imcms-bem-builder", "imcms-components-builder", "imcms-document-editor-builder", "imcms-modal-window-builder",
-        "imcms-window-components-builder", "imcms-window-builder", "imcms-menu-rest-api", "jquery"
+        "imcms-window-components-builder", "imcms-window-builder", "imcms-menu-rest-api", "imcms-controls-builder",
+        "jquery"
     ],
-    function (BEM, components, documentEditorBuilder, imcmsModalWindow, windowComponents, WindowBuilder, menuRestApi, $) {
+    function (BEM, components, documentEditorBuilder, imcmsModalWindow, windowComponents, WindowBuilder, menuRestApi,
+              controls, $) {
         var menuEditorBEM = new BEM({
             block: "imcms-menu-editor",
             elements: {
@@ -96,14 +98,11 @@ Imcms.define("imcms-menu-editor-builder",
                     elements: {"control": "imcms-control"}
                 });
 
-                var $controlMove = menuControlsBEM.buildElement("control", "<div>", {}, ["move"]);
-                var $controlRemove = menuControlsBEM.buildElement("control", "<div>", {
-                        click: function () {
-                            removeMenuItem.call(this, menuItemDocId);
-                        }
-                    },
-                    ["remove"]);
-                var $controlEdit = menuControlsBEM.buildElement("control", "<div>", {}, ["edit"]);
+                var $controlMove = controls.move();
+                var $controlRemove = controls.remove(function () {
+                    removeMenuItem.call(this, menuItemDocId);
+                });
+                var $controlEdit = controls.edit();
 
                 return menuControlsBEM.buildBlock("<div>", [
                     {"control": $controlMove},
