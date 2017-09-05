@@ -6,10 +6,10 @@ Imcms.define("imcms-menu-editor-builder",
     [
         "imcms-bem-builder", "imcms-components-builder", "imcms-document-editor-builder", "imcms-modal-window-builder",
         "imcms-window-components-builder", "imcms-window-builder", "imcms-menu-rest-api", "imcms-controls-builder",
-        "jquery"
+        "imcms-page-info-builder", "jquery"
     ],
     function (BEM, components, documentEditorBuilder, imcmsModalWindow, windowComponents, WindowBuilder, menuRestApi,
-              controls, $) {
+              controls, pageInfoBuilder, $) {
         var menuEditorBEM = new BEM({
             block: "imcms-menu-editor",
             elements: {
@@ -97,7 +97,9 @@ Imcms.define("imcms-menu-editor-builder",
                 var $controlRemove = controls.remove(function () {
                     removeMenuItem.call(this, menuItemDocId);
                 });
-                var $controlEdit = controls.edit();
+                var $controlEdit = controls.edit(function () {
+                    pageInfoBuilder.build(menuItemDocId);
+                });
 
                 return controls.buildControlsBlock("<div>", [
                     $controlMove,
