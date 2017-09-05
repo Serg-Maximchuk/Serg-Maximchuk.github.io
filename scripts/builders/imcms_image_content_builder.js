@@ -114,8 +114,28 @@ Imcms.define("imcms-image-content-builder",
         function removeFolder() { // this == folder
             modalWindow.buildModalWindow("Do you want to remove folder \"" + this.name + "\"?", function (answer) {
                 if (answer) {
-                    fileREST.remove(this.path + this.name)
-                        .done(this.$folder.detach.bind(this.$folder));
+
+                    fileREST.remove(this.path)
+                        .done(removeFolder.bindArgs(this.$folder, this.path));
+
+                    function removeFolder($folder, path) {
+                        removeFolder($folder);
+                        removeParentBtnIfNoSubfolders(path);
+
+                        function removeFolder($folder) {
+                            $folder.detach();
+                        }
+
+                        function removeParentBtnIfNoSubfolders(path) {
+                            var parentFolderPath = path.substring(0, path.lastIndexOf('/'));
+                            var noChildFoldersLeft = $("[data-folder-path^='" + parentFolderPath + "/'").length === 0;
+                            if (noChildFoldersLeft) {
+                                $("[data-folder-path^='" + parentFolderPath + "'")
+                                    .find(".imcms-folder__btn")
+                                    .detach();
+                            }
+                        }
+                    }
                 }
             }.bind(this));
         }
