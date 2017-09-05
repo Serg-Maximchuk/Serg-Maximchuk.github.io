@@ -164,10 +164,7 @@ Imcms.define("imcms-image-editor-builder",
                 });
 
                 imageDataContainers.$imageContainer = editableImgAreaBEM.buildElement("img", "<div>");
-                imageDataContainers.$shadow = editableImgAreaBEM.buildElement("layout", "<div>").css({
-                    width: "1436px",
-                    height: "773px"
-                });
+                imageDataContainers.$shadow = editableImgAreaBEM.buildElement("layout", "<div>");
                 $cropArea = buildCropArea().css({
                     width: "649px",
                     height: "496px"
@@ -667,7 +664,7 @@ Imcms.define("imcms-image-editor-builder",
         }
 
         function fillLeftSideData(imageData) {
-            imageDataContainers.$imageContainer.css({
+            imageDataContainers.$imageContainer.add(imageDataContainers.$shadow).css({
                 width: imageData.width + "px",
                 height: imageData.height + "px"
             });
