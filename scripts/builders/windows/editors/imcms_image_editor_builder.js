@@ -5,9 +5,9 @@
 Imcms.define("imcms-image-editor-builder",
     [
         "imcms-bem-builder", "imcms-window-components-builder", "imcms-components-builder",
-        "imcms-window-builder", "jquery"
+        "imcms-window-builder", "imcms-content-manager-builder", "jquery"
     ],
-    function (BEM, windowComponents, components, WindowBuilder, $) {
+    function (BEM, windowComponents, components, WindowBuilder, contentManager, $) {
         var $imageContainer, $shadow, $cropArea, $editableImageArea, $rightSidePanel, $bottomPanel;
 
         function closeEditor() {
@@ -351,21 +351,11 @@ Imcms.define("imcms-image-editor-builder",
         function buildRightSide(imageEditorBEM) {
 
             function buildSelectImageBtnContainer() {
-                var $hiddenFileInput = $("<input>", {
-                    type: "file",
-                    name: "image",
-                    "style": "display: none"
-                });
                 var $selectImageBtn = components.buttons.neutralButton({
                     text: "Select Image",
-                    click: function () {
-                        $hiddenFileInput.click();
-                    }
+                    click: contentManager.build
                 });
-                return components.buttons.buttonsContainer("<div>", [
-                    $hiddenFileInput,
-                    $selectImageBtn
-                ]);
+                return components.buttons.buttonsContainer("<div>", [$selectImageBtn]);
             }
 
             function buildAltTextBox() {
