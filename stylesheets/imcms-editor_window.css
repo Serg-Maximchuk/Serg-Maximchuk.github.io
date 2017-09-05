@@ -8,6 +8,11 @@
     z-index: 10003;
 }
 
+.imcms-editor-window.imcms-document-editor,
+.imcms-editor-window.imcms-menu-editor {
+    z-index: 10001;
+}
+
 .imcms-editor-window:after {
     content: "";
     display: block;
