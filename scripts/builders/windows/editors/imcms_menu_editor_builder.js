@@ -130,9 +130,7 @@ Imcms.define("imcms-menu-editor-builder",
                 ];
 
                 if (menuElementTree.children.length) {
-                    var $openSubMenuBtn = menuItemBEM.buildElement("btn", "<div>", {
-                        click: showHideSubmenu
-                    });
+                    var $openSubMenuBtn = menuItemBEM.buildElement("btn", "<div>", {click: showHideSubmenu});
                     $menuItemRowComponents.unshift({"btn": $openSubMenuBtn});
                 }
 
