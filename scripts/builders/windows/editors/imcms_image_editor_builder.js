@@ -656,7 +656,7 @@ Imcms.define("imcms-image-editor-builder",
             ]).addClass("imcms-editor-window");
         }
 
-        function loadData(imageId) {
+        function loadData(opts) {
             // todo: implement
         }
 
@@ -671,8 +671,7 @@ Imcms.define("imcms-image-editor-builder",
         });
 
         return {
-            build: function (imageId) {
-                // todo: use image id to load data from server
+            build: function (opts) {
                 imageWindowBuilder.buildWindow.applyAsync(arguments, imageWindowBuilder);
             }
         };
