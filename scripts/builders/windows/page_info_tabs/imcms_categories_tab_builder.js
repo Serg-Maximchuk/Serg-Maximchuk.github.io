@@ -14,6 +14,7 @@ Imcms.define("imcms-categories-tab-builder",
                 return this.data.$categoriesBlock;
             },
             fillTabDataFromDocument: function (document) {
+                this.data.$categoriesBlock && this.data.$categoriesBlock.empty();
                 var categoriesBlockElements = [],
                     parentContext = this;
 
@@ -86,7 +87,6 @@ Imcms.define("imcms-categories-tab-builder",
                 }
             },
             clearTabData: function () {
-                this.data.$categoriesBlock && this.data.$categoriesBlock.empty();
                 this.fillTabDataFromDocument();
             }
         };
