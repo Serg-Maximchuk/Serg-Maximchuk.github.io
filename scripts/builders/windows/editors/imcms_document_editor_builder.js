@@ -8,17 +8,10 @@ Imcms.define("imcms-document-editor-builder",
         "imcms-window-components-builder", "imcms-documents-rest-api", "imcms-controls-builder",
         "imcms-users-rest-api", "imcms-categories-rest-api"
     ],
-    function (BEM, pageInfoBuilder, components, primitives,
-              windowComponents, docRestApi, controlsBuilder,
-              usersRestApi, categoriesRestApi) {
-        function buildBodyHead() {
-            var bodyHeadBEM = new BEM({
-                block: "imcms-document-editor-head",
-                elements: {
-                    "tools": "imcms-document-editor-head-tools imcms-grid-section"
-                }
-            });
+    function (BEM, pageInfoBuilder, components, primitives, windowComponents, docRestApi, controlsBuilder, usersRestApi,
+              categoriesRestApi) {
 
+        function buildBodyHeadTools() {
             var headToolsBEM = new BEM({
                 block: "imcms-document-editor-head-tools",
                 elements: {
@@ -102,7 +95,7 @@ Imcms.define("imcms-document-editor-builder",
 
             var $categoriesFilter = toolBEM.buildBlock("<div>", [{"select": $categoriesFilterSelect}]);
 
-            var $tools = headToolsBEM.buildBlock("<div>", [
+            return headToolsBEM.buildBlock("<div>", [
                 {
                     "tool": $newDocButtonContainer,
                     modifiers: ["grid-col-2"]
@@ -115,7 +108,19 @@ Imcms.define("imcms-document-editor-builder",
                 }, {
                     "tool": $categoriesFilter,
                     modifiers: ["grid-col-3"]
-                }]);
+                }]
+            );
+        }
+
+        function buildBodyHead() {
+            var bodyHeadBEM = new BEM({
+                block: "imcms-document-editor-head",
+                elements: {
+                    "tools": "imcms-document-editor-head-tools imcms-grid-section"
+                }
+            });
+
+            var $tools = buildBodyHeadTools();
 
             return bodyHeadBEM.buildBlock("<div>", [{"tools": $tools}]);
         }
@@ -276,11 +281,10 @@ Imcms.define("imcms-document-editor-builder",
         }
 
         function loadDocumentEditorContent(opts) {
-            docRestApi.read(null)
-                .done(function (documentList) {
-                    var $editorBody = buildEditorBody(documentList, opts);
-                    $documentsContainer.append($editorBody);
-                });
+            docRestApi.read(null).done(function (documentList) {
+                var $editorBody = buildEditorBody(documentList, opts);
+                $documentsContainer.append($editorBody);
+            });
         }
 
         function buildDocumentEditor() {
@@ -306,15 +310,15 @@ Imcms.define("imcms-document-editor-builder",
                 {"head": $head},
                 {"body": $body},
                 {"footer": $footer}
-            ], {id: "imcms-document-editor"}).addClass("imcms-editor-window");
+            ]).addClass("imcms-editor-window");
         }
 
         function removeDocument(documentId) {
             var documentRow = this.parentElement.parentElement;
-            docRestApi.remove(documentId)
-                .done(function (responseCode) {
-                    responseCode === 200 && documentRow.remove();
-                });
+
+            docRestApi.remove(documentId).done(function (responseCode) {
+                responseCode === 200 && documentRow.remove();
+            });
         }
 
         return {
