@@ -5,10 +5,9 @@
 Imcms.define("imcms-menu-editor-builder",
     [
         "imcms-bem-builder", "imcms-components-builder", "imcms-document-editor-builder", "imcms-modal-window-builder",
-        "imcms-window-components-builder", "imcms-window-builder", "imcms-menu-rest-api", "imcms-controls-builder",
-        "imcms-page-info-builder", "jquery"
+        "imcms-window-builder", "imcms-menu-rest-api", "imcms-controls-builder", "imcms-page-info-builder", "jquery"
     ],
-    function (BEM, components, documentEditorBuilder, imcmsModalWindow, windowComponents, WindowBuilder, menuRestApi,
+    function (BEM, components, documentEditorBuilder, imcmsModalWindow, WindowBuilder, menuRestApi,
               controls, pageInfoBuilder, $) {
         var menuEditorBEM = new BEM({
             block: "imcms-menu-editor",
@@ -22,12 +21,13 @@ Imcms.define("imcms-menu-editor-builder",
         var $title, $menuElementsContainer, $documentsContainer;
         var docId, menuId;
 
-        function closeMenuEditor() {
+        function saveAndClose() {
+            // fixme: just closing now, should be save and close
             menuWindowBuilder.closeWindow();
         }
 
         function buildHead() {
-            return windowComponents.buildHead("menu editor", closeMenuEditor);
+            return menuWindowBuilder.buildHead("menu editor");
         }
 
         function buildBody() {
@@ -51,10 +51,10 @@ Imcms.define("imcms-menu-editor-builder",
         function buildFooter() {
             var $saveAndClose = components.buttons.saveButton({
                 text: "Save and close",
-                click: closeMenuEditor // fixme: just closing now, should be save and close
+                click: saveAndClose
             });
 
-            return windowComponents.buildFooter([$saveAndClose]);
+            return menuWindowBuilder.buildFooter([$saveAndClose]);
         }
 
         function buildMenuEditorContent(menuElementsTree) {
