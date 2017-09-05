@@ -661,10 +661,15 @@ Imcms.define("imcms-image-editor-builder",
         }
 
         function fillLeftSideData(imageData) {
-            imageDataContainers.$imageContainer.add(imageDataContainers.$shadow).css({
+            imageDataContainers.$imageContainer.css({
                 "background-image": "url(" + imageData.path + ")",
                 width: imageData.width + "px",
                 height: imageData.height + "px"
+            });
+
+            imageDataContainers.$shadow.css({
+                width: "100%",
+                height: "100%"
             });
 
             // todo: receive correct crop area
