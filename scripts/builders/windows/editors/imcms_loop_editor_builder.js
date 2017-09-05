@@ -177,10 +177,9 @@ Imcms.define("imcms-loop-editor-builder",
         }
 
         function buildItems(loop) {
-            var blockElements = loop.entries.map(buildItem)
-                .map(function ($item) {
-                    return {"item": $item};
-                });
+            var blockElements = loop.entries.map(function (entry) {
+                return {"item": buildItem(entry)};
+            });
 
             return itemsBEM.buildBlock("<div>", blockElements);
         }
