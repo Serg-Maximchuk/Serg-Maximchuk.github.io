@@ -9,6 +9,8 @@ Imcms.define("imcms-page-info-builder",
     ],
     function (BEM, components, documentsRestApi, WindowBuilder, pageInfoTabs, $) {
 
+        var panels;
+
         var pageInfoBEM = new BEM({
             block: "imcms-pop-up-modal",
             elements: {
@@ -33,7 +35,9 @@ Imcms.define("imcms-page-info-builder",
         }
 
         function showPanel(index) {
-            $(".imcms-form[data-window-id=" + index + "]").css({"display": "block"});
+            panels.forEach(function ($panel, number) {
+                $panel.css({"display": (index === number) ? "block" : "none"});
+            });
         }
 
         function buildPageInfoTabs() {
@@ -41,7 +45,6 @@ Imcms.define("imcms-page-info-builder",
                 return function () {
                     $tabsContainer.find(".imcms-title--active").removeClass("imcms-title--active");
                     $(this).addClass("imcms-title--active");
-                    $(".imcms-form").css("display", "none");
                     showPanel(index);
                 }
             }
@@ -77,11 +80,11 @@ Imcms.define("imcms-page-info-builder",
         }
 
         function buildPageInfoPanels(docId) {
-            var $forms = pageInfoTabs.data.map(function (tabData, index) {
+            panels = pageInfoTabs.data.map(function (tabData, index) {
                 return tabData.buildTab(index, docId).css("display", (index === 0 ? "block" : "none"));
             });
 
-            return pageInfoBEM.buildElement("right-side", "<div>").append($forms);
+            return pageInfoBEM.buildElement("right-side", "<div>").append(panels);
         }
 
         function buildPageInfoFooter() {
