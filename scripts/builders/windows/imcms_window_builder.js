@@ -2,7 +2,7 @@
  * Created by Serhii Maksymchuk from Ubrainians for imCode
  * 04.09.17
  */
-Imcms.define("imcms-window-builder", [], function () {
+Imcms.define("imcms-window-builder", ["imcms-window-components-builder"], function (windowComponents) {
     var WindowBuilder = function (opts) {
         this.factory = opts.factory;
         this.loadDataStrategy = opts.loadDataStrategy;
@@ -22,6 +22,9 @@ Imcms.define("imcms-window-builder", [], function () {
         closeWindow: function () {
             this.$editor.css("display", "none");
             this.clearDataStrategy && this.clearDataStrategy.call();
+        },
+        buildHead: function (title) {
+            return windowComponents.buildHead(title, this.closeWindow.bind(this));
         }
     };
 

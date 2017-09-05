@@ -274,12 +274,8 @@ Imcms.define("imcms-document-editor-builder",
 
         var $documentsContainer, $editorBody;
 
-        function closeEditor() {
-            documentWindowBuilder.closeWindow();
-        }
-
         function buildHead() {
-            return windowComponents.buildHead("Document editor", closeEditor);
+            return documentWindowBuilder.buildHead("Document editor");
         }
 
         function buildFooter() {
