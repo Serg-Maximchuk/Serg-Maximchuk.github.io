@@ -224,7 +224,7 @@ Imcms.define("imcms-menu-editor-builder",
 
             var $documentEditor = documentEditorBuilder.buildBody();
             $documentsContainer.append($documentEditor);
-            documentEditorBuilder.loadDocumentEditorContent({moveEnable: true});
+            documentEditorBuilder.loadDocumentEditorContent.applyAsync([{moveEnable: true}]);
         }
 
         function loadMenuEditorContent(opts) {

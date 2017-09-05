@@ -6,10 +6,10 @@ Imcms.define("imcms-document-editor-builder",
     [
         "imcms-bem-builder", "imcms-page-info-builder", "imcms-components-builder", "imcms-primitives-builder",
         "imcms-window-components-builder", "imcms-documents-rest-api", "imcms-controls-builder",
-        "imcms-users-rest-api", "imcms-categories-rest-api"
+        "imcms-users-rest-api", "imcms-categories-rest-api", "imcms-window-builder"
     ],
     function (BEM, pageInfoBuilder, components, primitives, windowComponents, docRestApi, controlsBuilder, usersRestApi,
-              categoriesRestApi) {
+              categoriesRestApi, WindowBuilder) {
 
         function buildBodyHeadTools() {
 
@@ -272,10 +272,10 @@ Imcms.define("imcms-document-editor-builder",
             ]);
         }
 
-        var $documentEditor, $documentsContainer;
+        var $documentsContainer, $editorBody;
 
         function closeEditor() {
-            $documentEditor.css("display", "none");
+            documentWindowBuilder.closeWindow();
         }
 
         function buildHead() {
@@ -300,7 +300,7 @@ Imcms.define("imcms-document-editor-builder",
 
         function loadDocumentEditorContent(opts) {
             docRestApi.read(null).done(function (documentList) {
-                var $editorBody = buildEditorBody(documentList, opts);
+                $editorBody = buildEditorBody(documentList, opts);
                 $documentsContainer.append($editorBody);
             });
         }
@@ -319,11 +319,6 @@ Imcms.define("imcms-document-editor-builder",
                 $body = buildBody(),
                 $footer = buildFooter();
 
-            loadDocumentEditorContent.applyAsync([{
-                editEnable: true,
-                removeEnable: true
-            }]);
-
             return documentEditorBEM.buildBlock("<div>", [
                 {"head": $head},
                 {"body": $body},
@@ -339,15 +334,28 @@ Imcms.define("imcms-document-editor-builder",
             });
         }
 
+        function loadData() {
+            loadDocumentEditorContent({
+                editEnable: true,
+                removeEnable: true
+            });
+        }
+
+        function clearData() {
+            $editorBody.detach();
+        }
+
+        var documentWindowBuilder = new WindowBuilder({
+            factory: buildDocumentEditor,
+            loadDataStrategy: loadData,
+            clearDataStrategy: clearData
+        });
+
         return {
             buildBody: buildBody,
             loadDocumentEditorContent: loadDocumentEditorContent,
             build: function () {
-                if (!$documentEditor) {
-                    $documentEditor = buildDocumentEditor().appendTo("body");
-                }
-
-                $documentEditor.css("display", "block");
+                documentWindowBuilder.buildWindow.applyAsync(arguments, documentWindowBuilder);
             }
         };
     }
