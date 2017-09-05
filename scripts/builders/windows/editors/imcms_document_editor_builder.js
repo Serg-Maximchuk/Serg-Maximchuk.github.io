@@ -191,7 +191,7 @@ Imcms.define("imcms-document-editor-builder",
                 }
 
                 if (opts.editEnable) {
-                    var $controlEdit = controlsBuilder.edit(pageInfoBuilder.build);
+                    var $controlEdit = controlsBuilder.edit(pageInfoBuilder.build.bind(pageInfoBuilder, documentId));
                     controls.push($controlEdit);
                 }
             }
