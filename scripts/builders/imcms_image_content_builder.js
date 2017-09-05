@@ -116,13 +116,13 @@ Imcms.define("imcms-image-content-builder",
                 if (answer) {
 
                     fileREST.remove(this.path)
-                        .done(removeFolder.bindArgs(this.$folder, this.path));
+                        .done(onDoneRemoveFolder.bindArgs(this.$folder, this.path));
 
-                    function removeFolder($folder, path) {
-                        removeFolder($folder);
+                    function onDoneRemoveFolder($folder, path) {
+                        removeFolderFromEditor($folder);
                         removeParentBtnIfNoSubfolders(path);
 
-                        function removeFolder($folder) {
+                        function removeFolderFromEditor($folder) {
                             $folder.detach();
                         }
 
