@@ -1,8 +1,8 @@
 Imcms.define("imcms-appearance-tab-builder",
     [
-        "imcms-bem-builder", "imcms-components-builder", "imcms-page-info-tabs-linker"
+        "imcms-bem-builder", "imcms-components-builder", "imcms-page-info-tabs-linker", "imcms-choose-image-builder"
     ],
-    function (BEM, components, linker) {
+    function (BEM, components, linker, chooseImage) {
         return {
             name: "appearance",
             data: {},
@@ -50,7 +50,7 @@ Imcms.define("imcms-appearance-tab-builder",
                     {"text-area": this.data.$engMenuText}
                 ]);
 
-                this.data.$engLinkToImage = components.chooseImage.container("<div>", {
+                this.data.$engLinkToImage = chooseImage.container("<div>", {
                     id: "path-to-image",
                     name: "image",
                     placeholder: "Image path",
@@ -93,7 +93,7 @@ Imcms.define("imcms-appearance-tab-builder",
                     "text-area": this.data.$sweMenuText
                 }]);
 
-                this.data.$linkToImageSwe = components.chooseImage.container("<div>", {
+                this.data.$linkToImageSwe = chooseImage.container("<div>", {
                     id: "path-to-image-swe",
                     name: "image",
                     placeholder: "Image path",
