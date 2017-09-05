@@ -3,8 +3,8 @@
  * 26.07.17.
  */
 Imcms.define("imcms-choose-image-builder",
-    ["imcms-bem-builder", "imcms-texts-builder", "imcms-buttons-builder"],
-    function (BEM, texts, buttons) {
+    ["imcms-bem-builder", "imcms-texts-builder", "imcms-buttons-builder", "imcms-content-manager-builder"],
+    function (BEM, texts, buttons, contentManager) {
         var chooseImageBEM = new BEM({
             block: "imcms-choose-image",
             elements: {
@@ -23,9 +23,7 @@ Imcms.define("imcms-choose-image-builder",
 
                     $chooseImageButton = buttons.neutral("<button>", {
                         text: attributes["button-text"],
-                        click: attributes.click || function () {
-                            console.info("%c Not implemented feature: open image choose window.", "color: red;");
-                        }
+                        click: attributes.click || contentManager.build
                     });
 
                 return chooseImageBEM.buildBlock("<div>", [
