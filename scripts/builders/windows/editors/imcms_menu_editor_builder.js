@@ -5,9 +5,9 @@
 Imcms.define("imcms-menu-editor-builder",
     [
         "imcms-bem-builder", "imcms-components-builder", "imcms-document-editor-builder", "imcms-modal-window-builder",
-        "imcms-window-components-builder", "jquery"
+        "imcms-window-components-builder", "imcms-window-builder", "imcms-menu-rest-api", "jquery"
     ],
-    function (BEM, components, documentEditorBuilder, imcmsModalWindow, windowComponents, $) {
+    function (BEM, components, documentEditorBuilder, imcmsModalWindow, windowComponents, WindowBuilder, menuRestApi, $) {
         var menuEditorBEM = new BEM({
             block: "imcms-menu-editor",
             elements: {
@@ -17,14 +17,14 @@ Imcms.define("imcms-menu-editor-builder",
             }
         });
 
-        var $menuElementsContainer, $documentsContainer;
+        var $title, $menuElementsContainer, $documentsContainer;
 
         function closeMenuEditor() {
-            $menuEditor.css("display", "none");
+            menuWindowBuilder.closeWindow();
         }
 
-        function buildHead() { // 1001 doc, 1st menu; todo: receive correct values
-            return windowComponents.buildHead("menu editor: 1001-1", closeMenuEditor);
+        function buildHead() {
+            return windowComponents.buildHead("menu editor", closeMenuEditor);
         }
 
         function buildBody() {
@@ -52,75 +52,6 @@ Imcms.define("imcms-menu-editor-builder",
             });
 
             return windowComponents.buildFooter([$saveAndClose]);
-        }
-
-        function getMenuElementsTree() {
-            // mock data
-            return [{
-                id: 1001,
-                title: "Start page",
-                children: [{
-                    id: 1002,
-                    title: "Second page"
-                }, {
-                    id: 1003,
-                    title: "Another page 1"
-                }, {
-                    id: 1004,
-                    title: "Another page 2"
-                }, {
-                    id: 1005,
-                    title: "Another page 3"
-                }]
-            }, {
-                id: 1006,
-                title: "Main page",
-                children: [{
-                    id: 1012,
-                    title: "Third page"
-                }, {
-                    id: 1013,
-                    title: "Inner page 1"
-                }, {
-                    id: 1014,
-                    title: "Inner page 2"
-                }, {
-                    id: 1015,
-                    title: "Inner page 3",
-                    children: [{
-                        id: 1021,
-                        title: "Some page"
-                    }, {
-                        id: 1022,
-                        title: "One more page 1"
-                    }, {
-                        id: 1023,
-                        title: "One more page 2"
-                    }, {
-                        id: 1124,
-                        title: "One more page 3"
-                    }]
-                }]
-            }, {
-                id: 1007,
-                title: "Childless page"
-            }, {
-                id: 1008,
-                title: "Last page",
-                children: [{
-                    id: 1009,
-                    title: "Some page"
-                }, {
-                    id: 1010,
-                    title: "One more page 1"
-                }, {
-                    id: 1011,
-                    title: "One more page 2"
-                }, {
-                    id: 1111,
-                    title: "One more page 3"
-                }]
-            }];
         }
 
         function buildMenuEditorContent(menuElementsTree) {
@@ -191,16 +122,10 @@ Imcms.define("imcms-menu-editor-builder",
                 var $menuItemId = menuItemBEM.buildElement("info", "<div>", {
                     text: menuElementTree.id + " - " + menuElementTree.title
                 });
-                // todo: decide what to do with this
-                // var $menuItemTitle = menuItemBEM.buildElement("info", "<div>", {text: menuElementTree.title});
                 var $controls = buildMenuItemControls();
 
                 var $menuItemRowComponents = [
-                    {
-                        "info": $menuItemId//,
-                        // modifiers: ["id"]
-                    },
-                    // {"info": $menuItemTitle},
+                    {"info": $menuItemId},
                     {"controls": $controls}
                 ];
 
@@ -282,46 +207,52 @@ Imcms.define("imcms-menu-editor-builder",
             ]);
         }
 
-        var $menuEditor;
+        function fillEditorContent(menuElementsTree) {
+            var $menuElementsTree = buildMenuEditorContent(menuElementsTree);
+            $menuElementsContainer.append($menuElementsTree);
+
+            var $documentEditor = documentEditorBuilder.buildBody();
+            $documentsContainer.append($documentEditor);
+            documentEditorBuilder.loadDocumentEditorContent({moveEnable: true});
+        }
+
+        function loadMenuEditorContent(opts) {
+            addHeadData(opts);
+            menuRestApi.read(opts).done(fillEditorContent);
+        }
+
+        function addHeadData(opts) {
+            $title.append(": " + opts.docId + "-" + opts.menuId);
+        }
 
         function buildMenuEditor() {
-            function loadMenuEditorContent() {
-                var menuElementsTree = getMenuElementsTree(); // mock elements, later receive real data from server
-                var $menuElementsTree = buildMenuEditorContent(menuElementsTree);
-                $menuElementsContainer.append($menuElementsTree);
-
-                var $documentEditor = documentEditorBuilder.buildBody();
-                $documentsContainer.append($documentEditor);
-                documentEditorBuilder.loadDocumentEditorContent({moveEnable: true});
-            }
-
             var $head = buildHead(),
                 $body = buildBody(),
                 $footer = buildFooter();
 
-            var docId = 1001;  // receive correct doc id
-            var menuId = 1;  // receive correct menu id
-
-            setTimeout(loadMenuEditorContent);
+            $title = $head.find(".imcms-title");
 
             return menuEditorBEM.buildBlock("<div>", [
                 {"head": $head},
                 {"body": $body},
                 {"footer": $footer}
-            ], {
-                id: "imcms-menu-editor",
-                "data-document-id": docId, // receive correct doc id
-                "data-menu-id": menuId // receive correct menu id
-            }).addClass("imcms-editor-window");
+            ]).addClass("imcms-editor-window");
         }
 
-        return {
-            build: function () {
-                if (!$menuEditor) {
-                    $menuEditor = buildMenuEditor().appendTo("body");
-                }
+        function clearData() {
+            $title.text("Menu Editor");
+            $menuElementsContainer.add($documentsContainer).empty();
+        }
 
-                $menuEditor.css("display", "block");
+        var menuWindowBuilder = new WindowBuilder({
+            factory: buildMenuEditor,
+            loadDataStrategy: loadMenuEditorContent,
+            clearDataStrategy: clearData
+        });
+
+        return {
+            build: function (opts) {
+                menuWindowBuilder.buildWindow.applyAsync(arguments, menuWindowBuilder);
             }
         };
     }
