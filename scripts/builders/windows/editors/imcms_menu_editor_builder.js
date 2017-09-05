@@ -18,6 +18,7 @@ Imcms.define("imcms-menu-editor-builder",
         });
 
         var $title, $menuElementsContainer, $documentsContainer;
+        var docId, menuId;
 
         function closeMenuEditor() {
             menuWindowBuilder.closeWindow();
@@ -55,36 +56,50 @@ Imcms.define("imcms-menu-editor-builder",
         }
 
         function buildMenuEditorContent(menuElementsTree) {
-            function removeMenuItem() {
+            function removeMenuItemFromEditor(currentMenuItem) {
+                var submenuItem = currentMenuItem.parent().find(".imcms-menu-items"),
+                    parentMenuItem = currentMenuItem.closest(".imcms-menu-items"),
+                    currentMenuItemWrap = parentMenuItem.parent();
+
+                submenuItem.remove();
+                currentMenuItem.remove();
+                parentMenuItem.remove();
+
+                if (currentMenuItemWrap.children().length === 1) {
+                    currentMenuItemWrap.find(".imcms-menu-item__btn").remove();
+                }
+            }
+
+            function removeMenuItem(menuItemDocId) {
                 var currentMenuItem = $(this).closest(".imcms-menu-item"),
                     currentMenuItemName = currentMenuItem.find(".imcms-menu-item__info").text();
 
                 var question = "Do you want to remove menu item \"" + currentMenuItemName + "\"?";
                 imcmsModalWindow.buildModalWindow(question, function (answer) {
                     if (answer) {
-                        var submenuItem = currentMenuItem.parent().find(".imcms-menu-items"),
-                            parentMenuItem = currentMenuItem.closest(".imcms-menu-items"),
-                            currentMenuItemWrap = parentMenuItem.parent();
-
-                        submenuItem.remove();
-                        currentMenuItem.remove();
-                        parentMenuItem.remove();
-
-                        if (currentMenuItemWrap.children().length === 1) {
-                            currentMenuItemWrap.find(".imcms-menu-item__btn").remove();
-                        }
+                        menuRestApi.remove({
+                            docId: docId,
+                            menuId: menuId,
+                            menuItemDocId: menuItemDocId
+                        }).done(function () {
+                            removeMenuItemFromEditor(currentMenuItem)
+                        });
                     }
                 });
             }
 
-            function buildMenuItemControls() {
+            function buildMenuItemControls(menuItemDocId) {
                 var menuControlsBEM = new BEM({
                     block: "imcms-controls",
                     elements: {"control": "imcms-control"}
                 });
 
                 var $controlMove = menuControlsBEM.buildElement("control", "<div>", {}, ["move"]);
-                var $controlRemove = menuControlsBEM.buildElement("control", "<div>", {click: removeMenuItem},
+                var $controlRemove = menuControlsBEM.buildElement("control", "<div>", {
+                        click: function () {
+                            removeMenuItem.call(this, menuItemDocId);
+                        }
+                    },
                     ["remove"]);
                 var $controlEdit = menuControlsBEM.buildElement("control", "<div>", {}, ["edit"]);
 
@@ -122,7 +137,7 @@ Imcms.define("imcms-menu-editor-builder",
                 var $menuItemId = menuItemBEM.buildElement("info", "<div>", {
                     text: menuElementTree.id + " - " + menuElementTree.title
                 });
-                var $controls = buildMenuItemControls();
+                var $controls = buildMenuItemControls(menuElementTree.id);
 
                 var $menuItemRowComponents = [
                     {"info": $menuItemId},
@@ -223,7 +238,10 @@ Imcms.define("imcms-menu-editor-builder",
             $title.append(": " + opts.docId + "-" + opts.menuId);
         }
 
-        function buildMenuEditor() {
+        function buildMenuEditor(opts) {
+            docId = opts.docId;
+            menuId = opts.menuId;
+
             var $head = buildHead(),
                 $body = buildBody(),
                 $footer = buildFooter();
