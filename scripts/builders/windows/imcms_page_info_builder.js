@@ -90,7 +90,7 @@ Imcms.define("imcms-page-info-builder",
         function buildPageInfoFooter() {
             function closePageInfo() {
                 pageInfoWindowBuilder.closeWindow();
-                $shadow.css({"display": "none"});
+                shadowBuilder.closeWindow();
             }
 
             function saveAndClose() {
@@ -120,17 +120,6 @@ Imcms.define("imcms-page-info-builder",
 
             return pageInfoBEM.buildElement("footer", "<div>").append($saveAndPublishBtn, $cancelBtn, $saveBtn);
         }
-
-        function buildShadow() {
-            if (!$shadow) {
-                $shadow = $("<div>", {"class": "imcms-modal-layout"}).appendTo("body");
-            }
-
-            $shadow.css("display", "block");
-            return $shadow;
-        }
-
-        var $shadow;
 
         function buildPageInfo(docId) {
             var $head = buildPageInfoHead(),
@@ -168,6 +157,12 @@ Imcms.define("imcms-page-info-builder",
             docId && loadPageInfoDataFromDocumentBy(docId);
         }
 
+        var shadowBuilder = new WindowBuilder({
+            factory: function () {
+                return $("<div>", {"class": "imcms-modal-layout"});
+            }
+        });
+
         var pageInfoWindowBuilder = new WindowBuilder({
             factory: buildPageInfo,
             loadDataStrategy: loadData,
@@ -176,7 +171,7 @@ Imcms.define("imcms-page-info-builder",
 
         return {
             build: function (docId) {
-                buildShadow();
+                shadowBuilder.buildWindow();
                 pageInfoWindowBuilder.buildWindow.applyAsync(arguments, pageInfoWindowBuilder);
             }
         }
