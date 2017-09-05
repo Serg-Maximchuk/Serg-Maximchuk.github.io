@@ -6,11 +6,8 @@ Imcms.define("imcms-editor-init-strategy", ["jquery"], function ($) {
     return {
         initEditor: function (editorInitData) {
             var openEditor = function () {
-                var $dataContainer = $(this).parents(editorInitData.EDIT_AREA_SELECTOR),
-                    editorData = editorInitData.getEditorData($dataContainer),
-                    editorBuildStrategy = editorInitData.getEditorBuildStrategy()
-                ;
-                editorBuildStrategy(editorData);
+                var editorData = $(this).parents(editorInitData.EDIT_AREA_SELECTOR).data();
+                editorInitData.editorBuilder.build(editorData);
             };
 
             $(editorInitData.EDIT_AREA_SELECTOR).find(editorInitData.CONTROL_SELECTOR).click(openEditor);

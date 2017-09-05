@@ -6,19 +6,6 @@ Imcms.define("imcms-loop-editor-init-data", ["imcms-loop-editor-builder"], funct
     return {
         EDIT_AREA_SELECTOR: ".imcms-editor-area--loop",
         CONTROL_SELECTOR: ".imcms-control--loop",
-        getEditorData: function ($dataContainer) {
-            var docId = $dataContainer.data("docId");
-            var loopId = $dataContainer.data("loopId");
-
-            return {
-                docId: docId,
-                loopId: loopId
-            };
-        },
-        getEditorBuildStrategy: function () {
-            return function (editorData) {
-                loopEditorBuilder.build(editorData);
-            }
-        }
+        editorBuilder: loopEditorBuilder
     }
 });
