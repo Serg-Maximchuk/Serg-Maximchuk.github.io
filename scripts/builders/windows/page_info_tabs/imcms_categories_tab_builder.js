@@ -74,11 +74,11 @@ Imcms.define("imcms-categories-tab-builder",
                         text: categoryType.name
                     }, mappedCategoriesForSelectContainer);
 
-                    categoryType.categories.filter(function (category) {
+                    var category = categoryType.categories.filter(function (category) {
                         return isDocumentContainsCategory(document, category);
-                    }).forEach(function (category) {
-                        $selectContainer.getSelect().selectValue(category.id);
-                    });
+                    })[0];
+
+                    category && $selectContainer.getSelect().selectValue(category.id);
 
                     return $selectContainer;
                 }
