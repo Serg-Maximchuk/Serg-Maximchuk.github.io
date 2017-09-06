@@ -8,7 +8,8 @@ Imcms.define("imcms-access-tab-builder",
         return {
             name: "access",
             data: {},
-            buildTab: function (index) {
+
+            buildTab: function (index, docId) {
                 var addRoleContainerBEM = new BEM({
                         block: "imcms-field",
                         elements: {
@@ -28,21 +29,24 @@ Imcms.define("imcms-access-tab-builder",
                     id: "select3"
                 });
 
-                rolesRestApi.read(null)
-                    .done(function (roles) {
-                        var rolesDataMapped = roles.map(function (role) {
-                            return {
-                                text: role.name,
-                                "data-value": role.id
-                            }
+                if (!docId) {
+                    rolesRestApi.read(null)
+                        .done(function (roles) {
+                            var rolesDataMapped = roles.map(function (role) {
+                                return {
+                                    text: role.name,
+                                    "data-value": role.id
+                                }
+                            });
+                            components.selects.addOptionsToSelect(rolesDataMapped, $addRoleSelect);
                         });
-                        $addRoleSelect.append(components.selects.mapOptionsToSelectItems(rolesDataMapped));
-                    });
+                }
+                this.data.$addRoleSelect = $addRoleSelect;
+
 
                 var $addRoleButton = components.buttons.neutralButton({
                         text: "Add role",
                         click: function () {
-
                         }
                     }),
                     $addRoleInnerBlock = addRoleInnerBEM.buildBlock("<div>", [
@@ -55,6 +59,7 @@ Imcms.define("imcms-access-tab-builder",
                 this.data.$accessBlock = linker.buildFormBlock([$addRoleContainer], index);
                 return this.data.$accessBlock;
             },
+
             fillTabDataFromDocument: function (document) {
 
                 var rolesBEM = new BEM({
@@ -89,7 +94,7 @@ Imcms.define("imcms-access-tab-builder",
                         $titleRestricted1,
                         $titleRestricted2
                     ]),
-                    roles = generateRoles(rolesBEM, document),
+                    roles = generateRoles.call(this, rolesBEM, document),
                     $rolesBody = rolesBEM.buildElement("body", "<div>").append(roles),
                     $rolesTable = rolesBEM.buildBlock("<div>", [
                         {"head": $rolesHead},
@@ -111,6 +116,29 @@ Imcms.define("imcms-access-tab-builder",
                         }));
                     }
 
+                    var $addRoleSelect = this.data.$addRoleSelect;
+
+                    rolesRestApi.read(null)
+                        .done(function (roles) {
+                            var rolesDataMapped = roles.filter(function (role) {
+                                return !document.roles.some(function (docRole) {
+                                    return role.id === docRole.id;
+                                });
+
+                            }).map(function (role) {
+                                return {
+                                    text: role.name,
+                                    "data-value": role.id
+                                }
+                            });
+                            if (rolesDataMapped.length) {
+                                components.selects.addOptionsToSelect(rolesDataMapped, $addRoleSelect);
+                                $addRoleSelect.css("display", "block");
+                            } else {
+                                $addRoleSelect.css("display", "none");
+                            }
+                        });
+
                     return document.roles.map(function (role) {
                         var $roleTitle = rolesBEM.buildBlockElement("column-title", "<div>", {text: role.name}),
                             $roleView = buildRole("VIEW", role, rolesBEM),
@@ -120,11 +148,7 @@ Imcms.define("imcms-access-tab-builder",
                             $row = rolesBEM.buildBlockElement("row", "<div>"),
                             $deleteRoleButton = rolesBEM.makeBlockElement("button", components.buttons.closeButton({
                                 click: function () {
-                                    console.log(role);
-                                    rolesRestApi.remove(role.id)
-                                        .done(function () {
-                                            $row.detach();
-                                        })
+                                    $row.detach();
                                 }
                             }));
 
@@ -139,6 +163,7 @@ Imcms.define("imcms-access-tab-builder",
                     });
                 }
             },
+
             clearTabData: function () {
                 this.data.$rolesField && this.data.$rolesField.remove();
             }

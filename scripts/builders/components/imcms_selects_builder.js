@@ -50,6 +50,7 @@ Imcms.define("imcms-selects-builder",
         function onOptionSelected() {
             var $this = $(this),
                 content = $this.text(),
+                value = $this.data("value"),
                 select = $this.closest(".imcms-select__drop-down-list"),
                 itemValue = select.find(".imcms-drop-down-list__select-item-value").html(content)
             ;
@@ -57,10 +58,43 @@ Imcms.define("imcms-selects-builder",
             // todo: implement labeling selected item by [selected] attribute
 
             select.removeClass("imcms-select__drop-down-list--active")
+                .parent()
                 .find("input")
-                .val(content);
+                .val(value);
 
             return itemValue;
+        }
+
+        function apiSelectValue(resultImcmsSelect, $selectedValInput) {
+            return function (value) {
+                var selectCandidate = resultImcmsSelect.find("[data-value='" + value + "']");
+                if (selectCandidate.length) {
+                    onOptionSelected.call(selectCandidate);
+                    $selectedValInput.val(value);
+                    return resultImcmsSelect;
+                } else {
+                    throw new Error("Value '" + value + "' for select doesn't exist");
+                }
+            }
+        }
+
+        function apiSelectFirst(resultImcmsSelect) {
+            return function () {
+                var selectCandidate = resultImcmsSelect.find(".imcms-drop-down-list__items")
+                    .find(".imcms-drop-down-list__item").first();
+                if (selectCandidate.length) {
+                    onOptionSelected.call(selectCandidate);
+                    return resultImcmsSelect;
+                } else {
+                    throw new Error("Select is empty, nothing to choose");
+                }
+            }
+        }
+
+        function apiGetSelect($select) {
+            return function () {
+                return $select;
+            }
         }
 
         return {
@@ -75,7 +109,7 @@ Imcms.define("imcms-selects-builder",
                 var $selectElements = [];
 
                 if (options && options.length) {
-                    $selectElements.push(this.mapOptionsToSelectItems(options));
+                    $selectElements.push(this.addOptionsToSelect(options));
                 }
 
                 var $selectedValInput = $("<input>", {
@@ -89,28 +123,15 @@ Imcms.define("imcms-selects-builder",
                 var resultImcmsSelect = selectBEM.buildBlock("<div>", blockElements, (attributes["class"] ? {"class": attributes["class"]} : {}))
                     .append($selectElements);
 
-                resultImcmsSelect.selectValue = function (value) {
-                    var selectCandidate = resultImcmsSelect.find("[data-value='" + value + "']");
-                    if (selectCandidate.length) {
-                        onOptionSelected.call(selectCandidate);
-                        $selectedValInput.val(value);
-                    } else {
-                        throw new Error("Value '" + value + "' for select doesn't exist");
-                    }
-                };
-                resultImcmsSelect.selectFirst = function () {
-                    var selectCandidate = resultImcmsSelect.find(".imcms-drop-down-list__items")
-                        .find(".imcms-drop-down-list__item").first();
-                    if (selectCandidate.length) {
-                        onOptionSelected.call(selectCandidate);
-                    } else {
-                        throw new Error("Select is empty, nothing to choose");
-                    }
+                resultImcmsSelect.selectValue = apiSelectValue(resultImcmsSelect, $selectedValInput);
+                resultImcmsSelect.selectFirst = apiSelectFirst(resultImcmsSelect);
+                resultImcmsSelect.selectedValue = function () {
+
                 };
 
                 return resultImcmsSelect;
             },
-            mapOptionsToSelectItems: function (options) {
+            addOptionsToSelect: function (options, $select) {
                 var $itemsArr = options.map(function (option) {
                         return dropDownListBEM.buildBlockElement("item", "<div>", option);
                     }),
@@ -128,7 +149,8 @@ Imcms.define("imcms-selects-builder",
                         {"items": $itemsContainer}
                     ]);
 
-                return selectBEM.makeBlockElement("drop-down-list", $dropDownList);
+                var selectOptions = selectBEM.makeBlockElement("drop-down-list", $dropDownList);
+                return $select ? $select.append(selectOptions).selectFirst() : selectOptions;
             },
             selectContainer: function (tag, attributes, options) {
                 var clas = (attributes && attributes["class"]) || "";
@@ -140,8 +162,7 @@ Imcms.define("imcms-selects-builder",
                 var $select = this.imcmsSelect("<div>", attributes, options),
                     resultContainer = fieldBEM.buildBlock("<div>", [$select], (clas ? {"class": clas} : {}), "select");
 
-                resultContainer.selectValue = $select.selectValue;
-                resultContainer.selectFirst = $select.selectFirst;
+                resultContainer.getSelect = apiGetSelect($select);
 
                 return resultContainer;
             }
