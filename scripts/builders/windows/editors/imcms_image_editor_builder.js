@@ -163,12 +163,12 @@ Imcms.define("imcms-image-editor-builder",
                     }
                 });
 
-                imageDataContainers.$imageContainer = editableImgAreaBEM.buildElement("img", "<div>");
+                imageDataContainers.$image = editableImgAreaBEM.buildElement("img", "<img>");
                 imageDataContainers.$shadow = editableImgAreaBEM.buildElement("layout", "<div>");
                 imageDataContainers.$cropArea = buildCropArea();
 
                 return editableImgAreaBEM.buildBlock("<div>", [
-                    {"img": imageDataContainers.$imageContainer},
+                    {"img": imageDataContainers.$image},
                     {"layout": imageDataContainers.$shadow},
                     {"crop-area": imageDataContainers.$cropArea}
                 ]);
@@ -216,7 +216,7 @@ Imcms.define("imcms-image-editor-builder",
             }
 
             function resizeImage(newWidth, newHeight, backgroundSizeVal) {
-                imageDataContainers.$imageContainer.animate({
+                imageDataContainers.$image.animate({
                     "width": newWidth + "px",
                     "height": newHeight + "px"
                 }, 200).css({"background-size": backgroundSizeVal});
@@ -230,8 +230,8 @@ Imcms.define("imcms-image-editor-builder",
             }
 
             function zoom(zoomCoefficient) {
-                var newHeight = ~~(imageDataContainers.$imageContainer.height() * zoomCoefficient),
-                    newWidth = ~~(imageDataContainers.$imageContainer.width() * zoomCoefficient),
+                var newHeight = ~~(imageDataContainers.$image.height() * zoomCoefficient),
+                    newWidth = ~~(imageDataContainers.$image.width() * zoomCoefficient),
                     backgroundSizeVal = "" + newWidth + "px " + newHeight + "px"
                 ;
                 resizeImage(newWidth, newHeight, backgroundSizeVal);
@@ -259,7 +259,7 @@ Imcms.define("imcms-image-editor-builder",
 
             function rotate(angleDelta) {
                 angle += angleDelta;
-                imageDataContainers.$imageContainer.css({"transform": "rotate(" + angle + "deg)"});
+                imageDataContainers.$image.css({"transform": "rotate(" + angle + "deg)"});
                 imageDataContainers.$cropArea.css({"transform": "rotate(" + angle + "deg)"});
             }
 
@@ -661,11 +661,7 @@ Imcms.define("imcms-image-editor-builder",
         }
 
         function fillLeftSideData(imageData) {
-            imageDataContainers.$imageContainer.css({
-                "background-image": "url(" + imageData.path + ")",
-                width: imageData.width + "px",
-                height: imageData.height + "px"
-            });
+            imageDataContainers.$image.attr("src", imageData.path);
 
             imageDataContainers.$shadow.css({
                 width: "100%",
@@ -674,10 +670,9 @@ Imcms.define("imcms-image-editor-builder",
 
             // todo: receive correct crop area
             imageDataContainers.$cropArea.css({
-                "background-image": "url(" + imageData.path + ")",
                 width: imageData.width + "px",
                 height: imageData.height + "px"
-            });
+            }).append($("<img>", {src: imageData.path}));
         }
 
         function fillData(imageData) {
