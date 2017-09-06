@@ -669,10 +669,12 @@ Imcms.define("imcms-image-editor-builder",
             });
 
             // todo: receive correct crop area
-            imageDataContainers.$cropArea.css({
-                width: imageData.width + "px",
-                height: imageData.height + "px"
-            }).find("img").attr("src", imageData.path);
+            imageDataContainers.$cropArea.find("img")
+                .attr("src", imageData.path)
+                .css({
+                    width: imageData.width + "px",
+                    height: imageData.height + "px"
+                });
         }
 
         function fillData(imageData) {
