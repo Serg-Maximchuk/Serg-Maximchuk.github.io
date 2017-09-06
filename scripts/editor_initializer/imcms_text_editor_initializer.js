@@ -23,7 +23,8 @@ Imcms.define("imcms-text-editor-initializer",
             toolbar: 'code | bold italic underline | bullist numlist | hr |' +
             ' alignleft aligncenter alignright alignjustify | link image | fullscreen | save',
             menubar: false,
-            statusbar: false
+            statusbar: false,
+            init_instance_callback: setEditorFocus
         };
 
         function setEditorFocus(editor) {
@@ -56,28 +57,27 @@ Imcms.define("imcms-text-editor-initializer",
             $(document).click(toggleFocusEditArea);
         }
 
+        function initTextEditor() {
+            var toolbarId = uuidGenerator.generateUUID();
+            var textAreaId = uuidGenerator.generateUUID();
+
+            $(this).attr("id", textAreaId)
+                .closest(".imcms-editor-area--text")
+                .find(".imcms-editor-area__text-toolbar")
+                .attr("id", toolbarId);
+
+            var config = $.extend({
+                selector: "#" + textAreaId,
+                fixed_toolbar_container: "#" + toolbarId
+            }, inlineEditorConfig);
+
+            tinyMCE.init(config);
+        }
+
         return {
             initEditor: function () {
                 $(setFocusTextEditAreaToggle);
-
-                $(".imcms-editor-content--text").each(function () {
-                    var toolbarId = uuidGenerator.generateUUID();
-                    var textAreaId = uuidGenerator.generateUUID();
-
-                    $(this).attr("id", textAreaId)
-                        .closest(".imcms-editor-area--text")
-                        .find(".imcms-editor-area__text-toolbar")
-                        .attr("id", toolbarId);
-
-                    var config = $.extend({
-                        selector: "#" + textAreaId,
-                        fixed_toolbar_container: "#" + toolbarId
-                    }, inlineEditorConfig);
-
-                    tinyMCE.init(config).then(function (editors) {
-                        editors.forEach(setEditorFocus);
-                    });
-                });
+                $(".imcms-editor-content--text").each(initTextEditor);
             }
         };
     }
