@@ -4,3 +4,7 @@
     width: 100% !important; /* this should be important, inline styles need to be overwritten */
     border-radius: 5px 5px 0 0;
 }
+
+.mce-btn-group {
+    float: left;
+}
