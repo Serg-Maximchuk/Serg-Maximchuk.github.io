@@ -150,7 +150,7 @@ Imcms.define("imcms-image-editor-builder",
                     {"angle": $angleTopRight},
                     {"angle": $angleBottomLeft},
                     {"angle": $angleBottomRight}
-                ]);
+                ]).append("<img>");
             }
 
             function buildEditableImageArea() {
@@ -672,7 +672,7 @@ Imcms.define("imcms-image-editor-builder",
             imageDataContainers.$cropArea.css({
                 width: imageData.width + "px",
                 height: imageData.height + "px"
-            }).append($("<img>", {src: imageData.path}));
+            }).find("img").attr("src", imageData.path);
         }
 
         function fillData(imageData) {
