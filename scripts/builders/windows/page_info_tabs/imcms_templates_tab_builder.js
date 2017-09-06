@@ -9,15 +9,17 @@ Imcms.define("imcms-templates-tab-builder",
             name: "templates",
             data: {},
             buildTab: function (index) {
-                this.data.$templateSelect = components.selects.selectContainer("<div>", {
+                var $templateSelectContainer = components.selects.selectContainer("<div>", {
                     name: "template",
                     text: "Template"
                 });
+                this.data.$templateSelect = $templateSelectContainer.getSelect();
 
-                this.data.$defaultChildTemplateSelect = components.selects.selectContainer("<div>", {
+                var $defaultChildTemplateSelectContainer = components.selects.selectContainer("<div>", {
                     name: "childTemplate",
                     text: "Default child template"
                 });
+                this.data.$defaultChildTemplateSelect = $templateSelectContainer.getSelect();
 
                 var parentContext = this;
                 templatesRestApi.read(null)
@@ -29,27 +31,27 @@ Imcms.define("imcms-templates-tab-builder",
                             }
                         });
 
-                        components.selects.addOptionsToSelect(templatesDataMapped, parentContext.data.$templateSelect.getSelect());
-                        components.selects.addOptionsToSelect(templatesDataMapped, parentContext.data.$defaultChildTemplateSelect.getSelect());
+                        components.selects.addOptionsToSelect(templatesDataMapped, parentContext.data.$templateSelect);
+                        components.selects.addOptionsToSelect(templatesDataMapped, parentContext.data.$defaultChildTemplateSelect);
                     });
 
                 var blockElements = [
-                    this.data.$templateSelect,
-                    this.data.$defaultChildTemplateSelect
+                    $templateSelectContainer,
+                    $defaultChildTemplateSelectContainer
                 ];
                 return linker.buildFormBlock(blockElements, index);
             },
             fillTabDataFromDocument: function (document) {
                 var templatesTab = this.data;
 
-                templatesTab.$templateSelect.getSelect().selectValue(document.template);
-                templatesTab.$defaultChildTemplateSelect.getSelect().selectValue(document.child_template);
+                templatesTab.$templateSelect.selectValue(document.template);
+                templatesTab.$defaultChildTemplateSelect.selectValue(document.child_template);
             },
             clearTabData: function () {
                 var templatesTab = this.data;
 
-                templatesTab.$templateSelect.getSelect().selectFirst();
-                templatesTab.$defaultChildTemplateSelect.getSelect().selectFirst();
+                templatesTab.$templateSelect.selectFirst();
+                templatesTab.$defaultChildTemplateSelect.selectFirst();
             }
         };
     }
