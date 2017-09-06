@@ -134,43 +134,34 @@ Imcms.define("imcms-image-editor-builder",
         function buildLeftSide() {
             var $editableImageArea;
 
-            function buildCropArea() {
-                var cropAreaBEM = new BEM({
-                    block: "imcms-crop-area",
-                    elements: {"angle": "imcms-angle"}
-                });
-
-                var $angleTopLeft = cropAreaBEM.buildElement("angle", "<div>", {}, ["top-left"]);
-                var $angleTopRight = cropAreaBEM.buildElement("angle", "<div>", {}, ["top-right"]);
-                var $angleBottomLeft = cropAreaBEM.buildElement("angle", "<div>", {}, ["bottom-left"]);
-                var $angleBottomRight = cropAreaBEM.buildElement("angle", "<div>", {}, ["bottom-right"]);
-
-                return cropAreaBEM.buildBlock("<div>", [
-                    {"angle": $angleTopLeft},
-                    {"angle": $angleTopRight},
-                    {"angle": $angleBottomLeft},
-                    {"angle": $angleBottomRight}
-                ]).append("<img>");
-            }
-
             function buildEditableImageArea() {
                 var editableImgAreaBEM = new BEM({
                     block: "imcms-editable-img-area",
                     elements: {
                         "img": "imcms-editable-img",
                         "layout": "",
-                        "crop-area": "imcms-crop-area"
+                        "crop-area": "imcms-crop-area",
+                        "angle": "imcms-angle"
                     }
                 });
 
                 imageDataContainers.$image = editableImgAreaBEM.buildElement("img", "<img>");
                 imageDataContainers.$shadow = editableImgAreaBEM.buildElement("layout", "<div>");
-                imageDataContainers.$cropArea = buildCropArea();
+                imageDataContainers.$cropArea = editableImgAreaBEM.buildElement("crop-area", "<div>").append("<img>");
+
+                var $angleTopLeft = editableImgAreaBEM.buildElement("angle", "<div>", {}, ["top-left"]);
+                var $angleTopRight = editableImgAreaBEM.buildElement("angle", "<div>", {}, ["top-right"]);
+                var $angleBottomLeft = editableImgAreaBEM.buildElement("angle", "<div>", {}, ["bottom-left"]);
+                var $angleBottomRight = editableImgAreaBEM.buildElement("angle", "<div>", {}, ["bottom-right"]);
 
                 return editableImgAreaBEM.buildBlock("<div>", [
                     {"img": imageDataContainers.$image},
                     {"layout": imageDataContainers.$shadow},
-                    {"crop-area": imageDataContainers.$cropArea}
+                    {"crop-area": imageDataContainers.$cropArea},
+                    {"angle": $angleTopLeft},
+                    {"angle": $angleTopRight},
+                    {"angle": $angleBottomLeft},
+                    {"angle": $angleBottomRight}
                 ]);
             }
 
