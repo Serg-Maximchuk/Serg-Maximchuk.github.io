@@ -11,6 +11,15 @@
     width: 100%;
 }
 
+.imcms-editor-area__text-toolbar {
+    background-color: white;
+    width: 100%;
+    position: absolute;
+    top: -32px;
+    left: -2px;
+}
+
+.imcms-editor-area--active,
 .imcms-editor-area:hover {
     border: 2px solid rgba(0, 149, 217, 0.58);
 }

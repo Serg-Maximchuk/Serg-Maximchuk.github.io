@@ -1,5 +1,6 @@
-.imcms-editor-area__text-toolbar {
-    position: absolute;
-    top: -32px;
-    left: 0;
+.mce-tinymce.mce-tinymce-inline.mce-container.mce-panel {
+    border: 2px solid rgba(0, 149, 217, 0.58) !important; /* this should be important, inline styles need to be overwritten */
+    border-bottom-width: 1px !important; /* this should be important, inline styles need to be overwritten */
+    width: 100% !important; /* this should be important, inline styles need to be overwritten */
+    border-radius: 5px 5px 0 0;
 }
