@@ -11,6 +11,10 @@
     width: 100%;
 }
 
+.imcms-editor-area:hover {
+    border: 2px solid rgba(70, 39, 255, 0.31);
+}
+
 .imcms-editor-area--image {
     width: fit-content;
 }
