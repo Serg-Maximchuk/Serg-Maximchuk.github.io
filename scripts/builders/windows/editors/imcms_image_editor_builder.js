@@ -671,6 +671,7 @@ Imcms.define("imcms-image-editor-builder",
             // todo: receive correct crop area
             imageDataContainers.$cropArea.find("img")
                 .attr("src", imageData.path)
+                .end()
                 .css({
                     width: imageData.width + "px",
                     height: imageData.height + "px"
