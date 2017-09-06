@@ -24,18 +24,25 @@ Imcms.define("imcms-text-editor-initializer",
             ' alignleft aligncenter alignright alignjustify | link image | fullscreen | save',
             menubar: false,
             statusbar: false,
-            init_instance_callback: setEditorFocus
+            init_instance_callback: prepareEditor
         };
 
-        function setEditorFocus(editor) {
+        function clearSaveBtnText(editor) {
             delete editor.buttons.save.text;
+        }
 
+        function setEditorFocus(editor) {
             editor.$()
                 .parents('.imcms-editor-area--text')
                 .find('.imcms-control--text')
                 .on('click', function () {
                     editor.focus();
                 });
+        }
+
+        function prepareEditor(editor) {
+            clearSaveBtnText(editor);
+            setEditorFocus(editor);
         }
 
         function toggleFocusEditArea(e) {
