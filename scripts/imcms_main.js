@@ -129,7 +129,7 @@ Function.prototype.applyAsync = function (args, context) {
         }
 
         if (Imcms.config.dependencies[id] && Imcms.config.dependencies[id].onLoad) {
-            module = Imcms.config.dependencies[id].onLoad.call(null, module);
+            module = Imcms.config.dependencies[id].onLoad(module);
         }
 
         Imcms.modules[id] = module;
@@ -144,11 +144,16 @@ Function.prototype.applyAsync = function (args, context) {
     }
 
     function loadScript(dependency) {
-        var onLoad;
+        var registerFunction;
 
         if (dependency.moduleName) {
-            onLoad = registerModule.bindArgs(dependency.moduleName, true);
+            registerFunction = registerModule.bindArgs(dependency.moduleName, true);
         }
+
+        var onLoad = function () {
+            registerFunction && registerFunction.call();
+            setTimeout(runModuleLoader);
+        };
 
         getScript(dependency.path, onLoad);
     }
