@@ -9,16 +9,16 @@ Imcms.define("imcms-text-editor-initializer",
         var relativePath = window.location.pathname;
         var contextPath = ((relativePath.lastIndexOf("/") === 0) ? "" : "/" + relativePath.split("/")[1]);
 
+        var ACTIVE_EDIT_AREA_CLASS = "imcms-editor-area--active";
+
         var inlineEditorConfig = {
-            // selector: '.imcms-editor-content--text',
-            skin_url: (contextPath + '/libs/tinymce/skins/white'),
+            skin_url: contextPath + '/libs/tinymce/skins/white',
             cache_suffix: '?v=0.0.1',
             branding: false,
             skin: 'white',
             inline: true,
             toolbar_items_size: 'small',
-            // fixed_toolbar_container: '#sss',
-            // custom_ui_selector: '.imcms-editor-area--text',
+            content_css: contextPath + '/stylesheets/imcms-text_editor.css',
             plugins: ['autolink link image lists hr code fullscreen save table contextmenu'],
             toolbar: 'code | bold italic underline | bullist numlist | hr |' +
             ' alignleft aligncenter alignright alignjustify | link image | fullscreen | save',
@@ -37,8 +37,29 @@ Imcms.define("imcms-text-editor-initializer",
                 });
         }
 
+        function toggleFocusEditArea(e) {
+            var $activeTextArea = $("." + ACTIVE_EDIT_AREA_CLASS);
+
+            if ($activeTextArea.find(".mce-edit-focus").length) {
+                return;
+            }
+
+            var $closestTextArea = $(e.target).closest(".imcms-editor-area--text");
+            $activeTextArea.removeClass(ACTIVE_EDIT_AREA_CLASS);
+
+            if ($closestTextArea.length && $closestTextArea.find(".mce-edit-focus").length) {
+                $closestTextArea.addClass(ACTIVE_EDIT_AREA_CLASS);
+            }
+        }
+
+        function setFocusTextEditAreaToggle() {
+            $(document).click(toggleFocusEditArea);
+        }
+
         return {
             initEditor: function () {
+                $(setFocusTextEditAreaToggle);
+
                 $(".imcms-editor-content--text").each(function () {
                     var toolbarId = uuidGenerator.generateUUID();
                     var textAreaId = uuidGenerator.generateUUID();
