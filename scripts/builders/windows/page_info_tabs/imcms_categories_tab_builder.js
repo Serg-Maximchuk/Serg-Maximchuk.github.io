@@ -77,7 +77,7 @@ Imcms.define("imcms-categories-tab-builder",
                     categoryType.categories.filter(function (category) {
                         return isDocumentContainsCategory(document, category);
                     }).forEach(function (category) {
-                        $selectContainer.selectValue(category.id);
+                        $selectContainer.getSelect().selectValue(category.id);
                     });
 
                     return $selectContainer;

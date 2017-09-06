@@ -29,10 +29,8 @@ Imcms.define("imcms-templates-tab-builder",
                             }
                         });
 
-                        var $selectItems = components.selects.mapOptionsToSelectItems(templatesDataMapped);
-                        parentContext.data.$templateSelect.find(".imcms-select").append($selectItems);
-                        parentContext.data.$defaultChildTemplateSelect.find(".imcms-select")
-                            .append($selectItems.clone(true, true));
+                        components.selects.addOptionsToSelect(templatesDataMapped, parentContext.data.$templateSelect.getSelect());
+                        components.selects.addOptionsToSelect(templatesDataMapped, parentContext.data.$defaultChildTemplateSelect.getSelect());
                     });
 
                 var blockElements = [
@@ -44,8 +42,8 @@ Imcms.define("imcms-templates-tab-builder",
             fillTabDataFromDocument: function (document) {
                 var templatesTab = this.data;
 
-                templatesTab.$templateSelect.selectValue(document.template);
-                templatesTab.$defaultChildTemplateSelect.selectValue(document.child_template);
+                templatesTab.$templateSelect.getSelect().selectValue(document.template);
+                templatesTab.$defaultChildTemplateSelect.getSelect().selectValue(document.child_template);
             },
             clearTabData: function () {
                 var templatesTab = this.data;

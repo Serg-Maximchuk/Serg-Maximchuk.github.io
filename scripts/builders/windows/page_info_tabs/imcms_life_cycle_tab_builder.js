@@ -212,11 +212,10 @@ Imcms.define("imcms-life-cycle-tab-builder",
                                     text: user.username,
                                     "data-value": user.id
                                 }
-                            }),
-                            usersDataAsSelectItems = components.selects.mapOptionsToSelectItems(usersDataMapped)
+                            })
                         ;
 
-                        parentContext.data.$publisherSelect.append(usersDataAsSelectItems);
+                        components.selects.addOptionsToSelect(usersDataMapped, parentContext.data.$publisherSelect);
                     });// todo receive users with specific role admin
 
                 var $publisherSelectContainer = lifeCycleInnerStructureBEM.buildBlock("<div>", [

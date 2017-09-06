@@ -61,8 +61,7 @@ Imcms.define("imcms-document-editor-builder",
                                 "data-value": user.id
                             }
                         });
-                        var $usersSelectItems = components.selects.mapOptionsToSelectItems(usersDataMapped);
-                        $usersFilterSelect.append($usersSelectItems);
+                        components.selects.addOptionsToSelect(usersDataMapped, $usersFilterSelect);
                     });
 
                 return $usersFilterSelect;
@@ -82,8 +81,7 @@ Imcms.define("imcms-document-editor-builder",
                                 "data-value": category.id
                             }
                         });
-                        var $categoriesSelectItems = components.selects.mapOptionsToSelectItems(categoriesDataMapped);
-                        $categoriesFilterSelect.append($categoriesSelectItems);
+                        components.selects.addOptionsToSelect(categoriesDataMapped, $categoriesFilterSelect);
                     });
 
                 return $categoriesFilterSelect;
