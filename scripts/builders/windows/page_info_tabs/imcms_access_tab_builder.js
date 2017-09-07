@@ -1,9 +1,9 @@
 Imcms.define("imcms-access-tab-builder",
     [
         "imcms-bem-builder", "imcms-components-builder", "imcms-roles-rest-api",
-        "imcms-page-info-tabs-linker"
+        "imcms-page-info-tabs-linker", "imcms-uuid-generator"
     ],
-    function (BEM, components, rolesRestApi, linker) {
+    function (BEM, components, rolesRestApi, linker, uuidGenerator) {
 
 
         function mapRoleOnSelectOption(role) {
@@ -14,19 +14,20 @@ Imcms.define("imcms-access-tab-builder",
         }
 
         function generateRoleRow(rolesBEM, role, $addRoleSelect) {
-            function buildRole(roleName, role, rolesBEM) {
+            function buildRole(roleName, role, radioName, rolesBEM) {
                 return rolesBEM.makeBlockElement("column", components.radios.imcmsRadio("<div>", {
-                    name: role.descriptor,
+                    name: radioName,
                     value: roleName,
                     checked: roleName === role.permission_name ? "checked" : undefined
                 }));
             }
 
             var $roleTitle = rolesBEM.buildBlockElement("column-title", "<div>", mapRoleOnSelectOption(role)),
-                $roleView = buildRole("VIEW", role, rolesBEM),
-                $roleEdit = buildRole("EDIT", role, rolesBEM),
-                $roleRestricted1 = buildRole("RESTRICTED_1", role, rolesBEM),
-                $roleRestricted2 = buildRole("RESTRICTED_2", role, rolesBEM),
+                radioName = uuidGenerator.generateUUID(),
+                $roleView = buildRole("VIEW", role, radioName, rolesBEM),
+                $roleEdit = buildRole("EDIT", role, radioName, rolesBEM),
+                $roleRestricted1 = buildRole("RESTRICTED_1", role, radioName, rolesBEM),
+                $roleRestricted2 = buildRole("RESTRICTED_2", role, radioName, rolesBEM),
                 $row = rolesBEM.buildBlockElement("row", "<div>", {"data-role-id": role.id}),
                 $deleteRoleButton = rolesBEM.makeBlockElement("button", components.buttons.closeButton({
                     click: function () {
