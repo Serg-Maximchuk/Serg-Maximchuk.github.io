@@ -46,12 +46,6 @@
     float: left;
 }
 
-@media screen and (max-width: 1200px) {
-    .imcms-loop-editor {
-        min-width: 1200px;
-    }
-}
-
 @media screen and (max-height: 800px) {
     .imcms-loop-editor__footer {
         padding: 15px 27px;

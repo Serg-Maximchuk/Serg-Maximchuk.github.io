@@ -62,12 +62,6 @@
     height: 10%;
 }
 
-@media screen and (max-width: 1200px) {
-    .imcms-menu-editor {
-        min-width: 1200px;
-    }
-}
-
 @media screen and (max-height: 800px) {
     .imcms-menu-editor__footer {
         padding: 15px 27px;

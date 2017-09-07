@@ -166,12 +166,6 @@
     border-top: 1px solid #d3d8de;
 }
 
-@media screen and (max-width: 1200px) {
-    .imcms-document-editor {
-        min-width: 1200px;
-    }
-}
-
 @media screen and (max-height: 800px) {
     .imcms-document-editor__footer {
         padding: 15px 27px;
