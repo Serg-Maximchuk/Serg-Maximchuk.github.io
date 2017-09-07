@@ -73,16 +73,16 @@ Imcms.define("imcms-selects-builder",
         }
 
         function addOptionsToExistingDropDown(options, $select, dropDownListBEM) {
-            $select
-                .find(".imcms-drop-down-list__items")
-                .append(mapOptionsToItemsArr(options, dropDownListBEM));
-            $select.selectFirst();
-            return $select;
+            return $select.find(".imcms-drop-down-list__items")
+                .append(mapOptionsToItemsArr(options, dropDownListBEM))
+                .end()
+                .selectFirst();
         }
 
         function createSelectOptions(options, dropDownListBEM) {
             var $itemsContainer = dropDownListBEM.buildElement("items", "<div>")
-                    .append(mapOptionsToItemsArr(options, dropDownListBEM)),
+                .append(mapOptionsToItemsArr(options, dropDownListBEM)),
+
                 $button = dropDownListBEM.makeBlockElement("button", buttons.dropDownButton()),
                 $selectedValue = dropDownListBEM.buildBlockElement("select-item-value", "<span>", {
                     text: (options[0] && options[0].text) || ""
