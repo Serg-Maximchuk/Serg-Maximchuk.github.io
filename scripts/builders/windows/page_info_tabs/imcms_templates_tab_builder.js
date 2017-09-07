@@ -10,18 +10,20 @@ Imcms.define("imcms-templates-tab-builder",
             data: {},
             buildTab: function (index) {
                 var $templateSelectContainer = components.selects.selectContainer("<div>", {
-                    name: "template",
-                    text: "Template"
-                });
-                this.data.$templateSelect = $templateSelectContainer.getSelect();
+                        name: "template",
+                        text: "Template"
+                    }),
+                    $templateSelect = $templateSelectContainer.getSelect(),
 
-                var $defaultChildTemplateSelectContainer = components.selects.selectContainer("<div>", {
-                    name: "childTemplate",
-                    text: "Default child template"
-                });
-                this.data.$defaultChildTemplateSelect = $templateSelectContainer.getSelect();
+                    $defaultChildTemplateSelectContainer = components.selects.selectContainer("<div>", {
+                        name: "childTemplate",
+                        text: "Default child template"
+                    }),
+                    $defaultChildTemplateSelect = $defaultChildTemplateSelectContainer.getSelect();
 
-                var parentContext = this;
+                this.data.$templateSelect = $templateSelect;
+                this.data.$defaultChildTemplateSelect = $defaultChildTemplateSelect;
+
                 templatesRestApi.read(null)
                     .done(function (templates) {
                         var templatesDataMapped = templates.map(function (template) {
@@ -31,8 +33,8 @@ Imcms.define("imcms-templates-tab-builder",
                             }
                         });
 
-                        components.selects.addOptionsToSelect(templatesDataMapped, parentContext.data.$templateSelect);
-                        components.selects.addOptionsToSelect(templatesDataMapped, parentContext.data.$defaultChildTemplateSelect);
+                        components.selects.addOptionsToSelect(templatesDataMapped, $templateSelect);
+                        components.selects.addOptionsToSelect(templatesDataMapped, $defaultChildTemplateSelect);
                     });
 
                 var blockElements = [

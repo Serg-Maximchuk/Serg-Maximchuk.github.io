@@ -81,16 +81,16 @@ Imcms.define("imcms-permissions-tab-builder",
                         edit_loop = "edit_loop",
                         edit_doc_info = "edit_doc_info";
 
-                    restrictedCheckboxes[edit_text + index].setValue(permission[edit_text]);
-                    restrictedCheckboxes[edit_menu + index].setValue(permission[edit_menu]);
-                    restrictedCheckboxes[edit_image + index].setValue(permission[edit_image]);
-                    restrictedCheckboxes[edit_loop + index].setValue(permission[edit_loop]);
-                    restrictedCheckboxes[edit_doc_info + index].setValue(permission[edit_doc_info]);
+                    restrictedCheckboxes[edit_text + index].setChecked(permission[edit_text]);
+                    restrictedCheckboxes[edit_menu + index].setChecked(permission[edit_menu]);
+                    restrictedCheckboxes[edit_image + index].setChecked(permission[edit_image]);
+                    restrictedCheckboxes[edit_loop + index].setChecked(permission[edit_loop]);
+                    restrictedCheckboxes[edit_doc_info + index].setChecked(permission[edit_doc_info]);
                 });
             },
             clearTabData: function () {
                 this.data.restrictedCheckboxes.forEach(function (checkbox) {
-                    checkbox.setValue(false);
+                    checkbox.setChecked(false);
                 });
             }
         };

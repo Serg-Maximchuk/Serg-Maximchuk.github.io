@@ -52,7 +52,7 @@ Imcms.define("imcms-categories-tab-builder",
                                 value: category.id,
                                 text: category.name
                             })
-                            .setValue(isDocumentContainsCategory(document, category));
+                            .setChecked(isDocumentContainsCategory(document, category));
                     });
 
                     return components.checkboxes.checkboxContainerField("<div>",

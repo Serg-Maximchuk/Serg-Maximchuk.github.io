@@ -5,6 +5,23 @@
 Imcms.define("imcms-radio-buttons-builder",
     ["imcms-bem-builder", "imcms-primitives-builder", "imcms-uuid-generator"],
     function (bemBuilder, primitives, uuidGenerator) {
+
+        function apiCheckAmongGroup(args) {
+            return function (value) {
+                Array.prototype.forEach.call(args, function (radioBlock) {
+                    var $radio = radioBlock.find("input");
+                    $radio.val() === value && $radio.prop("checked", "checked");
+                });
+            }
+        }
+
+        function apiSetChecked($input) {
+            return function (isChecked) {
+                isChecked ? $input.prop("checked", "checked") : $input.removeProp("checked");
+                return this;
+            };
+        }
+
         var radioBEM = new bemBuilder({
                 block: "imcms-radio",
                 elements: {}
@@ -40,24 +57,13 @@ Imcms.define("imcms-radio-buttons-builder",
                     {"label": $label}
                 ]);
 
-                buildBlock.setChecked = function (isChecked) {
-                    isChecked ? $input.prop("checked", "checked") : $input.removeProp("checked");
-                    return this;
-                };
+                buildBlock.setChecked = apiSetChecked($input);
 
                 return buildBlock;
             },
             group: function () {
-                var args = arguments;
-
-                return {
-                    checkAmongGroup: function (value) {
-                        Array.prototype.forEach.call(args, function (radioBlock) {
-                            var $radio = radioBlock.find("input");
-                            $radio.val() === value && $radio.prop("checked", "checked");
-                        });
-                    }
-                };
+                this.checkAmongGroup = apiCheckAmongGroup(arguments);
+                return this;
             },
             radioContainer: function (tag, elements, attributes) {
                 return containerBEM.buildBlock(tag, elements, attributes, "radio");
