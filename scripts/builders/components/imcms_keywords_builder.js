@@ -39,6 +39,14 @@ Imcms.define("imcms-keywords-builder",
             }
         }
 
+        function apiAddKeyword($input, $addKeywordButton, $keywordResult) {
+            return function (keyword) {
+                $input.val(keyword);
+                $addKeywordButton.click();
+                return $keywordResult;
+            };
+        }
+
         var keywordsContainerBEM = new BEM({
                 block: "imcms-field",
                 elements: {
@@ -74,14 +82,11 @@ Imcms.define("imcms-keywords-builder",
                         {"keywords": $keywordsContainer}
                     ])
                 ;
-                var keywordResult = keywordsContainerBEM.buildBlock("<div>", [{"keywords-box": $keywordsBox}]);
+                var $keywordResult = keywordsContainerBEM.buildBlock("<div>", [{"keywords-box": $keywordsBox}]);
 
-                keywordResult.addKeyword = function (keyword) {
-                    $input.val(keyword);
-                    $addKeywordButton.click();
-                };
+                $keywordResult.addKeyword = apiAddKeyword($input, $addKeywordButton, $keywordResult);
 
-                return keywordResult;
+                return $keywordResult;
             }
         };
     }
