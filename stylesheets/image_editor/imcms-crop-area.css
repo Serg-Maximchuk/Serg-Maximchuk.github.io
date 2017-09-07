@@ -1,46 +1,63 @@
 .imcms-crop-area {
-    background-repeat: no-repeat;
     cursor: move;
-    display: block;
+    overflow: hidden;
     position: absolute;
     top: 0;
     left: 0;
-    z-index: 50;
+    width: 100%;
+    height: 100%;
+    z-index: 10003;
 }
 
-.imcms-editable-img-area__angle {
+.layout {
+    background: rgba(37, 34, 34, .5);
     position: absolute;
+    top: 0;
+    left: 0;
+    width: 500px;
+    height: 500px;
+}
+
+.imcms-crop-area__crop-img {
+    max-width: fit-content;
+    display: block;
+    position: absolute;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    z-index: 2;
 }
 
 .imcms-angle {
-    background-color: #303e47;
-    border-radius: 100%;
     border: 2px solid #fff;
     display: block;
-    width: 12px;
-    height: 12px;
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    z-index: 10003;
 }
 
 .imcms-angle--top-left {
+    border-bottom-width: 0;
+    border-right-width: 0;
     cursor: nw-resize;
-    top: -6px;
-    left: -6px;
 }
 
 .imcms-angle--top-right {
+    border-bottom-width: 0;
+    border-left-width: 0;
     cursor: ne-resize;
-    top: -6px;
-    right: -6px;
 }
 
 .imcms-angle--bottom-left {
+    border-top-width: 0;
+    border-right-width: 0;
     cursor: sw-resize;
-    bottom: -6px;
-    left: -6px;
 }
 
 .imcms-angle--bottom-right {
+    border-top-width: 0;
+    border-left-width: 0;
     cursor: se-resize;
-    bottom: -6px;
-    right: -6px;
 }
