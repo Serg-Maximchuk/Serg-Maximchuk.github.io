@@ -41,13 +41,13 @@ Imcms.define("imcms-image-cropper", ["jquery"], function ($) {
         }
 
         var originImageParams = {
-            height: parseFloat($originImg.css("height")),
-            width: parseFloat($originImg.css("width"))
+            height: parseFloat($originImg.height()),
+            width: parseFloat($originImg.width())
         };
 
         var croppingAreaParams = {
-            height: parseFloat($croppingArea.css("height")),
-            width: parseFloat($croppingArea.css("width"))
+            height: parseFloat($croppingArea.height()),
+            width: parseFloat($croppingArea.width())
         };
 
         function getMaxLegalTop() {
@@ -174,11 +174,11 @@ Imcms.define("imcms-image-cropper", ["jquery"], function ($) {
             }
         });
 
+        var angleSize = $topRightAngle.width();
+
         (function setStartCroppingAngles() {
             moveCroppingAngles(0, 0);
         })();
-
-        var angleSize = $topRightAngle.width();
 
         function moveCroppingAngles(top, left) {
             positioningSquares($topLeftAngle, top - BORDER_WIDTH, left - BORDER_WIDTH);
@@ -240,7 +240,6 @@ Imcms.define("imcms-image-cropper", ["jquery"], function ($) {
 
             var deltaX = prevX - newX;
             var deltaY = prevY - newY;
-
 
             prevX = newX;
             prevY = newY;
