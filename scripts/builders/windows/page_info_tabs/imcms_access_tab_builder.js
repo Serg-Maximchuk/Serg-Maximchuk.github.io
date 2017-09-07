@@ -30,18 +30,30 @@ Imcms.define("imcms-access-tab-builder",
                 $row = rolesBEM.buildBlockElement("row", "<div>", {"data-role-id": role.id}),
                 $deleteRoleButton = rolesBEM.makeBlockElement("button", components.buttons.closeButton({
                     click: function () {
+                        components.selects.addOptionsToSelect([mapRoleOnSelectOption(role)], $addRoleSelect);
+
                         if ($addRoleSelect.hasOptions()) {
+                            displayAddRoleSelectAndBtn($addRoleSelect);
+                        }
+
+                        $row.detach();
+
+                        var $rolesBody = $row.parent();
+                        var tableContainsRows = $rolesBody.find("[data-role-id]").length;
+                        if (!tableContainsRows) {
+                            hideRolesField($rolesBody);
+                        }
+
+                        function displayAddRoleSelectAndBtn($addRoleSelect) {
                             $addRoleSelect.css("display", "block");
                             var $addRoleBtn = $addRoleSelect.next();
                             $addRoleBtn.css("display", "block");
                         }
-                        var $rolesBody = $row.parent();
-                        if ($rolesBody.find("[data-role-id]").length === 1) {
+
+                        function hideRolesField($rolesBody) {
                             var $rolesField = $rolesBody.parent().parent();
                             $rolesField.css("display", "none");
                         }
-                        components.selects.addOptionsToSelect([mapRoleOnSelectOption(role)], $addRoleSelect);
-                        $row.detach();
                     }
                 }))
             ;

@@ -66,6 +66,38 @@ Imcms.define("imcms-selects-builder",
             return itemValue;
         }
 
+        function mapOptionsToItemsArr(options, dropDownListBEM) {
+            return options.map(function (option) {
+                return dropDownListBEM.buildBlockElement("item", "<div>", option);
+            });
+        }
+
+        function addOptionsToExistingDropDown(options, $select, dropDownListBEM) {
+            $select
+                .find(".imcms-drop-down-list__items")
+                .append(mapOptionsToItemsArr(options, dropDownListBEM));
+            $select.selectFirst();
+            return $select;
+        }
+
+        function createSelectOptions(options, dropDownListBEM) {
+            var $itemsContainer = dropDownListBEM.buildElement("items", "<div>")
+                    .append(mapOptionsToItemsArr(options, dropDownListBEM)),
+                $button = dropDownListBEM.makeBlockElement("button", buttons.dropDownButton()),
+                $selectedValue = dropDownListBEM.buildBlockElement("select-item-value", "<span>", {
+                    text: (options[0] && options[0].text) || ""
+                }),
+                $selectItem = dropDownListBEM.buildElement("select-item", "<div>", {click: toggleSelect})
+                    .append($selectedValue, $button),
+
+                $dropDownList = dropDownListBEM.buildBlock("<div>", [
+                    {"select-item": $selectItem},
+                    {"items": $itemsContainer}
+                ]);
+
+            return selectBEM.makeBlockElement("drop-down-list", $dropDownList);
+        }
+
         function apiSelectValue(resultImcmsSelect, $selectedValInput) {
             return function (value) {
                 var selectCandidate = resultImcmsSelect.find("[data-value='" + value + "']");
@@ -144,7 +176,7 @@ Imcms.define("imcms-selects-builder",
                 var $selectElements = [];
 
                 if (options && options.length) {
-                    $selectElements.push(this.addOptionsToSelect(options));
+                    $selectElements.push(createSelectOptions(options, dropDownListBEM));
                 }
 
                 var $selectedValInput = $("<input>", {
@@ -169,34 +201,11 @@ Imcms.define("imcms-selects-builder",
                 return resultImcmsSelect;
             },
             addOptionsToSelect: function (options, $select) {
-                var $itemsArr = options.map(function (option) {
-                        return dropDownListBEM.buildBlockElement("item", "<div>", option);
-                    }),
-                    $itemsContainer = dropDownListBEM.buildElement("items", "<div>");
+                var selectContainsDropDownList = $select.find(".imcms-select__drop-down-list").length;
 
-                if ($select && $select.find(".imcms-select__drop-down-list").length) {
-                    $select
-                        .find(".imcms-drop-down-list__items")
-                        .append($itemsArr);
-                    $select.selectFirst();
-                } else {
-                    $itemsContainer.append($itemsArr);
-                    var $button = dropDownListBEM.makeBlockElement("button", buttons.dropDownButton()),
-                        $selectedValue = dropDownListBEM.buildBlockElement("select-item-value", "<span>", {
-                            text: (options[0] && options[0].text) || ""
-                        }),
-                        $selectItem = dropDownListBEM.buildElement("select-item", "<div>", {click: toggleSelect})
-                            .append($selectedValue, $button),
-
-                        $dropDownList = dropDownListBEM.buildBlock("<div>", [
-                            {"select-item": $selectItem},
-                            {"items": $itemsContainer}
-                        ]);
-
-                    var selectOptions = selectBEM.makeBlockElement("drop-down-list", $dropDownList);
-                    return $select ? $select.append(selectOptions).selectFirst() : selectOptions;
-                }
-
+                return selectContainsDropDownList
+                    ? addOptionsToExistingDropDown(options, $select, dropDownListBEM)
+                    : $select.append(createSelectOptions(options, dropDownListBEM)).selectFirst();
             },
             selectContainer: function (tag, attributes, options) {
                 var clas = (attributes && attributes["class"]) || "";
