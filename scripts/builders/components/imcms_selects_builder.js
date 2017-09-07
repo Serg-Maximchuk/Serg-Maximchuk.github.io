@@ -126,10 +126,9 @@ Imcms.define("imcms-selects-builder",
             }
         }
 
-        function apiOptionsCount(resultImcmsSelect) {
+        function apiHasOptions(resultImcmsSelect) {
             return function () {
-                return resultImcmsSelect.find("[data-value]").length;
-
+                return resultImcmsSelect.find("[data-value]").length > 0;
             }
         }
 
@@ -165,7 +164,7 @@ Imcms.define("imcms-selects-builder",
                 resultImcmsSelect.selectedText = apiSelectedText(resultImcmsSelect);
                 resultImcmsSelect.clearSelect = apiClearSelect(resultImcmsSelect);
                 resultImcmsSelect.deleteOption = apiDeleteOption(resultImcmsSelect);
-                resultImcmsSelect.optionsCount = apiOptionsCount(resultImcmsSelect);
+                resultImcmsSelect.hasOptions = apiHasOptions(resultImcmsSelect);
 
                 return resultImcmsSelect;
             },

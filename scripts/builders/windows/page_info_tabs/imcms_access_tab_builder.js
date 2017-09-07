@@ -5,16 +5,24 @@ Imcms.define("imcms-access-tab-builder",
     ],
     function (BEM, components, rolesRestApi, linker) {
 
-        function buildRole(roleName, role, rolesBEM) {
-            return rolesBEM.makeBlockElement("column", components.radios.imcmsRadio("<div>", {
-                name: role.descriptor,
-                value: roleName,
-                checked: roleName === role.permission_name ? "checked" : undefined
-            }));
+
+        function mapRoleOnSelectOption(role) {
+            return {
+                text: role.name,
+                "data-value": role.id
+            }
         }
 
         function generateRoleRow(rolesBEM, role, $addRoleSelect) {
-            var $roleTitle = rolesBEM.buildBlockElement("column-title", "<div>", {text: role.name}),
+            function buildRole(roleName, role, rolesBEM) {
+                return rolesBEM.makeBlockElement("column", components.radios.imcmsRadio("<div>", {
+                    name: role.descriptor,
+                    value: roleName,
+                    checked: roleName === role.permission_name ? "checked" : undefined
+                }));
+            }
+
+            var $roleTitle = rolesBEM.buildBlockElement("column-title", "<div>", mapRoleOnSelectOption(role)),
                 $roleView = buildRole("VIEW", role, rolesBEM),
                 $roleEdit = buildRole("EDIT", role, rolesBEM),
                 $roleRestricted1 = buildRole("RESTRICTED_1", role, rolesBEM),
@@ -22,17 +30,17 @@ Imcms.define("imcms-access-tab-builder",
                 $row = rolesBEM.buildBlockElement("row", "<div>", {"data-role-id": role.id}),
                 $deleteRoleButton = rolesBEM.makeBlockElement("button", components.buttons.closeButton({
                     click: function () {
-                        if (!$addRoleSelect.optionsCount()) {
+                        if ($addRoleSelect.hasOptions()) {
                             $addRoleSelect.css("display", "block");
-                            $addRoleSelect.next().css("display", "block");
+                            var $addRoleBtn = $addRoleSelect.next();
+                            $addRoleBtn.css("display", "block");
                         }
-                        if ($row.parent().find("[data-role-id]").length === 1) {
-                            $row.parent().parent().parent().css("display", "none");
+                        var $rolesBody = $row.parent();
+                        if ($rolesBody.find("[data-role-id]").length === 1) {
+                            var $rolesField = $rolesBody.parent().parent();
+                            $rolesField.css("display", "none");
                         }
-                        components.selects.addOptionsToSelect([{
-                            text: role.name,
-                            "data-value": role.id
-                        }], $addRoleSelect);
+                        components.selects.addOptionsToSelect([mapRoleOnSelectOption(role)], $addRoleSelect);
                         $row.detach();
                     }
                 }))
@@ -75,12 +83,7 @@ Imcms.define("imcms-access-tab-builder",
                 if (!docId) {
                     rolesRestApi.read(null)
                         .done(function (roles) {
-                            var rolesDataMapped = roles.map(function (role) {
-                                return {
-                                    text: role.name,
-                                    "data-value": role.id
-                                }
-                            });
+                            var rolesDataMapped = roles.map(mapRoleOnSelectOption);
                             components.selects.addOptionsToSelect(rolesDataMapped, $addRoleSelect);
                         });
                 }
@@ -149,7 +152,7 @@ Imcms.define("imcms-access-tab-builder",
                     $rolesBody.append($row);
 
                     $addRoleSelect.deleteOption(id);
-                    if ($addRoleSelect.optionsCount() === 0) {
+                    if (!$addRoleSelect.hasOptions()) {
                         $addRoleSelect.css("display", "none");
                         $addRoleButton.css("display", "none");
                     } else {
@@ -175,28 +178,28 @@ Imcms.define("imcms-access-tab-builder",
                 var $addRoleSelect = this.data.$addRoleSelect;
                 var $rolesBody = this.data.$rolesBody;
 
-                var roles = generateRolesRows(rolesBEM, $addRoleSelect, document);
+                var roles = createRolesRows(rolesBEM, $addRoleSelect, document);
                 if (roles.length) {
                     $rolesBody.prepend(roles);
                     this.data.$rolesField.css("display", "block");
                 }
 
-                function generateRolesRows(rolesBEM, $addRoleSelect, document) {
+                function createRolesRows(rolesBEM, $addRoleSelect, document) {
+
+                    function documentContainsRole(document, role) {
+                        return document.roles.some(function (docRole) {
+                            return role.id === docRole.id;
+                        });
+                    }
 
                     rolesRestApi.read(null)
                         .done(function (roles) {
                             var rolesDataMapped = roles.filter(function (role) {
-                                return !document.roles.some(function (docRole) {
-                                    return role.id === docRole.id;
-                                });
+                                return !documentContainsRole(document, role);
+                            }).map(mapRoleOnSelectOption);
 
-                            }).map(function (role) {
-                                return {
-                                    text: role.name,
-                                    "data-value": role.id
-                                }
-                            });
                             $addRoleSelect.clearSelect();
+
                             if (rolesDataMapped.length) {
                                 $addRoleSelect.css("display", "block");
                                 components.selects.addOptionsToSelect(rolesDataMapped, $addRoleSelect);
