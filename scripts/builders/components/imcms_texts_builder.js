@@ -58,6 +58,13 @@ Imcms.define("imcms-texts-builder",
                 .removeClass("imcms-number-box--active");
         }
 
+        function apiSetValue($resultTextBox, $input) {
+            return function (value) {
+                $input.val(value);
+                return $resultTextBox;
+            };
+        }
+
         $(document).click(deactivateNumberBox);
 
         var textBEM = new BEM({
@@ -111,13 +118,11 @@ Imcms.define("imcms-texts-builder",
                 blockElements.unshift({"label": $label});
             }
 
-            var resultTextBox = structureBEM.buildBlock("<div>", blockElements);
+            var $resultTextBox = structureBEM.buildBlock("<div>", blockElements);
 
-            resultTextBox.setValue = function (value) {
-                $input.val(value);
-                return resultTextBox;
-            };
-            return resultTextBox;
+            $resultTextBox.setValue = apiSetValue($resultTextBox, $input);
+
+            return $resultTextBox;
         }
 
         return {
