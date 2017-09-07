@@ -20,6 +20,20 @@ Imcms.define("imcms-checkboxes-builder",
             })
         ;
 
+        function apiSetValue(imcmsCheckboxResult, $input) {
+            return function (value) {
+                value ? $input.prop("checked", "checked") : $input.removeProp("checked");
+                return imcmsCheckboxResult;
+            };
+        }
+
+        function apiSetLabelText(imcmsCheckboxResult, $label) {
+            return function (text) {
+                $label.text(text);
+                return imcmsCheckboxResult;
+            };
+        }
+
         return {
             imcmsCheckbox: function (tag, attributes) {
                 var id = attributes.id || uuidGenerator.generateUUID();
@@ -46,15 +60,8 @@ Imcms.define("imcms-checkboxes-builder",
                     {"label": $label}
                 ]);
 
-                imcmsCheckboxResult.setLabelText = function (text) {
-                    $label.text(text);
-                    return imcmsCheckboxResult;
-                };
-
-                imcmsCheckboxResult.setValue = function (value) {
-                    value ? $input.prop("checked", "checked") : $input.removeProp("checked");
-                    return imcmsCheckboxResult;
-                };
+                imcmsCheckboxResult.setLabelText = apiSetLabelText(imcmsCheckboxResult, $label);
+                imcmsCheckboxResult.setValue = apiSetValue(imcmsCheckboxResult, $input);
 
                 return imcmsCheckboxResult;
             },
