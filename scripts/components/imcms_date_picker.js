@@ -57,11 +57,7 @@ Imcms.define("imcms-date-picker",
                 day = parseInt(currentDate[2])
             ;
 
-            if (currentDateInput.val() === "") {
-                currentDateInput.val("--");
-            }
-
-            if (isDateValid(year, month, day) || currentDateInput.val() === "--") {
+            if (isDateValid(year, month, day)) {
                 var $calendar = currentDateInput.parents(DATE_PICKER_CLASS_SELECTOR)
                     .find(".imcms-calendar");
 
@@ -74,6 +70,14 @@ Imcms.define("imcms-date-picker",
             }
         }
 
+        function defaultIfNotMatch(checkValue, regex, defaultValue) {
+            if (!checkValue && typeof checkValue !== "string") {
+                return defaultValue;
+            }
+
+            return regex.test(checkValue) ? checkValue : defaultValue;
+        }
+
         function rebuildCalendar() {
             var currentDateInput = $(this),
                 $calendar = currentDateInput.parents(DATE_PICKER_CLASS_SELECTOR).find(".imcms-calendar")
@@ -83,9 +87,10 @@ Imcms.define("imcms-date-picker",
                 return;
             }
 
+            var currentDate = new Date();
             var carDate = currentDateInput.val().split('-'),
-                year = carDate[0],
-                month = carDate[1],
+                year = defaultIfNotMatch(carDate[0], /^\d{4}$/, currentDate.getFullYear()),
+                month = defaultIfNotMatch(carDate[1], /^\d{2}|[1-9]$/, currentDate.getMonth() + 1),
                 day = carDate[2]
             ;
 

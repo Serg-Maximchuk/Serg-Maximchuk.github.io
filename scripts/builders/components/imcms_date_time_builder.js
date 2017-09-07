@@ -30,7 +30,7 @@ Imcms.define("imcms-date-time-builder", ["imcms-bem-builder", "imcms-buttons-bui
                 "day": "imcms-day"
             }
         }),
-        weekDays = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"],
+        weekDays = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"],
         timePickerBEM = new BEM({
             block: "imcms-time-picker",
             elements: {
