@@ -27,7 +27,7 @@ Imcms.define("imcms-access-tab-builder",
                             $addRoleSelect.next().css("display", "block");
                         }
                         if ($row.parent().find("[data-role-id]").length === 1) {
-                            $row.parent().parent().css("display", "none");
+                            $row.parent().parent().parent().css("display", "none");
                         }
                         components.selects.addOptionsToSelect([{
                             text: role.name,
@@ -156,7 +156,7 @@ Imcms.define("imcms-access-tab-builder",
                         $addRoleSelect.selectFirst();
                     }
 
-                    $rolesTable.css("display", "block");
+                    $rolesField.css("display", "block");
                 });
 
                 this.data.rolesBEM = rolesBEM;
