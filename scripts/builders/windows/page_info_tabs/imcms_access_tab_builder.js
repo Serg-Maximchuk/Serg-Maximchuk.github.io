@@ -214,12 +214,16 @@ Imcms.define("imcms-access-tab-builder",
 
                             $addRoleSelect.clearSelect();
 
+                            var addRoleDisplay = "none",
+                                $addRoleBtn = $addRoleSelect.next();
+
                             if (rolesDataMapped.length) {
-                                $addRoleSelect.css("display", "block");
+                                addRoleDisplay = "block";
                                 components.selects.addOptionsToSelect(rolesDataMapped, $addRoleSelect);
-                            } else {
-                                $addRoleSelect.css("display", "none");
                             }
+
+                            $addRoleSelect.css("display", addRoleDisplay);
+                            $addRoleBtn.css("display", addRoleDisplay);
                         });
 
                     return document.roles.map(function (docRole) {
