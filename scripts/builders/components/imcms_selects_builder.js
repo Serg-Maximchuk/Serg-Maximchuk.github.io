@@ -60,6 +60,7 @@ Imcms.define("imcms-selects-builder",
             select.removeClass("imcms-select__drop-down-list--active")
                 .parent()
                 .find("input")
+                .data("content", content)
                 .val(value);
 
             return itemValue;
@@ -97,6 +98,41 @@ Imcms.define("imcms-selects-builder",
             }
         }
 
+        function apiSelectedValue(resultImcmsSelect) {
+            return function () {
+                return resultImcmsSelect.parent().find("input").val();
+            }
+        }
+
+        function apiSelectedText(resultImcmsSelect) {
+            return function () {
+                return resultImcmsSelect.parent().find("input").data("content");
+            }
+        }
+
+        function apiClearSelect(resultImcmsSelect) {
+            return function () {
+                var $input = resultImcmsSelect.parent().find("input");
+                $input.val("");
+                $input.removeProp("data-content");
+                return resultImcmsSelect.find(".imcms-drop-down-list").detach();
+            }
+        }
+
+        function apiDeleteOption(resultImcmsSelect) {
+            return function (optionValue) {
+                return resultImcmsSelect.find("[data-value='" + optionValue + "']").detach();
+
+            }
+        }
+
+        function apiOptionsCount(resultImcmsSelect) {
+            return function () {
+                return resultImcmsSelect.find("[data-value]").length;
+
+            }
+        }
+
         return {
             imcmsSelect: function (tag, attributes, options) {
                 var blockElements = [];
@@ -125,9 +161,11 @@ Imcms.define("imcms-selects-builder",
 
                 resultImcmsSelect.selectValue = apiSelectValue(resultImcmsSelect, $selectedValInput);
                 resultImcmsSelect.selectFirst = apiSelectFirst(resultImcmsSelect);
-                resultImcmsSelect.selectedValue = function () {
-
-                };
+                resultImcmsSelect.selectedValue = apiSelectedValue(resultImcmsSelect);
+                resultImcmsSelect.selectedText = apiSelectedText(resultImcmsSelect);
+                resultImcmsSelect.clearSelect = apiClearSelect(resultImcmsSelect);
+                resultImcmsSelect.deleteOption = apiDeleteOption(resultImcmsSelect);
+                resultImcmsSelect.optionsCount = apiOptionsCount(resultImcmsSelect);
 
                 return resultImcmsSelect;
             },
@@ -135,22 +173,31 @@ Imcms.define("imcms-selects-builder",
                 var $itemsArr = options.map(function (option) {
                         return dropDownListBEM.buildBlockElement("item", "<div>", option);
                     }),
-                    $itemsContainer = dropDownListBEM.buildElement("items", "<div>").append($itemsArr),
+                    $itemsContainer = dropDownListBEM.buildElement("items", "<div>");
 
-                    $button = dropDownListBEM.makeBlockElement("button", buttons.dropDownButton()),
-                    $selectedValue = dropDownListBEM.buildBlockElement("select-item-value", "<span>", {
-                        text: (options[0] && options[0].text) || ""
-                    }),
-                    $selectItem = dropDownListBEM.buildElement("select-item", "<div>", {click: toggleSelect})
-                        .append($selectedValue, $button),
+                if ($select && $select.find(".imcms-select__drop-down-list").length) {
+                    $select
+                        .find(".imcms-drop-down-list__items")
+                        .append($itemsArr);
+                    $select.selectFirst();
+                } else {
+                    $itemsContainer.append($itemsArr);
+                    var $button = dropDownListBEM.makeBlockElement("button", buttons.dropDownButton()),
+                        $selectedValue = dropDownListBEM.buildBlockElement("select-item-value", "<span>", {
+                            text: (options[0] && options[0].text) || ""
+                        }),
+                        $selectItem = dropDownListBEM.buildElement("select-item", "<div>", {click: toggleSelect})
+                            .append($selectedValue, $button),
 
-                    $dropDownList = dropDownListBEM.buildBlock("<div>", [
-                        {"select-item": $selectItem},
-                        {"items": $itemsContainer}
-                    ]);
+                        $dropDownList = dropDownListBEM.buildBlock("<div>", [
+                            {"select-item": $selectItem},
+                            {"items": $itemsContainer}
+                        ]);
 
-                var selectOptions = selectBEM.makeBlockElement("drop-down-list", $dropDownList);
-                return $select ? $select.append(selectOptions).selectFirst() : selectOptions;
+                    var selectOptions = selectBEM.makeBlockElement("drop-down-list", $dropDownList);
+                    return $select ? $select.append(selectOptions).selectFirst() : selectOptions;
+                }
+
             },
             selectContainer: function (tag, attributes, options) {
                 var clas = (attributes && attributes["class"]) || "";
