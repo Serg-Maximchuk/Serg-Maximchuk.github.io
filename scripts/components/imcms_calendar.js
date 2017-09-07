@@ -3,13 +3,14 @@ Imcms.define("imcms-calendar", ["imcms", "jquery"], function (imcms, $) {
     function setSelectDate() {
         var $thisDay = $(this),
             curDateInput = $thisDay.parents(".imcms-date-picker").find(".imcms-current-date__input"),
+            curDateInputValue = curDateInput.val(),
             curDateInputVal = curDateInput.val().split('-'),
             year = curDateInputVal[0],
             month = curDateInputVal[1],
             date = $thisDay.text()
         ;
 
-        if (curDateInput.val() === "--") {
+        if (!curDateInputValue) {
             var d = new Date();
             year = d.getFullYear();
             month = d.getMonth() + 1;
@@ -39,21 +40,31 @@ Imcms.define("imcms-calendar", ["imcms", "jquery"], function (imcms, $) {
         $thisDay.addClass("imcms-day--today");
     }
 
+    function correctDayStartsFromSundayToMonday(startDay) {
+        var corrected = startDay - 1;
+        return corrected > -1 ? corrected : 6;
+    }
+
     function buildCalendar(year, month, day, $calendar) {
         if (!$calendar || !$calendar.length) {
             return;
+        }
+
+        if (month < 1 || month > 11) {
+            $calendar.parent().find(".imcms-current-date__input").val(year + '-01-' + day);
+            month = 1;
         }
 
         var calendarTitle = $calendar.find(".imcms-calendar__title"),
             calendarTitleVal = calendarTitle.val().split(" "),
             calendarWeek = $calendar.find(".imcms-calendar__week"),
             firstDay = new Date(year, month - 1),
-            firstDate = parseInt(firstDay.getDate()),
-            firstDayNumber = parseInt(firstDay.getDay()),
+            firstDate = firstDay.getDate(),
+            firstDayNumber = correctDayStartsFromSundayToMonday(firstDay.getDay()),
             lastD = new Date(year, month, 0),
-            lastDay = parseInt(lastD.getDate()),
+            lastDay = lastD.getDate(),
             prevMonthD = new Date(year, month - 1, 0),
-            prevMonthDay = parseInt(prevMonthD.getDate()),
+            prevMonthDay = prevMonthD.getDate(),
             count = 0,
             monthList = [
                 "January",
@@ -115,27 +126,27 @@ Imcms.define("imcms-calendar", ["imcms", "jquery"], function (imcms, $) {
     }
 
     return {
-        init: function (datePicker) {
-            var $curDateInput = datePicker.find(".imcms-current-date__input"),
-                $calendar = datePicker.find(".imcms-calendar"),
+        init: function ($datePicker) {
+            var $curDateInput = $datePicker.find(".imcms-current-date__input"),
+                currentValue = $curDateInput.val(),
+                $calendar = $datePicker.find(".imcms-calendar"),
                 year, month, date
             ;
 
-            if ($curDateInput.val() === "--") {
-                var currentDate = new Date();
-                year = currentDate.getFullYear();
-                month = currentDate.getMonth() + 1;
-                date = currentDate.getDate();
-
-            } else {
+            if (currentValue) {
                 var curDate = $curDateInput.val().split("-");
                 year = parseInt(curDate[0]);
                 month = parseInt(curDate[1]);
                 date = parseInt(curDate[2]);
+            } else {
+                var currentDate = new Date();
+                year = currentDate.getFullYear();
+                month = currentDate.getMonth() + 1;
+                date = currentDate.getDate();
             }
 
-            if (!datePicker.hasClass("imcms-date-picker--active") && $calendar.length !== 0) {
-                datePicker.addClass("imcms-date-picker--active");
+            if (!$datePicker.hasClass("imcms-date-picker--active") && $calendar.length !== 0) {
+                $datePicker.addClass("imcms-date-picker--active");
                 buildCalendar(year, month, date, $calendar);
             }
         },
