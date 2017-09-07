@@ -156,12 +156,12 @@ Imcms.define("imcms-appearance-tab-builder",
                     swedishLanguage = document.languages["swe"];
 
                 appearanceTab.$engCheckbox.setLabelText(englishLanguage.name)
-                    .setValue(englishLanguage.enabled);
+                    .setChecked(englishLanguage.enabled);
                 appearanceTab.$engPageTitle.setValue(englishLanguage.title);
                 appearanceTab.$engMenuText.setValue(englishLanguage.menu_text);
 
                 appearanceTab.$sweCheckbox.setLabelText(swedishLanguage.name)
-                    .setValue(swedishLanguage.enabled);
+                    .setChecked(swedishLanguage.enabled);
                 appearanceTab.$swePageTitle.setValue(swedishLanguage.title);
                 appearanceTab.$sweMenuText.setValue(swedishLanguage.menu_text);
 
@@ -173,11 +173,11 @@ Imcms.define("imcms-appearance-tab-builder",
                 var appearanceTab = this.data,
                     emptyString = '';
 
-                appearanceTab.$engCheckbox.setValue(true);
+                appearanceTab.$engCheckbox.setChecked(true);
                 appearanceTab.$engPageTitle.setValue(emptyString);
                 appearanceTab.$engMenuText.setValue(emptyString);
 
-                appearanceTab.$sweCheckbox.setValue(false);
+                appearanceTab.$sweCheckbox.setChecked(false);
                 appearanceTab.$swePageTitle.setValue(emptyString);
                 appearanceTab.$sweMenuText.setValue(emptyString);
 

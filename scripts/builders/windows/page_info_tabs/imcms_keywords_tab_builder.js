@@ -31,7 +31,7 @@ Imcms.define("imcms-keywords-tab-builder",
 
                 document.keywords.forEach(keywordsTab.$keywordsBox.addKeyword);
 
-                keywordsTab.$searchDisableCheckbox.setValue(document.disable_search);
+                keywordsTab.$searchDisableCheckbox.setChecked(document.disable_search);
 
             },
             clearTabData: function () {
@@ -42,7 +42,7 @@ Imcms.define("imcms-keywords-tab-builder",
                     .find('.imcms-button--close')
                     .click();
 
-                keywordsTab.$searchDisableCheckbox.setValue(false);
+                keywordsTab.$searchDisableCheckbox.setChecked(false);
             }
         };
     }
