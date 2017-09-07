@@ -36,9 +36,10 @@ Imcms.define("imcms-access-tab-builder",
                             displayAddRoleSelectAndBtn($addRoleSelect);
                         }
 
+                        var $rolesBody = $row.parent();
+
                         $row.detach();
 
-                        var $rolesBody = $row.parent();
                         var tableContainsRows = $rolesBody.find("[data-role-id]").length;
                         if (!tableContainsRows) {
                             hideRolesField($rolesBody);
