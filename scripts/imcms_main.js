@@ -39,6 +39,7 @@ Imcms = {
             "imcms-date-picker": "components/imcms_date_picker.js",
             "imcms-time-picker": "components/imcms_time_picker.js",
             "imcms-uuid-generator": "components/imcms_uuid_generator.js",
+            "imcms-image-cropper": "components/imcms_image_cropper.js",
             // editors initializer
             "imcms-text-editor-initializer": "editor_initializer/imcms_text_editor_initializer.js",
             "imcms-editors-initializer": "editor_initializer/imcms_editors_initializer.js",
@@ -64,7 +65,6 @@ Imcms = {
             "imcms-keywords-builder": "builders/components/imcms_keywords_builder.js",
             "imcms-date-time-builder": "builders/components/imcms_date_time_builder.js",
             "imcms-controls-builder": "builders/components/imcms_controls_builder.js",
-            // other components
             "imcms-primitives-builder": "builders/imcms_primitives_builder.js",
             "imcms-components-builder": "builders/imcms_components_builder.js",
             "imcms-window-components-builder": "builders/imcms_window_components_builder.js",
