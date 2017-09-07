@@ -1,6 +1,5 @@
 .imcms-crop-area {
     background-repeat: no-repeat;
-    border: 2px dashed #fff;
     cursor: move;
     display: block;
     position: absolute;
@@ -9,7 +8,7 @@
     z-index: 50;
 }
 
-.imcms-crop-area__angle {
+.imcms-editable-img-area__angle {
     position: absolute;
 }
 
