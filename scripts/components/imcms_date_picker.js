@@ -95,15 +95,18 @@ Imcms.define("imcms-date-picker",
             ;
 
             imcmsCalendar.buildCalendar(year, month, day, $calendar);
-            $calendar.find(".imcms-calendar__day").each(function () {
-                var $this = $(this);
-                if ($this.html() === day) {
-                    $this.addClass("imcms-day--today");
+            var fileredByDay = $calendar.find(".imcms-calendar__day")
+                .each(function () {
+                    $(this).removeClass("imcms-day--today");
+                })
+                .filter(function () {
+                    return $(this).html() === day
+                });
 
-                } else {
-                    $this.removeClass("imcms-day--today");
-                }
-            });
+            var lastOrFirst = day <= 20 ? fileredByDay.first() : fileredByDay.last();
+
+            lastOrFirst.addClass("imcms-day--today");
+
         }
 
         $(document).click(closeCalendar);
@@ -125,7 +128,19 @@ Imcms.define("imcms-date-picker",
             this.datePicker.find(".imcms-current-date__input")
                 .on('blur', currentDateValidation)
                 .on('keyup change', rebuildCalendar)
-                .mask("0000-00-00");
+                .mask("d000-z0-y0", {
+                    translation: {
+                        d: {
+                            pattern: /[1-9]/
+                        },
+                        z: {
+                            pattern: /[0-1]/
+                        },
+                        y: {
+                            pattern: /[0-3]/
+                        }
+                    }
+                });
         };
         DatePicker.prototype = {
             setDate: function (date) {

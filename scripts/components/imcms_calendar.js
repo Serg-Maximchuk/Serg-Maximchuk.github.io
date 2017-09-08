@@ -50,11 +50,6 @@ Imcms.define("imcms-calendar", ["imcms", "jquery"], function (imcms, $) {
             return;
         }
 
-        if (month < 1 || month > 11) {
-            $calendar.parent().find(".imcms-current-date__input").val(year + '-01-' + day);
-            month = 1;
-        }
-
         var calendarTitle = $calendar.find(".imcms-calendar__title"),
             calendarTitleVal = calendarTitle.val().split(" "),
             calendarWeek = $calendar.find(".imcms-calendar__week"),
