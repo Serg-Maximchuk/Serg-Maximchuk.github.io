@@ -175,6 +175,7 @@ Imcms.define("imcms-image-cropper", [], function () {
                 isResizing = true;
                 resizeAngle = 2;
                 isMouseDown = true;
+                setCursor("se-resize");
             }
         });
 
