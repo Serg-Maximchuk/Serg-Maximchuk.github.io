@@ -655,19 +655,30 @@ Imcms.define("imcms-image-editor-builder",
         function fillLeftSideData(imageData) {
             imageDataContainers.$image.attr("src", imageData.path);
 
+            var imageWidth = imageDataContainers.$image.width();
+
+            // fixes to prevent stupid little scroll because of borders
+            imageDataContainers.$image.width(imageWidth - 4);
+            imageDataContainers.$image.css({
+                left: 2,
+                top: 2
+            });
+
             imageDataContainers.$shadow.css({
                 width: "100%",
                 height: "100%"
             });
 
-            // todo: receive correct crop area
             var $cropImg = imageDataContainers.$cropArea.find("img")
                 .attr("src", imageData.path);
 
+            // todo: receive correct crop area
             imageDataContainers.$cropArea.css({
-                    width: imageData.width + "px",
-                    height: imageData.height + "px"
-                });
+                width: imageDataContainers.$image.width(),
+                height: imageDataContainers.$image.height(),
+                left: 2,
+                top: 2
+            });
 
             imageCropper.initImageCropper({
                 $imageEditor: imageWindowBuilder.$editor,
@@ -692,6 +703,8 @@ Imcms.define("imcms-image-editor-builder",
 
         function clearData() {
             imageCropper.destroyImageCropper();
+            imageDataContainers.$image.removeAttr("src");
+            imageDataContainers.$cropArea.find("img").removeAttr("src");
         }
 
         var imageWindowBuilder = new WindowBuilder({
