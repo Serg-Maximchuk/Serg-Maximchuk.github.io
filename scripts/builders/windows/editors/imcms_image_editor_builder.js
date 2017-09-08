@@ -656,6 +656,7 @@ Imcms.define("imcms-image-editor-builder",
             imageDataContainers.$image.attr("src", imageData.path);
 
             var imageWidth = imageDataContainers.$image.width();
+            var borderWidth = parseInt(imageDataContainers.$angleTopLeft.css("border-width")) || 0;
 
             // fixes to prevent stupid little scroll because of borders
             imageDataContainers.$image.width(imageWidth - 4);
@@ -688,7 +689,8 @@ Imcms.define("imcms-image-editor-builder",
                 $topLeftAngle: imageDataContainers.$angleTopLeft,
                 $topRightAngle: imageDataContainers.$angleTopRight,
                 $bottomRightAngle: imageDataContainers.$angleBottomRight,
-                $bottomLeftAngle: imageDataContainers.$angleBottomLeft
+                $bottomLeftAngle: imageDataContainers.$angleBottomLeft,
+                borderWidth: borderWidth
             });
         }
 

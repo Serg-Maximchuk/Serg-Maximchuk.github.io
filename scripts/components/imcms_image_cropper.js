@@ -106,6 +106,7 @@ Imcms.define("imcms-image-cropper", [], function () {
             $topLeftAngle = imageCropComponents.$topLeftAngle,
             $topRightAngle = imageCropComponents.$topRightAngle,
             $bottomLeftAngle = imageCropComponents.$bottomLeftAngle,
+            borderWidth = imageCropComponents.borderWidth,
             isMouseDown = false,
             isResizing = false
         ;
@@ -114,8 +115,6 @@ Imcms.define("imcms-image-cropper", [], function () {
         $bottomRightAngle = imageCropComponents.$bottomRightAngle;
         $imageEditor = imageCropComponents.$imageEditor;
         $cropImg = imageCropComponents.$cropImg;
-
-        borderWidth = parseInt($topLeftAngle.css("border-width")) || 0;
 
         $cropImg.css({
             "width": $originImg.css("width"),
