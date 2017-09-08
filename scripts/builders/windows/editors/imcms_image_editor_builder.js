@@ -691,7 +691,7 @@ Imcms.define("imcms-image-editor-builder",
         }
 
         function clearData() {
-            // todo: implement
+            imageCropper.destroyImageCropper();
         }
 
         var imageWindowBuilder = new WindowBuilder({

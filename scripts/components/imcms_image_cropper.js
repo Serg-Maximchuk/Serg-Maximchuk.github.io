@@ -3,18 +3,22 @@
  * 07.09.17
  */
 Imcms.define("imcms-image-cropper", ["jquery"], function ($) {
+
+    var $croppingArea, $bottomRightAngle, $imageEditor;
+
     function init(imageCropComponents) {
-        var $imageEditor = imageCropComponents.$imageEditor,
-            $croppingArea = imageCropComponents.$croppingArea,
-            $cropImg = imageCropComponents.$cropImg,
+        var $cropImg = imageCropComponents.$cropImg,
             $originImg = imageCropComponents.$originImg,
             $topLeftAngle = imageCropComponents.$topLeftAngle,
             $topRightAngle = imageCropComponents.$topRightAngle,
-            $bottomRightAngle = imageCropComponents.$bottomRightAngle,
             $bottomLeftAngle = imageCropComponents.$bottomLeftAngle,
             isMouseDown = false,
             isResizing = false
         ;
+
+        $croppingArea = imageCropComponents.$croppingArea;
+        $bottomRightAngle = imageCropComponents.$bottomRightAngle;
+        $imageEditor = imageCropComponents.$imageEditor;
 
         var BORDER_WIDTH = parseInt($topLeftAngle.css("border-width")) || 0;
 
@@ -167,7 +171,7 @@ Imcms.define("imcms-image-cropper", ["jquery"], function ($) {
             }
         });
 
-        $(document).mouseup(function () {
+        $imageEditor.mouseup(function () {
             if (event.which === 1) {
                 isMouseDown = false;
                 isResizing = false;
@@ -219,7 +223,7 @@ Imcms.define("imcms-image-cropper", ["jquery"], function ($) {
         var imageCoords = $originImg.offset();
         var prevX, prevY;
 
-        $($imageEditor).mousemove(function (event) {
+        $imageEditor.mousemove(function (event) {
             if (!isMouseDown) {
                 prevX = undefined;
                 prevY = undefined;
@@ -263,12 +267,30 @@ Imcms.define("imcms-image-cropper", ["jquery"], function ($) {
             }
         });
 
-        $($imageEditor).on("dragstart", function () {
+        $imageEditor.on("dragstart", function () {
             return false;
         });
     }
 
+    function removeEventListeners($element, eventsArr) {
+        eventsArr.forEach(function (event) {
+            $element.off(event);
+        });
+    }
+
+    function destroy() {
+        removeEventListeners($croppingArea, ["mousedown", "mouseup"]);
+        $croppingArea = null;
+
+        removeEventListeners($bottomRightAngle, ["mousedown", "mouseup"]);
+        $bottomRightAngle = null;
+
+        removeEventListeners($imageEditor, ["mousemove", "mouseup", "dragstart"]);
+        $imageEditor = null;
+    }
+
     return {
-        initImageCropper: init
+        initImageCropper: init,
+        destroyImageCropper: destroy
     };
 });
