@@ -110,6 +110,20 @@ Imcms.define("imcms-image-cropper", [], function () {
         setElementWidthHeight($croppingArea, legalWidth, legalHeight);
     }
 
+    function resizeCroppingBottomLeft(deltaX, deltaY) {
+        var newWidth = (croppingAreaParams.width = $croppingArea.width() + deltaX);
+        var newHeight = (croppingAreaParams.height = $croppingArea.height() - deltaY);
+
+        var newLeft = parseInt($croppingArea.css("left")) - deltaX;
+
+        var legalWidth = newWidth;//getValidCropWidth(newWidth);
+        var legalHeight = newHeight;//getValidCropHeight(newHeight);
+
+        setElementWidthHeight($croppingArea, legalWidth, legalHeight);
+        $cropImg.css("left", angleBorderSize - newLeft);
+        $croppingArea.css("left", newLeft);
+    }
+
     function moveCroppingAngles(angleIndex, deltaX, deltaY) {
         var angle1X = 0, angle1Y = 0;
         var angle2X = 0, angle2Y = 0;
@@ -152,6 +166,7 @@ Imcms.define("imcms-image-cropper", [], function () {
                 resizeCroppingBottomRight(deltaX, deltaY);
                 break;
             case 3:
+                resizeCroppingBottomLeft(deltaX, deltaY);
                 break;
         }
     }
