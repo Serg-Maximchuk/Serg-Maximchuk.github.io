@@ -656,7 +656,7 @@ Imcms.define("imcms-image-editor-builder",
             imageDataContainers.$image.attr("src", imageData.path);
 
             // fixes to prevent stupid little scroll because of borders
-            var borderWidth = parseInt(imageDataContainers.$angleTopLeft.css("border-width")) || 0;
+            var angleBorderSize = parseInt(imageDataContainers.$angleTopLeft.css("border-width")) || 0;
             var imageWidth = imageDataContainers.$image.width();
             var imageHeight = imageDataContainers.$image.height();
 
@@ -665,11 +665,11 @@ Imcms.define("imcms-image-editor-builder",
                 height: imageHeight
             });
 
-            imageDataContainers.$image.width(imageWidth - borderWidth * 2);
-            imageDataContainers.$image.height(imageHeight - borderWidth * 2);
+            imageDataContainers.$image.width(imageWidth - angleBorderSize * 2);
+            imageDataContainers.$image.height(imageHeight - angleBorderSize * 2);
             imageDataContainers.$image.css({
-                left: borderWidth,
-                top: borderWidth
+                left: angleBorderSize,
+                top: angleBorderSize
             });
 
             var $cropImg = imageDataContainers.$cropArea.find("img")
@@ -679,8 +679,8 @@ Imcms.define("imcms-image-editor-builder",
             imageDataContainers.$cropArea.css({
                 width: imageDataContainers.$image.width(),
                 height: imageDataContainers.$image.height(),
-                left: borderWidth,
-                top: borderWidth
+                left: angleBorderSize,
+                top: angleBorderSize
             });
 
             imageCropper.initImageCropper({
@@ -692,7 +692,7 @@ Imcms.define("imcms-image-editor-builder",
                 $topRightAngle: imageDataContainers.$angleTopRight,
                 $bottomRightAngle: imageDataContainers.$angleBottomRight,
                 $bottomLeftAngle: imageDataContainers.$angleBottomLeft,
-                borderWidth: borderWidth
+                borderWidth: angleBorderSize
             });
         }
 
