@@ -656,7 +656,7 @@ Imcms.define("imcms-image-editor-builder",
             imageDataContainers.$image.attr("src", imageData.path);
 
             var imageWidth = imageDataContainers.$image.width();
-            imageDataContainers.$image.width(imageWidth - 2);
+            imageDataContainers.$image.width(imageWidth - 2); // fix to prevent stupid little scroll because of borders
 
             imageDataContainers.$shadow.css({
                 width: "100%",
