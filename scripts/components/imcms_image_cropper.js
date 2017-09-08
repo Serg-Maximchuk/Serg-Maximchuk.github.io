@@ -51,7 +51,7 @@ Imcms.define("imcms-image-cropper", [], function () {
     }
 
     function getMaxLegalAngleLeft() {
-        return originImageParams.width - angleParams.width;
+        return originImageParams.width - angleParams.width + 2;
     }
 
     function getValidAngleTop(top) {
@@ -147,7 +147,7 @@ Imcms.define("imcms-image-cropper", [], function () {
             height: $topLeftAngle.height()
         };
 
-        function moveCroppingAngles2(angleIndex, deltaX, deltaY) {
+        function moveCroppingAngles(angleIndex, deltaX, deltaY) {
             var angle1X = 0, angle1Y = 0;
             var angle2X = 0, angle2Y = 0;
             var angle3X = 0, angle3Y = 0;
@@ -204,10 +204,10 @@ Imcms.define("imcms-image-cropper", [], function () {
         var angleSize = $topRightAngle.width();
 
         !function setStartCroppingAngles() {
-            moveCroppingAngles(2, 2);
+            setCroppingAnglesTopLeft(2, 2);
         }();
 
-        function moveCroppingAngles(top, left) {
+        function setCroppingAnglesTopLeft(top, left) {
             setElementTopLeft($topLeftAngle, top - borderWidth, left - borderWidth);
             setElementTopLeft($topRightAngle, top - borderWidth, croppingAreaParams.width + left - angleSize);
             setElementTopLeft($bottomRightAngle, croppingAreaParams.height + top - angleSize, croppingAreaParams.width + left - angleSize);
@@ -243,7 +243,7 @@ Imcms.define("imcms-image-cropper", [], function () {
             prevY = newY;
 
             if (isResizing) {
-                moveCroppingAngles2(resizeAngle, deltaX, deltaY);
+                moveCroppingAngles(resizeAngle, deltaX, deltaY);
                 resizeCroppingBottomRight(deltaX, deltaY);
 
             } else {
@@ -257,7 +257,7 @@ Imcms.define("imcms-image-cropper", [], function () {
                 newTop = getValidTop(newTop);
 
                 moveCropArea(newTop, newLeft);
-                moveCroppingAngles(newTop, newLeft);
+                setCroppingAnglesTopLeft(newTop, newLeft);
             }
         });
 
