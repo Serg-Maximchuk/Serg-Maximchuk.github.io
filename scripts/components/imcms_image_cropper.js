@@ -22,68 +22,45 @@ Imcms.define("imcms-image-cropper", [], function () {
         });
     }
 
-    function getMaxLegalTop() {
-        return originImageParams.height - croppingAreaParams.height + angleBorderSize;
-    }
-
-    function getMaxLegalLeft() {
-        return originImageParams.width - croppingAreaParams.width + angleBorderSize;
-    }
-
-    function getMaxLegalAngleTop() {
-        return originImageParams.height - angleParams.height + angleBorderSize;
-    }
-
-    function getMaxLegalAngleLeft() {
-        return originImageParams.width - angleParams.width + angleBorderSize;
-    }
-
-    function getMaxLegalCropWidth() {
-        return originImageParams.width - parseInt($croppingArea.css("left")) + angleBorderSize;
-    }
-
-    function getMaxLegalCropHeight() {
-        return originImageParams.height - parseInt($croppingArea.css("top")) + angleBorderSize;
-    }
-
-    function getMaxLegalCoordX() {
-        return originImageParams.width + imageCoords.left + angleBorderSize;
-    }
-
-    function getMaxLegalCoordY() {
-        return originImageParams.height + imageCoords.top + angleBorderSize;
+    function Limit(min, shift, max) {
+        return {
+            forValue: function (value) {
+                var maxValue = max - shift + angleBorderSize;
+                return Math.min(Math.max(value, min), maxValue);
+            }
+        }
     }
 
     function getValidCoordX(coordX) {
-        return Math.min(Math.max(coordX, imageCoords.left), getMaxLegalCoordX());
+        return Limit(imageCoords.left, -imageCoords.left, originImageParams.width).forValue(coordX);
     }
 
     function getValidCoordY(coordY) {
-        return Math.min(Math.max(coordY, imageCoords.top), getMaxLegalCoordY());
+        return Limit(imageCoords.left, -imageCoords.top, originImageParams.height).forValue(coordY);
     }
 
     function getValidLeft(left) {
-        return Math.min(Math.max(left, angleBorderSize), getMaxLegalLeft());
+        return Limit(angleBorderSize, croppingAreaParams.width, originImageParams.width).forValue(left);
     }
 
     function getValidTop(top) {
-        return Math.min(Math.max(top, angleBorderSize), getMaxLegalTop());
+        return Limit(angleBorderSize, croppingAreaParams.height, originImageParams.height).forValue(top);
     }
 
     function getValidAngleTop(top) {
-        return Math.min(Math.max(top, 0), getMaxLegalAngleTop());
+        return Limit(0, angleParams.height, originImageParams.height).forValue(top);
     }
 
     function getValidAngleLeft(left) {
-        return Math.min(Math.max(left, 0), getMaxLegalAngleLeft());
+        return Limit(0, angleParams.width, originImageParams.width).forValue(left);
     }
 
     function getValidCropWidth(width) {
-        return Math.min(Math.max(width, angleBorderSize), getMaxLegalCropWidth());
+        return Limit(angleBorderSize, parseInt($croppingArea.css("left")), originImageParams.width).forValue(width);
     }
 
     function getValidCropHeight(height) {
-        return Math.min(Math.max(height, angleBorderSize), getMaxLegalCropHeight());
+        return Limit(angleBorderSize, parseInt($croppingArea.css("top")), originImageParams.height).forValue(height);
     }
 
     function moveCropArea(top, left) {
