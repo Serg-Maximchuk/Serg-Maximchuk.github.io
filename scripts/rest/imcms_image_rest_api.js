@@ -18,11 +18,11 @@ Imcms.define("imcms-image-rest-api", ["imcms-rest-api"], function (rest) {
                     height: 29
                 }, {
                     id: 1,
-                    name: "img1",
-                    path: "img/choose_img/img1.png",
-                    format: "PNG",
-                    width: 146,
-                    height: 114
+                    name: "demo1",
+                    path: "demo/img/demo1.jpg",
+                    format: "JPG",
+                    width: 5509,
+                    height: 3673
                 }, {
                     id: 2,
                     name: "img2",
