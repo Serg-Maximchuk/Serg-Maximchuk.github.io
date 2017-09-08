@@ -656,7 +656,13 @@ Imcms.define("imcms-image-editor-builder",
             imageDataContainers.$image.attr("src", imageData.path);
 
             var imageWidth = imageDataContainers.$image.width();
-            imageDataContainers.$image.width(imageWidth - 2); // fix to prevent stupid little scroll because of borders
+
+            // fixes to prevent stupid little scroll because of borders
+            imageDataContainers.$image.width(imageWidth - 4);
+            imageDataContainers.$image.css({
+                left: 2,
+                top: 2
+            });
 
             imageDataContainers.$shadow.css({
                 width: "100%",
@@ -669,7 +675,9 @@ Imcms.define("imcms-image-editor-builder",
             // todo: receive correct crop area
             imageDataContainers.$cropArea.css({
                 width: imageDataContainers.$image.width(),
-                height: imageDataContainers.$image.height()
+                height: imageDataContainers.$image.height(),
+                left: 2,
+                top: 2
             });
 
             imageCropper.initImageCropper({

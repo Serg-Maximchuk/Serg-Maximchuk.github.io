@@ -8,8 +8,8 @@ Imcms.define("imcms-image-cropper", [], function () {
         angleParams;
 
     function moveCropImage(newTop, newLeft) {
-        var cropImgTop = -newTop,
-            cropImgLeft = -newLeft
+        var cropImgTop = -newTop + 2,
+            cropImgLeft = -newLeft + 2
         ;
 
         setElementTopLeft($cropImg, cropImgTop, cropImgLeft);
@@ -23,19 +23,19 @@ Imcms.define("imcms-image-cropper", [], function () {
     }
 
     function getMaxLegalTop() {
-        return originImageParams.height - croppingAreaParams.height;
+        return originImageParams.height - croppingAreaParams.height + 2;
     }
 
     function getMaxLegalLeft() {
-        return originImageParams.width - croppingAreaParams.width;
+        return originImageParams.width - croppingAreaParams.width + 2;
     }
 
     function getValidLeft(left) {
-        return Math.min(Math.max(left, 0), getMaxLegalLeft());
+        return Math.max(Math.min(left, getMaxLegalLeft()), 2);
     }
 
     function getValidTop(top) {
-        return Math.min(Math.max(top, 0), getMaxLegalTop());
+        return Math.max(Math.min(top, getMaxLegalTop()), 2);
     }
 
     function moveCropArea(top, left) {
@@ -51,15 +51,15 @@ Imcms.define("imcms-image-cropper", [], function () {
     }
 
     function getMaxLegalAngleLeft() {
-        return originImageParams.width - angleParams.width - borderWidth;
+        return originImageParams.width - angleParams.width;
     }
 
     function getValidAngleTop(top) {
-        return Math.min(Math.max(top, 0), getMaxLegalAngleTop());
+        return Math.min(Math.max(top, 2), getMaxLegalAngleTop());
     }
 
     function getValidAngleLeft(left) {
-        return Math.min(Math.max(left, 0), getMaxLegalAngleLeft());
+        return Math.min(Math.max(left, 2), getMaxLegalAngleLeft());
     }
 
     function moveCroppingAngle($angle, deltaX, deltaY) {
@@ -81,11 +81,11 @@ Imcms.define("imcms-image-cropper", [], function () {
     }
 
     function getValidCropWidth(width) {
-        return Math.min(Math.max(width, 0), getMaxLegalCropWidth());
+        return Math.min(Math.max(width, 2), getMaxLegalCropWidth());
     }
 
     function getValidCropHeight(height) {
-        return Math.min(Math.max(height, 0), getMaxLegalCropHeight());
+        return Math.min(Math.max(height, 2), getMaxLegalCropHeight());
     }
 
     function resizeCroppingBottomRight(deltaX, deltaY) {
@@ -204,7 +204,7 @@ Imcms.define("imcms-image-cropper", [], function () {
         var angleSize = $topRightAngle.width();
 
         !function setStartCroppingAngles() {
-            moveCroppingAngles(0, 0);
+            moveCroppingAngles(2, 2);
         }();
 
         function moveCroppingAngles(top, left) {
@@ -273,7 +273,7 @@ Imcms.define("imcms-image-cropper", [], function () {
     }
 
     function destroy() {
-        moveCropArea(0, 0);
+        moveCropArea(2, 2);
 
         removeEventListeners($croppingArea, ["mousedown", "mouseup"]);
         $croppingArea = null;
