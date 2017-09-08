@@ -129,7 +129,7 @@ Imcms.define("imcms-image-cropper", [], function () {
         };
 
         $croppingArea.mousedown(function (event) {
-            isMouseDown = event.which === 1;
+            (isMouseDown = (event.which === 1)) && setCursor("move");
         });
 
         angleParams = {
@@ -182,6 +182,7 @@ Imcms.define("imcms-image-cropper", [], function () {
             if (event.which === 1) {
                 isMouseDown = false;
                 isResizing = false;
+                setCursor("");
             }
         });
 
@@ -196,6 +197,19 @@ Imcms.define("imcms-image-cropper", [], function () {
             setElementTopLeft($topRightAngle, top - angleBorderSize, croppingAreaParams.width + left - angleSize);
             setElementTopLeft($bottomRightAngle, croppingAreaParams.height + top - angleSize, croppingAreaParams.width + left - angleSize);
             setElementTopLeft($bottomLeftAngle, croppingAreaParams.height + top - angleSize, left - angleBorderSize);
+        }
+
+        function setCursor(cursorValue) {
+            [
+                $topLeftAngle,
+                $topRightAngle,
+                $bottomRightAngle,
+                $bottomLeftAngle,
+                $imageEditor
+
+            ].forEach(function ($element) {
+                $element.css("cursor", cursorValue);
+            });
         }
 
         var prevX, prevY;
