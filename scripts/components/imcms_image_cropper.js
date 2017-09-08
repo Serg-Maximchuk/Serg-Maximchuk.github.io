@@ -2,13 +2,51 @@
  * Created by Serhii Maksymchuk from Ubrainians for imCode
  * 07.09.17
  */
-Imcms.define("imcms-image-cropper", ["jquery"], function ($) {
+Imcms.define("imcms-image-cropper", [], function () {
 
-    var $croppingArea, $bottomRightAngle, $imageEditor;
+    var $croppingArea, $bottomRightAngle, $imageEditor, $cropImg, originImageParams, croppingAreaParams;
+
+    function moveCropImage(newTop, newLeft) {
+        var cropImgTop = -newTop,
+            cropImgLeft = -newLeft
+        ;
+
+        setElementTopLeft($cropImg, cropImgTop, cropImgLeft);
+    }
+
+    function setElementTopLeft($element, newTop, newLeft) {
+        $element.css({
+            top: newTop,
+            left: newLeft
+        });
+    }
+
+    function getMaxLegalTop() {
+        return originImageParams.height - croppingAreaParams.height;
+    }
+
+    function getMaxLegalLeft() {
+        return originImageParams.width - croppingAreaParams.width;
+    }
+
+    function getValidLeft(left) {
+        return Math.min(Math.max(left, 0), getMaxLegalLeft());
+    }
+
+    function getValidTop(top) {
+        return Math.min(Math.max(top, 0), getMaxLegalTop());
+    }
+
+    function moveCropArea(top, left) {
+        var legalLeft = getValidLeft(left);
+        var legalTop = getValidTop(top);
+
+        setElementTopLeft($croppingArea, legalTop, legalLeft);
+        moveCropImage(legalTop, legalLeft);
+    }
 
     function init(imageCropComponents) {
-        var $cropImg = imageCropComponents.$cropImg,
-            $originImg = imageCropComponents.$originImg,
+        var $originImg = imageCropComponents.$originImg,
             $topLeftAngle = imageCropComponents.$topLeftAngle,
             $topRightAngle = imageCropComponents.$topRightAngle,
             $bottomLeftAngle = imageCropComponents.$bottomLeftAngle,
@@ -19,6 +57,7 @@ Imcms.define("imcms-image-cropper", ["jquery"], function ($) {
         $croppingArea = imageCropComponents.$croppingArea;
         $bottomRightAngle = imageCropComponents.$bottomRightAngle;
         $imageEditor = imageCropComponents.$imageEditor;
+        $cropImg = imageCropComponents.$cropImg;
 
         var BORDER_WIDTH = parseInt($topLeftAngle.css("border-width")) || 0;
 
@@ -27,54 +66,15 @@ Imcms.define("imcms-image-cropper", ["jquery"], function ($) {
             "height": $originImg.css("height")
         });
 
-        function moveCropImage(newTop, newLeft) {
-            var cropImgTop = -newTop,
-                cropImgLeft = -newLeft
-            ;
-
-            setElementTopLeft($cropImg, cropImgTop, cropImgLeft);
-        }
-
-        function setElementTopLeft($element, newTop, newLeft) {
-            $element.css({
-                top: newTop,
-                left: newLeft
-            });
-        }
-
-        var originImageParams = {
+        originImageParams = {
             height: parseFloat($originImg.height()),
             width: parseFloat($originImg.width())
         };
 
-        var croppingAreaParams = {
+        croppingAreaParams = {
             height: parseFloat($croppingArea.height()),
             width: parseFloat($croppingArea.width())
         };
-
-        function getMaxLegalTop() {
-            return originImageParams.height - croppingAreaParams.height;
-        }
-
-        function getMaxLegalLeft() {
-            return originImageParams.width - croppingAreaParams.width;
-        }
-
-        function getValidLeft(left) {
-            return Math.min(Math.max(left, 0), getMaxLegalLeft());
-        }
-
-        function getValidTop(top) {
-            return Math.min(Math.max(top, 0), getMaxLegalTop());
-        }
-
-        function moveCropArea(top, left) {
-            var legalLeft = getValidLeft(left);
-            var legalTop = getValidTop(top);
-
-            setElementTopLeft($croppingArea, legalTop, legalLeft);
-            moveCropImage(legalTop, legalLeft);
-        }
 
         $croppingArea.mousedown(function (event) {
             isMouseDown = event.which === 1;
@@ -272,6 +272,8 @@ Imcms.define("imcms-image-cropper", ["jquery"], function ($) {
     }
 
     function destroy() {
+        moveCropArea(0, 0);
+
         removeEventListeners($croppingArea, ["mousedown", "mouseup"]);
         $croppingArea = null;
 
