@@ -692,6 +692,8 @@ Imcms.define("imcms-image-editor-builder",
 
         function clearData() {
             imageCropper.destroyImageCropper();
+            imageDataContainers.$image.removeAttr("src");
+            imageDataContainers.$cropArea.find("img").removeAttr("src");
         }
 
         var imageWindowBuilder = new WindowBuilder({
