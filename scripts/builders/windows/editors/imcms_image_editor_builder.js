@@ -659,10 +659,10 @@ Imcms.define("imcms-image-editor-builder",
             var borderWidth = parseInt(imageDataContainers.$angleTopLeft.css("border-width")) || 0;
 
             // fixes to prevent stupid little scroll because of borders
-            imageDataContainers.$image.width(imageWidth - 4);
+            imageDataContainers.$image.width(imageWidth - borderWidth * 2);
             imageDataContainers.$image.css({
-                left: 2,
-                top: 2
+                left: borderWidth,
+                top: borderWidth
             });
 
             imageDataContainers.$shadow.css({
@@ -677,8 +677,8 @@ Imcms.define("imcms-image-editor-builder",
             imageDataContainers.$cropArea.css({
                 width: imageDataContainers.$image.width(),
                 height: imageDataContainers.$image.height(),
-                left: 2,
-                top: 2
+                left: borderWidth,
+                top: borderWidth
             });
 
             imageCropper.initImageCropper({

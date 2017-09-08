@@ -4,12 +4,12 @@
  */
 Imcms.define("imcms-image-cropper", [], function () {
 
-    var $croppingArea, $bottomRightAngle, $imageEditor, $cropImg, originImageParams, croppingAreaParams, borderWidth,
-        angleParams;
+    var $croppingArea, $imageEditor, $cropImg, originImageParams, croppingAreaParams, borderWidth,
+        angleParams, $originImg, $topLeftAngle, $topRightAngle, $bottomRightAngle, $bottomLeftAngle;
 
     function moveCropImage(newTop, newLeft) {
-        var cropImgTop = -newTop + 2,
-            cropImgLeft = -newLeft + 2
+        var cropImgTop = -newTop + borderWidth,
+            cropImgLeft = -newLeft + borderWidth
         ;
 
         setElementTopLeft($cropImg, cropImgTop, cropImgLeft);
@@ -102,17 +102,17 @@ Imcms.define("imcms-image-cropper", [], function () {
     }
 
     function init(imageCropComponents) {
-        var $originImg = imageCropComponents.$originImg,
-            $topLeftAngle = imageCropComponents.$topLeftAngle,
-            $topRightAngle = imageCropComponents.$topRightAngle,
-            $bottomLeftAngle = imageCropComponents.$bottomLeftAngle,
-            borderWidth = imageCropComponents.borderWidth,
-            isMouseDown = false,
+        var isMouseDown = false,
             isResizing = false
         ;
 
-        $croppingArea = imageCropComponents.$croppingArea;
+        borderWidth = imageCropComponents.borderWidth;
+        $originImg = imageCropComponents.$originImg;
+        $topLeftAngle = imageCropComponents.$topLeftAngle;
+        $topRightAngle = imageCropComponents.$topRightAngle;
         $bottomRightAngle = imageCropComponents.$bottomRightAngle;
+        $bottomLeftAngle = imageCropComponents.$bottomLeftAngle;
+        $croppingArea = imageCropComponents.$croppingArea;
         $imageEditor = imageCropComponents.$imageEditor;
         $cropImg = imageCropComponents.$cropImg;
 
@@ -272,16 +272,23 @@ Imcms.define("imcms-image-cropper", [], function () {
     }
 
     function destroy() {
-        moveCropArea(2, 2);
+        moveCropArea(0, 0);
+
+        [
+            $cropImg,
+            $originImg,
+            $topLeftAngle,
+            $topRightAngle,
+            $bottomRightAngle,
+            $bottomLeftAngle,
+            $croppingArea
+        ].forEach(function ($element) {
+            $element.removeAttr("style");
+        });
 
         removeEventListeners($croppingArea, ["mousedown", "mouseup"]);
-        $croppingArea = null;
-
         removeEventListeners($bottomRightAngle, ["mousedown", "mouseup"]);
-        $bottomRightAngle = null;
-
         removeEventListeners($imageEditor, ["mousemove", "mouseup", "dragstart"]);
-        $imageEditor = null;
     }
 
     return {
