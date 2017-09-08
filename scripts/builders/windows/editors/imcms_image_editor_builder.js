@@ -670,7 +670,7 @@ Imcms.define("imcms-image-editor-builder",
             imageDataContainers.$cropArea.css({
                 width: imageDataContainers.$image.width(),
                 height: imageDataContainers.$image.height()
-                });
+            });
 
             imageCropper.initImageCropper({
                 $imageEditor: imageWindowBuilder.$editor,
