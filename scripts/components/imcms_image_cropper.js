@@ -85,12 +85,28 @@ Imcms.define("imcms-image-cropper", [], function () {
         setElementTopLeft($angle, legalTop, legalLeft);
     }
 
+    function resizeCroppingTopLeft(deltaX, deltaY) {
+        var newWidth = (croppingAreaParams.width = $croppingArea.width() + deltaX);
+        var newHeight = (croppingAreaParams.height = $croppingArea.height() + deltaY);
+
+        var newTop = parseInt($croppingArea.css("top")) - deltaY;
+        var newLeft = parseInt($croppingArea.css("left")) - deltaX;
+
+        var legalWidth = newWidth;//getValidCropWidth(newWidth);
+        var legalHeight = newHeight;//getValidCropHeight(newHeight);
+
+        setElementWidthHeight($croppingArea, legalWidth, legalHeight);
+        $cropImg.css("top", angleBorderSize - newTop);
+        $cropImg.css("left", angleBorderSize - newLeft);
+        $croppingArea.css("top", newTop);
+        $croppingArea.css("left", newLeft);
+    }
+
     function resizeCroppingTopRight(deltaX, deltaY) {
         var newWidth = (croppingAreaParams.width = $croppingArea.width() - deltaX);
         var newHeight = (croppingAreaParams.height = $croppingArea.height() + deltaY);
 
         var newTop = parseInt($croppingArea.css("top")) - deltaY;
-        // var newLeft = parseInt($croppingArea.css("left")) - deltaX + angleBorderSize;
 
         var legalWidth = newWidth;//getValidCropWidth(newWidth);
         var legalHeight = newHeight;//getValidCropHeight(newHeight);
@@ -158,6 +174,7 @@ Imcms.define("imcms-image-cropper", [], function () {
     function resizeCroppingArea(angleIndex, deltaX, deltaY) {
         switch (angleIndex) {
             case 0:
+                resizeCroppingTopLeft(deltaX, deltaY);
                 break;
             case 1:
                 resizeCroppingTopRight(deltaX, deltaY);
