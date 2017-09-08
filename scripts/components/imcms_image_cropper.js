@@ -27,20 +27,18 @@ Imcms.define("imcms-image-cropper", ["jquery"], function ($) {
             "height": $originImg.css("height")
         });
 
-        function positioningCroppImg(newTop, newLeft) {
+        function moveCropImage(newTop, newLeft) {
             var cropImgTop = -newTop,
                 cropImgLeft = -newLeft
             ;
-            $cropImg.css({
-                "top": cropImgTop + "px",
-                "left": cropImgLeft + "px"
-            });
+
+            setElementTopLeft($cropImg, cropImgTop, cropImgLeft);
         }
 
-        function positioningSquares(square, newTop, newLeft) {
-            square.css({
-                "top": newTop,
-                "left": newLeft
+        function setElementTopLeft($element, newTop, newLeft) {
+            $element.css({
+                top: newTop,
+                left: newLeft
             });
         }
 
@@ -74,10 +72,8 @@ Imcms.define("imcms-image-cropper", ["jquery"], function ($) {
             var legalLeft = getValidLeft(left);
             var legalTop = getValidTop(top);
 
-            $croppingArea.css({"left": legalLeft});
-            $croppingArea.css({"top": legalTop});
-
-            positioningCroppImg(legalTop, legalLeft);
+            setElementTopLeft($croppingArea, legalTop, legalLeft);
+            moveCropImage(legalTop, legalLeft);
         }
 
         $croppingArea.mousedown(function (event) {
@@ -111,17 +107,14 @@ Imcms.define("imcms-image-cropper", ["jquery"], function ($) {
             return Math.min(Math.max(left, 0), getMaxLegalAngleLeft());
         }
 
-        function moveCroppingAngle(angle, deltaX, deltaY) {
-            var newTop = parseInt(angle.css("top")) - deltaY;
-            var newLeft = parseInt(angle.css("left")) - deltaX;
+        function moveCroppingAngle($angle, deltaX, deltaY) {
+            var newTop = parseInt($angle.css("top")) - deltaY;
+            var newLeft = parseInt($angle.css("left")) - deltaX;
 
             var legalTop = getValidAngleTop(newTop);
             var legalLeft = getValidAngleLeft(newLeft);
 
-            angle.css({
-                top: legalTop,
-                left: legalLeft
-            });
+            setElementTopLeft($angle, legalTop, legalLeft);
         }
 
         function moveCroppingAngles2(angleIndex, deltaX, deltaY) {
@@ -185,10 +178,10 @@ Imcms.define("imcms-image-cropper", ["jquery"], function ($) {
         })();
 
         function moveCroppingAngles(top, left) {
-            positioningSquares($topLeftAngle, top - BORDER_WIDTH, left - BORDER_WIDTH);
-            positioningSquares($topRightAngle, top - BORDER_WIDTH, croppingAreaParams.width + left - angleSize);
-            positioningSquares($bottomRightAngle, croppingAreaParams.height + top - angleSize, croppingAreaParams.width + left - angleSize);
-            positioningSquares($bottomLeftAngle, croppingAreaParams.height + top - angleSize, left - BORDER_WIDTH);
+            setElementTopLeft($topLeftAngle, top - BORDER_WIDTH, left - BORDER_WIDTH);
+            setElementTopLeft($topRightAngle, top - BORDER_WIDTH, croppingAreaParams.width + left - angleSize);
+            setElementTopLeft($bottomRightAngle, croppingAreaParams.height + top - angleSize, croppingAreaParams.width + left - angleSize);
+            setElementTopLeft($bottomLeftAngle, croppingAreaParams.height + top - angleSize, left - BORDER_WIDTH);
         }
 
         function getMaxLegalCropWidth() {
