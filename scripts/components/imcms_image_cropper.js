@@ -4,7 +4,7 @@
  */
 Imcms.define("imcms-image-cropper", [], function () {
 
-    var $croppingArea, $imageEditor, $cropImg, originImageParams, croppingAreaParams, borderWidth,
+    var $croppingArea, $imageEditor, $cropImg, originImageParams, croppingAreaParams, borderWidth, imageCoords,
         angleParams, $originImg, $topLeftAngle, $topRightAngle, $bottomRightAngle, $bottomLeftAngle;
 
     function moveCropImage(newTop, newLeft) {
@@ -30,46 +30,12 @@ Imcms.define("imcms-image-cropper", [], function () {
         return originImageParams.width - croppingAreaParams.width + borderWidth;
     }
 
-    function getValidLeft(left) {
-        return Math.max(Math.min(left, getMaxLegalLeft()), borderWidth);
-    }
-
-    function getValidTop(top) {
-        return Math.max(Math.min(top, getMaxLegalTop()), borderWidth);
-    }
-
-    function moveCropArea(top, left) {
-        var legalLeft = getValidLeft(left);
-        var legalTop = getValidTop(top);
-
-        setElementTopLeft($croppingArea, legalTop, legalLeft);
-        moveCropImage(legalTop, legalLeft);
-    }
-
     function getMaxLegalAngleTop() {
         return originImageParams.height - angleParams.height + borderWidth;
     }
 
     function getMaxLegalAngleLeft() {
         return originImageParams.width - angleParams.width + borderWidth;
-    }
-
-    function getValidAngleTop(top) {
-        return Math.min(Math.max(top, 0), getMaxLegalAngleTop());
-    }
-
-    function getValidAngleLeft(left) {
-        return Math.min(Math.max(left, 0), getMaxLegalAngleLeft());
-    }
-
-    function moveCroppingAngle($angle, deltaX, deltaY) {
-        var newTop = parseInt($angle.css("top")) - deltaY;
-        var newLeft = parseInt($angle.css("left")) - deltaX;
-
-        var legalTop = getValidAngleTop(newTop);
-        var legalLeft = getValidAngleLeft(newLeft);
-
-        setElementTopLeft($angle, legalTop, legalLeft);
     }
 
     function getMaxLegalCropWidth() {
@@ -80,12 +46,66 @@ Imcms.define("imcms-image-cropper", [], function () {
         return originImageParams.height - parseInt($croppingArea.css("top")) + borderWidth;
     }
 
+    function getMaxLegalCoordX() {
+        return imageCoords.left + originImageParams.width;
+    }
+
+    function getMaxLegalCoordY() {
+        return imageCoords.top + originImageParams.height;
+    }
+
+    function getValidCoordX(coordX) {
+        return Math.min(Math.max(coordX, imageCoords.left), getMaxLegalCoordX());
+    }
+
+    function getValidCoordY(coordY) {
+        return Math.min(Math.max(coordY, imageCoords.top), getMaxLegalCoordY());
+    }
+
+    function getValidLeft(left) {
+        return Math.min(Math.max(left, borderWidth), getMaxLegalLeft());
+    }
+
+    function getValidTop(top) {
+        return Math.min(Math.max(top, borderWidth), getMaxLegalTop());
+    }
+
+    function getValidAngleTop(top) {
+        return Math.min(Math.max(top, 0), getMaxLegalAngleTop());
+    }
+
+    function getValidAngleLeft(left) {
+        return Math.min(Math.max(left, 0), getMaxLegalAngleLeft());
+    }
+
     function getValidCropWidth(width) {
         return Math.min(Math.max(width, borderWidth), getMaxLegalCropWidth());
     }
 
     function getValidCropHeight(height) {
         return Math.min(Math.max(height, borderWidth), getMaxLegalCropHeight());
+    }
+
+    function moveCropArea(top, left) {
+        var legalLeft = getValidLeft(left);
+        var legalTop = getValidTop(top);
+
+        setElementTopLeft($croppingArea, legalTop, legalLeft);
+        moveCropImage(legalTop, legalLeft);
+    }
+
+    function setCroppingAngleTopLeft($angle, top, left) {
+        var legalTop = getValidAngleTop(top);
+        var legalLeft = getValidAngleLeft(left);
+
+        setElementTopLeft($angle, legalTop, legalLeft);
+    }
+
+    function moveCroppingAngle($angle, deltaX, deltaY) {
+        var newTop = parseInt($angle.css("top")) - deltaY;
+        var newLeft = parseInt($angle.css("left")) - deltaX;
+
+        setCroppingAngleTopLeft($angle, newTop, newLeft);
     }
 
     function resizeCroppingBottomRight(deltaX, deltaY) {
@@ -115,6 +135,7 @@ Imcms.define("imcms-image-cropper", [], function () {
         $croppingArea = imageCropComponents.$croppingArea;
         $imageEditor = imageCropComponents.$imageEditor;
         $cropImg = imageCropComponents.$cropImg;
+        imageCoords = $originImg.offset();
 
         $cropImg.css({
             "width": $originImg.css("width"),
@@ -213,7 +234,6 @@ Imcms.define("imcms-image-cropper", [], function () {
             setElementTopLeft($bottomLeftAngle, croppingAreaParams.height + top - angleSize, left - borderWidth);
         }
 
-        var imageCoords = $originImg.offset();
         var prevX, prevY;
 
         $imageEditor.mousemove(function (event) {
@@ -223,11 +243,8 @@ Imcms.define("imcms-image-cropper", [], function () {
                 return;
             }
 
-            var newX = Math.min(event.clientX, imageCoords.left + originImageParams.width);
-            var newY = Math.min(event.clientY, imageCoords.top + originImageParams.height);
-
-            newX = Math.max(newX, imageCoords.left);
-            newY = Math.max(newY, imageCoords.top);
+            var newX = getValidCoordX(event.clientX);
+            var newY = getValidCoordY(event.clientY);
 
             if (!prevX || !prevY) {
                 prevX = newX;
@@ -246,16 +263,17 @@ Imcms.define("imcms-image-cropper", [], function () {
                 resizeCroppingBottomRight(deltaX, deltaY);
 
             } else {
-                var croppingAreaTop = parseInt($croppingArea.position().top);
-                var croppingAreaLeft = parseInt($croppingArea.position().left);
+                var croppingAreaTop = parseInt($croppingArea.css("top"));
+                var croppingAreaLeft = parseInt($croppingArea.css("left"));
 
                 var newLeft = croppingAreaLeft - deltaX;
                 var newTop = croppingAreaTop - deltaY;
 
+                moveCropArea(newTop, newLeft);
+
                 newLeft = getValidLeft(newLeft);
                 newTop = getValidTop(newTop);
 
-                moveCropArea(newTop, newLeft);
                 setCroppingAnglesTopLeft(newTop, newLeft);
             }
         });

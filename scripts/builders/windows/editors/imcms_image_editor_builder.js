@@ -655,19 +655,21 @@ Imcms.define("imcms-image-editor-builder",
         function fillLeftSideData(imageData) {
             imageDataContainers.$image.attr("src", imageData.path);
 
-            var imageWidth = imageDataContainers.$image.width();
-            var borderWidth = parseInt(imageDataContainers.$angleTopLeft.css("border-width")) || 0;
-
             // fixes to prevent stupid little scroll because of borders
+            var borderWidth = parseInt(imageDataContainers.$angleTopLeft.css("border-width")) || 0;
+            var imageWidth = imageDataContainers.$image.width();
+            var imageHeight = imageDataContainers.$image.height();
+
+            imageDataContainers.$shadow.css({
+                width: imageWidth,
+                height: imageHeight
+            });
+
             imageDataContainers.$image.width(imageWidth - borderWidth * 2);
+            imageDataContainers.$image.height(imageHeight - borderWidth * 2);
             imageDataContainers.$image.css({
                 left: borderWidth,
                 top: borderWidth
-            });
-
-            imageDataContainers.$shadow.css({
-                width: "100%",
-                height: "100%"
             });
 
             var $cropImg = imageDataContainers.$cropArea.find("img")
