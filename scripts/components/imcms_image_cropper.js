@@ -50,7 +50,7 @@ Imcms.define("imcms-image-cropper", [], function () {
     }
 
     function getValidLeftOnResize(left) {
-        return Limit(angleBorderSize, parseInt($croppingArea.css("left")) + croppingAreaParams.width - angleParams.width + angleBorderSize).forValue(left);
+        return Limit(angleBorderSize, parseInt($topRightAngle.css("left")) - angleParams.width).forValue(left);
     }
 
     function getValidTop(top) {
@@ -65,8 +65,12 @@ Imcms.define("imcms-image-cropper", [], function () {
         return Limit(0, originImageParams.width - angleParams.width + angleBorderSize).forValue(left);
     }
 
+    function getValidLeftAngleX(left) {
+        return Limit(0, parseInt($topRightAngle.css("left")) - angleBorderSize - angleParams.width).forValue(left);
+    }
+
     function getValidLeftCropWidth(width) {
-        return Limit(angleBorderSize, parseInt($croppingArea.css("left")) + $croppingArea.width() - angleBorderSize).forValue(width);
+        return Limit(2 * angleParams.width, parseInt($croppingArea.css("left")) + $croppingArea.width() - angleBorderSize).forValue(width);
     }
 
     function getValidRightCropWidth(width) {
@@ -84,6 +88,26 @@ Imcms.define("imcms-image-cropper", [], function () {
     function moveCropArea(top, left) {
         setElementTopLeft($croppingArea, top, left);
         moveCropImage(top, left);
+    }
+
+    function moveTopLeftCroppingAngle(deltaX, deltaY) {
+        var newTop = parseInt($topLeftAngle.css("top")) - deltaY;
+        var newLeft = parseInt($topLeftAngle.css("left")) - deltaX;
+
+        var legalTop = getValidAngleTop(newTop);
+        var legalLeft = getValidLeftAngleX(newLeft);
+
+        setElementTopLeft($topLeftAngle, legalTop, legalLeft);
+    }
+
+    function moveBottomLeftCroppingAngle(deltaX, deltaY) {
+        var newTop = parseInt($bottomLeftAngle.css("top")) - deltaY;
+        var newLeft = parseInt($bottomLeftAngle.css("left")) - deltaX;
+
+        var legalTop = getValidAngleTop(newTop);
+        var legalLeft = getValidLeftAngleX(newLeft);
+
+        setElementTopLeft($bottomLeftAngle, legalTop, legalLeft);
     }
 
     function moveCroppingAngle($angle, deltaX, deltaY) {
@@ -180,10 +204,10 @@ Imcms.define("imcms-image-cropper", [], function () {
                 break;
         }
 
-        (angle1X || angle1Y) && moveCroppingAngle($topLeftAngle, angle1X, angle1Y);
+        (angle1X || angle1Y) && moveTopLeftCroppingAngle(angle1X, angle1Y);
         (angle2X || angle2Y) && moveCroppingAngle($topRightAngle, angle2X, angle2Y);
         (angle3X || angle3Y) && moveCroppingAngle($bottomRightAngle, angle3X, angle3Y);
-        (angle4X || angle4Y) && moveCroppingAngle($bottomLeftAngle, angle4X, angle4Y);
+        (angle4X || angle4Y) && moveBottomLeftCroppingAngle(angle4X, angle4Y);
     }
 
     function resizeCroppingArea(angleIndex, deltaX, deltaY) {
