@@ -155,13 +155,13 @@ Imcms.define("imcms-image-cropper", [], function () {
         $croppingArea.css("left", newLeft);
     }
 
-    function moveCroppingAngles(angleIndex, deltaX, deltaY) {
+    function moveCroppingAngles(angleMoveIndex, deltaX, deltaY) {
         var angle1X = 0, angle1Y = 0;
         var angle2X = 0, angle2Y = 0;
         var angle3X = 0, angle3Y = 0;
         var angle4X = 0, angle4Y = 0;
 
-        switch (angleIndex) {
+        switch (angleMoveIndex) {
             case 0:
                 angle1X = angle4X = deltaX;
                 angle1Y = angle2Y = deltaY;
