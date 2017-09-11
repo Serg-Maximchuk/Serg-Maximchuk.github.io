@@ -62,7 +62,11 @@ Imcms.define("imcms-image-cropper", [], function () {
         return Limit(0, angleParams.width, originImageParams.width).forValue(left);
     }
 
-    function getValidCropWidth(width) {
+    function getValidLeftCropWidth(width) {
+        return Limit(angleBorderSize, angleParams.width, parseInt($croppingArea.css("left")) + $croppingArea.width()).forValue(width);
+    }
+
+    function getValidRightCropWidth(width) {
         return Limit(angleBorderSize, parseInt($croppingArea.css("left")), originImageParams.width).forValue(width);
     }
 
@@ -120,7 +124,7 @@ Imcms.define("imcms-image-cropper", [], function () {
         var newWidth = (croppingAreaParams.width = $croppingArea.width() - deltaX);
         var newHeight = (croppingAreaParams.height = $croppingArea.height() - deltaY);
 
-        var legalWidth = getValidCropWidth(newWidth);
+        var legalWidth = getValidRightCropWidth(newWidth);
         var legalHeight = getValidCropHeight(newHeight);
 
         setElementWidthHeight($croppingArea, legalWidth, legalHeight);
