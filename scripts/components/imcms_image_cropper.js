@@ -138,10 +138,8 @@ Imcms.define("imcms-image-cropper", [], function () {
         var legalHeight = getValidCropHeightTop(newHeight);
 
         setElementWidthHeight($croppingArea, legalWidth, legalHeight);
-        $cropImg.css("top", angleBorderSize - newTop);
-        $cropImg.css("left", angleBorderSize - newLeft);
-        $croppingArea.css("top", newTop);
-        $croppingArea.css("left", newLeft);
+        setElementTopLeft($cropImg, (angleBorderSize - newTop), (angleBorderSize - newLeft));
+        setElementTopLeft($croppingArea, newTop, newLeft);
     }
 
     function resizeCroppingTopRight(deltaX, deltaY) {
@@ -184,26 +182,26 @@ Imcms.define("imcms-image-cropper", [], function () {
         $croppingArea.css("left", newLeft);
     }
 
-    function moveCroppingAngles(angleMoveIndex, deltaX, deltaY) {
+    function moveCroppingAngles(angleName, deltaX, deltaY) {
         var angle1X = 0, angle1Y = 0;
         var angle2X = 0, angle2Y = 0;
         var angle3X = 0, angle3Y = 0;
         var angle4X = 0, angle4Y = 0;
 
-        switch (angleMoveIndex) {
-            case 0:
+        switch (angleName) {
+            case "topLeft":
                 angle1X = angle4X = deltaX;
                 angle1Y = angle2Y = deltaY;
                 break;
-            case 1:
+            case "topRight":
                 angle2X = angle3X = deltaX;
                 angle2Y = angle1Y = deltaY;
                 break;
-            case 2:
+            case "bottomRight":
                 angle3X = angle2X = deltaX;
                 angle3Y = angle4Y = deltaY;
                 break;
-            case 3:
+            case "bottomLeft":
                 angle4X = angle1X = deltaX;
                 angle4Y = angle3Y = deltaY;
                 break;
@@ -215,22 +213,12 @@ Imcms.define("imcms-image-cropper", [], function () {
         (angle4X || angle4Y) && moveCroppingAngle("bottomLeft", angle4X, angle4Y);
     }
 
-    function resizeCroppingArea(angleIndex, deltaX, deltaY) {
-        switch (angleIndex) {
-            case 0:
-                resizeCroppingTopLeft(deltaX, deltaY);
-                break;
-            case 1:
-                resizeCroppingTopRight(deltaX, deltaY);
-                break;
-            case 2:
-                resizeCroppingBottomRight(deltaX, deltaY);
-                break;
-            case 3:
-                resizeCroppingBottomLeft(deltaX, deltaY);
-                break;
-        }
-    }
+    var resizeCropper = {
+        topLeft: resizeCroppingTopLeft,
+        topRight: resizeCroppingTopRight,
+        bottomRight: resizeCroppingBottomRight,
+        bottomLeft: resizeCroppingBottomLeft
+    };
 
     function init(imageCropComponents) {
         var isMouseDown = false,
@@ -281,23 +269,23 @@ Imcms.define("imcms-image-cropper", [], function () {
             height: $topLeftAngle.height()
         };
 
-        var resizeAngle; // top left = 0, top right = 1 and so on...
+        var resizeAngleName; // topLeft, topRight, bottomRight, bottomLeft
 
-        function getAngleMouseDownEvent(angleIndex, cursor) {
+        function getAngleMouseDownEvent(angleName, cursor) {
             return function (event) {
                 if (event.which === 1) {
                     isResizing = true;
-                    resizeAngle = angleIndex;
+                    resizeAngleName = angleName;
                     isMouseDown = true;
                     setCursor(cursor);
                 }
             }
         }
 
-        $topLeftAngle.mousedown(getAngleMouseDownEvent(0, "nw-resize"));
-        $topRightAngle.mousedown(getAngleMouseDownEvent(1, "ne-resize"));
-        $bottomRightAngle.mousedown(getAngleMouseDownEvent(2, "se-resize"));
-        $bottomLeftAngle.mousedown(getAngleMouseDownEvent(3, "sw-resize"));
+        $topLeftAngle.mousedown(getAngleMouseDownEvent("topLeft", "nw-resize"));
+        $topRightAngle.mousedown(getAngleMouseDownEvent("topRight", "ne-resize"));
+        $bottomRightAngle.mousedown(getAngleMouseDownEvent("bottomRight", "se-resize"));
+        $bottomLeftAngle.mousedown(getAngleMouseDownEvent("bottomLeft", "sw-resize"));
 
         $imageEditor.mouseup(function () {
             if (event.which === 1) {
@@ -359,8 +347,8 @@ Imcms.define("imcms-image-cropper", [], function () {
             prevY = newY;
 
             if (isResizing) {
-                moveCroppingAngles(resizeAngle, deltaX, deltaY);
-                resizeCroppingArea(resizeAngle, deltaX, deltaY);
+                moveCroppingAngles(resizeAngleName, deltaX, deltaY);
+                resizeCropper[resizeAngleName](deltaX, deltaY);
 
             } else {
                 var croppingAreaTop = parseInt($croppingArea.css("top"));
