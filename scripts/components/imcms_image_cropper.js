@@ -180,10 +180,10 @@ Imcms.define("imcms-image-cropper", [], function () {
                 break;
         }
 
-        moveCroppingAngle($topLeftAngle, angle1X, angle1Y);
-        moveCroppingAngle($topRightAngle, angle2X, angle2Y);
-        moveCroppingAngle($bottomRightAngle, angle3X, angle3Y);
-        moveCroppingAngle($bottomLeftAngle, angle4X, angle4Y);
+        (angle1X || angle1Y) && moveCroppingAngle($topLeftAngle, angle1X, angle1Y);
+        (angle2X || angle2Y) && moveCroppingAngle($topRightAngle, angle2X, angle2Y);
+        (angle3X || angle3Y) && moveCroppingAngle($bottomRightAngle, angle3X, angle3Y);
+        (angle4X || angle4Y) && moveCroppingAngle($bottomLeftAngle, angle4X, angle4Y);
     }
 
     function resizeCroppingArea(angleIndex, deltaX, deltaY) {
