@@ -54,11 +54,15 @@ Imcms.define("imcms-image-cropper", [], function () {
     }
 
     function getValidTop(top) {
-        return Limit(angleBorderSize, originImageParams.height - croppingAreaParams.height + angleBorderSize).forValue(top);
+        return Limit(angleBorderSize, parseInt($croppingArea.css("top")) + $croppingArea.height() - angleParams.height * 2).forValue(top);
     }
 
     function getValidAngleTop(top) {
         return Limit(0, originImageParams.height - angleParams.height + angleBorderSize).forValue(top);
+    }
+
+    function getValidTopAngleY(top) {
+        return Limit(0, parseInt($bottomRightAngle.css("top")) - angleParams.height - angleBorderSize).forValue(top);
     }
 
     function getValidAngleLeft(left) {
@@ -78,7 +82,7 @@ Imcms.define("imcms-image-cropper", [], function () {
     }
 
     function getValidCropHeightTop(height) {
-        return Limit(angleBorderSize, parseInt($croppingArea.css("top")) + $croppingArea.height() - angleBorderSize).forValue(height);
+        return Limit(2 * angleParams.width, parseInt($croppingArea.css("top")) + $croppingArea.height() - angleBorderSize).forValue(height);
     }
 
     function getValidCropHeightBottom(height) {
@@ -94,7 +98,7 @@ Imcms.define("imcms-image-cropper", [], function () {
         var newTop = parseInt($topLeftAngle.css("top")) - deltaY;
         var newLeft = parseInt($topLeftAngle.css("left")) - deltaX;
 
-        var legalTop = getValidAngleTop(newTop);
+        var legalTop = getValidTopAngleY(newTop);
         var legalLeft = getValidLeftAngleX(newLeft);
 
         setElementTopLeft($topLeftAngle, legalTop, legalLeft);
