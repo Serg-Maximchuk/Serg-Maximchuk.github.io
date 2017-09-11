@@ -86,8 +86,8 @@ Imcms.define("imcms-bem-builder", ["jquery"], function ($) {
                 var blockElement = {};
                 this.elements[elementName] = element["class"] || "";
 
-                blockElement[elementName] = (element.$element)
-                    ? element.$element
+                blockElement[elementName] = (element.length) // means jquery, not simple array
+                    ? element
                     : this.buildElement(elementName, element.tag, element.attributes, element.modifiers);
 
                 return blockElement;

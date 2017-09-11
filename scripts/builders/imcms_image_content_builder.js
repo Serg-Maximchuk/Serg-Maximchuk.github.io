@@ -83,18 +83,12 @@ Imcms.define("imcms-image-content-builder",
             return new BEM({
                 block: "imcms-main-folders-controls",
                 elements: {
-                    "name": {
+                    "name": $("<div>", {
                         "class": "imcms-title",
-                        tag: "<div>",
-                        attributes: {
-                            text: rootFile.name,
-                            click: onFolderClick.bindArgs(rootFile)
-                        }
-                    },
-                    "control": {
-                        "class": "imcms-control",
-                        $element: folderControlsBuilder.create(rootFile, ROOT_FOLDER_LEVEL)
-                    }
+                        text: rootFile.name,
+                        click: onFolderClick.bindArgs(rootFile)
+                    }),
+                    "control": folderControlsBuilder.create(rootFile, ROOT_FOLDER_LEVEL)
                 }
             }).buildBlockStructure("<div>");
         }
@@ -185,10 +179,12 @@ Imcms.define("imcms-image-content-builder",
             $("#" + FOLDER_CREATION_BLOCK_ID).detach();
 
             var $folderNameInput = primitives.imcmsInput({
+                "class": "imcms-input",
                 value: opts.name,
                 placeholder: "New folder name"
             });
             var $confirmBtn = components.buttons.neutralButton({
+                "class": "imcms-button",
                 text: "add+",
                 click: function () {
                     var folderName = $folderNameInput.val();
@@ -211,14 +207,8 @@ Imcms.define("imcms-image-content-builder",
             var $folderCreationBlock = new BEM({
                 block: "imcms-panel-named",
                 elements: {
-                    "input": {
-                        "class": "imcms-input",
-                        $element: $folderNameInput
-                    },
-                    "button": {
-                        "class": "imcms-button",
-                        $element: $confirmBtn
-                    }
+                    "input": $folderNameInput,
+                    "button": $confirmBtn
                 }
             }).buildBlockStructure("<div>", {id: FOLDER_CREATION_BLOCK_ID});
 
@@ -346,61 +336,42 @@ Imcms.define("imcms-image-content-builder",
         }
 
         function onImageDelete(imageFile) {
-            fileREST.remove(imageFile.path)
-                .done(function () {
-                    $(this).parent().parent().detach();
-                }.bind(this));
+            fileREST.remove(imageFile.path).done(function () {
+                $(this).parent().parent().detach();
+            }.bind(this));
         }
 
         function buildImageDescription(imageFile) {
-            var descriptionBEM = new BEM({
+            return new BEM({
                 block: "imcms-choose-img-description",
                 elements: {
-                    "date": "",
-                    "button": "",
-                    "img-title": "imcms-title",
-                    "img-size": ""
+                    "date": $("<div>", {text: imageFile.uploaded}),
+                    "button": components.buttons.closeButton({
+                        click: function () {
+                            onImageDelete.call(this, imageFile);
+                        }
+                    }),
+                    "img-title": $("<div>", {
+                            "class": "imcms-title",
+                            text: imageFile.name + "." + imageFile.format
+                        }
+                    ),
+                    "img-size": $("<div>", {text: imageFile.resolution + imageFile.size})
                 }
-            });
-
-            var $date = descriptionBEM.buildElement("date", "<div>", {text: imageFile.uploaded});
-            var $btnDelete = components.buttons.closeButton({
-                click: function () {
-                    onImageDelete.call(this, imageFile);
-                }
-            });
-            var $title = descriptionBEM.buildElement("img-title", "<div>", {text: imageFile.name + "." + imageFile.format});
-            var $size = descriptionBEM.buildElement("img-size", "<div>", {text: imageFile.resolution + imageFile.size});
-
-            return descriptionBEM.buildBlock("<div>", [
-                {"date": $date},
-                {"button": $btnDelete},
-                {"img-title": $title},
-                {"img-size": $size}
-            ]);
+            }).buildBlockStructure("<div>");
         }
 
         function buildImage(imageFile) {
-            var imageWrapBEM = new BEM({
+            return new BEM({
                 block: "imcms-choose-img-wrap",
                 elements: {
-                    "img": "imcms-choose-img",
-                    "description": "imcms-choose-img-description"
+                    "img": $("<div>", {
+                        "class": "imcms-choose-img",
+                        style: "background-image: url(" + imageFile.path + ")"
+                    }),
+                    "description": buildImageDescription(imageFile)
                 }
-            });
-
-            var $image = imageWrapBEM.buildElement("img", "<div>").css({
-                "background-image": "url(" + imageFile.path + ")"
-            });
-
-            var $description = buildImageDescription(imageFile);
-
-            return imageWrapBEM.buildBlock("<div>", [
-                {"img": $image},
-                {"description": $description}
-            ], {
-                style: "display: none"
-            });
+            }).buildBlockStructure("<div>", {style: "display: none"});
         }
 
         function buildImages(folder) {
@@ -432,8 +403,7 @@ Imcms.define("imcms-image-content-builder",
                 $foldersContainer = options.foldersContainer;
                 $imagesContainer = options.imagesContainer;
 
-                fileREST.read("/images")
-                    .done(loadImageFoldersContent);
+                fileREST.read("/images").done(loadImageFoldersContent);
             }
         };
     }
