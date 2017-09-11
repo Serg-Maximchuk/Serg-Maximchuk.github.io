@@ -84,7 +84,7 @@ Imcms.define("imcms-bem-builder", ["jquery"], function ($) {
             elements = Object.keys(elements).map(function (elementName) {
                 var element = elements[elementName];
                 var blockElement = {};
-                this.elements[elementName] = element["class"];
+                this.elements[elementName] = element["class"] || "";
 
                 blockElement[elementName] = (element.$element)
                     ? element.$element
