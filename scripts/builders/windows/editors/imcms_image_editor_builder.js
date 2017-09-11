@@ -8,7 +8,7 @@ Imcms.define("imcms-image-editor-builder",
         "imcms-image-rest-api", "imcms-image-cropper", "jquery"
     ],
     function (BEM, components, WindowBuilder, contentManager, imageRestApi, imageCropper, $) {
-        var $rightSidePanel, $bottomPanel;
+        var $rightSidePanel, $bottomPanel, $editableImageArea;
 
         var imageDataContainers = {};
 
@@ -132,7 +132,6 @@ Imcms.define("imcms-image-editor-builder",
         }
 
         function buildLeftSide() {
-            var $editableImageArea;
 
             function buildEditableImageArea() {
                 var editableImgAreaBEM = new BEM({
@@ -661,9 +660,13 @@ Imcms.define("imcms-image-editor-builder",
             var imageHeight = imageDataContainers.$image.height();
 
             imageDataContainers.$shadow.css({
-                width: imageWidth,
-                height: imageHeight
+                width: "100%",
+                height: "100%"
             });
+
+            if (imageDataContainers.$shadow.height() < imageHeight) {
+                imageDataContainers.$shadow.height(imageHeight);
+            }
 
             imageDataContainers.$image.width(imageWidth - angleBorderSize * 2);
             imageDataContainers.$image.height(imageHeight - angleBorderSize * 2);
