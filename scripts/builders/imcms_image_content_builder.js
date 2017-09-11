@@ -184,14 +184,6 @@ Imcms.define("imcms-image-content-builder",
         function buildFolderManageBlock(opts, onConfirm, onSuccess) {
             $("#" + FOLDER_CREATION_BLOCK_ID).detach();
 
-            var folderCreationBEM = new BEM({
-                block: "imcms-panel-named",
-                elements: {
-                    "input": "imcms-input",
-                    "button": "imcms-button"
-                }
-            });
-
             var $folderNameInput = primitives.imcmsInput({
                 value: opts.name,
                 placeholder: "New folder name"
@@ -216,10 +208,19 @@ Imcms.define("imcms-image-content-builder",
                 }
             });
 
-            var $folderCreationBlock = folderCreationBEM.buildBlock("<div>", [
-                {"input": $folderNameInput},
-                {"button": $confirmBtn}
-            ], {id: FOLDER_CREATION_BLOCK_ID});
+            var $folderCreationBlock = new BEM({
+                block: "imcms-panel-named",
+                elements: {
+                    "input": {
+                        "class": "imcms-input",
+                        $element: $folderNameInput
+                    },
+                    "button": {
+                        "class": "imcms-button",
+                        $element: $confirmBtn
+                    }
+                }
+            }).buildBlockStructure("<div>", {id: FOLDER_CREATION_BLOCK_ID});
 
             return $folderCreationBlock;
         }
