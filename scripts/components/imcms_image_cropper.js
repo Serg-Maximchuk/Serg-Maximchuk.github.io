@@ -96,7 +96,7 @@ Imcms.define("imcms-image-cropper", [], function () {
         var newTop = parseInt($croppingArea.css("top")) - deltaY;
         var newLeft = parseInt($croppingArea.css("left")) - deltaX;
 
-        var legalWidth = newWidth;//getValidCropWidth(newWidth);
+        var legalWidth = getValidLeftCropWidth(newWidth);
         var legalHeight = newHeight;//getValidCropHeight(newHeight);
 
         setElementWidthHeight($croppingArea, legalWidth, legalHeight);
@@ -112,7 +112,7 @@ Imcms.define("imcms-image-cropper", [], function () {
 
         var newTop = parseInt($croppingArea.css("top")) - deltaY;
 
-        var legalWidth = newWidth;//getValidCropWidth(newWidth);
+        var legalWidth = getValidRightCropWidth(newWidth);
         var legalHeight = newHeight;//getValidCropHeight(newHeight);
 
         setElementWidthHeight($croppingArea, legalWidth, legalHeight);
