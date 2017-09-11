@@ -310,7 +310,7 @@ Imcms.define("imcms-image-cropper", [], function () {
             var newX = getValidCoordX(event.clientX);
             var newY = getValidCoordY(event.clientY);
 
-            if (!prevX || !prevY) {
+            if (prevX === undefined || prevY === undefined) {
                 prevX = newX;
                 prevY = newY;
                 return;
