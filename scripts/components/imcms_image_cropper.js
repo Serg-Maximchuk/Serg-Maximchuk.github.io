@@ -81,6 +81,10 @@ Imcms.define("imcms-image-cropper", [], function () {
         return Limit(0, parseInt($topRightAngle.css("left")) - angleBorderSize - angleParams.width).forValue(left);
     }
 
+    function getValidRightAngleX(left) {
+        return Limit(parseInt($croppingArea.css("left")) + angleParams.width, originImageParams.width - angleParams.width + angleBorderSize).forValue(left);
+    }
+
     function getValidLeftCropWidth(width) {
         return Limit(2 * angleParams.width, parseInt($croppingArea.css("left")) + $croppingArea.width() - angleBorderSize).forValue(width);
     }
@@ -103,7 +107,6 @@ Imcms.define("imcms-image-cropper", [], function () {
     }
 
     function moveTopLeftCroppingAngle(deltaX, deltaY) {
-        console.log("moving top left!");
         var newTop = parseInt($topLeftAngle.css("top")) - deltaY;
         var newLeft = parseInt($topLeftAngle.css("left")) - deltaX;
 
@@ -111,6 +114,16 @@ Imcms.define("imcms-image-cropper", [], function () {
         var legalLeft = getValidLeftAngleX(newLeft);
 
         setElementTopLeft($topLeftAngle, legalTop, legalLeft);
+    }
+
+    function moveTopRightCroppingAngle(deltaX, deltaY) {
+        var newTop = parseInt($topRightAngle.css("top")) - deltaY;
+        var newLeft = parseInt($topRightAngle.css("left")) - deltaX;
+
+        var legalTop = getValidTopAngleY(newTop);
+        var legalLeft = getValidRightAngleX(newLeft);
+
+        setElementTopLeft($topRightAngle, legalTop, legalLeft);
     }
 
     function moveBottomLeftCroppingAngle(deltaX, deltaY) {
@@ -218,7 +231,7 @@ Imcms.define("imcms-image-cropper", [], function () {
         }
 
         (angle1X || angle1Y) && moveTopLeftCroppingAngle(angle1X, angle1Y);
-        (angle2X || angle2Y) && moveCroppingAngle($topRightAngle, angle2X, angle2Y);
+        (angle2X || angle2Y) && moveTopRightCroppingAngle(angle2X, angle2Y);
         (angle3X || angle3Y) && moveCroppingAngle($bottomRightAngle, angle3X, angle3Y);
         (angle4X || angle4Y) && moveBottomLeftCroppingAngle(angle4X, angle4Y);
     }
