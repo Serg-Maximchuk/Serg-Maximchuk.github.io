@@ -5,7 +5,7 @@
 Imcms.define("imcms-image-cropper", [], function () {
 
     var $croppingArea, $imageEditor, $cropImg, originImageParams, croppingAreaParams, angleBorderSize, imageCoords,
-        angleParams, $originImg, $topLeftAngle, $topRightAngle, $bottomRightAngle, $bottomLeftAngle;
+        angleParams, $originImg, $topLeftAngle, $topRightAngle, $bottomRightAngle, $bottomLeftAngle, angles;
 
     function moveCropImage(newTop, newLeft) {
         var cropImgTop = -newTop + angleBorderSize,
@@ -98,44 +98,31 @@ Imcms.define("imcms-image-cropper", [], function () {
         moveCropImage(top, left);
     }
 
-    function moveTopLeftCroppingAngle(deltaX, deltaY) {
-        var newTop = parseInt($topLeftAngle.css("top")) - deltaY;
-        var newLeft = parseInt($topLeftAngle.css("left")) - deltaX;
+    var angleCoordsTransformer = {
+        x: {
+            topLeft: getValidLeftAngleX,
+            topRight: getValidRightAngleX,
+            bottomRight: getValidRightAngleX,
+            bottomLeft: getValidLeftAngleX
+        },
+        y: {
+            topLeft: getValidTopAngleY,
+            topRight: getValidTopAngleY,
+            bottomRight: getValidBottomAngleY,
+            bottomLeft: getValidBottomAngleY
+        }
+    };
 
-        var legalTop = getValidTopAngleY(newTop);
-        var legalLeft = getValidLeftAngleX(newLeft);
-
-        setElementTopLeft($topLeftAngle, legalTop, legalLeft);
+    function transformCroppingAngleDeltaCoords(angleName, deltaX, deltaY) {
+        return {
+            x: angleCoordsTransformer.x[angleName](parseInt(angles[angleName].css("left")) - deltaX),
+            y: angleCoordsTransformer.y[angleName](parseInt(angles[angleName].css("top")) - deltaY)
+        };
     }
 
-    function moveTopRightCroppingAngle(deltaX, deltaY) {
-        var newTop = parseInt($topRightAngle.css("top")) - deltaY;
-        var newLeft = parseInt($topRightAngle.css("left")) - deltaX;
-
-        var legalTop = getValidTopAngleY(newTop);
-        var legalLeft = getValidRightAngleX(newLeft);
-
-        setElementTopLeft($topRightAngle, legalTop, legalLeft);
-    }
-
-    function moveBottomRightCroppingAngle(deltaX, deltaY) {
-        var newTop = parseInt($bottomRightAngle.css("top")) - deltaY;
-        var newLeft = parseInt($bottomRightAngle.css("left")) - deltaX;
-
-        var legalTop = getValidBottomAngleY(newTop);
-        var legalLeft = getValidRightAngleX(newLeft);
-
-        setElementTopLeft($bottomRightAngle, legalTop, legalLeft);
-    }
-
-    function moveBottomLeftCroppingAngle(deltaX, deltaY) {
-        var newTop = parseInt($bottomLeftAngle.css("top")) - deltaY;
-        var newLeft = parseInt($bottomLeftAngle.css("left")) - deltaX;
-
-        var legalTop = getValidBottomAngleY(newTop);
-        var legalLeft = getValidLeftAngleX(newLeft);
-
-        setElementTopLeft($bottomLeftAngle, legalTop, legalLeft);
+    function moveCroppingAngle(angleName, deltaX, deltaY) {
+        var fixedCoords = transformCroppingAngleDeltaCoords(angleName, deltaX, deltaY);
+        setElementTopLeft(angles[angleName], fixedCoords.y, fixedCoords.x);
     }
 
     function resizeCroppingTopLeft(deltaX, deltaY) {
@@ -222,10 +209,10 @@ Imcms.define("imcms-image-cropper", [], function () {
                 break;
         }
 
-        (angle1X || angle1Y) && moveTopLeftCroppingAngle(angle1X, angle1Y);
-        (angle2X || angle2Y) && moveTopRightCroppingAngle(angle2X, angle2Y);
-        (angle3X || angle3Y) && moveBottomRightCroppingAngle(angle3X, angle3Y);
-        (angle4X || angle4Y) && moveBottomLeftCroppingAngle(angle4X, angle4Y);
+        (angle1X || angle1Y) && moveCroppingAngle("topLeft", angle1X, angle1Y);
+        (angle2X || angle2Y) && moveCroppingAngle("topRight", angle2X, angle2Y);
+        (angle3X || angle3Y) && moveCroppingAngle("bottomRight", angle3X, angle3Y);
+        (angle4X || angle4Y) && moveCroppingAngle("bottomLeft", angle4X, angle4Y);
     }
 
     function resizeCroppingArea(angleIndex, deltaX, deltaY) {
@@ -265,6 +252,13 @@ Imcms.define("imcms-image-cropper", [], function () {
 
         var originImageWidth = $originImg.width();
         var originImageHeight = $originImg.height();
+
+        angles = {
+            "topLeft": $topLeftAngle,
+            "topRight": $topRightAngle,
+            "bottomRight": $bottomRightAngle,
+            "bottomLeft": $bottomLeftAngle
+        };
 
         setElementWidthHeight($cropImg, originImageWidth, originImageHeight);
 
