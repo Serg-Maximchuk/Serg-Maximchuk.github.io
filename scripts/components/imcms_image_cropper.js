@@ -70,7 +70,7 @@ Imcms.define("imcms-image-cropper", [], function () {
     }
 
     function getValidLeftAngleX(left) {
-        return Limit(0, parseInt($topRightAngle.css("left")) - angleBorderSize - angleParams.width).forValue(left);
+        return Limit(0, parseInt($croppingArea.css("left")) + $croppingArea.width() - angleBorderSize - angleParams.width * 2).forValue(left);
     }
 
     function getValidRightAngleX(left) {
