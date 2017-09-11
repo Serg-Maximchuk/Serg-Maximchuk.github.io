@@ -148,7 +148,7 @@ Imcms.define("imcms-image-cropper", [], function () {
         newLeft = getValidLeftOnResize(newLeft);
 
         var legalWidth = getValidLeftCropWidth(newWidth);
-        var legalHeight = newHeight;//getValidCropHeight(newHeight);
+        var legalHeight = getValidCropHeightBottom(newHeight);
 
         setElementWidthHeight($croppingArea, legalWidth, legalHeight);
         $cropImg.css("left", angleBorderSize - newLeft);
