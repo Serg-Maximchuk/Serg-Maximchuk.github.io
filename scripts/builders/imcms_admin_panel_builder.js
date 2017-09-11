@@ -24,14 +24,6 @@ Imcms.define("imcms-admin-panel-builder",
             documentEditorBuilder.build();
         }
 
-        function goToEditMode() {
-            window.location = "edit_mode.html"; // todo: temporary demo pages, should be changed!!!1
-        }
-
-        function goToPublicMode() {
-            window.location = "index.html"; // todo: temporary demo pages, should be changed!!!1
-        }
-
         function buildPanelButtons(opts) {
             var panelButtonsBEM = new BEM({
                 block: "imcms-menu",
@@ -57,13 +49,11 @@ Imcms.define("imcms-admin-panel-builder",
             var buttons = [
                 {
                     name: 'public',
-                    content: "public",
-                    onClick: goToPublicMode,
+                    content: '<a href="index.html">public</a>', // todo: temporary demo pages, should be changed!!!1
                     modifiers: ["public"]
                 }, {
                     name: 'edit',
-                    content: "edit",
-                    onClick: goToEditMode,
+                    content: '<a href="edit_mode.html">edit</a>', // todo: temporary demo pages, should be changed!!!1
                     modifiers: ["edit"]
                 }, {
                     name: 'preview',
