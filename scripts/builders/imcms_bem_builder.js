@@ -38,20 +38,20 @@ Imcms.define("imcms-bem-builder", ["jquery"], function ($) {
 
             return $baseElement.addClass(blockClass).addClass(modifiersClass);
         },
-        buildBlockElement: function (elementName, tag, attributesObj, modifiersArr) {
+        buildBlockElement: function (elementName, tag, attributes, modifiersArr) {
             return this.buildElement.apply(this, arguments).addClass(this.block + BLOCK_SEPARATOR + elementName);
         },
-        buildElement: function (elementName, tag, attributesObj, modifiersArr) {
+        buildElement: function (elementName, tag, attributes, modifiersArr) {
             var modifiersClass = getElementClassWithModifiers(this.elements[elementName], modifiersArr);
 
-            attributesObj = attributesObj || {};
-            attributesObj["class"] = modifiersClass + getOriginClass(attributesObj);
+            attributes = attributes || {};
+            attributes["class"] = modifiersClass + getOriginClass(attributes);
 
-            return $(tag, attributesObj);
+            return $(tag, attributes);
         },
-        buildBlock: function (tag, elements, attributesObj, blockNameForEach) {
-            attributesObj = attributesObj || {};
-            attributesObj["class"] = this.block + getOriginClass(attributesObj);
+        buildBlock: function (tag, elements, attributes, blockNameForEach) {
+            attributes = attributes || {};
+            attributes["class"] = this.block + getOriginClass(attributes);
 
             elements = (elements || []).map(function (element) {
                 var elementName, $element;
@@ -77,7 +77,24 @@ Imcms.define("imcms-bem-builder", ["jquery"], function ($) {
 
             }.bind(this));
 
-            return $(tag, attributesObj).append(elements);
+            return $(tag, attributes).append(elements);
+        },
+        buildBlockStructure: function (tag, attributes) {
+            var elements = $.extend({}, this.elements);
+            elements = Object.keys(elements).map(function (elementName) {
+                var element = elements[elementName];
+                var blockElement = {};
+                this.elements[elementName] = element["class"];
+
+                blockElement[elementName] = (element.$element)
+                    ? element.$element
+                    : this.buildElement(elementName, element.tag, element.attributes, element.modifiers);
+
+                return blockElement;
+
+            }.bind(this));
+
+            return this.buildBlock(tag, elements, attributes);
         }
     };
 

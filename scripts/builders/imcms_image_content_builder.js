@@ -80,24 +80,23 @@ Imcms.define("imcms-image-content-builder",
         };
 
         function buildRootControls(rootFile) {
-            var rootFolderControlsBEM = new BEM({
+            return new BEM({
                 block: "imcms-main-folders-controls",
                 elements: {
-                    "name": "imcms-title",
-                    "control": "imcms-control"
+                    "name": {
+                        "class": "imcms-title",
+                        tag: "<div>",
+                        attributes: {
+                            text: rootFile.name,
+                            click: onFolderClick.bindArgs(rootFile)
+                        }
+                    },
+                    "control": {
+                        "class": "imcms-control",
+                        $element: folderControlsBuilder.create(rootFile, ROOT_FOLDER_LEVEL)
+                    }
                 }
-            });
-
-            var $rootFolderTitle = rootFolderControlsBEM.buildElement("name", "<div>", {
-                text: rootFile.name,
-                click: onFolderClick.bindArgs(rootFile)
-            });
-            var $createFolderControl = folderControlsBuilder.create(rootFile, ROOT_FOLDER_LEVEL);
-
-            return rootFolderControlsBEM.buildBlock("<div>", [
-                {"name": $rootFolderTitle},
-                {"control": $createFolderControl}
-            ]);
+            }).buildBlockStructure("<div>");
         }
 
         function buildRootFolder(rootFile) {
