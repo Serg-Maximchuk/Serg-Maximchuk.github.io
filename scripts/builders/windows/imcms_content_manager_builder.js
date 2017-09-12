@@ -11,10 +11,11 @@ Imcms.define("imcms-content-manager-builder",
         var $contentManager;
         var $foldersContainer;
         var $imagesContainer;
-        var $footer;
-        var $showHideFolders;
 
         function buildContentManager() {
+            var $footer;
+            var $showHideFoldersButton;
+
             function closeWindow() {
                 $contentManager.css("display", "none");
             }
@@ -24,13 +25,17 @@ Imcms.define("imcms-content-manager-builder",
             }
 
             function buildFoldersContainer() {
-                var $closeFoldersBtn = components.buttons.closeButton({
-                    id: "closeFolders",
-                    click: function () {
-                        $showHideFolders.click();
+                return new BEM({
+                    block: "imcms-left-side",
+                    elements: {
+                        "close-button": components.buttons.closeButton({
+                            id: "closeFolders",
+                            click: function () {
+                                $showHideFoldersButton.click();
+                            }
+                        })
                     }
-                });
-                return leftSideBEM.buildBlock("<div>", [{"close-button": $closeFoldersBtn}]);
+                }).buildBlockStructure("<div>");
             }
 
             function buildFooter() {
@@ -56,7 +61,7 @@ Imcms.define("imcms-content-manager-builder",
                     $btn.attr("data-state", btnState).text(btnText);
                 }
 
-                $showHideFolders = components.buttons.neutralButton({
+                $showHideFoldersButton = components.buttons.neutralButton({
                     id: "openCloseFolders",
                     text: "Show folders",
                     "data-state": "close",
@@ -84,40 +89,19 @@ Imcms.define("imcms-content-manager-builder",
                     click: closeWindow // fixme: just closing now, should be save and close
                 });
 
-                return windowComponents.buildFooter([$showHideFolders, $fileInput, $uploadNewImage, $saveAndClose]);
+                return windowComponents.buildFooter([$showHideFoldersButton, $fileInput, $uploadNewImage, $saveAndClose]);
             }
 
-            var contentManagerBEM = new BEM({
+            return new BEM({
                 block: "imcms-content-manager",
                 elements: {
-                    "head": "imcms-head",
-                    "left-side": "imcms-left-side",
-                    "right-side": "imcms-right-side",
-                    "footer": "imcms-footer"
+                    "head": buildHead(),
+                    "left-side": $foldersContainer = buildFoldersContainer(),
+                    "right-side": $imagesContainer = $("<div>", {"class": "imcms-right-side"}),
+                    "footer": $footer = buildFooter()
                 }
-            });
-
-            var $head = buildHead();
-            $foldersContainer = buildFoldersContainer();
-            $imagesContainer = contentManagerBEM.buildElement("right-side", "<div>");
-            $footer = buildFooter();
-
-            return contentManagerBEM.buildBlock("<div>", [
-                {"head": $head},
-                {"left-side": $foldersContainer},
-                {"right-side": $imagesContainer},
-                {"footer": $footer}
-            ]).addClass("imcms-editor-window");
+            }).buildBlockStructure("<div>", {"class": "imcms-editor-window"});
         }
-
-        var leftSideBEM = new BEM({
-            block: "imcms-left-side",
-            elements: {
-                "close-button": "",
-                "controls": "imcms-main-folders-controls",
-                "folders": "imcms-folders"
-            }
-        });
 
         function buildContent() {
             imageContentBuilder.loadAndBuildContent({
