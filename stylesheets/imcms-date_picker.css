@@ -32,8 +32,10 @@
     width: 100%;
 }
 
-.imcms-date-picker__current-year {
-    text-align: right;
+.imcms-currrent-date__input--error {
+    background-color: #fff;
+    border-color: #da1a1a;
+    color: #da1a1a;
 }
 
 .imcms-date-picker__current-day,

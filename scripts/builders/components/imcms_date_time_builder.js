@@ -2,7 +2,7 @@
  * Created by Serhii Maksymchuk from Ubrainians for imCode
  * 28.07.17.
  */
-Imcms.define("imcms-date-time-builder", ["imcms-bem-builder", "imcms-buttons-builder"], function (BEM, buttons) {
+Imcms.define("imcms-date-time-builder", ["imcms-bem-builder", "imcms-buttons-builder", "imcms-validator"], function (BEM, buttons, Validator) {
     var datePickerBEM = new BEM({
             block: "imcms-date-picker",
             elements: {
@@ -111,7 +111,7 @@ Imcms.define("imcms-date-time-builder", ["imcms-bem-builder", "imcms-buttons-bui
 
     function createDateBox(attributes, withCalendar) {
         attributes = attributes || {};
-        attributes.placeholder = "yyyy-MM-dd";
+        attributes.placeholder = "yyyy-mm-dd";
         var $dateInput = dateInputContainerBEM.buildElement("input", "<input>", attributes),
             $dateInputContainer = dateInputContainerBEM.buildBlock("<div>", [
                 {"input": $dateInput}
@@ -123,7 +123,68 @@ Imcms.define("imcms-date-time-builder", ["imcms-bem-builder", "imcms-buttons-bui
             datePickerElements.push({"calendar": createCalendar()});
         }
 
+        var dateValidator = new Validator($dateInput, isDateValid);
+
+        validateDateInput($dateInput, dateValidator);
+
         return datePickerBEM.buildBlock("<div>", datePickerElements);
+    }
+
+    function validateDateInput($dateInput, dateValidator) {
+        $dateInput
+            .keydown(leaveNumbersAndHyphens)
+            .on('input', errorInputIfNotValid.bindArgs($dateInput, dateValidator));
+
+        function leaveNumbersAndHyphens(event) {
+            var pressedButton = event.key;
+            if (pressedButton.length === 1) {
+                if (!/^[0-9-]$/.test(pressedButton)) {
+                    event.preventDefault();
+                }
+            }
+        }
+
+        function errorInputIfNotValid($dateInput, dateValidator) {
+            $dateInput
+                .toggleClass("imcms-currrent-date__input--error", !dateValidator.isValid());
+        }
+    }
+
+    function isDateValid() {
+        var $dateInput = this;
+        var valueSplit = $dateInput.val()
+            .split("-");
+
+        switch (valueSplit.length) {
+            case 2:
+                return isYearValid(valueSplit[0])
+                    && isMonthValid(valueSplit[1]);
+            case 3:
+                return isYearValid(valueSplit[0])
+                    && isMonthValid(valueSplit[1])
+                    && isDateValid(valueSplit[2], valueSplit[1], valueSplit[0]);
+            default:
+                return false;
+        }
+
+        function isYearValid(year) {
+            return /^([1-9]\d{3})$/.test(year);
+        }
+
+        function isMonthValid(month) {
+            return month > 0 && month < 13;
+        }
+
+        function isDateValid(day, month, year) {
+            var
+                lastDateOfMonth = new Date(+year, +month, 0).getDate(),
+                result = true;
+
+            result &= day > 0 && day < 32;
+            result &= day <= lastDateOfMonth;
+
+            return result;
+        }
     }
 
     function createTimePickerBlockElements(elementName, howManyElements) {
