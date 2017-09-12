@@ -9,29 +9,15 @@ Imcms.define("imcms-page-info-builder",
     ],
     function (BEM, components, documentsRestApi, WindowBuilder, pageInfoTabs, $) {
 
-        var panels;
-
-        var pageInfoBEM = new BEM({
-            block: "imcms-pop-up-modal",
-            elements: {
-                "head": "imcms-head",
-                "left-side": "imcms-left-side",
-                "right-side": "imcms-right-side",
-                "footer": "imcms-footer"
-            }
-        });
+        var panels, $title;
 
         function buildPageInfoHead() {
-            var pageInfoHeadBEM = new BEM({
-                    block: "imcms-head",
-                    elements: {
-                        "title": "imcms-title"
-                    }
-                }),
-
-                $title = pageInfoHeadBEM.buildElement("title", "<div>", {id: "page-info-title"});
-
-            return pageInfoHeadBEM.buildBlock("<div>", [{"title": $title}]);
+            return new BEM({
+                block: "imcms-head",
+                elements: {
+                    "title": $title = components.texts.titleText("<div>", "")
+                }
+            }).buildBlockStructure("<div>");
         }
 
         function showPanel(index) {
@@ -49,60 +35,56 @@ Imcms.define("imcms-page-info-builder",
                 }
             }
 
-            var pageInfoLeftSideTabsBEM = new BEM({
-                block: "imcms-left-side",
-                elements: {
-                    "tabs": "imcms-tabs"
-                }
-            });
-
-            var pageInfoTabsBEM = new BEM({
-                block: "imcms-tabs",
-                elements: {
-                    "tab": "imcms-title"
-                }
-            });
-
             var $tabs = pageInfoTabs.data.map(function (tabData, index) {
-                return pageInfoTabsBEM.buildElement("tab", "<div>",
-                    {
+                return {
+                    tag: "<div>",
+                    attributes: {
                         "data-window-id": index,
                         text: tabData.name,
                         click: getOnTabClick(index)
                     },
-                    (index === 0 ? ["active"] : [])
-                );
+                    modifiers: (index === 0 ? ["active"] : [])
+                };
             });
+            $tabs["class"] = "imcms-title";
 
-            var $tabsContainer = pageInfoTabsBEM.buildBlock("<div>", $tabs, {}, "tab");
+            var $tabsContainer = new BEM({
+                block: "imcms-tabs",
+                elements: {
+                    "tab": $tabs
+                }
+            }).buildBlockStructure("<div>");
 
-            return pageInfoLeftSideTabsBEM.buildBlock("<div>", [{"tabs": $tabsContainer}]);
+            return new BEM({
+                block: "imcms-left-side",
+                elements: {
+                    "tabs": $tabsContainer
+                }
+            }).buildBlockStructure("<div>");
         }
 
         function buildPageInfoPanels(docId) {
-            panels = pageInfoTabs.data.map(function (tabData, index) {
+            return pageInfoTabs.data.map(function (tabData, index) {
                 return tabData.buildTab(index, docId).css("display", (index === 0 ? "block" : "none"));
             });
-
-            return pageInfoBEM.buildElement("right-side", "<div>").append(panels);
         }
 
-        function buildPageInfoFooter() {
-            function closePageInfo() {
-                pageInfoWindowBuilder.closeWindow();
-                shadowBuilder.closeWindow();
-            }
+        function closePageInfo() {
+            pageInfoWindowBuilder.closeWindow();
+            shadowBuilder.closeWindow();
+        }
 
-            function saveAndClose() {
-                // todo: save things
-                closePageInfo();
-            }
+        function saveAndClose() {
+            // todo: save things
+            closePageInfo();
+        }
 
-            function saveAndPublish() {
-                // todo: save and publish
-                closePageInfo();
-            }
+        function saveAndPublish() {
+            // todo: save and publish
+            closePageInfo();
+        }
 
+        function buildPageInfoFooterButtons() {
             var $saveBtn = components.buttons.positiveButton({
                 text: "ok",
                 click: saveAndClose
@@ -118,33 +100,31 @@ Imcms.define("imcms-page-info-builder",
                 click: saveAndPublish
             });
 
-            return pageInfoBEM.buildElement("footer", "<div>").append($saveAndPublishBtn, $cancelBtn, $saveBtn);
+            return [$saveAndPublishBtn, $cancelBtn, $saveBtn];
         }
 
         function buildPageInfo(docId) {
-            var $head = buildPageInfoHead(),
-                $tabs = buildPageInfoTabs(),
-                $panels = buildPageInfoPanels(docId),
-                $footer = buildPageInfoFooter();
+            panels = buildPageInfoPanels(docId);
 
-            return pageInfoBEM.buildBlock("<div>", [
-                    {"head": $head},
-                    {"left-side": $tabs},
-                    {"right-side": $panels},
-                    {"footer": $footer}
-                ],
-                {"data-menu": "pageInfo"}
-            );
+            return new BEM({
+                block: "imcms-pop-up-modal",
+                elements: {
+                    "head": buildPageInfoHead(),
+                    "left-side": buildPageInfoTabs(),
+                    "right-side": $("<div>", {"class": "imcms-right-side"}).append(panels),
+                    "footer": $("<div>", {"class": "imcms-footer"}).append(buildPageInfoFooterButtons())
+                }
+            }).buildBlockStructure("<div>", {"data-menu": "pageInfo"});
         }
 
         function loadPageInfoDataFromDocumentBy(docId) {
-            documentsRestApi.read(docId)
-                .done(function (document) {
-                    $("#page-info-title").text("document " + document.id);
-                    pageInfoTabs.data.forEach(function (tab) {
-                        tab.fillTabDataFromDocument(document);
-                    });
+            documentsRestApi.read(docId).done(function (document) {
+                $title.text("document " + document.id);
+
+                pageInfoTabs.data.forEach(function (tab) {
+                    tab.fillTabDataFromDocument(document);
                 });
+            });
         }
 
         function clearPageInfoData() {
