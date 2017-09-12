@@ -3,12 +3,8 @@
  * 16.08.17.
  */
 Imcms.define("imcms-content-manager-builder",
-    [
-        "imcms-bem-builder", "imcms-window-components-builder", "imcms-components-builder",
-        "imcms-image-content-builder", "jquery"
-    ],
-    function (BEM, windowComponents, components, imageContentBuilder, $) {
-        var $contentManager;
+    ["imcms-bem-builder", "imcms-window-builder", "imcms-components-builder", "imcms-image-content-builder", "jquery"],
+    function (BEM, WindowBuilder, components, imageContentBuilder, $) {
         var $foldersContainer;
         var $imagesContainer;
 
@@ -16,12 +12,12 @@ Imcms.define("imcms-content-manager-builder",
             var $footer;
             var $showHideFoldersButton;
 
-            function closeWindow() {
-                $contentManager.css("display", "none");
+            function saveAndCloseWindow() {
+                contentManagerWindowBuilder.closeWindow(); // fixme: just closing now, should be save and close
             }
 
             function buildHead() {
-                return windowComponents.buildHead("Content manager", closeWindow);
+                return contentManagerWindowBuilder.buildHead("Content manager");
             }
 
             function buildFoldersContainer() {
@@ -86,10 +82,12 @@ Imcms.define("imcms-content-manager-builder",
 
                 var $saveAndClose = components.buttons.saveButton({
                     text: "Save and close",
-                    click: closeWindow // fixme: just closing now, should be save and close
+                    click: saveAndCloseWindow
                 });
 
-                return windowComponents.buildFooter([$showHideFoldersButton, $fileInput, $uploadNewImage, $saveAndClose]);
+                return contentManagerWindowBuilder.buildFooter([
+                    $showHideFoldersButton, $fileInput, $uploadNewImage, $saveAndClose
+                ]);
             }
 
             return new BEM({
@@ -110,14 +108,19 @@ Imcms.define("imcms-content-manager-builder",
             });
         }
 
+        function clearData() {
+            imageContentBuilder.clearContent();
+        }
+
+        var contentManagerWindowBuilder = new WindowBuilder({
+            factory: buildContentManager,
+            loadDataStrategy: buildContent,
+            clearDataStrategy: clearData
+        });
+
         return {
             build: function () {
-                if (!$contentManager) {
-                    $contentManager = buildContentManager().appendTo("body");
-                    setTimeout(buildContent);
-                }
-
-                $contentManager.css("display", "block");
+                contentManagerWindowBuilder.buildWindow.applyAsync(arguments, contentManagerWindowBuilder);
             }
         };
     }

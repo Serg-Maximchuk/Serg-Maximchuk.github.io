@@ -108,8 +108,7 @@ Imcms.define("imcms-image-content-builder",
             modalWindow.buildModalWindow("Do you want to remove folder \"" + this.name + "\"?", function (answer) {
                 if (answer) {
 
-                    fileREST.remove(this.path)
-                        .done(onDoneRemoveFolder.bindArgs(this.$folder, this.path));
+                    fileREST.remove(this.path).done(onDoneRemoveFolder.bindArgs(this.$folder, this.path));
 
                     function onDoneRemoveFolder($folder, path) {
                         removeFolderFromEditor($folder);
@@ -397,6 +396,15 @@ Imcms.define("imcms-image-content-builder",
                 $imagesContainer = options.imagesContainer;
 
                 fileREST.read("/images").done(loadImageFoldersContent);
+            },
+            clearContent: function () {
+                $imagesContainer.children().detach();
+                $foldersContainer.children().not("#closeFolders").detach();
+                viewModel = {
+                    root: {},
+                    $folder: [],
+                    $images: []
+                }
             }
         };
     }
