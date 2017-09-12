@@ -6,10 +6,10 @@ Imcms.define("imcms-document-editor-builder",
     [
         "imcms-bem-builder", "imcms-page-info-builder", "imcms-components-builder", "imcms-primitives-builder",
         "imcms-documents-rest-api", "imcms-controls-builder", "imcms-users-rest-api", "imcms-categories-rest-api",
-        "imcms-window-builder"
+        "imcms-window-builder", "jquery"
     ],
     function (BEM, pageInfoBuilder, components, primitives, docRestApi, controlsBuilder, usersRestApi,
-              categoriesRestApi, WindowBuilder) {
+              categoriesRestApi, WindowBuilder, $) {
 
         function buildBodyHeadTools() {
 
@@ -120,29 +120,29 @@ Imcms.define("imcms-document-editor-builder",
         }
 
         function buildDocumentListTitlesRow() {
-            var titlesBEM = new BEM({
+            var $idColumnHead = $("<div>", {text: "id"});
+            $idColumnHead.modifiers = ["col-2"];
+
+            var $titleColumnHead = $("<div>", {text: "Title"});
+            $titleColumnHead.modifiers = ["col-3"];
+
+            var $aliasColumnHead = $("<div>", {text: "Alias"});
+            $aliasColumnHead.modifiers = ["col-3"];
+
+            var $typeColumnHead = $("<div>", {text: "Type"});
+            $typeColumnHead.modifiers = ["col-4"];
+
+            return new BEM({
                 block: "imcms-document-list-titles",
-                elements: {"title": ""}
-            });
-
-            var $idColumnHead = titlesBEM.buildElement("title", "<div>", {text: "id"});
-            var $titleColumnHead = titlesBEM.buildElement("title", "<div>", {text: "Title"});
-            var $aliasColumnHead = titlesBEM.buildElement("title", "<div>", {text: "Alias"});
-            var $typeColumnHead = titlesBEM.buildElement("title", "<div>", {text: "Type"});
-
-            return titlesBEM.buildBlock("<div>", [{
-                "title": $idColumnHead,
-                modifiers: ["col-2"]
-            }, {
-                "title": $titleColumnHead,
-                modifiers: ["col-3"]
-            }, {
-                "title": $aliasColumnHead,
-                modifiers: ["col-3"]
-            }, {
-                "title": $typeColumnHead,
-                modifiers: ["col-4"]
-            }]);
+                elements: {
+                    "title": [
+                        $idColumnHead,
+                        $titleColumnHead,
+                        $aliasColumnHead,
+                        $typeColumnHead
+                    ]
+                }
+            }).buildBlockStructure("<div>");
         }
 
         function buildDocItemControls(documentId, opts) {
