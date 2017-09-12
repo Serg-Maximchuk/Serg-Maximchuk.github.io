@@ -52,6 +52,42 @@ Imcms.define("imcms-image-editor-builder",
                 });
             }
 
+            function buildHeightWidthBlock() {
+                var characteristicBEM = new BEM({
+                    block: "imcms-title imcms-image-characteristic",
+                    elements: {"origin-size": "imcms-img-origin-size"}
+                });
+
+                var originSizeBEM = new BEM({
+                    block: "imcms-img-origin-size",
+                    elements: {
+                        "height-title": "imcms-title",
+                        "height-value": "imcms-title",
+                        "width-title": "imcms-title",
+                        "width-value": "imcms-title"
+                    }
+                });
+
+                var $heightTitle = originSizeBEM.buildElement("height-title", "<span>", {text: "H:"});
+                imageDataContainers.$heightValue = originSizeBEM.buildElement("height-value", "<span>");
+                var $heightBlock = originSizeBEM.buildBlock("<div>", [
+                    {"height-title": $heightTitle},
+                    {"height-value": imageDataContainers.$heightValue}
+                ]);
+
+                var $widthTitle = originSizeBEM.buildElement("width-title", "<span>", {text: "W:"});
+                imageDataContainers.$widthValue = originSizeBEM.buildElement("width-value", "<span>");
+                var $widthBlock = originSizeBEM.buildBlock("<div>", [
+                    {"width-title": $widthTitle},
+                    {"width-value": imageDataContainers.$widthValue}
+                ]);
+
+                return characteristicBEM.buildBlock("<div>", [
+                    {"origin-size": $heightBlock},
+                    {"origin-size": $widthBlock}
+                ], {text: "Orig "});
+            }
+
             var bodyHeadBEM = new BEM({
                 block: "imcms-image-characteristics",
                 elements: {
@@ -80,39 +116,7 @@ Imcms.define("imcms-image-editor-builder",
                 text: "Url: "
             }).append(imageDataContainers.$imgUrl = $("<span>"));
 
-            var characteristicBEM = new BEM({
-                block: "imcms-title imcms-image-characteristic",
-                elements: {"origin-size": "imcms-img-origin-size"}
-            });
-
-            var originSizeBEM = new BEM({
-                block: "imcms-img-origin-size",
-                elements: {
-                    "height-title": "imcms-title",
-                    "height-value": "imcms-title",
-                    "width-title": "imcms-title",
-                    "width-value": "imcms-title"
-                }
-            });
-
-            var $heightTitle = originSizeBEM.buildElement("height-title", "<span>", {text: "H:"});
-            imageDataContainers.$heightValue = originSizeBEM.buildElement("height-value", "<span>");
-            var $heightBlock = originSizeBEM.buildBlock("<div>", [
-                {"height-title": $heightTitle},
-                {"height-value": imageDataContainers.$heightValue}
-            ]);
-
-            var $widthTitle = originSizeBEM.buildElement("width-title", "<span>", {text: "W:"});
-            imageDataContainers.$widthValue = originSizeBEM.buildElement("width-value", "<span>");
-            var $widthBlock = originSizeBEM.buildBlock("<div>", [
-                {"width-title": $widthTitle},
-                {"width-value": imageDataContainers.$widthValue}
-            ]);
-
-            var $heightWidthBlock = characteristicBEM.buildBlock("<div>", [
-                {"origin-size": $heightBlock},
-                {"origin-size": $widthBlock}
-            ], {text: "Orig "});
+            var $heightWidthBlock = buildHeightWidthBlock();
 
             return bodyHeadBEM.buildBlock("<div>", [
                 {
