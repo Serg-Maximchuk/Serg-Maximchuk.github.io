@@ -79,15 +79,12 @@ Imcms.define("imcms-checkboxes-builder",
                 return containerBEM.buildBlock(tag, elements, attributes);
             },
             checkboxContainerField: function (tag, elements, attributes) {
-                var checkboxesFieldBEM = new BEM({
+                return new BEM({
                     block: "imcms-field",
                     elements: {
-                        "checkboxes": "imcms-checkboxes"
+                        "checkboxes": this.checkboxContainer("<div>", elements, attributes)
                     }
-                });
-
-                var $checkboxContainer = this.checkboxContainer("<div>", elements, attributes);
-                return checkboxesFieldBEM.buildBlock(tag, [{"checkboxes": $checkboxContainer}]);
+                }).buildBlockStructure(tag);
             }
         }
     }
