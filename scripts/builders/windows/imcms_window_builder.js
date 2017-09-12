@@ -46,9 +46,19 @@ Imcms.define("imcms-window-builder", ["imcms-window-components-builder", "jquery
             this.$editor.css("display", "none");
             this.clearDataStrategy && this.clearDataStrategy.call();
         },
+        /**
+         * Builds head with specified title and close button
+         * @param {string} title
+         * @returns {*} head as jQuery element
+         */
         buildHead: function (title) {
             return windowComponents.buildHead(title, this.closeWindow.bind(this));
         },
+        /**
+         * Builds footer with specified buttons as it's block elements
+         * @param {[]} buttons - array of jQuery elements
+         * @returns {*} footer as jQuery element
+         */
         buildFooter: function (buttons) {
             return windowComponents.buildFooter.apply(windowComponents, arguments);
         }
