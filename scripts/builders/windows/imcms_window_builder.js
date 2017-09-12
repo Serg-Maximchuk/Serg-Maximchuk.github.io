@@ -8,20 +8,6 @@ Imcms.define("imcms-window-builder", ["imcms-window-components-builder", "jquery
         $("body").css("overflow", overflowValue);
     }
 
-    var scrollTop = 0;
-
-    function disableBackgroundPageScrolling() {
-        scrollTop = $(window).scrollTop();
-        setBodyScrollingRule("hidden");
-        $(window).scrollTop(0);
-    }
-
-    function enableBackgroundPageScrolling() {
-        setBodyScrollingRule("auto");
-        $(window).scrollTop(scrollTop);
-        scrollTop = 0;
-    }
-
     var WindowBuilder = function (opts) {
         this.factory = opts.factory;
         this.loadDataStrategy = opts.loadDataStrategy;
@@ -30,8 +16,23 @@ Imcms.define("imcms-window-builder", ["imcms-window-components-builder", "jquery
     };
 
     WindowBuilder.prototype = {
+        _scrollTop: 0,
+        _pageOverflow: "auto",
+        _disableBackgroundPageScrolling: function () {
+            var $window = $(window);
+            this._scrollTop = $window.scrollTop();
+            $window.scrollTop(0);
+
+            this._pageOverflow = $("body").css("overflow") || "auto";
+            setBodyScrollingRule("hidden");
+        },
+        _enableBackgroundPageScrolling: function () {
+            setBodyScrollingRule(this._pageOverflow);
+            $(window).scrollTop(this._scrollTop);
+            this._scrollTop = 0;
+        },
         buildWindow: function (windowInitData) {
-            disableBackgroundPageScrolling();
+            this._disableBackgroundPageScrolling();
 
             if (!this.$editor) {
                 this.$editor = this.factory(windowInitData).appendTo("body");
@@ -41,7 +42,7 @@ Imcms.define("imcms-window-builder", ["imcms-window-components-builder", "jquery
             this.$editor.css("display", "block");
         },
         closeWindow: function () {
-            enableBackgroundPageScrolling();
+            this._enableBackgroundPageScrolling();
             this.$editor.css("display", "none");
             this.clearDataStrategy && this.clearDataStrategy.call();
         },
