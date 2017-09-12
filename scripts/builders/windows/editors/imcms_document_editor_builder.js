@@ -209,17 +209,16 @@ Imcms.define("imcms-document-editor-builder",
         }
 
         function buildDocumentList(documentList, opts) {
-            var docListBEM = new BEM({
-                block: "imcms-document-items-list",
-                elements: {"document-items": "imcms-document-items"}
-            });
-
             var $blockElements = documentList.map(function (document) {
-                var $docItems = buildDocumentItemContainer(document, opts);
-                return {"document-items": $docItems}
+                return buildDocumentItemContainer(document, opts);
             });
 
-            return docListBEM.buildBlock("<div>", $blockElements);
+            return new BEM({
+                block: "imcms-document-items-list",
+                elements: {
+                    "document-items": $blockElements
+                }
+            }).buildBlockStructure("<div>");
         }
 
         function buildEditorBody(documentList, opts) {
