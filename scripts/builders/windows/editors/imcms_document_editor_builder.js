@@ -199,14 +199,13 @@ Imcms.define("imcms-document-editor-builder",
             }).buildBlockStructure("<div>");
         }
 
-        function buildDocumentItem(document, opts) {
-            var docItemsBEM = new BEM({
+        function buildDocumentItemContainer(document, opts) {
+            return new BEM({
                 block: "imcms-document-items",
-                elements: {"document-item": "imcms-document-item"}
-            });
-
-            var $testDocItem = buildDocItem(document, opts);
-            return docItemsBEM.buildBlock("<div>", [{"document-item": $testDocItem}]);
+                elements: {
+                    "document-item": buildDocItem(document, opts)
+                }
+            }).buildBlockStructure("<div>");
         }
 
         function buildDocumentList(documentList, opts) {
@@ -216,7 +215,7 @@ Imcms.define("imcms-document-editor-builder",
             });
 
             var $blockElements = documentList.map(function (document) {
-                var $docItems = buildDocumentItem(document, opts);
+                var $docItems = buildDocumentItemContainer(document, opts);
                 return {"document-items": $docItems}
             });
 
