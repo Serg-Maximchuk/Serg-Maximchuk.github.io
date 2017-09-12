@@ -173,34 +173,30 @@ Imcms.define("imcms-document-editor-builder",
         }
 
         function buildDocItem(document, opts) {
-            var docItemBEM = new BEM({
+            var $docItemId = components.texts.titleText("<div>", document.id);
+            $docItemId.modifiers = ["col-2"];
+
+            var $docItemTitle = components.texts.titleText("<div>", document.title);
+            $docItemTitle.modifiers = ["col-3"];
+
+            var $docItemAlias = components.texts.titleText("<div>", document.alias);
+            $docItemAlias.modifiers = ["col-3"];
+
+            var $docItemType = components.texts.titleText("<div>", document.type);
+            $docItemType.modifiers = ["col-4"];
+
+            return new BEM({
                 block: "imcms-document-item",
                 elements: {
-                    "btn": "",
-                    "info": "imcms-title",
-                    "controls": "imcms-controls"
+                    "info": [
+                        $docItemId,
+                        $docItemTitle,
+                        $docItemAlias,
+                        $docItemType
+                    ],
+                    "controls": buildDocItemControls(document.id, opts)
                 }
-            });
-
-            var $docItemId = docItemBEM.buildElement("info", "<div>", {text: document.id});
-            var $docItemTitle = docItemBEM.buildElement("info", "<div>", {text: document.title});
-            var $docItemAlias = docItemBEM.buildElement("info", "<div>", {text: document.alias});
-            var $docItemType = docItemBEM.buildElement("info", "<div>", {text: document.type});
-            var $controls = buildDocItemControls(document.id, opts);
-
-            return docItemBEM.buildBlock("<div>", [{
-                "info": $docItemId,
-                modifiers: ["col-2"]
-            }, {
-                "info": $docItemTitle,
-                modifiers: ["col-3"]
-            }, {
-                "info": $docItemAlias,
-                modifiers: ["col-3"]
-            }, {
-                "info": $docItemType,
-                modifiers: ["col-4"]
-            }, {"controls": $controls}]);
+            }).buildBlockStructure("<div>");
         }
 
         function buildDocumentItem(document, opts) {
