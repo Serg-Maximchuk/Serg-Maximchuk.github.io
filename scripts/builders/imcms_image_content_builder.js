@@ -273,28 +273,25 @@ Imcms.define("imcms-image-content-builder",
         }
 
         function buildFolder(subfolder, level) {
-            var folderBEM = new BEM({
-                block: "imcms-folder",
-                elements: {
-                    "btn": "",
-                    "name": "imcms-title",
-                    "controls": "imcms-controls"
-                }
-            });
-
-            var $controls = buildControls(subfolder, level);
-            var $name = folderBEM.buildElement("name", "<div>", {text: subfolder.name});
-            var folderElements = [
-                {"name": $name},
-                {"controls": $controls}
-            ];
+            var elements = {};
 
             if (subfolder.folders && subfolder.folders.length) {
-                var $openSubfoldersBtn = folderBEM.buildElement("btn", "<div>", {click: openSubFolders});
-                folderElements.unshift({"btn": $openSubfoldersBtn});
+                elements.btn = $("<div>", {click: openSubFolders});
             }
 
-            return folderBEM.buildBlock("<div>", folderElements, {
+            elements.name = $("<div>", {
+                "class": "imcms-title",
+                text: subfolder.name
+            });
+
+            elements.controls = buildControls(subfolder, level);
+
+            return new BEM(
+                {
+                    block: "imcms-folder",
+                    elements: elements
+                }
+            ).buildBlockStructure("<div>", {
                 "data-folder-path": subfolder.path,
                 click: function () {
                     onFolderClick.call(this, subfolder);
@@ -303,30 +300,26 @@ Imcms.define("imcms-image-content-builder",
         }
 
         function buildSubFolder(subfolder, level) {
-            var foldersBEM = new BEM({
-                block: "imcms-folders",
-                elements: {
-                    "folder": "imcms-folder",
-                    "subfolder": "imcms-folders"
-                }
-            });
-
             var isSubLevel = (level > 1);
-            var blockElements = [{"folder": buildFolder(subfolder, level)}];
+
+            var elements = {
+                "folder": buildFolder(subfolder, level)
+            };
 
             if (subfolder.folders && subfolder.folders.length) {
-                buildSubFolders(subfolder, level + 1).forEach(function ($subfolder) {
-                    var subfolder = {"subfolder": $subfolder};
-
+                elements.subfolder = buildSubFolders(subfolder, level + 1).map(function ($subfolder) {
                     if (isSubLevel) {
-                        subfolder.modifiers = ["close"];
+                        $subfolder.modifiers = ["close"];
                     }
 
-                    blockElements.push(subfolder);
+                    return $subfolder;
                 });
             }
 
-            return foldersBEM.buildBlock("<div>", blockElements, {"data-folders-lvl": level});
+            return new BEM({
+                block: "imcms-folders",
+                elements: elements
+            }).buildBlockStructure("<div>", {"data-folders-lvl": level});
         }
 
         function buildSubFolders(folder, level) {

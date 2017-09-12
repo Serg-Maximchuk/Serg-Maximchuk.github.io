@@ -63,6 +63,11 @@ Imcms.define("imcms-bem-builder", ["jquery"], function ($) {
                 } else {
                     var elementKeys = Object.keys(element);
                     elementName = elementKeys[0];
+
+                    if (elementName === "modifiers") {
+                        elementName = elementKeys[1];
+                    }
+
                     $element = element[elementName];
                 }
 
@@ -81,20 +86,43 @@ Imcms.define("imcms-bem-builder", ["jquery"], function ($) {
         },
         buildBlockStructure: function (tag, attributes) {
             var elements = $.extend({}, this.elements);
-            elements = Object.keys(elements).map(function (elementName) {
-                var element = elements[elementName];
+            var blockElements = [];
+
+            function createBlocKElement(element, elementName) {
                 var blockElement = {};
-                this.elements[elementName] = element["class"] || "";
+
+                if (element.modifiers) {
+                    blockElement.modifiers = element.modifiers;
+                }
 
                 blockElement[elementName] = (element.length) // means jquery, not simple array
                     ? element
                     : this.buildElement(elementName, element.tag, element.attributes, element.modifiers);
 
                 return blockElement;
+            }
+
+            function createBlockElements(elements, elementName) {
+                return elements.map(function (element) {
+                    return createBlocKElement.call(this, element, elementName);
+                }.bind(this));
+            }
+
+            Object.keys(elements).forEach(function (elementName) {
+                var element = elements[elementName];
+                this.elements[elementName] = element["class"] || "";
+
+                if (element.constructor === Array) {
+                    blockElements = blockElements.concat(createBlockElements.call(this, element, elementName));
+                    return;
+                }
+
+                var blockElement = createBlocKElement.call(this, element, elementName);
+                blockElements.push(blockElement);
 
             }.bind(this));
 
-            return this.buildBlock(tag, elements, attributes);
+            return this.buildBlock(tag, blockElements, attributes);
         }
     };
 
