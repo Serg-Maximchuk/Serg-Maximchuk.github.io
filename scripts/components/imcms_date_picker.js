@@ -19,7 +19,33 @@ Imcms.define("imcms-date-picker",
                 return;
             }
 
-            $(DATE_PICKER_CLASS_SELECTOR).removeClass("imcms-date-picker--active");
+            $(".imcms-date-picker--active").each(function () {
+                var $activeDatePicker = $(this),
+                    $currentDateInput = $activeDatePicker.find(".imcms-current-date__input"),
+                    currentDate = $currentDateInput.val().split('-'),
+                    year = currentDate[0],
+                    month = currentDate[1],
+                    day = currentDate[2];
+
+                if ($currentDateInput.hasClass("imcms-currrent-date__input--error")) {
+                    $currentDateInput.val(getCurrentDate());
+                } else {
+                    var monthCorrected = month;
+                    if (monthCorrected.length === 1) {
+                        monthCorrected = "0" + monthCorrected;
+                    }
+
+                    var dayCorrected = day;
+                    if (dayCorrected.length === 1) {
+                        dayCorrected = "0" + dayCorrected;
+                    }
+
+                    $currentDateInput.val(year + '-' + monthCorrected + '-' + dayCorrected);
+                }
+
+                $activeDatePicker.removeClass("imcms-date-picker--active");
+            });
+
             e.stopPropagation();
         }
 
@@ -40,15 +66,6 @@ Imcms.define("imcms-date-picker",
             return year + "-" + month + "-" + date;
         }
 
-        function isDateValid(year, month, day) {
-            var currentDate = new Date(year, month, day);
-
-            return ((currentDate.getFullYear() === year)
-                && (currentDate.getMonth() === (month - 1))
-                && (currentDate.getDate() === day)
-            );
-        }
-
         function currentDateValidation() {
             var currentDateInput = $(this),
                 currentDate = currentDateInput.val().split('-'),
@@ -57,16 +74,11 @@ Imcms.define("imcms-date-picker",
                 day = parseInt(currentDate[2])
             ;
 
-            if (isDateValid(year, month, day)) {
-                var $calendar = currentDateInput.parents(DATE_PICKER_CLASS_SELECTOR)
-                    .find(".imcms-calendar");
+            var $calendar = currentDateInput.parents(DATE_PICKER_CLASS_SELECTOR)
+                .find(".imcms-calendar");
 
-                if ($calendar.length) {
-                    imcmsCalendar.buildCalendar(year, month, day, $calendar);
-                }
-            } else {
-                var cd = getCurrentDate();
-                currentDateInput.val(cd);
+            if ($calendar.length) {
+                imcmsCalendar.buildCalendar(year, month, day, $calendar);
             }
         }
 
