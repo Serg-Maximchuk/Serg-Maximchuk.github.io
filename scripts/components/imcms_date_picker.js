@@ -31,12 +31,12 @@ Imcms.define("imcms-date-picker",
                     $currentDateInput.val(getCurrentDate());
                 } else {
                     var monthCorrected = month;
-                    if (monthCorrected.length === 1) {
+                    if (monthCorrected && monthCorrected.length === 1) {
                         monthCorrected = "0" + monthCorrected;
                     }
 
                     var dayCorrected = day;
-                    if (dayCorrected.length === 1) {
+                    if (dayCorrected && dayCorrected.length === 1) {
                         dayCorrected = "0" + dayCorrected;
                     }
 
@@ -109,7 +109,11 @@ Imcms.define("imcms-date-picker",
                     $(this).removeClass("imcms-day--today");
                 })
                 .filter(function () {
-                    return $(this).html() === day
+                    var dayOnCalendar = $(this).html();
+                    if (day.length === 2 && dayOnCalendar.length === 1) {
+                        dayOnCalendar = "0" + dayOnCalendar;
+                    }
+                    return dayOnCalendar === day;
                 });
 
             var lastOrFirst = day <= 20 ? fileredByDay.first() : fileredByDay.last();
