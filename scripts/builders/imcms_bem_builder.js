@@ -90,6 +90,7 @@ Imcms.define("imcms-bem-builder", ["jquery"], function ($) {
 
             function createBlocKElement(element, elementName) {
                 var blockElement = {};
+                this.elements[elementName] = element["class"] || "";
 
                 if (element.modifiers) {
                     blockElement.modifiers = element.modifiers;
@@ -110,7 +111,6 @@ Imcms.define("imcms-bem-builder", ["jquery"], function ($) {
 
             Object.keys(elements).forEach(function (elementName) {
                 var element = elements[elementName];
-                this.elements[elementName] = element["class"] || "";
 
                 if (element.constructor === Array) {
                     blockElements = blockElements.concat(createBlockElements.call(this, element, elementName));
