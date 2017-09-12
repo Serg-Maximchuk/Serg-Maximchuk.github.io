@@ -579,6 +579,7 @@ Imcms.define("imcms-image-editor-builder",
                 return $("<div>").append($removeAndCloseButton, $saveAndCloseButton);
             }
 
+
             var $editableControls = buildEditableControls();
             var $footer = buildFooter().addClass(imageEditorBlockClass + BEM.getBlockSeparator() + "footer");
 
@@ -588,27 +589,15 @@ Imcms.define("imcms-image-editor-builder",
         function buildEditor() {
             var imageEditorBlockClass = "imcms-image_editor";
 
-            var imageEditorBEM = new BEM({
+            return new BEM({
                 block: imageEditorBlockClass,
                 elements: {
-                    "head": "imcms-head",
-                    "image-characteristics": "imcms-image-characteristics",
-                    "left-side": "",
-                    "right-side": ""
+                    "head": imageWindowBuilder.buildHead("Image Editor"),
+                    "image-characteristics": buildBodyHead(),
+                    "left-side": buildLeftSide(),
+                    "right-side": $rightSidePanel = buildRightSide(imageEditorBlockClass)
                 }
-            });
-
-            var $head = imageWindowBuilder.buildHead("Image Editor");
-            var $bodyHead = buildBodyHead();
-            var $leftSide = buildLeftSide();
-            $rightSidePanel = buildRightSide(imageEditorBlockClass);
-
-            return imageEditorBEM.buildBlock("<div>", [
-                {"head": $head},
-                {"image-characteristics": $bodyHead},
-                {"left-side": $leftSide},
-                {"right-side": $rightSidePanel}
-            ]).addClass("imcms-editor-window");
+            }).buildBlock("<div>", {"class": "imcms-editor-window"});
         }
 
         function fillBodyHeadData(imageData) {
