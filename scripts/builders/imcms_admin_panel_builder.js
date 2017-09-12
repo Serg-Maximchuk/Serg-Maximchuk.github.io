@@ -153,7 +153,6 @@ Imcms.define("imcms-admin-panel-builder",
                     return;
                 }
                 $("body").animate({"top": "0px"}, 150);
-                event.stopPropagation();
                 hidePanel();
             });
         }
@@ -172,6 +171,10 @@ Imcms.define("imcms-admin-panel-builder",
 
         return {
             buildPanel: function (opts) {
+                if ($panel) {
+                    return;
+                }
+
                 $panel = $("<div>", {
                     "class": "imcms-admin",
                     html: createAdminPanel(opts)
