@@ -272,22 +272,16 @@ Imcms.define("imcms-image-editor-builder",
             }
 
             function buildSwitchViewControls() {
-                var switchViewControlsBEM = new BEM({
+                var $preview = components.texts.titleText("<div>", "Preview");
+                var $origin = components.texts.titleText("<div>", "Original");
+                $origin.modifiers = ["active"];
+
+                return new BEM({
                     block: "imcms-editable-img-control-tabs",
-                    elements: {"tab": "imcms-title"}
-                });
-
-                var $preview = switchViewControlsBEM.buildElement("tab", "<div>", {text: "Preview"});
-                var $origin = switchViewControlsBEM.buildElement("tab", "<div>", {text: "Original"});
-
-                return switchViewControlsBEM.buildBlock("<div>", [
-                    {
-                        "tab": $preview
-                    }, {
-                        "tab": $origin,
-                        modifiers: ["active"]
+                    elements: {
+                        "tab": [$preview, $origin]
                     }
-                ]);
+                }).buildBlockStructure("<div>");
             }
 
             function buildBottomPanel() {
