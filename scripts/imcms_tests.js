@@ -93,11 +93,30 @@ Imcms.define("imcms-tests", ["imcms", "jquery"], function (imcms, $) {
 
             return true;
         },
-        inputValidator: function () {
-            Imcms.require(["jquery", "imcms-input-validator"], function ($, InputValidator) {
-                var inputValidator = new InputValidator($('<input>'));
+        checkInputEventSequance: function () {
+            Imcms.require(["jquery"], function ($) {
 
-                $('body').empty().append(inputValidator.dateValidator("yyyy-mm-dd"));
+                $('body').detach();
+
+                function keydown() {
+                    console.log("keydown: " + this.value)
+                }
+
+                function keypress() {
+                    console.log("keypress: " + this.value)
+                }
+
+                function keyup() {
+                    console.log("keyup: " + this.value)
+                }
+
+                function input() {
+                    console.log("input: " + this.value)
+                }
+
+                var $body = $('<body>')
+                    .append($('<input>').keydown(keydown).keyup(keyup).keypress(keypress).on('input', input));
+                $('html').append($body);
             });
             return true;
         },
