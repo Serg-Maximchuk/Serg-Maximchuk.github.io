@@ -164,7 +164,6 @@ Imcms.define("imcms-image-editor-builder",
                 var editSizeBEM = new BEM({
                     block: "imcms-edit-size",
                     elements: {
-                        "title": "imcms-title",
                         "number": "",
                         "button": ""
                     }
@@ -258,24 +257,18 @@ Imcms.define("imcms-image-editor-builder",
             }
 
             function buildScaleAndRotateControls() {
-                var scaleAndRotateBEM = new BEM({
+                return new BEM({
                     block: "imcms-edit-image",
-                    elements: {"button": ""}
-                });
-
-                var $zoomPlusBtn = components.buttons.zoomPlusButton({click: zoomPlus});
-                var $zoomMinusBtn = components.buttons.zoomMinusButton({click: zoomMinus});
-                var $zoomContainBtn = components.buttons.zoomContainButton({click: zoomContain});
-                var $rotateLeftBtn = components.buttons.rotateLeftButton({click: rotateLeft});
-                var $rotateRightBtn = components.buttons.rotateRightButton({click: rotateRight});
-
-                return scaleAndRotateBEM.buildBlock("<div>", [
-                    {"button": $zoomPlusBtn},
-                    {"button": $zoomMinusBtn},
-                    {"button": $zoomContainBtn},
-                    {"button": $rotateLeftBtn},
-                    {"button": $rotateRightBtn}
-                ]);
+                    elements: {
+                        "button": [
+                            components.buttons.zoomPlusButton({click: zoomPlus}),
+                            components.buttons.zoomMinusButton({click: zoomMinus}),
+                            components.buttons.zoomContainButton({click: zoomContain}),
+                            components.buttons.rotateLeftButton({click: rotateLeft}),
+                            components.buttons.rotateRightButton({click: rotateRight})
+                        ]
+                    }
+                }).buildBlockStructure("<div>");
             }
 
             function buildSwitchViewControls() {
