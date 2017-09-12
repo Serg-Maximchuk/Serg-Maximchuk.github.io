@@ -93,6 +93,14 @@ Imcms.define("imcms-tests", ["imcms", "jquery"], function (imcms, $) {
 
             return true;
         },
+        inputValidator: function () {
+            Imcms.require(["jquery", "imcms-input-validator"], function ($, InputValidator) {
+                var inputValidator = new InputValidator($('<input>'));
+
+                $('body').empty().append(inputValidator.dateValidator("yyyy-mm-dd"));
+            });
+            return true;
+        },
         runAllTests: function () {
             var testsRun = 0;
             var totalPassed = 0;
@@ -116,4 +124,6 @@ Imcms.define("imcms-tests", ["imcms", "jquery"], function (imcms, $) {
             console.info("%c Total failed: " + totalFailed, "color: red;");
         }
     }
+
+
 });
