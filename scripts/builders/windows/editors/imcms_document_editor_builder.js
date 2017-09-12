@@ -26,25 +26,17 @@ Imcms.define("imcms-document-editor-builder",
             }
 
             function buildSearchDocField() {
-                var searchBEM = new BEM({
+                return new BEM({
                     block: "imcms-input-search",
                     elements: {
-                        "text-box": "imcms-input",
-                        "button": "imcms-button"
+                        "text-box": primitives.imcmsInputText({
+                            id: "searchText",
+                            name: "search",
+                            placeholder: "Type to find document"
+                        }),
+                        "button": components.buttons.searchButton()
                     }
-                });
-
-                var $searchButton = components.buttons.searchButton();
-                var $searchInput = primitives.imcmsInputText({
-                    id: "searchText",
-                    name: "search",
-                    placeholder: "Type to find document"
-                });
-
-                return searchBEM.buildBlock("<div>", [
-                    {"text-box": $searchInput},
-                    {"button": $searchButton}
-                ]);
+                }).buildBlockStructure("<div>");
             }
 
             function buildUsersFilterSelect() {
@@ -53,16 +45,15 @@ Imcms.define("imcms-document-editor-builder",
                     name: "users-filter"
                 });
 
-                usersRestApi.read(null)
-                    .done(function (users) {
-                        var usersDataMapped = users.map(function (user) {
-                            return {
-                                text: user.username,
-                                "data-value": user.id
-                            }
-                        });
-                        components.selects.addOptionsToSelect(usersDataMapped, $usersFilterSelect);
+                usersRestApi.read(null).done(function (users) {
+                    var usersDataMapped = users.map(function (user) {
+                        return {
+                            text: user.username,
+                            "data-value": user.id
+                        }
                     });
+                    components.selects.addOptionsToSelect(usersDataMapped, $usersFilterSelect);
+                });
 
                 return $usersFilterSelect;
             }
@@ -73,26 +64,18 @@ Imcms.define("imcms-document-editor-builder",
                     name: "categories-filter"
                 });
 
-                categoriesRestApi.read(null)
-                    .done(function (categories) {
-                        var categoriesDataMapped = categories.map(function (category) {
-                            return {
-                                text: category.name,
-                                "data-value": category.id
-                            }
-                        });
-                        components.selects.addOptionsToSelect(categoriesDataMapped, $categoriesFilterSelect);
+                categoriesRestApi.read(null).done(function (categories) {
+                    var categoriesDataMapped = categories.map(function (category) {
+                        return {
+                            text: category.name,
+                            "data-value": category.id
+                        }
                     });
+                    components.selects.addOptionsToSelect(categoriesDataMapped, $categoriesFilterSelect);
+                });
 
                 return $categoriesFilterSelect;
             }
-
-            var headToolsBEM = new BEM({
-                block: "imcms-document-editor-head-tools",
-                elements: {
-                    "tool": "imcms-document-editor-head-tool"
-                }
-            });
 
             var toolBEM = new BEM({
                 block: "imcms-document-editor-head-tool",
@@ -102,46 +85,38 @@ Imcms.define("imcms-document-editor-builder",
                 }
             });
 
-            var $createNewDocButton = buildNewDocButton();
-            var $newDocButtonContainer = toolBEM.buildBlock("<div>", [{"button": $createNewDocButton}]);
+            var $newDocButtonContainer = toolBEM.buildBlock("<div>", [{"button": buildNewDocButton()}]);
+            $newDocButtonContainer.modifiers = ["grid-col-2"];
 
-            var $searchInputWrapper = buildSearchDocField();
-            var $searchContainer = toolBEM.buildBlock("<div>", [{"search": $searchInputWrapper}]);
+            var $searchContainer = toolBEM.buildBlock("<div>", [{"search": buildSearchDocField()}]);
+            $searchContainer.modifiers = ["grid-col-4"];
 
-            var $usersFilterSelect = buildUsersFilterSelect();
-            var $usersFilter = toolBEM.buildBlock("<div>", [{"select": $usersFilterSelect}]);
+            var $usersFilter = toolBEM.buildBlock("<div>", [{"select": buildUsersFilterSelect()}]);
+            $usersFilter.modifiers = ["grid-col-3"];
 
-            var $categoriesFilterSelect = buildCategoriesFilterSelect();
-            var $categoriesFilter = toolBEM.buildBlock("<div>", [{"select": $categoriesFilterSelect}]);
+            var $categoriesFilter = toolBEM.buildBlock("<div>", [{"select": buildCategoriesFilterSelect()}]);
+            $categoriesFilter.modifiers = ["grid-col-3"];
 
-            return headToolsBEM.buildBlock("<div>", [
-                {
-                    "tool": $newDocButtonContainer,
-                    modifiers: ["grid-col-2"]
-                }, {
-                    "tool": $searchContainer,
-                    modifiers: ["grid-col-4"]
-                }, {
-                    "tool": $usersFilter,
-                    modifiers: ["grid-col-3"]
-                }, {
-                    "tool": $categoriesFilter,
-                    modifiers: ["grid-col-3"]
-                }]
-            );
+            return new BEM({
+                block: "imcms-document-editor-head-tools",
+                elements: {
+                    "tool": [
+                        $newDocButtonContainer,
+                        $searchContainer,
+                        $usersFilter,
+                        $categoriesFilter
+                    ]
+                }
+            }).buildBlockStructure("<div>");
         }
 
         function buildBodyHead() {
-            var bodyHeadBEM = new BEM({
+            return new BEM({
                 block: "imcms-document-editor-head",
                 elements: {
-                    "tools": "imcms-document-editor-head-tools imcms-grid-section"
+                    "tools": buildBodyHeadTools()
                 }
-            });
-
-            var $tools = buildBodyHeadTools();
-
-            return bodyHeadBEM.buildBlock("<div>", [{"tools": $tools}]);
+            }).buildBlockStructure("<div>");
         }
 
         function buildDocumentListTitlesRow() {
