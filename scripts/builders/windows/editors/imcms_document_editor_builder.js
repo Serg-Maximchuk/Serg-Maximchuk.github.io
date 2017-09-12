@@ -258,24 +258,14 @@ Imcms.define("imcms-document-editor-builder",
         }
 
         function buildDocumentEditor() {
-            var documentEditorBEM = new BEM({
+            return new BEM({
                 block: "imcms-document-editor",
                 elements: {
-                    "head": "imcms-head",
-                    "body": "imcms-document-editor-body",
-                    "footer": "imcms-footer"
+                    "head": buildHead(),
+                    "body": buildBody(),
+                    "footer": buildFooter()
                 }
-            });
-
-            var $head = buildHead(),
-                $body = buildBody(),
-                $footer = buildFooter();
-
-            return documentEditorBEM.buildBlock("<div>", [
-                {"head": $head},
-                {"body": $body},
-                {"footer": $footer}
-            ]).addClass("imcms-editor-window");
+            }).buildBlockStructure("<div>", {"class": "imcms-editor-window"});
         }
 
         function removeDocument(documentId) {
