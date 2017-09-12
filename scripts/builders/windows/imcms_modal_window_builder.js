@@ -5,38 +5,28 @@ Imcms.define("imcms-modal-window-builder",
 
         function createModalWindow(question, callback) {
             function closeModal() {
-                $modal.remove();
-                $shadow.remove();
+                $modal.add($shadow).detach();
             }
 
             function buildHead() {
-                var headBEM = new BEM({
+                return new BEM({
                     block: "imcms-head",
-                    elements: {"title": "imcms-title"}
-                });
-
-                var $title = headBEM.buildElement("title", "<div>", {text: "Confirmation"});
-
-                return headBEM.buildBlock("<div>", [{"title": $title}]);
+                    elements: {
+                        "title": components.texts.titleText("<div>", "Confirmation")
+                    }
+                }).buildBlockStructure("<div>");
             }
 
             function buildBody(question) {
-                var bodyBEM = new BEM({
+                return new BEM({
                     block: "imcms-modal-body",
-                    elements: {"text": "imcms-info-msg"}
-                });
-
-                var $question = components.texts.infoText("<div>", question);
-
-                return bodyBEM.buildBlock("<div>", [{"text": $question}]);
+                    elements: {
+                        "text": components.texts.infoText("<div>", question)
+                    }
+                }).buildBlockStructure("<div>");
             }
 
             function buildFooter(callback) {
-                var footerBEM = new BEM({
-                    block: "imcms-modal-footer",
-                    elements: {"button": "imcms-button"}
-                });
-
                 var $yesButton = components.buttons.positiveButton({
                     text: "Yes",
                     click: function () {
@@ -53,30 +43,22 @@ Imcms.define("imcms-modal-window-builder",
                     }
                 });
 
-                return footerBEM.buildBlock("<div>", [
-                    {"button": $yesButton},
-                    {"button": $noButton}
-                ]);
+                return new BEM({
+                    block: "imcms-modal-footer",
+                    elements: {
+                        "button": [$yesButton, $noButton]
+                    }
+                }).buildBlockStructure("<div>");
             }
 
-            var modalWindowBEM = new BEM({
+            return new BEM({
                 block: "imcms-modal-window",
                 elements: {
-                    "modal-head": "imcms-head",
-                    "modal-body": "imcms-modal-body",
-                    "modal-footer": "imcms-modal-footer"
+                    "modal-head": buildHead(),
+                    "modal-body": buildBody(question),
+                    "modal-footer": buildFooter(callback)
                 }
-            });
-
-            var $head = buildHead();
-            var $body = buildBody(question);
-            var $footer = buildFooter(callback);
-
-            return modalWindowBEM.buildBlock("<div>", [
-                {"modal-head": $head},
-                {"modal-body": $body},
-                {"modal-footer": $footer}
-            ])
+            }).buildBlock("<div>");
         }
 
         function createLayout() {
