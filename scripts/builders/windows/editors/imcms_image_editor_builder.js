@@ -302,7 +302,7 @@ Imcms.define("imcms-image-editor-builder",
             return $("<div>").append($editableImageArea, $bottomPanel);
         }
 
-        function buildRightSide(imageEditorBEM) {
+        function buildRightSide(imageEditorBlockClass) {
 
             function buildSelectImageBtnContainer() {
                 var $selectImageBtn = components.buttons.neutralButton({
@@ -426,16 +426,6 @@ Imcms.define("imcms-image-editor-builder",
             }
 
             function buildCropCoordinatesContainer() {
-                var cropCoordinatesBEM = new BEM({
-                    block: "imcms-crop-coordinates",
-                    elements: {
-                        "x": "imcms-number",
-                        "y": "imcms-number",
-                        "x1": "imcms-number",
-                        "y1": "imcms-number"
-                    }
-                });
-
                 var $xCropCoord = components.texts.textNumber("<div>", {
                     name: "cropX0",
                     placeholder: "X",
@@ -464,12 +454,15 @@ Imcms.define("imcms-image-editor-builder",
                     error: "Error text"
                 });
 
-                return cropCoordinatesBEM.buildBlock("<div>", [
-                    {"x": $xCropCoord},
-                    {"y": $yCropCoord},
-                    {"x1": $x1CropCoord},
-                    {"y1": $y1CropCoord}
-                ]);
+                return new BEM({
+                    block: "imcms-crop-coordinates",
+                    elements: {
+                        "x": $xCropCoord,
+                        "y": $yCropCoord,
+                        "x1": $x1CropCoord,
+                        "y1": $y1CropCoord
+                    }
+                }).buildBlockStructure("<div>");
             }
 
             function buildFileFormatSelect() {
@@ -587,27 +580,28 @@ Imcms.define("imcms-image-editor-builder",
             }
 
             var $editableControls = buildEditableControls();
-            var $footer = imageEditorBEM.makeBlockElement("footer", buildFooter());
+            var $footer = buildFooter().addClass(imageEditorBlockClass + BEM.getBlockSeparator() + "footer");
 
             return $("<div>").append($editableControls, $footer);
         }
 
         function buildEditor() {
+            var imageEditorBlockClass = "imcms-image_editor";
+
             var imageEditorBEM = new BEM({
-                block: "imcms-image_editor",
+                block: imageEditorBlockClass,
                 elements: {
                     "head": "imcms-head",
                     "image-characteristics": "imcms-image-characteristics",
                     "left-side": "",
-                    "right-side": "",
-                    "footer": "imcms-buttons"
+                    "right-side": ""
                 }
             });
 
             var $head = imageWindowBuilder.buildHead("Image Editor");
             var $bodyHead = buildBodyHead();
             var $leftSide = buildLeftSide();
-            $rightSidePanel = buildRightSide(imageEditorBEM);
+            $rightSidePanel = buildRightSide(imageEditorBlockClass);
 
             return imageEditorBEM.buildBlock("<div>", [
                 {"head": $head},

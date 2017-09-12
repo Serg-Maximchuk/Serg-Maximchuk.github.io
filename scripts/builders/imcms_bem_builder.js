@@ -30,6 +30,10 @@ Imcms.define("imcms-bem-builder", ["jquery"], function ($) {
         this.block = options.block;
     };
 
+    BemBuilder.getBlockSeparator = function () {
+        return BLOCK_SEPARATOR;
+    };
+
     BemBuilder.prototype = {
         makeBlockElement: function (elementName, $baseElement, modifiersArr) {
             var modifiersClass = getElementClassWithModifiers(this.elements[elementName], modifiersArr),
