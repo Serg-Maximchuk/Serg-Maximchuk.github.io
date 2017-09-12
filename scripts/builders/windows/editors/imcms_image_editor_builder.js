@@ -170,7 +170,7 @@ Imcms.define("imcms-image-editor-builder",
                     }
                 });
 
-                var $title = editSizeBEM.buildElement("title", "<div>", {text: "Display size"});
+                var $title = components.texts.titleText("<div>", "Display size");
 
                 var $heightControlInput = components.texts.textNumber("<div>", {
                     name: "height",
