@@ -153,19 +153,21 @@ Imcms.define("imcms-image-editor-builder",
                 imageDataContainers.$cropArea = editableImgAreaBEM.buildElement("crop-area", "<div>")
                     .append($("<img>", {"class": "imcms-crop-area__crop-img"}));
 
-                imageDataContainers.$angleTopLeft = editableImgAreaBEM.buildElement("angle", "<div>", {}, ["top-left"]);
-                imageDataContainers.$angleTopRight = editableImgAreaBEM.buildElement("angle", "<div>", {}, ["top-right"]);
-                imageDataContainers.$angleBottomLeft = editableImgAreaBEM.buildElement("angle", "<div>", {}, ["bottom-left"]);
-                imageDataContainers.$angleBottomRight = editableImgAreaBEM.buildElement("angle", "<div>", {}, ["bottom-right"]);
+                imageDataContainers.angles = {
+                    $topLeft: editableImgAreaBEM.buildElement("angle", "<div>", {}, ["top-left"]),
+                    $topRight: editableImgAreaBEM.buildElement("angle", "<div>", {}, ["top-right"]),
+                    $bottomLeft: editableImgAreaBEM.buildElement("angle", "<div>", {}, ["bottom-left"]),
+                    $bottomRight: editableImgAreaBEM.buildElement("angle", "<div>", {}, ["bottom-right"])
+                };
 
                 return editableImgAreaBEM.buildBlock("<div>", [
                     {"img": imageDataContainers.$image},
                     {"layout": imageDataContainers.$shadow},
                     {"crop-area": imageDataContainers.$cropArea},
-                    {"angle": imageDataContainers.$angleTopLeft},
-                    {"angle": imageDataContainers.$angleTopRight},
-                    {"angle": imageDataContainers.$angleBottomRight},
-                    {"angle": imageDataContainers.$angleBottomLeft}
+                    {"angle": imageDataContainers.angles.$topLeft},
+                    {"angle": imageDataContainers.angles.$topRight},
+                    {"angle": imageDataContainers.angles.$bottomRight},
+                    {"angle": imageDataContainers.angles.$bottomLeft}
                 ]);
             }
 
@@ -659,7 +661,7 @@ Imcms.define("imcms-image-editor-builder",
             imageDataContainers.$image.attr("src", imageData.path);
 
             // fixes to prevent stupid little scroll because of borders
-            var angleBorderSize = parseInt(imageDataContainers.$angleTopLeft.css("border-width")) || 0;
+            var angleBorderSize = parseInt(imageDataContainers.angles.$topLeft.css("border-width")) || 0;
             var imageWidth = imageDataContainers.$image.width();
             var imageHeight = imageDataContainers.$image.height();
 
@@ -695,10 +697,7 @@ Imcms.define("imcms-image-editor-builder",
                 $croppingArea: imageDataContainers.$cropArea,
                 $cropImg: $cropImg,
                 $originImg: imageDataContainers.$image,
-                $topLeftAngle: imageDataContainers.$angleTopLeft,
-                $topRightAngle: imageDataContainers.$angleTopRight,
-                $bottomRightAngle: imageDataContainers.$angleBottomRight,
-                $bottomLeftAngle: imageDataContainers.$angleBottomLeft,
+                angles: imageDataContainers.angles,
                 borderWidth: angleBorderSize
             });
         }
