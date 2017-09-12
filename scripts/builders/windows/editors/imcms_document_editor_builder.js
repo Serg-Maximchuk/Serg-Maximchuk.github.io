@@ -222,21 +222,13 @@ Imcms.define("imcms-document-editor-builder",
         }
 
         function buildEditorBody(documentList, opts) {
-            var documentListBEM = new BEM({
+            return new BEM({
                 block: "imcms-document-list",
                 elements: {
-                    "titles": "imcms-document-list-titles",
-                    "items": "imcms-document-items"
+                    "titles": buildDocumentListTitlesRow(),
+                    "items": buildDocumentList(documentList, opts)
                 }
-            });
-
-            var $titles = buildDocumentListTitlesRow();
-            var $docList = buildDocumentList(documentList, opts);
-
-            return documentListBEM.buildBlock("<div>", [
-                {"titles": $titles},
-                {"items": $docList}
-            ]);
+            }).buildBlockStructure("<div>");
         }
 
         var $documentsContainer, $editorBody;
@@ -250,15 +242,12 @@ Imcms.define("imcms-document-editor-builder",
         }
 
         function buildBody() {
-            var bodyBEM = new BEM({
+            return $documentsContainer = new BEM({
                 block: "imcms-document-editor-body",
-                elements: {"body-head": "imcms-body-head"}
-            });
-
-            var $head = buildBodyHead();
-            $documentsContainer = bodyBEM.buildBlock("<div>", [{"body-head": $head}]);
-
-            return $documentsContainer;
+                elements: {
+                    "body-head": buildBodyHead()
+                }
+            }).buildBlockStructure("<div>");
         }
 
         function loadDocumentEditorContent(opts) {
