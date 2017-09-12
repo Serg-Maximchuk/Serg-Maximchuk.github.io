@@ -285,25 +285,16 @@ Imcms.define("imcms-image-editor-builder",
             }
 
             function buildBottomPanel() {
-                var bottomPanelBEM = new BEM({
+                return new BEM({
                     block: "imcms-editable-img-controls",
                     elements: {
-                        "control-size": "imcms-edit-size",
-                        "control-scale-n-rotate": "imcms-edit-image",
-                        "control-view": "imcms-editable-img-control-tabs"
+                        "control-size": buildEditSizeControls(),
+                        "control-scale-n-rotate": buildScaleAndRotateControls(),
+                        "control-view": buildSwitchViewControls()
                     }
-                });
-
-                var $editSizeControls = buildEditSizeControls();
-                var $scaleAndRotateControls = buildScaleAndRotateControls();
-                var $switchViewControls = buildSwitchViewControls();
-
-                return bottomPanelBEM.buildBlock("<div>", [
-                    {"control-size": $editSizeControls},
-                    {"control-scale-n-rotate": $scaleAndRotateControls},
-                    {"control-view": $switchViewControls}
-                ]);
+                }).buildBlockStructure("<div>");
             }
+
 
             $editableImageArea = buildEditableImageArea();
             $bottomPanel = buildBottomPanel();
