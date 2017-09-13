@@ -157,112 +157,103 @@ Imcms.define("imcms-life-cycle-tab-builder",
             ]);
         }
 
+        function buildPublisherSelectRow() {
+            tabData.$publisherSelect = components.selects.imcmsSelect("<div>", {
+                id: "doc-publisher",
+                text: "Publisher",
+                name: "publisher"
+            });
+
+            usersRestApi.read(null).done(function (users) {
+                var usersDataMapped = users.map(function (user) {
+                        return {
+                            text: user.username,
+                            "data-value": user.id
+                        }
+                    })
+                ;
+
+                components.selects.addOptionsToSelect(usersDataMapped, tabData.$publisherSelect);
+            });// todo receive users with specific role admin
+
+            return lifeCycleInnerStructureBEM.buildBlock("<div>", [{"select": tabData.$publisherSelect}]);
+        }
+
+        function buildLanguagesContainer() {
+            var $languagesTitle = components.texts.titleText("<div>", "If requested language is missing:");
+
+            tabData.$showDefaultLang = components.radios.imcmsRadio("<div>", {
+                text: "Show in default language if enabled",
+                name: "langSetting",
+                value: "SHOW_DEFAULT",
+                checked: "checked" // default value
+            });
+            tabData.$doNotShow = components.radios.imcmsRadio("<div>", {
+                text: "Don't show at all",
+                name: "langSetting",
+                value: "DO_NOT_SHOW"
+            });
+
+            return lifeCycleInnerStructureBEM.buildBlock("<div>", [
+                {"title": $languagesTitle},
+                {"item": tabData.$showDefaultLang},
+                {"item": tabData.$doNotShow}
+            ]);
+        }
+
+        function buildCurrentVersionRow() {
+            var $currentVersionRowTitle = components.texts.titleText("<div>", "Current version:"),
+                $docVersionSaveDateTime = components.dateTime.dateTimeReadOnly()
+            ;
+
+            tabData.$currentVersionNumber = components.texts.textBox("<div>", {
+                readonly: "readonly",
+                value: "0"
+            });
+            tabData.docVersionSaveDateTime = {
+                date: new DatePicker($docVersionSaveDateTime),
+                time: new TimePicker($docVersionSaveDateTime)
+            };
+
+            return lifeCycleInnerStructureBEM.buildBlock("<div>", [
+                {"title": $currentVersionRowTitle},
+                {
+                    "item": tabData.$currentVersionNumber,
+                    modifiers: itemModifiers.concat("short")
+                }, {
+                    "item": $docVersionSaveDateTime,
+                    modifiers: itemModifiers
+                }
+            ]);
+        }
+
+        function buildDocVersionsInfoRow() {
+            // todo implement appearance logic for this text
+            var $offlineVersionInfo = components.texts.infoText("<div>", "This offline version has changes."),
+                $savingVersionInfo = components.texts.infoText("<div>",
+                    "Please press \"Save and publish this version\" to publish as: version 0000.", {
+                        id: "save-as-new-version-message"
+                    })
+            ;
+            return lifeCycleInnerStructureBEM.buildBlock("<div>", [
+                {"item": $offlineVersionInfo},
+                {"item": $savingVersionInfo}
+            ]);
+        }
+
         return {
             name: "life cycle",
             buildTab: function (index) {
-                var $docStatusSelectContainer = buildDocStatusSelect(),
-                    $publishedDateTimeContainer = buildPublishedDateTimeContainer(),
-                    $archivedDateTimeContainer = buildArchivedDateTimeContainer(),
-                    $publishEndDateTimeContainer = buildPublishEndDateTimeContainer()
-                ;
-
-                // publisher select row
-
-                tabData.$publisherSelect = components.selects.imcmsSelect("<div>", {
-                    id: "doc-publisher",
-                    text: "Publisher",
-                    name: "publisher"
-                });
-
-                usersRestApi.read(null).done(function (users) {
-                    var usersDataMapped = users.map(function (user) {
-                            return {
-                                text: user.username,
-                                "data-value": user.id
-                            }
-                        })
-                    ;
-
-                    components.selects.addOptionsToSelect(usersDataMapped, tabData.$publisherSelect);
-                });// todo receive users with specific role admin
-
-                var $publisherSelectContainer = lifeCycleInnerStructureBEM.buildBlock("<div>", [
-                    {"select": tabData.$publisherSelect}
-                ]);
-
-                // languages row
-
-                var $languagesTitle = components.texts.titleText("<div>", "If requested language is missing:");
-
-                tabData.$showDefaultLang = components.radios.imcmsRadio("<div>", {
-                    text: "Show in default language if enabled",
-                    name: "langSetting",
-                    value: "SHOW_DEFAULT",
-                    checked: "checked" // default value
-                });
-                tabData.$doNotShow = components.radios.imcmsRadio("<div>", {
-                    text: "Don't show at all",
-                    name: "langSetting",
-                    value: "DO_NOT_SHOW"
-                });
-
-                var $languagesContainer = lifeCycleInnerStructureBEM.buildBlock("<div>", [
-                    {"title": $languagesTitle},
-                    {"item": tabData.$showDefaultLang},
-                    {"item": tabData.$doNotShow}
-                ]);
-
-                // current version row
-
-                var $currentVersionRowTitle = components.texts.titleText("<div>", "Current version:");
-                tabData.$currentVersionNumber = components.texts.textBox("<div>", {
-                    readonly: "readonly",
-                    value: "0"
-                });
-
-                var $docVersionSaveDateTime = components.dateTime.dateTimeReadOnly(),
-                    $docVersionContainer = lifeCycleInnerStructureBEM.buildBlock("<div>", [
-                        {"title": $currentVersionRowTitle},
-                        {
-                            "item": tabData.$currentVersionNumber,
-                            modifiers: itemModifiers.concat("short")
-                        }, {
-                            "item": $docVersionSaveDateTime,
-                            modifiers: itemModifiers
-                        }
-                    ]),
-
-                    // doc versions info row
-
-                    // todo implement appearance logic for this text
-                    $offlineVersionInfo = components.texts.infoText("<div>", "This offline version has changes."),
-                    $savingVersionInfo = components.texts.infoText("<div>",
-                        "Please press \"Save and publish this version\" to publish as: version 0000.", {
-                            id: "save-as-new-version-message"
-                        }),
-                    $docVersionsInfoContainer = lifeCycleInnerStructureBEM.buildBlock("<div>", [
-                        {"item": $offlineVersionInfo},
-                        {"item": $savingVersionInfo}
-                    ])
-                ;
-
-                tabData.docVersionSaveDateTime = {
-                    date: new DatePicker($docVersionSaveDateTime),
-                    time: new TimePicker($docVersionSaveDateTime)
-                };
-
-                var formElements = [
-                    $docStatusSelectContainer,
-                    $publishedDateTimeContainer,
-                    $archivedDateTimeContainer,
-                    $publishEndDateTimeContainer,
-                    $publisherSelectContainer,
-                    $languagesContainer,
-                    $docVersionContainer,
-                    $docVersionsInfoContainer
-                ];
-
-                return linker.buildFormBlock(formElements, index);
+                return linker.buildFormBlock([
+                    buildDocStatusSelect(),
+                    buildPublishedDateTimeContainer(),
+                    buildArchivedDateTimeContainer(),
+                    buildPublishEndDateTimeContainer(),
+                    buildPublisherSelectRow(),
+                    buildLanguagesContainer(),
+                    buildCurrentVersionRow(),
+                    buildDocVersionsInfoRow()
+                ], index);
             },
             fillTabDataFromDocument: function (document) {
                 tabData.$docStatusSelect.selectValue(document.status);
@@ -312,7 +303,6 @@ Imcms.define("imcms-life-cycle-tab-builder",
                 tabData.publishEndDateTime.time.setTime(emptyString);
 
                 tabData.$publisherSelect.selectFirst();
-
                 tabData.$showDefaultLang.setChecked(true); //default value
 
                 tabData.$currentVersionNumber.setValue(emptyString);
