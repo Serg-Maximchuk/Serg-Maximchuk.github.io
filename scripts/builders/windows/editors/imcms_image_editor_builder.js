@@ -139,8 +139,9 @@ Imcms.define("imcms-image-editor-builder",
 
                 imageDataContainers.$image = editableImgAreaBEM.buildElement("img", "<img>");
                 imageDataContainers.$shadow = editableImgAreaBEM.buildElement("layout", "<div>");
+                imageDataContainers.$cropImg = $("<img>", {"class": "imcms-crop-area__crop-img"});
                 imageDataContainers.$cropArea = editableImgAreaBEM.buildElement("crop-area", "<div>")
-                    .append($("<img>", {"class": "imcms-crop-area__crop-img"}));
+                    .append(imageDataContainers.$cropImg);
 
                 imageDataContainers.angles = {
                     $topLeft: editableImgAreaBEM.buildElement("angle", "<div>", {}, ["top-left"]),
@@ -245,7 +246,8 @@ Imcms.define("imcms-image-editor-builder",
             function rotate(angleDelta) {
                 angle += angleDelta;
                 imageDataContainers.$image.css({"transform": "rotate(" + angle + "deg)"});
-                imageDataContainers.$cropArea.css({"transform": "rotate(" + angle + "deg)"});
+                imageDataContainers.$cropImg.css({"transform": "rotate(" + angle + "deg)"});
+                imageDataContainers.$shadow.css({"transform": "rotate(" + angle + "deg)"});
             }
 
             function rotateLeft() {
@@ -631,8 +633,7 @@ Imcms.define("imcms-image-editor-builder",
                 top: angleBorderSize
             });
 
-            var $cropImg = imageDataContainers.$cropArea.find("img")
-                .attr("src", imageData.path);
+            imageDataContainers.$cropImg.attr("src", imageData.path);
 
             // todo: receive correct crop area
             imageDataContainers.$cropArea.css({
@@ -645,7 +646,7 @@ Imcms.define("imcms-image-editor-builder",
             imageCropper.initImageCropper({
                 $imageEditor: imageWindowBuilder.$editor,
                 $croppingArea: imageDataContainers.$cropArea,
-                $cropImg: $cropImg,
+                $cropImg: imageDataContainers.$cropImg,
                 $originImg: imageDataContainers.$image,
                 angles: imageDataContainers.angles,
                 borderWidth: angleBorderSize
