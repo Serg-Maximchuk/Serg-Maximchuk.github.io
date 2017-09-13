@@ -17,7 +17,7 @@ Imcms.define("imcms-status-tab-builder",
             tabData = {}
         ;
 
-        function buildRowBlock($dateTimeField, $doneByField) {
+        function buildRowBlock($dateTimeField, $doneByInput) {
             return new BEM({
                 block: "imcms-field",
                 elements: {
@@ -27,175 +27,94 @@ Imcms.define("imcms-status-tab-builder",
                     "item": $dateTimeField,
                     modifiers: ["col-3", "float-l"]
                 }, {
-                    "item": $doneByField,
+                "item": buildDoneByField($doneByInput),
                     modifiers: ["col-2-3", "float-l"]
                 }]
             );
         }
 
-        function buildCreatedInfoRow() {
-            var $createdTimeTitle = statusItemBEM.buildElement("label", "<div>", {text: "Created"}),
-                $createdDate = components.dateTime.dateBoxReadOnly({id: "createdDate"}),
-                $createdTime = components.dateTime.timeBoxReadOnly({id: "createdTime"}),
-                $createdDateTimeField = statusItemBEM.buildBlock("<div>", [{
-                    "label": $createdTimeTitle
-                }, {
-                    "input": $createdDate,
-                    modifiers: boxModifiers
-                }, {
-                    "input": $createdTime,
-                    modifiers: boxModifiers
-                }]),
-                $createdByTitle = statusItemBEM.buildElement("label", "<div>", {text: "By"}),
-                $createdBy = components.texts.textBox("<div>", {
-                    id: "createdBy",
-                    readonly: "readonly"
-                }),
-                $createdByField = statusItemBEM.buildBlock("<div>", [{
-                        "label": $createdByTitle
-                    }, {
-                        "input": $createdBy,
-                        modifiers: boxModifiers
-                    }]
-                )
-            ;
-            tabData.createdDate = new DatePicker($createdDate);
-            tabData.createdTime = new TimePicker($createdTime);
-            tabData.$createdBy = $createdBy;
+        function buildDateTimeField(title, $dateField, $timeField) {
+            return statusItemBEM.buildBlock("<div>", [{
+                "label": statusItemBEM.buildElement("label", "<div>", {text: title})
+            }, {
+                "input": $dateField,
+                modifiers: boxModifiers
+            }, {
+                "input": $timeField,
+                modifiers: boxModifiers
+            }]);
+        }
 
-            return buildRowBlock($createdDateTimeField, $createdByField);
+        function buildDoneByField($input) {
+            return statusItemBEM.buildBlock("<div>", [{
+                    "label": statusItemBEM.buildElement("label", "<div>", {text: "By"})
+                }, {
+                    "input": $input,
+                    modifiers: boxModifiers
+                }]
+            );
+        }
+
+        function buildCreatedInfoRow() {
+            tabData.$createdDate = components.dateTime.dateBoxReadOnly({id: "createdDate"});
+            tabData.$createdTime = components.dateTime.timeBoxReadOnly({id: "createdTime"});
+            tabData.$createdBy = components.texts.textBox("<div>", {
+                id: "createdBy",
+                readonly: "readonly"
+            });
+
+            var $createdDateTimeField = buildDateTimeField("Created", tabData.$createdDate, tabData.$createdTime);
+            return buildRowBlock($createdDateTimeField, tabData.$createdBy);
         }
 
         function buildModifiedInfoRow() {
-            var $modifiedTimeTitle = statusItemBEM.buildElement("label", "<div>", {text: "Modified"}),
-                $modifiedDate = components.dateTime.dateBoxReadOnly({id: "modifiedDate"}),
-                $modifiedTime = components.dateTime.timeBoxReadOnly({id: "modifiedTime"}),
-                $modifiedDateTimeField = statusItemBEM.buildBlock("<div>", [{
-                    "label": $modifiedTimeTitle
-                }, {
-                    "input": $modifiedDate,
-                    modifiers: boxModifiers
-                }, {
-                    "input": $modifiedTime,
-                    modifiers: boxModifiers
-                }]),
-                $modifiedByTitle = statusItemBEM.buildElement("label", "<div>", {text: "By"}),
-                $modifiedBy = components.texts.textBox("<div>", {
-                    id: "modifiedBy",
-                    readonly: "readonly"
-                }),
-                $modifiedByField = statusItemBEM.buildBlock("<div>", [{
-                        "label": $modifiedByTitle
-                    }, {
-                        "input": $modifiedBy,
-                        modifiers: boxModifiers
-                    }]
-                )
-            ;
-            tabData.modifiedDate = new DatePicker($modifiedDate);
-            tabData.modifiedTime = new TimePicker($modifiedTime);
-            tabData.$modifiedBy = $modifiedBy;
+            tabData.modifiedDate = components.dateTime.dateBoxReadOnly({id: "modifiedDate"});
+            tabData.modifiedTime = components.dateTime.timeBoxReadOnly({id: "modifiedTime"});
+            tabData.$modifiedBy = components.texts.textBox("<div>", {
+                id: "modifiedBy",
+                readonly: "readonly"
+            });
 
-            return buildRowBlock($modifiedDateTimeField, $modifiedByField);
+            var $modifiedDateTimeField = buildDateTimeField("Modified", tabData.modifiedDate, tabData.modifiedTime);
+            return buildRowBlock($modifiedDateTimeField, tabData.$modifiedBy);
         }
 
         function buildArchivedInfoRow() {
-            var $archivedTimeTitle = statusItemBEM.buildElement("label", "<div>", {text: "Archived"}),
-                $archivedDate = components.dateTime.dateBoxReadOnly({id: "archivedDate"}),
-                $archivedTime = components.dateTime.timeBoxReadOnly({id: "archivedTime"}),
-                $archivedDateTimeField = statusItemBEM.buildBlock("<div>", [{
-                    "label": $archivedTimeTitle
-                }, {
-                    "input": $archivedDate,
-                    modifiers: boxModifiers
-                }, {
-                    "input": $archivedTime,
-                    modifiers: boxModifiers
-                }]),
-                $archivedByTitle = statusItemBEM.buildElement("label", "<div>", {text: "By"}),
-                $archivedBy = components.texts.textBox("<div>", {
-                    id: "archivedBy",
-                    readonly: "readonly"
-                }),
-                $archivedByField = statusItemBEM.buildBlock("<div>", [{
-                        "label": $archivedByTitle
-                    }, {
-                        "input": $archivedBy,
-                        modifiers: boxModifiers
-                    }]
-                )
-            ;
-            tabData.archivedDate = new DatePicker($archivedDate);
-            tabData.archivedTime = new TimePicker($archivedTime);
-            tabData.$archivedBy = $archivedBy;
+            tabData.archivedDate = components.dateTime.dateBoxReadOnly({id: "archivedDate"});
+            tabData.archivedTime = components.dateTime.timeBoxReadOnly({id: "archivedTime"});
+            tabData.$archivedBy = components.texts.textBox("<div>", {
+                id: "archivedBy",
+                readonly: "readonly"
+            });
 
-            return buildRowBlock($archivedDateTimeField, $archivedByField);
+            var $archivedDateTimeField = buildDateTimeField("Archived", tabData.archivedDate, tabData.archivedTime);
+            return buildRowBlock($archivedDateTimeField, tabData.$archivedBy);
         }
 
         function buildPublishedInfoRow() {
-            var $publishedTimeTitle = statusItemBEM.buildElement("label", "<div>", {text: "Published"}),
-                $publishedDate = components.dateTime.dateBoxReadOnly({id: "publishedDate"}),
-                $publishedTime = components.dateTime.timeBoxReadOnly({id: "publishedTime"}),
-                $publishedDateTimeField = statusItemBEM.buildBlock("<div>", [{
-                    "label": $publishedTimeTitle
-                }, {
-                    "input": $publishedDate,
-                    modifiers: boxModifiers
-                }, {
-                    "input": $publishedTime,
-                    modifiers: boxModifiers
-                }]),
-                $publishedByTitle = statusItemBEM.buildElement("label", "<div>", {text: "By"}),
-                $publishedBy = components.texts.textBox("<div>", {
-                    id: "publishedBy",
-                    readonly: "readonly"
-                }),
-                $publishedByField = statusItemBEM.buildBlock("<div>", [{
-                        "label": $publishedByTitle
-                    }, {
-                        "input": $publishedBy,
-                        modifiers: boxModifiers
-                    }]
-                )
-            ;
-            tabData.publishedDate = new DatePicker($publishedDate);
-            tabData.publishedTime = new TimePicker($publishedTime);
-            tabData.$publishedBy = $publishedBy;
+            tabData.publishedDate = components.dateTime.dateBoxReadOnly({id: "publishedDate"});
+            tabData.publishedTime = components.dateTime.timeBoxReadOnly({id: "publishedTime"});
+            tabData.$publishedBy = components.texts.textBox("<div>", {
+                id: "publishedBy",
+                readonly: "readonly"
+            });
 
-            return buildRowBlock($publishedDateTimeField, $publishedByField);
+            var $publishedDateTimeField = buildDateTimeField("Published", tabData.publishedDate, tabData.publishedTime);
+            return buildRowBlock($publishedDateTimeField, tabData.$publishedBy);
         }
 
         function buildPublicationEndInfoRow() {
-            var $publicationEndTimeTitle = statusItemBEM.buildElement("label", "<div>", {text: "Publication end"}),
-                $publicationEndDate = components.dateTime.dateBoxReadOnly({id: "publishEndDate"}),
-                $publicationEndTime = components.dateTime.timeBoxReadOnly({id: "publishEndTime"}),
-                $publicationEndDateTimeField = statusItemBEM.buildBlock("<div>", [{
-                    "label": $publicationEndTimeTitle
-                }, {
-                    "input": $publicationEndDate,
-                    modifiers: boxModifiers
-                }, {
-                    "input": $publicationEndTime,
-                    modifiers: boxModifiers
-                }]),
-                $publicationEndByTitle = statusItemBEM.buildElement("label", "<div>", {text: "By"}),
-                $publicationEndBy = components.texts.textBox("<div>", {
-                    id: "publishEndBy",
-                    readonly: "readonly"
-                }),
-                $publicationEndByField = statusItemBEM.buildBlock("<div>", [{
-                        "label": $publicationEndByTitle
-                    }, {
-                        "input": $publicationEndBy,
-                        modifiers: boxModifiers
-                    }]
-                )
-            ;
-            tabData.publicationEndDate = new DatePicker($publicationEndDate);
-            tabData.publicationEndTime = new TimePicker($publicationEndTime);
-            tabData.$publicationEndBy = $publicationEndBy;
+            tabData.publicationEndDate = components.dateTime.dateBoxReadOnly({id: "publishEndDate"});
+            tabData.publicationEndTime = components.dateTime.timeBoxReadOnly({id: "publishEndTime"});
+            tabData.$publicationEndBy = components.texts.textBox("<div>", {
+                id: "publishEndBy",
+                readonly: "readonly"
+            });
 
-            return buildRowBlock($publicationEndDateTimeField, $publicationEndByField);
+            var $publicationEndDateTimeField = buildDateTimeField("Publication end", tabData.publicationEndDate,
+                tabData.publicationEndTime
+            );
+            return buildRowBlock($publicationEndDateTimeField, tabData.$publicationEndBy);
         }
 
         return {
@@ -210,8 +129,8 @@ Imcms.define("imcms-status-tab-builder",
                 ], index);
             },
             fillTabDataFromDocument: function (document) {
-                tabData.createdDate.setDate(document.created.date);
-                tabData.createdTime.setTime(document.created.time);
+                tabData.$createdDate.setDate(document.created.date);
+                tabData.$createdTime.setTime(document.created.time);
                 tabData.$createdBy.setValue(document.created.by);
 
                 tabData.modifiedDate.setDate(document.modified.date);
@@ -233,8 +152,8 @@ Imcms.define("imcms-status-tab-builder",
             clearTabData: function () {
                 var emptyString = '';
 
-                tabData.createdDate.setDate(emptyString);
-                tabData.createdTime.setTime(emptyString);
+                tabData.$createdDate.setDate(emptyString);
+                tabData.$createdTime.setTime(emptyString);
                 tabData.$createdBy.setValue(emptyString);
 
                 tabData.modifiedDate.setDate(emptyString);
