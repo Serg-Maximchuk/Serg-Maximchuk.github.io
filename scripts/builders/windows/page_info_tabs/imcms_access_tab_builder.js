@@ -82,10 +82,10 @@ Imcms.define("imcms-access-tab-builder",
             ]);
         }
 
+        var tabData = {};
+
         return {
             name: "access",
-            data: {},
-
             buildTab: function (index, docId) {
                 var $addRoleSelect = components.selects.imcmsSelect("<div>");
 
@@ -163,9 +163,9 @@ Imcms.define("imcms-access-tab-builder",
                     }).buildBlockStructure("<div>")
                 ;
 
-                this.data.$addRoleSelect = $addRoleSelect;
-                this.data.$rolesBody = $rolesBody;
-                this.data.$rolesField = $rolesField.css("display", "none");
+                tabData.$addRoleSelect = $addRoleSelect;
+                tabData.$rolesBody = $rolesBody;
+                tabData.$rolesField = $rolesField.css("display", "none");
 
                 $accessBlock.prepend($rolesField);
 
@@ -174,13 +174,13 @@ Imcms.define("imcms-access-tab-builder",
 
             fillTabDataFromDocument: function (document) {
 
-                var $addRoleSelect = this.data.$addRoleSelect;
-                var $rolesBody = this.data.$rolesBody;
+                var $addRoleSelect = tabData.$addRoleSelect;
+                var $rolesBody = tabData.$rolesBody;
 
                 var roles = createRolesRows($addRoleSelect, document);
                 if (roles.length) {
                     $rolesBody.prepend(roles);
-                    this.data.$rolesField.css("display", "block");
+                    tabData.$rolesField.css("display", "block");
                 }
 
                 function createRolesRows($addRoleSelect, document) {
@@ -217,8 +217,8 @@ Imcms.define("imcms-access-tab-builder",
             },
 
             clearTabData: function () {
-                this.data.$rolesBody.empty();
-                this.data.$rolesField.css("display", "none");
+                tabData.$rolesBody.empty();
+                tabData.$rolesField.css("display", "none");
                 this.fillTabDataFromDocument({roles: []});
             }
         };
