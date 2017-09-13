@@ -150,7 +150,9 @@ Imcms.define("imcms-date-picker",
                 .on('blur', currentDateValidation)
                 .on('input', rebuildCalendar);
 
-            this.setDate = apiSetDate($dateBoxContainer);
+            $dateBoxContainer.setDate = apiSetDate($dateBoxContainer);
+
+            return $dateBoxContainer;
         };
 
         return DatePicker
