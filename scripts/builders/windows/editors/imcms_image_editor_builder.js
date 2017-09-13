@@ -201,26 +201,35 @@ Imcms.define("imcms-image-editor-builder",
                 ]);
             }
 
-            function resizeImage(newWidth, newHeight, backgroundSizeVal) {
-                imageDataContainers.$image.animate({
-                    "width": newWidth + "px",
-                    "height": newHeight + "px"
-                }, 200).css({"background-size": backgroundSizeVal});
+            function resizeImage(newWidth, newHeight) {
+                imageDataContainers.$image.add(imageDataContainers.$cropImg)
+                    .add(imageDataContainers.$cropArea)
+                    .animate({
+                        "width": newWidth,
+                        "height": newHeight
+                    }, 200);
 
-                imageDataContainers.$shadow.animate({
-                    "width": newWidth + "px",
-                    "height": newHeight + "px"
+                var angleHeight = imageDataContainers.angles.$bottomLeft.height();
+                var angleWidth = imageDataContainers.angles.$bottomLeft.width();
+                var angleBorderSize = parseInt(imageDataContainers.angles.$topLeft.css("border-width")) || 0;
+
+                imageDataContainers.angles.$bottomLeft.animate({
+                    "top": newHeight - angleHeight + angleBorderSize
                 }, 200);
-
-                imageDataContainers.$cropArea.css({"background-size": backgroundSizeVal});
+                imageDataContainers.angles.$topRight.animate({
+                    "left": newWidth - angleWidth + angleBorderSize
+                }, 200);
+                imageDataContainers.angles.$bottomRight.animate({
+                    "top": newHeight - angleHeight + angleBorderSize,
+                    "left": newWidth - angleWidth + angleBorderSize
+                }, 200);
             }
 
             function zoom(zoomCoefficient) {
                 var newHeight = ~~(imageDataContainers.$image.height() * zoomCoefficient),
-                    newWidth = ~~(imageDataContainers.$image.width() * zoomCoefficient),
-                    backgroundSizeVal = "" + newWidth + "px " + newHeight + "px"
+                    newWidth = ~~(imageDataContainers.$image.width() * zoomCoefficient)
                 ;
-                resizeImage(newWidth, newHeight, backgroundSizeVal);
+                resizeImage(newWidth, newHeight);
             }
 
             function zoomPlus() {
@@ -235,10 +244,9 @@ Imcms.define("imcms-image-editor-builder",
                 // fixme: save proportions! now image becomes just as editable area
                 // only one side should be as area's side and one as needed to save proportions
                 var newHeight = $editableImageArea.height(),
-                    newWidth = $editableImageArea.width(),
-                    backgroundSizeVal = "" + newWidth + "px " + "auto"
+                    newWidth = $editableImageArea.width()
                 ;
-                resizeImage(newWidth, newHeight, backgroundSizeVal);
+                resizeImage(newWidth, newHeight);
             }
 
             var angle = 0;
