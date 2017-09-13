@@ -122,6 +122,14 @@ Imcms.define("imcms-date-picker",
 
         }
 
+        function apiSetDate($dateBoxContainer) {
+            return function (date) {
+                return $dateBoxContainer
+                    .find(".imcms-current-date__input")
+                    .val(date);
+            }
+        }
+
         $(document).click(closeCalendar);
 
         var DatePicker = function ($dateBoxContainer) {
@@ -141,6 +149,10 @@ Imcms.define("imcms-date-picker",
             this.datePicker.find(".imcms-current-date__input")
                 .on('blur', currentDateValidation)
                 .on('input', rebuildCalendar);
+
+            $dateBoxContainer.setDate = apiSetDate($dateBoxContainer);
+
+            return $dateBoxContainer;
         };
         DatePicker.prototype = {
             setDate: function (date) {
