@@ -36,6 +36,7 @@ Imcms.define("imcms-admin-panel-builder",
             function buildPanelButton(buttonData) {
                 var attributes = {
                     html: buttonData.content,
+                    href: buttonData.href,
                     click: buttonData.onClick
                 };
 
@@ -43,45 +44,55 @@ Imcms.define("imcms-admin-panel-builder",
                     attributes["class"] = "imcms-menu__item--active";
                 }
 
-                return panelButtonsBEM.buildBlockElement("item", "<li>", attributes, buttonData.modifiers);
+                return panelButtonsBEM.buildBlockElement("item", buttonData.tag, attributes, buttonData.modifiers);
             }
 
             var buttons = [
                 {
                     name: 'public',
-                    content: '<a href="index.html">public</a>', // todo: temporary demo pages, should be changed!!!1
+                    tag: '<a>',
+                    href: 'index.html', // todo: temporary demo pages, should be changed!!!1
+                    content: 'public',
                     modifiers: ["public"]
                 }, {
                     name: 'edit',
-                    content: '<a href="edit_mode.html">edit</a>', // todo: temporary demo pages, should be changed!!!1
+                    tag: '<a>',
+                    href: 'edit_mode.html', // todo: temporary demo pages, should be changed!!!1
+                    content: 'edit',
                     modifiers: ["edit"]
                 }, {
                     name: 'preview',
+                    tag: "<li>",
                     content: "preview",
                     onClick: getNotImplementedButtonClick("preview click"),
                     modifiers: ["preview"]
                 }, {
                     name: 'publish_offline',
+                    tag: "<li>",
                     content: "publish offline",
                     onClick: getNotImplementedButtonClick("publish offline version click"),
                     modifiers: ["publish-of"]
                 }, {
                     name: 'page_info',
+                    tag: "<li>",
                     content: "page info",
                     onClick: showPageInfo,
                     modifiers: ["page-info"]
                 }, {
                     name: 'document',
+                    tag: "<li>",
                     content: "document",
                     onClick: initDocumentEditor,
                     modifiers: ["document"]
                 }, {
                     name: 'admin',
+                    tag: "<li>",
                     content: "admin",
                     onClick: getNotImplementedButtonClick("admin click"),
                     modifiers: ["admin"]
                 }, {
                     name: 'logout',
+                    tag: "<li>",
                     content: componentsBuilder.buttons.positiveButton({
                         text: "log out",
                         click: getNotImplementedButtonClick("logout click")

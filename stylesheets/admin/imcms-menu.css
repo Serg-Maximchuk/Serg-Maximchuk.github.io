@@ -27,7 +27,7 @@
     height: 100%;
 }
 
-.imcms-menu__item:last-of-type {
+.imcms-menu__item:last-child {
     background: none;
     cursor: default;
     text-align: center;
@@ -47,7 +47,7 @@
     height: 3px;
 }
 
-.imcms-menu__item:last-of-type:hover:before {
+.imcms-menu__item:last-child:hover:before {
     display: none;
 }
 
@@ -139,7 +139,7 @@
         min-width: 80px;
     }
 
-    .imcms-menu__item:last-of-type {
+    .imcms-menu__item:last-child {
         width: 100px;
     }
 
@@ -168,7 +168,7 @@
         width: 100%;
     }
 
-    .imcms-menu__item:last-of-type {
+    .imcms-menu__item:last-child {
         width: 12.5%;
     }
 
