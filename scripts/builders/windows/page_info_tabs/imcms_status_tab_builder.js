@@ -1,176 +1,99 @@
 Imcms.define("imcms-status-tab-builder",
     [
-        "imcms-date-picker", "imcms-time-picker",
-        "imcms-bem-builder", "imcms-components-builder",
-        "imcms-page-info-tabs-linker"
+        "imcms-date-picker", "imcms-time-picker", "imcms-bem-builder", "imcms-components-builder",
+        "imcms-page-info-tabs-linker", "jquery"
     ],
-    function (DatePicker, TimePicker, BEM, components, linker) {
+    function (DatePicker, TimePicker, BEM, components, linker, $) {
 
-        var statusItemBEM = new BEM({
-                block: "imcms-item",
-                elements: {
-                    "label": "imcms-label",
-                    "input": ""
-                }
-            }),
-            boxModifiers = ["float-l"],
-            tabData = {}
-        ;
+        var tabData = {};
 
         function buildRowBlock($dateTimeField, $doneByInput) {
+            $dateTimeField.modifiers = ["col-3", "float-l"];
+
+            var $doneBy = buildLabelWithInputs("By", [$doneByInput]);
+            $doneBy.modifiers = ["col-2-3", "float-l"];
+
             return new BEM({
                 block: "imcms-field",
                 elements: {
-                    "item": "imcms-item"
+                    "item": [$dateTimeField, $doneBy]
                 }
-            }).buildBlock("<div>", [{
-                    "item": $dateTimeField,
-                    modifiers: ["col-3", "float-l"]
-                }, {
-                "item": buildDoneByField($doneByInput),
-                    modifiers: ["col-2-3", "float-l"]
-                }]
-            );
+            }).buildBlockStructure("<div>");
         }
 
-        function buildDateTimeField(title, $dateField, $timeField) {
-            return statusItemBEM.buildBlock("<div>", [{
-                "label": statusItemBEM.buildElement("label", "<div>", {text: title})
-            }, {
-                "input": $dateField,
-                modifiers: boxModifiers
-            }, {
-                "input": $timeField,
-                modifiers: boxModifiers
-            }]);
+        function buildLabelWithInputs(title, inputFields) {
+            var $label = $("<div>", {
+                "class": "imcms-label",
+                text: title
+            });
+
+            var inputs = inputFields.map(function ($input) {
+                $input.modifiers = ["float-l"];
+                return $input;
+            });
+
+            return new BEM({
+                block: "imcms-item",
+                elements: {
+                    "label": $label,
+                    "input": inputs
+                }
+            }).buildBlockStructure("<div>");
         }
 
-        function buildDoneByField($input) {
-            return statusItemBEM.buildBlock("<div>", [{
-                    "label": statusItemBEM.buildElement("label", "<div>", {text: "By"})
-                }, {
-                    "input": $input,
-                    modifiers: boxModifiers
-                }]
-            );
+        function saveStatusInfoRowData(rowName, $dateBlock, $timeBlock, $doneByBlock) {
+            tabData["$" + rowName + "Date"] = $dateBlock;
+            tabData["$" + rowName + "Time"] = $timeBlock;
+            tabData["$" + rowName + "By"] = $doneByBlock;
         }
 
-        function buildCreatedInfoRow() {
-            tabData.$createdDate = components.dateTime.dateBoxReadOnly({id: "createdDate"});
-            tabData.$createdTime = components.dateTime.timeBoxReadOnly({id: "createdTime"});
-            tabData.$createdBy = components.texts.textBox("<div>", {
-                id: "createdBy",
+        function buildStatusInfoRow(statusTab) {
+            var $dateBlock = components.dateTime.dateBoxReadOnly({id: statusTab.dataTitle + "Date"});
+            var $timeBlock = components.dateTime.timeBoxReadOnly({id: statusTab.dataTitle + "Time"});
+            var $doneByBlock = components.texts.textBox("<div>", {
+                id: statusTab.dataTitle + "By",
                 readonly: "readonly"
             });
 
-            var $createdDateTimeField = buildDateTimeField("Created", tabData.$createdDate, tabData.$createdTime);
-            return buildRowBlock($createdDateTimeField, tabData.$createdBy);
+            saveStatusInfoRowData(statusTab.dataTitle, $dateBlock, $timeBlock, $doneByBlock);
+
+            var $dateTimeField = buildLabelWithInputs(statusTab.title, [$dateBlock, $timeBlock]);
+            return buildRowBlock($dateTimeField, $doneByBlock);
         }
 
-        function buildModifiedInfoRow() {
-            tabData.$modifiedDate = components.dateTime.dateBoxReadOnly({id: "modifiedDate"});
-            tabData.$modifiedTime = components.dateTime.timeBoxReadOnly({id: "modifiedTime"});
-            tabData.$modifiedBy = components.texts.textBox("<div>", {
-                id: "modifiedBy",
-                readonly: "readonly"
-            });
-
-            var $modifiedDateTimeField = buildDateTimeField("Modified", tabData.$modifiedDate, tabData.$modifiedTime);
-            return buildRowBlock($modifiedDateTimeField, tabData.$modifiedBy);
+        function setStatusInfoRowDataFromDocument(rowName, document) {
+            setStatusInfoRowData(rowName, document[rowName].date, document[rowName].time, document[rowName].by);
         }
 
-        function buildArchivedInfoRow() {
-            tabData.$archivedDate = components.dateTime.dateBoxReadOnly({id: "archivedDate"});
-            tabData.$archivedTime = components.dateTime.timeBoxReadOnly({id: "archivedTime"});
-            tabData.$archivedBy = components.texts.textBox("<div>", {
-                id: "archivedBy",
-                readonly: "readonly"
-            });
-
-            var $archivedDateTimeField = buildDateTimeField("Archived", tabData.$archivedDate, tabData.$archivedTime);
-            return buildRowBlock($archivedDateTimeField, tabData.$archivedBy);
+        function setStatusInfoRowData(rowName, date, time, by) {
+            tabData["$" + rowName + "Date"].setDate(date);
+            tabData["$" + rowName + "Time"].setTime(time);
+            tabData["$" + rowName + "By"].setValue(by);
         }
 
-        function buildPublishedInfoRow() {
-            tabData.$publishedDate = components.dateTime.dateBoxReadOnly({id: "publishedDate"});
-            tabData.$publishedTime = components.dateTime.timeBoxReadOnly({id: "publishedTime"});
-            tabData.$publishedBy = components.texts.textBox("<div>", {
-                id: "publishedBy",
-                readonly: "readonly"
-            });
-
-            var $publishedDateTimeField = buildDateTimeField("Published", tabData.$publishedDate, tabData.$publishedTime);
-            return buildRowBlock($publishedDateTimeField, tabData.$publishedBy);
-        }
-
-        function buildPublicationEndInfoRow() {
-            tabData.$publicationEndDate = components.dateTime.dateBoxReadOnly({id: "publishEndDate"});
-            tabData.$publicationEndTime = components.dateTime.timeBoxReadOnly({id: "publishEndTime"});
-            tabData.$publicationEndBy = components.texts.textBox("<div>", {
-                id: "publishEndBy",
-                readonly: "readonly"
-            });
-
-            var $publicationEndDateTimeField = buildDateTimeField("Publication end", tabData.$publicationEndDate,
-                tabData.$publicationEndTime
-            );
-            return buildRowBlock($publicationEndDateTimeField, tabData.$publicationEndBy);
-        }
+        var statusTabs = [
+            {title: "Created", dataTitle: "created"},
+            {title: "Modified", dataTitle: "modified"},
+            {title: "Archived", dataTitle: "archived"},
+            {title: "Published", dataTitle: "published"},
+            {title: "Publication end", dataTitle: "publication_end"}
+        ];
 
         return {
             name: "status",
             buildTab: function (index) {
-                return linker.buildFormBlock([
-                    buildCreatedInfoRow(),
-                    buildModifiedInfoRow(),
-                    buildArchivedInfoRow(),
-                    buildPublishedInfoRow(),
-                    buildPublicationEndInfoRow()
-                ], index);
+                return linker.buildFormBlock(statusTabs.map(buildStatusInfoRow), index);
             },
             fillTabDataFromDocument: function (document) {
-                tabData.$createdDate.setDate(document.created.date);
-                tabData.$createdTime.setTime(document.created.time);
-                tabData.$createdBy.setValue(document.created.by);
-
-                tabData.$modifiedDate.setDate(document.modified.date);
-                tabData.$modifiedTime.setTime(document.modified.time);
-                tabData.$modifiedBy.setValue(document.modified.by);
-
-                tabData.$archivedDate.setDate(document.archived.date);
-                tabData.$archivedTime.setTime(document.archived.time);
-                tabData.$archivedBy.setValue(document.archived.by);
-
-                tabData.$publishedDate.setDate(document.published.date);
-                tabData.$publishedTime.setTime(document.published.time);
-                tabData.$publishedBy.setValue(document.published.by);
-
-                tabData.$publicationEndDate.setDate(document.publication_end.date);
-                tabData.$publicationEndTime.setTime(document.publication_end.time);
-                tabData.$publicationEndBy.setValue(document.publication_end.by);
+                statusTabs.forEach(function (statusTab) {
+                    setStatusInfoRowDataFromDocument(statusTab.dataTitle, document);
+                });
             },
             clearTabData: function () {
                 var emptyString = '';
-
-                tabData.$createdDate.setDate(emptyString);
-                tabData.$createdTime.setTime(emptyString);
-                tabData.$createdBy.setValue(emptyString);
-
-                tabData.$modifiedDate.setDate(emptyString);
-                tabData.$modifiedTime.setTime(emptyString);
-                tabData.$modifiedBy.setValue(emptyString);
-
-                tabData.$archivedDate.setDate(emptyString);
-                tabData.$archivedTime.setTime(emptyString);
-                tabData.$archivedBy.setValue(emptyString);
-
-                tabData.$publishedDate.setDate(emptyString);
-                tabData.$publishedTime.setTime(emptyString);
-                tabData.$publishedBy.setValue(emptyString);
-
-                tabData.$publicationEndDate.setDate(emptyString);
-                tabData.$publicationEndTime.setTime(emptyString);
-                tabData.$publicationEndBy.setValue(emptyString);
+                statusTabs.forEach(function (statusTab) {
+                    setStatusInfoRowData(statusTab.dataTitle, emptyString, emptyString, emptyString);
+                });
             }
         };
     }
