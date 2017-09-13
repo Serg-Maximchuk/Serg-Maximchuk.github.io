@@ -26,21 +26,13 @@ Imcms.define("imcms-menu-editor-builder",
         }
 
         function buildBody() {
-            var bodyBEM = new BEM({
+            return new BEM({
                 block: "imcms-menu-editor-body",
                 elements: {
-                    "left-side": "imcms-left-side",
-                    "right-side": "imcms-right-side"
+                    "left-side": $menuElementsContainer = $("<div>", {"class": "imcms-left-side"}),
+                    "right-side": $documentsContainer = $("<div>", {"class": "imcms-right-side"})
                 }
-            });
-
-            $menuElementsContainer = bodyBEM.buildElement("left-side", "<div>");
-            $documentsContainer = bodyBEM.buildElement("right-side", "<div>");
-
-            return bodyBEM.buildBlock("<div>", [
-                {"left-side": $menuElementsContainer},
-                {"right-side": $documentsContainer}
-            ]);
+            }).buildBlockStructure("<div>");
         }
 
         function buildFooter() {
