@@ -114,36 +114,25 @@ Imcms.define("imcms-loop-editor-builder",
         }
 
         function buildItem(loopEntry) {
-            var itemBEM = new BEM({
-                block: "imcms-loop-item",
-                elements: {
-                    "info": "imcms-title",
-                    "controls": "imcms-controls"
-                }
-            });
+            var $no = components.texts.titleText("<div>", loopEntry.no);
+            $no.modifiers = modifiers.ID;
 
-            var $no = itemBEM.buildElement("info", "<div>", {text: loopEntry.no});
-            var $content = itemBEM.buildElement("info", "<div>", {text: loopEntry.content});
+            var $content = components.texts.titleText("<div>", loopEntry.content);
+            $content.modifiers = modifiers.CONTENT;
+
             var $isEnabled = components.checkboxes.imcmsCheckbox("<div>", {
                 name: "isEnabled" + loopEntry.no,
                 checked: loopEntry.enabled ? "checked" : undefined
             });
-            var $deleteBtn = buildControls(loopEntry);
+            $isEnabled.modifiers = modifiers.CONTROLS;
 
-            return itemBEM.buildBlock("<div>", [
-                {
-                    "info": $no,
-                    modifiers: modifiers.ID
-                }, {
-                    "info": $content,
-                    modifiers: modifiers.CONTENT
-                }, {
-                    "info": $isEnabled,
-                    modifiers: modifiers.CONTROLS
-                }, {
-                    "controls": $deleteBtn
+            return new BEM({
+                block: "imcms-loop-item",
+                elements: {
+                    "info": [$no, $content, $isEnabled],
+                    "controls": buildControls(loopEntry)
                 }
-            ]);
+            }).buildBlockStructure("<div>");
         }
 
         function buildItems(loop) {
