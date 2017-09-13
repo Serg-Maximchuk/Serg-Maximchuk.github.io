@@ -55,96 +55,64 @@ Imcms.define("imcms-life-cycle-tab-builder",
             return lifeCycleInnerStructureBEM.buildBlock("<div>", blockElements);
         }
 
-        function buildPublishedDateTimeContainer() {
-            var $publishedTitle = components.texts.titleText("<div>", "Published"),
-                $publishDate = components.dateTime.datePickerCalendar({title: "Set published date"}),
-                $publishTime = components.dateTime.timePickerClock({title: "Set published time"}),
-                $setPublishTimeNowBtn = components.buttons.neutralButton({
+        function saveDateTimeContainerData(dataTitle, $time, $date, $dateTime) {
+            tabData["$" + dataTitle + "Time"] = $time;
+            tabData["$" + dataTitle + "Date"] = $date;
+            tabData["$" + dataTitle + "DateTime"] = $dateTime;
+        }
+
+        function buildDateTimeContainer(containerData) {
+            var $title = components.texts.titleText("<div>", containerData.title),
+                $date = components.dateTime.datePickerCalendar({title: containerData.dateTitle}),
+                $time = components.dateTime.timePickerClock({title: containerData.timeTitle}),
+                $setDateTimeNowBtn = components.buttons.neutralButton({
                     text: "Now",
                     click: onTimeNowButtonClick
                 }),
-                $setPublishTimeNowContainer = components.buttons.buttonsContainer("<div>", [$setPublishTimeNowBtn]),
-                $publishDateTime = components.dateTime.dateTimeReadOnly({title: "Saved publish date-time"}),
-                $clearPublishTimeBtn = components.buttons.neutralButton({
+                $setDateTimeNowContainer = components.buttons.buttonsContainer("<div>", [$setDateTimeNowBtn]),
+                $dateTime = components.dateTime.dateTimeReadOnly({title: containerData.savedDateTimeTitle}),
+                $clearDateTimeBtn = components.buttons.neutralButton({
                     text: "Clear",
                     click: onTimeClearButtonClick
                 }),
-                $clearPublishTimeContainer = components.buttons.buttonsContainer("<div>", [$clearPublishTimeBtn])
+                $clearDateTimeContainer = components.buttons.buttonsContainer("<div>", [$clearDateTimeBtn])
             ;
 
-            tabData.$publishTime = $publishTime;
-            tabData.$publishDate = $publishDate;
-            tabData.$publishDateTime = $publishDateTime;
+            saveDateTimeContainerData(containerData.dataTitle, $time, $date, $dateTime);
 
-            return buildDateTimeContainerBlock($publishedTitle, [
-                $publishDate,
-                $publishTime,
-                $setPublishTimeNowContainer,
-                $publishDateTime,
-                $clearPublishTimeContainer
-            ]);
+            return buildDateTimeContainerBlock($title,
+                [$date, $time, $setDateTimeNowContainer, $dateTime, $clearDateTimeContainer]
+            );
+        }
+
+        function buildPublishedDateTimeContainer() {
+            return buildDateTimeContainer({
+                title: "Published",
+                dateTitle: "Set published date",
+                timeTitle: "Set published time",
+                savedDateTimeTitle: "Saved publish date-time",
+                dataTitle: statusRowsNames[0]
+            });
         }
 
         function buildArchivedDateTimeContainer() {
-            var $archivedTitle = components.texts.titleText("<div>", "Archived"),
-                $archivedDate = components.dateTime.datePickerCalendar({title: "Set archived date"}),
-                $archivedTime = components.dateTime.timePickerClock({title: "Set archived time"}),
-                $setArchivedTimeNowBtn = components.buttons.neutralButton({
-                    text: "Now",
-                    click: onTimeNowButtonClick
-                }),
-                $setArchivedTimeNowContainer = components.buttons.buttonsContainer("<div>", [$setArchivedTimeNowBtn]),
-                $archivedDateTime = components.dateTime.dateTimeReadOnly({title: "Saved archived date-time"}),
-                $clearArchivedTimeBtn = components.buttons.neutralButton({
-                    text: "Clear",
-                    click: onTimeClearButtonClick
-                }),
-                $clearArchivedTimeContainer = components.buttons.buttonsContainer("<div>", [$clearArchivedTimeBtn])
-            ;
-
-            tabData.$archivedTime = $archivedTime;
-            tabData.$archivedDate = $archivedDate;
-            tabData.$archivedDateTime = $archivedDateTime;
-
-            return buildDateTimeContainerBlock($archivedTitle, [
-                $archivedDate,
-                $archivedTime,
-                $setArchivedTimeNowContainer,
-                $archivedDateTime,
-                $clearArchivedTimeContainer
-            ]);
+            return buildDateTimeContainer({
+                title: "Archived",
+                dateTitle: "Set archived date",
+                timeTitle: "Set archived time",
+                savedDateTimeTitle: "Saved archived date-time",
+                dataTitle: statusRowsNames[1]
+            });
         }
 
         function buildPublishEndDateTimeContainer() {
-            var $publishEndTitle = components.texts.titleText("<div>", "Publication end"),
-                $publishEndDate = components.dateTime.datePickerCalendar({title: "Set publication end date"}),
-                $publishEndTime = components.dateTime.timePickerClock({title: "Set publication end time"}),
-                $setPublishEndTimeNowBtn = components.buttons.neutralButton({
-                    text: "Now",
-                    click: onTimeNowButtonClick
-                }),
-                $setPublishEndTimeNowContainer = components.buttons.buttonsContainer("<div>", [$setPublishEndTimeNowBtn]),
-                $publishEndDateTime = components.dateTime.dateTimeReadOnly({
-                    title: "Saved publication end date-time"
-                }),
-                $clearPublishEndTimeBtn = components.buttons.neutralButton({
-                    text: "Clear",
-                    click: onTimeClearButtonClick
-                }),
-                $clearPublishEndTimeContainer = components.buttons.buttonsContainer("<div>", [$clearPublishEndTimeBtn])
-            ;
-
-            tabData.$publishEndTime = $publishEndTime;
-            tabData.$publishEndDate = $publishEndDate;
-            tabData.$publishEndDateTime = $publishEndDateTime;
-
-            return buildDateTimeContainerBlock($publishEndTitle, [
-                $publishEndDate,
-                $publishEndTime,
-                $setPublishEndTimeNowContainer,
-                $publishEndDateTime,
-                $clearPublishEndTimeContainer
-            ]);
+            return buildDateTimeContainer({
+                title: "Publication end",
+                dateTitle: "Set publication end date",
+                timeTitle: "Set publication end time",
+                savedDateTimeTitle: "Saved publication end date-time",
+                dataTitle: statusRowsNames[2]
+            });
         }
 
         function buildPublisherSelectRow() {
@@ -226,6 +194,22 @@ Imcms.define("imcms-life-cycle-tab-builder",
             ]);
         }
 
+        function setStatusInfoRowDataFromDocument(rowName, document) {
+            setStatusInfoRowData(rowName, document[rowName].date, document[rowName].time);
+        }
+
+        function setStatusInfoRowData(rowName, date, time) {
+            tabData["$" + rowName + "Date"].setDate(date);
+            tabData["$" + rowName + "Time"].setTime(time);
+            tabData["$" + rowName + "DateTime"].setDate(date).setTime(time);
+        }
+
+        var statusRowsNames = [
+            "published",
+            "archived",
+            "publication_end"
+        ];
+
         return {
             name: "life cycle",
             buildTab: function (index) {
@@ -243,17 +227,9 @@ Imcms.define("imcms-life-cycle-tab-builder",
             fillTabDataFromDocument: function (document) {
                 tabData.$docStatusSelect.selectValue(document.status);
 
-                tabData.$publishDate.setDate(document.published.date);
-                tabData.$publishTime.setTime(document.published.time);
-                tabData.$publishDateTime.setDate(document.published.date).setTime(document.published.time);
-
-                tabData.$archivedDate.setDate(document.archived.date);
-                tabData.$archivedTime.setTime(document.archived.time);
-                tabData.$archivedDateTime.setDate(document.archived.date).setTime(document.archived.time);
-
-                tabData.$publishEndDate.setDate(document.publication_end.date);
-                tabData.$publishEndTime.setTime(document.publication_end.time);
-                tabData.$publishEndDateTime.setDate(document.publication_end.date).setTime(document.publication_end.time);
+                statusRowsNames.forEach(function (rowName) {
+                    setStatusInfoRowDataFromDocument(rowName, document);
+                });
 
                 tabData.$publisherSelect.selectValue(document.publisher);
 
@@ -268,17 +244,9 @@ Imcms.define("imcms-life-cycle-tab-builder",
 
                 tabData.$docStatusSelect.selectFirst();
 
-                tabData.$publishDate.setDate(emptyString);
-                tabData.$publishTime.setTime(emptyString);
-                tabData.$publishDateTime.setDate(emptyString).setTime(emptyString);
-
-                tabData.$archivedDate.setDate(emptyString);
-                tabData.$archivedTime.setTime(emptyString);
-                tabData.$archivedDateTime.setDate(emptyString).setTime(emptyString);
-
-                tabData.$publishEndDate.setDate(emptyString);
-                tabData.$publishEndTime.setTime(emptyString);
-                tabData.$publishEndDateTime.setDate(emptyString).setTime(emptyString);
+                statusRowsNames.forEach(function (rowName) {
+                    setStatusInfoRowData(rowName, emptyString, emptyString);
+                });
 
                 tabData.$publisherSelect.selectFirst();
                 tabData.$showDefaultLang.setChecked(true); //default value
