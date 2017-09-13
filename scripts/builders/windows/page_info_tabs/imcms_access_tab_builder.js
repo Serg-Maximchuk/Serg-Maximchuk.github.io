@@ -1,9 +1,9 @@
 Imcms.define("imcms-access-tab-builder",
     [
         "imcms-bem-builder", "imcms-components-builder", "imcms-roles-rest-api", "imcms-page-info-tabs-linker",
-        "imcms-uuid-generator"
+        "imcms-uuid-generator", "jquery"
     ],
-    function (BEM, components, rolesRestApi, linker, uuidGenerator) {
+    function (BEM, components, rolesRestApi, linker, uuidGenerator, $) {
 
         var rolesBEM = new BEM({
             block: "imcms-access-role",
@@ -142,32 +142,25 @@ Imcms.define("imcms-access-tab-builder",
                     });
                 }
 
-                var rolesContainerBEM = new BEM({
-                        block: "imcms-field",
-                        elements: {
-                            "access-role": "imcms-access-role"
-                        }
-                    })
-                ;
-
                 var $titleRole = rolesBEM.buildBlockElement("title", "<div>", {text: "role"}),
                     $titleView = rolesBEM.buildBlockElement("title", "<div>", {text: "view"}),
                     $titleEdit = rolesBEM.buildBlockElement("title", "<div>", {text: "edit"}),
                     $titleRestricted1 = rolesBEM.buildBlockElement("title", "<div>", {text: "restricted 1"}),
                     $titleRestricted2 = rolesBEM.buildBlockElement("title", "<div>", {text: "restricted 2"}),
-                    $rolesHead = rolesBEM.buildElement("head", "<div>").append([
-                        $titleRole,
-                        $titleView,
-                        $titleEdit,
-                        $titleRestricted1,
-                        $titleRestricted2
-                    ]),
-                    $rolesBody = rolesBEM.buildElement("body", "<div>"),
+                    $rolesHead = $("<div>", {
+                        html: [$titleRole, $titleView, $titleEdit, $titleRestricted1, $titleRestricted2]
+                    }),
+                    $rolesBody = $("<div>"),
                     $rolesTable = rolesBEM.buildBlock("<div>", [
                         {"head": $rolesHead},
                         {"body": $rolesBody}
                     ]),
-                    $rolesField = rolesContainerBEM.buildBlock("<div>", [{"access-role": $rolesTable}])
+                    $rolesField = new BEM({
+                        block: "imcms-field",
+                        elements: {
+                            "access-role": $rolesTable
+                        }
+                    }).buildBlockStructure("<div>")
                 ;
 
                 this.data.$addRoleSelect = $addRoleSelect;
