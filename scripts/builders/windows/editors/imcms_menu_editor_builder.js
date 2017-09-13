@@ -158,19 +158,23 @@ Imcms.define("imcms-menu-editor-builder",
             }
 
             function buildMenuTitlesRow() {
-                var titlesBEM = new BEM({
-                    block: "imcms-menu-list-titles",
-                    elements: {"title": "imcms-grid-coll-2"}
+                var $idColumnHead = $("<div>", {
+                    "class": "imcms-grid-coll-2",
+                    text: "id"
+                });
+                var $titleColumnHead = $("<div>", {
+                    "class": "imcms-grid-coll-2",
+                    text: "Title"
                 });
 
-                var $idColumnHead = titlesBEM.buildElement("title", "<div>", {text: "id"});
-                var $titleColumnHead = titlesBEM.buildElement("title", "<div>", {text: "Title"});
-
-                return titlesBEM.buildBlock("<div>", [
-                    {"title": $idColumnHead},
-                    {"title": $titleColumnHead}
-                ]);
+                return new BEM({
+                    block: "imcms-menu-list-titles",
+                    elements: {
+                        "title": [$idColumnHead, $titleColumnHead]
+                    }
+                }).buildBlockStructure("<div>");
             }
+
 
             var menuListBEM = new BEM({
                 block: "imcms-menu-list",
