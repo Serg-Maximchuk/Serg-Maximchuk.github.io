@@ -5,9 +5,9 @@
 Imcms.define("imcms-loop-editor-builder",
     [
         "imcms-bem-builder", "imcms-components-builder", "imcms-loop-rest-api", "imcms-window-builder",
-        "imcms-controls-builder"
+        "imcms-controls-builder", "jquery"
     ],
-    function (BEM, components, loopREST, WindowBuilder, controls) {
+    function (BEM, components, loopREST, WindowBuilder, controls, $) {
         var $title, $body, $listItems;
 
         var modifiers = {
@@ -34,11 +34,7 @@ Imcms.define("imcms-loop-editor-builder",
                 };
 
                 loopREST.create(newLoopEntry)
-                    .done(function (response) {
-                        if (response.code !== 200) {
-                            return;
-                        }
-
+                    .done(function () {
                         $listItems.append(itemsBEM.makeBlockElement("item", buildItem(newLoopEntry)));
                     });
             }
@@ -48,18 +44,8 @@ Imcms.define("imcms-loop-editor-builder",
                 loopWindowBuilder.closeWindow();
             }
 
-            var editorBEM = new BEM({
-                block: "imcms-loop-editor",
-                elements: {
-                    "head": "imcms-head",
-                    "body": "imcms-loop-editor-body",
-                    "footer": "imcms-footer"
-                }
-            });
-
             var $head = loopWindowBuilder.buildHead("Loop Editor");
             $title = $head.find(".imcms-title");
-            $body = editorBEM.buildElement("body", "<div>");
 
             var $footer = loopWindowBuilder.buildFooter([
                 components.buttons.positiveButton({
@@ -72,13 +58,14 @@ Imcms.define("imcms-loop-editor-builder",
                 })
             ]);
 
-            return editorBEM.buildBlock("<div>", [
-                    {"head": $head},
-                    {"body": $body},
-                    {"footer": $footer}
-                ],
-                {"class": "imcms-editor-window"}
-            );
+            return new BEM({
+                block: "imcms-loop-editor",
+                elements: {
+                    "head": $head,
+                    "body": $body = $("<div>", {"class": "imcms-loop-editor-body"}),
+                    "footer": $footer
+                }
+            }).buildBlockStructure("<div>", {"class": "imcms-editor-window"});
         }
 
         function buildTitles() {
