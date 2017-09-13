@@ -211,9 +211,9 @@ Imcms.define("imcms-time-picker", ["imcms", "jquery"], function (imcms, $) {
 
     function apiSetTime($timePickerContainer) {
         return function (time) {
-            return $timePickerContainer
-                .find(".imcms-current-time__input")
-                .val(time);
+            return $timePickerContainer.find(".imcms-current-time__input")
+                .val(time)
+                .end();
         }
     }
 

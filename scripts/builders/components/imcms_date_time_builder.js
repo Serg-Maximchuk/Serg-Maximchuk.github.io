@@ -245,15 +245,7 @@ Imcms.define("imcms-date-time-builder",
                 {"time-picker": $timePart}
             ]);
 
-            blockResult.getTime = function () {
-                return $timePart;
-            };
-
-            blockResult.getDate = function () {
-                return $datePart;
-            };
-
-            return blockResult;
+            return new DatePicker(new TimePicker(blockResult));
         }
 
         return {

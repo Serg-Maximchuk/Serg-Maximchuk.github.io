@@ -245,18 +245,15 @@ Imcms.define("imcms-life-cycle-tab-builder",
 
                 tabData.$publishDate.setDate(document.published.date);
                 tabData.$publishTime.setTime(document.published.time);
-                tabData.$publishDateTime.getDate().setDate(document.published.date);
-                tabData.$publishDateTime.getTime().setTime(document.published.time);
+                tabData.$publishDateTime.setDate(document.published.date).setTime(document.published.time);
 
                 tabData.$archivedDate.setDate(document.archived.date);
                 tabData.$archivedTime.setTime(document.archived.time);
-                tabData.$archivedDateTime.getDate().setDate(document.archived.date);
-                tabData.$archivedDateTime.getTime().setTime(document.archived.time);
+                tabData.$archivedDateTime.setDate(document.archived.date).setTime(document.archived.time);
 
                 tabData.$publishEndDate.setDate(document.publication_end.date);
                 tabData.$publishEndTime.setTime(document.publication_end.time);
-                tabData.$publishEndDateTime.getDate().setDate(document.publication_end.date);
-                tabData.$publishEndDateTime.getTime().setTime(document.publication_end.time);
+                tabData.$publishEndDateTime.setDate(document.publication_end.date).setTime(document.publication_end.time);
 
                 tabData.$publisherSelect.selectValue(document.publisher);
 
@@ -264,8 +261,7 @@ Imcms.define("imcms-life-cycle-tab-builder",
                     .checkAmongGroup(document.if_requested_lang_missing_doc_opts);
 
                 tabData.$currentVersionNumber.setValue(document.currentVersion);
-                tabData.$docVersionSaveDateTime.getDate().setDate(document.currentVersionDate);
-                tabData.$docVersionSaveDateTime.getTime().setTime(document.currentVersionTime);
+                tabData.$docVersionSaveDateTime.setDate(document.currentVersionDate).setTime(document.currentVersionTime);
             },
             clearTabData: function () {
                 var emptyString = '';
@@ -274,25 +270,21 @@ Imcms.define("imcms-life-cycle-tab-builder",
 
                 tabData.$publishDate.setDate(emptyString);
                 tabData.$publishTime.setTime(emptyString);
-                tabData.$publishDateTime.getDate().setDate(emptyString);
-                tabData.$publishDateTime.getTime().setTime(emptyString);
+                tabData.$publishDateTime.setDate(emptyString).setTime(emptyString);
 
                 tabData.$archivedDate.setDate(emptyString);
                 tabData.$archivedTime.setTime(emptyString);
-                tabData.$archivedDateTime.getDate().setDate(emptyString);
-                tabData.$archivedDateTime.getTime().setTime(emptyString);
+                tabData.$archivedDateTime.setDate(emptyString).setTime(emptyString);
 
                 tabData.$publishEndDate.setDate(emptyString);
                 tabData.$publishEndTime.setTime(emptyString);
-                tabData.$publishEndDateTime.getDate().setDate(emptyString);
-                tabData.$publishEndDateTime.getTime().setTime(emptyString);
+                tabData.$publishEndDateTime.setDate(emptyString).setTime(emptyString);
 
                 tabData.$publisherSelect.selectFirst();
                 tabData.$showDefaultLang.setChecked(true); //default value
 
                 tabData.$currentVersionNumber.setValue(emptyString);
-                tabData.$docVersionSaveDateTime.getDate().setDate(emptyString);
-                tabData.$docVersionSaveDateTime.getTime().setTime(emptyString);
+                tabData.$docVersionSaveDateTime.setDate(emptyString).setTime(emptyString);
 
             }
         };
