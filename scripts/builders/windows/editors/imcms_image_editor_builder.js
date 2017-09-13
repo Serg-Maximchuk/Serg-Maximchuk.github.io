@@ -246,7 +246,8 @@ Imcms.define("imcms-image-editor-builder",
                 var newHeight = $editableImageArea.height(),
                     newWidth = $editableImageArea.width()
                 ;
-                resizeImage(newWidth, newHeight);
+                var angleBorderSize = parseInt(imageDataContainers.angles.$topLeft.css("border-width")) || 0;
+                resizeImage(newWidth - angleBorderSize * 2, newHeight - angleBorderSize * 2);
             }
 
             var angle = 0;
