@@ -110,31 +110,19 @@ Imcms.define("imcms-menu-editor-builder",
             }
 
             function buildMenuItems(menuElementTree) {
-                var menuItemBEM = new BEM({
-                    block: "imcms-menu-item",
-                    elements: {
-                        "btn": "",
-                        "info": "imcms-title",
-                        "controls": "imcms-controls"
-                    }
-                });
-
-                var $menuItemId = menuItemBEM.buildElement("info", "<div>", {
-                    text: menuElementTree.id + " - " + menuElementTree.title
-                });
-                var $controls = buildMenuItemControls(menuElementTree.id);
-
-                var $menuItemRowComponents = [
-                    {"info": $menuItemId},
-                    {"controls": $controls}
-                ];
+                var elements = {};
 
                 if (menuElementTree.children.length) {
-                    var $openSubMenuBtn = menuItemBEM.buildElement("btn", "<div>", {click: showHideSubmenu});
-                    $menuItemRowComponents.unshift({"btn": $openSubMenuBtn});
+                    elements.btn = $("<div>", {click: showHideSubmenu});
                 }
 
-                return menuItemBEM.buildBlock("<div>", $menuItemRowComponents);
+                elements.info = components.texts.titleText("<div>", menuElementTree.id + " - " + menuElementTree.title);
+                elements.controls = buildMenuItemControls(menuElementTree.id);
+
+                return new BEM({
+                    block: "imcms-menu-item",
+                    elements: elements
+                }).buildBlockStructure("<div>");
             }
 
             function buildMenuItemTree(menuElementTree, level) {
