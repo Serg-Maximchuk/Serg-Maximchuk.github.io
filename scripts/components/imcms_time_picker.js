@@ -209,6 +209,14 @@ Imcms.define("imcms-time-picker", ["imcms", "jquery"], function (imcms, $) {
         }
     }
 
+    function apiSetTime($timePickerContainer) {
+        return function (time) {
+            return $timePickerContainer
+                .find(".imcms-current-time__input")
+                .val(time);
+        }
+    }
+
     var TimePicker = function ($timePickerContainer) {
         this.$timePicker = $timePickerContainer.hasClass(TIME_PICKER_CLASS)
             ? $timePickerContainer
@@ -223,11 +231,10 @@ Imcms.define("imcms-time-picker", ["imcms", "jquery"], function (imcms, $) {
             .find(".imcms-current-time__input")
             .blur(currentTimeValidation)
             .mask("00:00");
-    };
-    TimePicker.prototype = {
-        setTime: function (setMeAsTime) {
-            this.$timePicker.find(".imcms-current-time__input").val(setMeAsTime);
-        }
+
+        $timePickerContainer.setTime = apiSetTime($timePickerContainer);
+
+        return $timePickerContainer;
     };
 
     $(document).click(closePicker);
