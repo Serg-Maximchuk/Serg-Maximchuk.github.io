@@ -69,27 +69,21 @@ Imcms.define("imcms-loop-editor-builder",
         }
 
         function buildTitles() {
-            var titlesBEM = new BEM({
+            var $id = $("<div>", {text: "id"});
+            $id.modifiers = modifiers.ID;
+
+            var $content = $("<div>", {text: "text content"});
+            $content.modifiers = modifiers.CONTENT;
+
+            var $isEnabled = $("<div>", {text: "is enabled"});
+            $isEnabled.modifiers = modifiers.CONTROLS;
+
+            return new BEM({
                 block: "imcms-loop-list-titles",
-                elements: {"title": ""}
-            });
-
-            var $id = titlesBEM.buildElement("title", "<div>", {text: "id"});
-            var $content = titlesBEM.buildElement("title", "<div>", {text: "text content"});
-            var $isEnabled = titlesBEM.buildElement("title", "<div>", {text: "is enabled"});
-
-            return titlesBEM.buildBlock("<div>", [
-                {
-                    "title": $id,
-                    modifiers: modifiers.ID
-                }, {
-                    "title": $content,
-                    modifiers: modifiers.CONTENT
-                }, {
-                    "title": $isEnabled,
-                    modifiers: modifiers.CONTROLS
+                elements: {
+                    "title": [$id, $content, $isEnabled]
                 }
-            ]);
+            }).buildBlockStructure("<div>");
         }
 
         function removeLoopEntry(response) {
