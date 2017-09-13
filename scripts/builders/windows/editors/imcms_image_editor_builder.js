@@ -247,7 +247,6 @@ Imcms.define("imcms-image-editor-builder",
                 angle += angleDelta;
                 imageDataContainers.$image.css({"transform": "rotate(" + angle + "deg)"});
                 imageDataContainers.$cropImg.css({"transform": "rotate(" + angle + "deg)"});
-                imageDataContainers.$shadow.css({"transform": "rotate(" + angle + "deg)"});
             }
 
             function rotateLeft() {
