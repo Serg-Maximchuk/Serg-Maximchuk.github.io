@@ -213,10 +213,21 @@ Imcms.define("imcms-image-editor-builder",
                 var angleWidth = imageDataContainers.angles.$bottomLeft.width();
                 var angleBorderSize = parseInt(imageDataContainers.angles.$topLeft.css("border-width")) || 0;
 
+                imageDataContainers.$cropArea.add(imageDataContainers.$image)
+                    .animate({
+                        "top": angleBorderSize,
+                        "left": angleBorderSize
+                    }, 200);
+                imageDataContainers.angles.$topLeft.animate({
+                    "top": 0,
+                    "left": 0
+                }, 200);
                 imageDataContainers.angles.$bottomLeft.animate({
-                    "top": newHeight - angleHeight + angleBorderSize
+                    "top": newHeight - angleHeight + angleBorderSize,
+                    "left": 0
                 }, 200);
                 imageDataContainers.angles.$topRight.animate({
+                    "top": 0,
                     "left": newWidth - angleWidth + angleBorderSize
                 }, 200);
                 imageDataContainers.angles.$bottomRight.animate({
