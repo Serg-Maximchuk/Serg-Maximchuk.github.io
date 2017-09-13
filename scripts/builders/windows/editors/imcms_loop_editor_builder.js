@@ -25,6 +25,13 @@ Imcms.define("imcms-loop-editor-builder",
             }
         });
 
+        var bodyBEM = new BEM({
+            block: "imcms-loop-editor-body",
+            elements: {
+                "list": "imcms-loop-list"
+            }
+        });
+
         function buildEditor() {
             function onCreateNewClicked() {
                 var newLoopEntry = {
@@ -62,7 +69,7 @@ Imcms.define("imcms-loop-editor-builder",
                 block: "imcms-loop-editor",
                 elements: {
                     "head": $head,
-                    "body": $body = $("<div>", {"class": "imcms-loop-editor-body"}),
+                    "body": $body = bodyBEM.buildBlock("<div>"),
                     "footer": $footer
                 }
             }).buildBlockStructure("<div>", {"class": "imcms-editor-window"});
@@ -144,21 +151,13 @@ Imcms.define("imcms-loop-editor-builder",
         }
 
         function buildLoopList(loop) {
-            var listBEM = new BEM({
+            return new BEM({
                 block: "imcms-loop-list",
                 elements: {
-                    "titles": "imcms-loop-list-titles",
-                    "items": "imcms-loop-items"
+                    "titles": buildTitles(),
+                    "items": $listItems = buildItems(loop)
                 }
-            });
-
-            var $titles = buildTitles();
-            $listItems = buildItems(loop);
-
-            return listBEM.buildBlock("<div>", [
-                {"titles": $titles},
-                {"items": $listItems}
-            ]);
+            }).buildBlockStructure("<div>");
         }
 
         function buildData(loop) {
@@ -166,13 +165,6 @@ Imcms.define("imcms-loop-editor-builder",
             loopId = loop.loopId;
 
             addHeadData(loop);
-
-            var bodyBEM = new BEM({
-                block: "imcms-loop-editor-body",
-                elements: {
-                    "list": "imcms-loop-list"
-                }
-            });
 
             var $list = bodyBEM.makeBlockElement("list", buildLoopList(loop));
             $body.append($list);
