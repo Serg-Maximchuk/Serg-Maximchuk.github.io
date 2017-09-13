@@ -597,7 +597,7 @@ Imcms.define("imcms-image-editor-builder",
                     "left-side": buildLeftSide(),
                     "right-side": $rightSidePanel = buildRightSide(imageEditorBlockClass)
                 }
-            }).buildBlock("<div>", {"class": "imcms-editor-window"});
+            }).buildBlockStructure("<div>", {"class": "imcms-editor-window"});
         }
 
         function fillBodyHeadData(imageData) {
