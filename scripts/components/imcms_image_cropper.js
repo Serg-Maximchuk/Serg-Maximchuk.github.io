@@ -5,7 +5,7 @@
 Imcms.define("imcms-image-cropper", [], function () {
 
     var $croppingArea, $imageEditor, $cropImg, originImageParams, croppingAreaParams, angleBorderSize, imageCoords,
-        angleParams, $originImg, $topLeftAngle, $topRightAngle, $bottomRightAngle, $bottomLeftAngle, angles;
+        angleParams, $originImg, angles;
 
     function moveCropImage(newTop, newLeft) {
         var cropImgTop = -newTop + angleBorderSize,
@@ -50,7 +50,7 @@ Imcms.define("imcms-image-cropper", [], function () {
     }
 
     function getValidLeftOnResize(left) {
-        return Limit(angleBorderSize, parseInt($topRightAngle.css("left")) - angleParams.width).forValue(left);
+        return Limit(angleBorderSize, parseInt(angles.$topRight.css("left")) - angleParams.width).forValue(left);
     }
 
     function getValidTop(top) {
@@ -115,14 +115,14 @@ Imcms.define("imcms-image-cropper", [], function () {
 
     function transformCroppingAngleDeltaCoords(angleName, deltaX, deltaY) {
         return {
-            x: angleCoordsTransformer.x[angleName](parseInt(angles[angleName].css("left")) - deltaX),
-            y: angleCoordsTransformer.y[angleName](parseInt(angles[angleName].css("top")) - deltaY)
+            x: angleCoordsTransformer.x[angleName](parseInt(angles["$" + angleName].css("left")) - deltaX),
+            y: angleCoordsTransformer.y[angleName](parseInt(angles["$" + angleName].css("top")) - deltaY)
         };
     }
 
     function moveCroppingAngle(angleName, deltaX, deltaY) {
         var fixedCoords = transformCroppingAngleDeltaCoords(angleName, deltaX, deltaY);
-        setElementTopLeft(angles[angleName], fixedCoords.y, fixedCoords.x);
+        setElementTopLeft(angles["$" + angleName], fixedCoords.y, fixedCoords.x);
     }
 
     function resizeCroppingTopLeft(deltaX, deltaY) {
@@ -227,10 +227,7 @@ Imcms.define("imcms-image-cropper", [], function () {
 
         angleBorderSize = imageCropComponents.borderWidth;
         $originImg = imageCropComponents.$originImg;
-        $topLeftAngle = imageCropComponents.$topLeftAngle;
-        $topRightAngle = imageCropComponents.$topRightAngle;
-        $bottomRightAngle = imageCropComponents.$bottomRightAngle;
-        $bottomLeftAngle = imageCropComponents.$bottomLeftAngle;
+        angles = imageCropComponents.angles;
         $croppingArea = imageCropComponents.$croppingArea;
         $imageEditor = imageCropComponents.$imageEditor;
         $cropImg = imageCropComponents.$cropImg;
@@ -240,13 +237,6 @@ Imcms.define("imcms-image-cropper", [], function () {
 
         var originImageWidth = $originImg.width();
         var originImageHeight = $originImg.height();
-
-        angles = {
-            "topLeft": $topLeftAngle,
-            "topRight": $topRightAngle,
-            "bottomRight": $bottomRightAngle,
-            "bottomLeft": $bottomLeftAngle
-        };
 
         setElementWidthHeight($cropImg, originImageWidth, originImageHeight);
 
@@ -265,8 +255,8 @@ Imcms.define("imcms-image-cropper", [], function () {
         });
 
         angleParams = {
-            width: $topLeftAngle.width(),
-            height: $topLeftAngle.height()
+            width: angles.$topLeft.width(),
+            height: angles.$topLeft.height()
         };
 
         var resizeAngleName; // topLeft, topRight, bottomRight, bottomLeft
@@ -282,10 +272,10 @@ Imcms.define("imcms-image-cropper", [], function () {
             }
         }
 
-        $topLeftAngle.mousedown(getAngleMouseDownEvent("topLeft", "nw-resize"));
-        $topRightAngle.mousedown(getAngleMouseDownEvent("topRight", "ne-resize"));
-        $bottomRightAngle.mousedown(getAngleMouseDownEvent("bottomRight", "se-resize"));
-        $bottomLeftAngle.mousedown(getAngleMouseDownEvent("bottomLeft", "sw-resize"));
+        angles.$topLeft.mousedown(getAngleMouseDownEvent("topLeft", "nw-resize"));
+        angles.$topRight.mousedown(getAngleMouseDownEvent("topRight", "ne-resize"));
+        angles.$bottomRight.mousedown(getAngleMouseDownEvent("bottomRight", "se-resize"));
+        angles.$bottomLeft.mousedown(getAngleMouseDownEvent("bottomLeft", "sw-resize"));
 
         $imageEditor.mouseup(function () {
             if (event.which === 1) {
@@ -295,25 +285,25 @@ Imcms.define("imcms-image-cropper", [], function () {
             }
         });
 
-        var angleSize = $topRightAngle.width();
+        var angleSize = angles.$topRight.width();
 
         !function setStartCroppingAngles() {
             setCroppingAnglesTopLeft(angleBorderSize, angleBorderSize);
         }();
 
         function setCroppingAnglesTopLeft(top, left) {
-            setElementTopLeft($topLeftAngle, top - angleBorderSize, left - angleBorderSize);
-            setElementTopLeft($topRightAngle, top - angleBorderSize, croppingAreaParams.width + left - angleSize);
-            setElementTopLeft($bottomRightAngle, croppingAreaParams.height + top - angleSize, croppingAreaParams.width + left - angleSize);
-            setElementTopLeft($bottomLeftAngle, croppingAreaParams.height + top - angleSize, left - angleBorderSize);
+            setElementTopLeft(angles.$topLeft, top - angleBorderSize, left - angleBorderSize);
+            setElementTopLeft(angles.$topRight, top - angleBorderSize, croppingAreaParams.width + left - angleSize);
+            setElementTopLeft(angles.$bottomRight, croppingAreaParams.height + top - angleSize, croppingAreaParams.width + left - angleSize);
+            setElementTopLeft(angles.$bottomLeft, croppingAreaParams.height + top - angleSize, left - angleBorderSize);
         }
 
         function setCursor(cursorValue) {
             [
-                $topLeftAngle,
-                $topRightAngle,
-                $bottomRightAngle,
-                $bottomLeftAngle,
+                angles.$topLeft,
+                angles.$topRight,
+                angles.$bottomRight,
+                angles.$bottomLeft,
                 $croppingArea,
                 $imageEditor
 
@@ -382,17 +372,17 @@ Imcms.define("imcms-image-cropper", [], function () {
         [
             $cropImg,
             $originImg,
-            $topLeftAngle,
-            $topRightAngle,
-            $bottomRightAngle,
-            $bottomLeftAngle,
+            angles.$topLeft,
+            angles.$topRight,
+            angles.$bottomRight,
+            angles.$bottomLeft,
             $croppingArea
         ].forEach(function ($element) {
             $element.removeAttr("style");
         });
 
         removeEventListeners($croppingArea, ["mousedown", "mouseup"]);
-        removeEventListeners($bottomRightAngle, ["mousedown", "mouseup"]);
+        removeEventListeners(angles.$bottomRight, ["mousedown", "mouseup"]);
         removeEventListeners($imageEditor, ["mousemove", "mouseup", "dragstart"]);
     }
 

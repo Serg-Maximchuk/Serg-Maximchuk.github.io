@@ -30,6 +30,10 @@ Imcms.define("imcms-bem-builder", ["jquery"], function ($) {
         this.block = options.block;
     };
 
+    BemBuilder.getBlockSeparator = function () {
+        return BLOCK_SEPARATOR;
+    };
+
     BemBuilder.prototype = {
         makeBlockElement: function (elementName, $baseElement, modifiersArr) {
             var modifiersClass = getElementClassWithModifiers(this.elements[elementName], modifiersArr),
@@ -90,6 +94,7 @@ Imcms.define("imcms-bem-builder", ["jquery"], function ($) {
 
             function createBlocKElement(element, elementName) {
                 var blockElement = {};
+                this.elements[elementName] = element["class"] || "";
 
                 if (element.modifiers) {
                     blockElement.modifiers = element.modifiers;
@@ -110,7 +115,6 @@ Imcms.define("imcms-bem-builder", ["jquery"], function ($) {
 
             Object.keys(elements).forEach(function (elementName) {
                 var element = elements[elementName];
-                this.elements[elementName] = element["class"] || "";
 
                 if (element.constructor === Array) {
                     blockElements = blockElements.concat(createBlockElements.call(this, element, elementName));

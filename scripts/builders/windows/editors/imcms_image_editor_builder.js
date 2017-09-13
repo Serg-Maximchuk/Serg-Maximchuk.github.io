@@ -52,6 +52,31 @@ Imcms.define("imcms-image-editor-builder",
                 });
             }
 
+            function buildHeightWidthBlock() {
+                var $heightBlock = new BEM({
+                    block: "imcms-img-origin-size",
+                    elements: {
+                        "height-title": components.texts.titleText("<span>", "H:"),
+                        "height-value": imageDataContainers.$heightValue = components.texts.titleText("<span>")
+                    }
+                }).buildBlockStructure("<div>");
+
+                var $widthBlock = new BEM({
+                    block: "imcms-img-origin-size",
+                    elements: {
+                        "width-title": components.texts.titleText("<span>", "W:"),
+                        "width-value": imageDataContainers.$widthValue = components.texts.titleText("<span>")
+                    }
+                }).buildBlockStructure("<div>");
+
+                return new BEM({
+                    block: "imcms-title imcms-image-characteristic",
+                    elements: {
+                        "origin-size": [$heightBlock, $widthBlock]
+                    }
+                }).buildBlockStructure("<div>", {text: "Orig "});
+            }
+
             var bodyHeadBEM = new BEM({
                 block: "imcms-image-characteristics",
                 elements: {
@@ -80,39 +105,7 @@ Imcms.define("imcms-image-editor-builder",
                 text: "Url: "
             }).append(imageDataContainers.$imgUrl = $("<span>"));
 
-            var characteristicBEM = new BEM({
-                block: "imcms-title imcms-image-characteristic",
-                elements: {"origin-size": "imcms-img-origin-size"}
-            });
-
-            var originSizeBEM = new BEM({
-                block: "imcms-img-origin-size",
-                elements: {
-                    "height-title": "imcms-title",
-                    "height-value": "imcms-title",
-                    "width-title": "imcms-title",
-                    "width-value": "imcms-title"
-                }
-            });
-
-            var $heightTitle = originSizeBEM.buildElement("height-title", "<span>", {text: "H:"});
-            imageDataContainers.$heightValue = originSizeBEM.buildElement("height-value", "<span>");
-            var $heightBlock = originSizeBEM.buildBlock("<div>", [
-                {"height-title": $heightTitle},
-                {"height-value": imageDataContainers.$heightValue}
-            ]);
-
-            var $widthTitle = originSizeBEM.buildElement("width-title", "<span>", {text: "W:"});
-            imageDataContainers.$widthValue = originSizeBEM.buildElement("width-value", "<span>");
-            var $widthBlock = originSizeBEM.buildBlock("<div>", [
-                {"width-title": $widthTitle},
-                {"width-value": imageDataContainers.$widthValue}
-            ]);
-
-            var $heightWidthBlock = characteristicBEM.buildBlock("<div>", [
-                {"origin-size": $heightBlock},
-                {"origin-size": $widthBlock}
-            ], {text: "Orig "});
+            var $heightWidthBlock = buildHeightWidthBlock();
 
             return bodyHeadBEM.buildBlock("<div>", [
                 {
@@ -149,19 +142,21 @@ Imcms.define("imcms-image-editor-builder",
                 imageDataContainers.$cropArea = editableImgAreaBEM.buildElement("crop-area", "<div>")
                     .append($("<img>", {"class": "imcms-crop-area__crop-img"}));
 
-                imageDataContainers.$angleTopLeft = editableImgAreaBEM.buildElement("angle", "<div>", {}, ["top-left"]);
-                imageDataContainers.$angleTopRight = editableImgAreaBEM.buildElement("angle", "<div>", {}, ["top-right"]);
-                imageDataContainers.$angleBottomLeft = editableImgAreaBEM.buildElement("angle", "<div>", {}, ["bottom-left"]);
-                imageDataContainers.$angleBottomRight = editableImgAreaBEM.buildElement("angle", "<div>", {}, ["bottom-right"]);
+                imageDataContainers.angles = {
+                    $topLeft: editableImgAreaBEM.buildElement("angle", "<div>", {}, ["top-left"]),
+                    $topRight: editableImgAreaBEM.buildElement("angle", "<div>", {}, ["top-right"]),
+                    $bottomLeft: editableImgAreaBEM.buildElement("angle", "<div>", {}, ["bottom-left"]),
+                    $bottomRight: editableImgAreaBEM.buildElement("angle", "<div>", {}, ["bottom-right"])
+                };
 
                 return editableImgAreaBEM.buildBlock("<div>", [
                     {"img": imageDataContainers.$image},
                     {"layout": imageDataContainers.$shadow},
                     {"crop-area": imageDataContainers.$cropArea},
-                    {"angle": imageDataContainers.$angleTopLeft},
-                    {"angle": imageDataContainers.$angleTopRight},
-                    {"angle": imageDataContainers.$angleBottomRight},
-                    {"angle": imageDataContainers.$angleBottomLeft}
+                    {"angle": imageDataContainers.angles.$topLeft},
+                    {"angle": imageDataContainers.angles.$topRight},
+                    {"angle": imageDataContainers.angles.$bottomRight},
+                    {"angle": imageDataContainers.angles.$bottomLeft}
                 ]);
             }
 
@@ -169,13 +164,12 @@ Imcms.define("imcms-image-editor-builder",
                 var editSizeBEM = new BEM({
                     block: "imcms-edit-size",
                     elements: {
-                        "title": "imcms-title",
                         "number": "",
                         "button": ""
                     }
                 });
 
-                var $title = editSizeBEM.buildElement("title", "<div>", {text: "Display size"});
+                var $title = components.texts.titleText("<div>", "Display size");
 
                 var $heightControlInput = components.texts.textNumber("<div>", {
                     name: "height",
@@ -263,65 +257,44 @@ Imcms.define("imcms-image-editor-builder",
             }
 
             function buildScaleAndRotateControls() {
-                var scaleAndRotateBEM = new BEM({
+                return new BEM({
                     block: "imcms-edit-image",
-                    elements: {"button": ""}
-                });
-
-                var $zoomPlusBtn = components.buttons.zoomPlusButton({click: zoomPlus});
-                var $zoomMinusBtn = components.buttons.zoomMinusButton({click: zoomMinus});
-                var $zoomContainBtn = components.buttons.zoomContainButton({click: zoomContain});
-                var $rotateLeftBtn = components.buttons.rotateLeftButton({click: rotateLeft});
-                var $rotateRightBtn = components.buttons.rotateRightButton({click: rotateRight});
-
-                return scaleAndRotateBEM.buildBlock("<div>", [
-                    {"button": $zoomPlusBtn},
-                    {"button": $zoomMinusBtn},
-                    {"button": $zoomContainBtn},
-                    {"button": $rotateLeftBtn},
-                    {"button": $rotateRightBtn}
-                ]);
+                    elements: {
+                        "button": [
+                            components.buttons.zoomPlusButton({click: zoomPlus}),
+                            components.buttons.zoomMinusButton({click: zoomMinus}),
+                            components.buttons.zoomContainButton({click: zoomContain}),
+                            components.buttons.rotateLeftButton({click: rotateLeft}),
+                            components.buttons.rotateRightButton({click: rotateRight})
+                        ]
+                    }
+                }).buildBlockStructure("<div>");
             }
 
             function buildSwitchViewControls() {
-                var switchViewControlsBEM = new BEM({
+                var $preview = components.texts.titleText("<div>", "Preview");
+                var $origin = components.texts.titleText("<div>", "Original");
+                $origin.modifiers = ["active"];
+
+                return new BEM({
                     block: "imcms-editable-img-control-tabs",
-                    elements: {"tab": "imcms-title"}
-                });
-
-                var $preview = switchViewControlsBEM.buildElement("tab", "<div>", {text: "Preview"});
-                var $origin = switchViewControlsBEM.buildElement("tab", "<div>", {text: "Original"});
-
-                return switchViewControlsBEM.buildBlock("<div>", [
-                    {
-                        "tab": $preview
-                    }, {
-                        "tab": $origin,
-                        modifiers: ["active"]
+                    elements: {
+                        "tab": [$preview, $origin]
                     }
-                ]);
+                }).buildBlockStructure("<div>");
             }
 
             function buildBottomPanel() {
-                var bottomPanelBEM = new BEM({
+                return new BEM({
                     block: "imcms-editable-img-controls",
                     elements: {
-                        "control-size": "imcms-edit-size",
-                        "control-scale-n-rotate": "imcms-edit-image",
-                        "control-view": "imcms-editable-img-control-tabs"
+                        "control-size": buildEditSizeControls(),
+                        "control-scale-n-rotate": buildScaleAndRotateControls(),
+                        "control-view": buildSwitchViewControls()
                     }
-                });
-
-                var $editSizeControls = buildEditSizeControls();
-                var $scaleAndRotateControls = buildScaleAndRotateControls();
-                var $switchViewControls = buildSwitchViewControls();
-
-                return bottomPanelBEM.buildBlock("<div>", [
-                    {"control-size": $editSizeControls},
-                    {"control-scale-n-rotate": $scaleAndRotateControls},
-                    {"control-view": $switchViewControls}
-                ]);
+                }).buildBlockStructure("<div>");
             }
+
 
             $editableImageArea = buildEditableImageArea();
             $bottomPanel = buildBottomPanel();
@@ -329,7 +302,7 @@ Imcms.define("imcms-image-editor-builder",
             return $("<div>").append($editableImageArea, $bottomPanel);
         }
 
-        function buildRightSide(imageEditorBEM) {
+        function buildRightSide(imageEditorBlockClass) {
 
             function buildSelectImageBtnContainer() {
                 var $selectImageBtn = components.buttons.neutralButton({
@@ -453,16 +426,6 @@ Imcms.define("imcms-image-editor-builder",
             }
 
             function buildCropCoordinatesContainer() {
-                var cropCoordinatesBEM = new BEM({
-                    block: "imcms-crop-coordinates",
-                    elements: {
-                        "x": "imcms-number",
-                        "y": "imcms-number",
-                        "x1": "imcms-number",
-                        "y1": "imcms-number"
-                    }
-                });
-
                 var $xCropCoord = components.texts.textNumber("<div>", {
                     name: "cropX0",
                     placeholder: "X",
@@ -491,12 +454,15 @@ Imcms.define("imcms-image-editor-builder",
                     error: "Error text"
                 });
 
-                return cropCoordinatesBEM.buildBlock("<div>", [
-                    {"x": $xCropCoord},
-                    {"y": $yCropCoord},
-                    {"x1": $x1CropCoord},
-                    {"y1": $y1CropCoord}
-                ]);
+                return new BEM({
+                    block: "imcms-crop-coordinates",
+                    elements: {
+                        "x": $xCropCoord,
+                        "y": $yCropCoord,
+                        "x1": $x1CropCoord,
+                        "y1": $y1CropCoord
+                    }
+                }).buildBlockStructure("<div>");
             }
 
             function buildFileFormatSelect() {
@@ -613,35 +579,25 @@ Imcms.define("imcms-image-editor-builder",
                 return $("<div>").append($removeAndCloseButton, $saveAndCloseButton);
             }
 
+
             var $editableControls = buildEditableControls();
-            var $footer = imageEditorBEM.makeBlockElement("footer", buildFooter());
+            var $footer = buildFooter().addClass(imageEditorBlockClass + BEM.getBlockSeparator() + "footer");
 
             return $("<div>").append($editableControls, $footer);
         }
 
         function buildEditor() {
-            var imageEditorBEM = new BEM({
-                block: "imcms-image_editor",
+            var imageEditorBlockClass = "imcms-image_editor";
+
+            return new BEM({
+                block: imageEditorBlockClass,
                 elements: {
-                    "head": "imcms-head",
-                    "image-characteristics": "imcms-image-characteristics",
-                    "left-side": "",
-                    "right-side": "",
-                    "footer": "imcms-buttons"
+                    "head": imageWindowBuilder.buildHead("Image Editor"),
+                    "image-characteristics": buildBodyHead(),
+                    "left-side": buildLeftSide(),
+                    "right-side": $rightSidePanel = buildRightSide(imageEditorBlockClass)
                 }
-            });
-
-            var $head = imageWindowBuilder.buildHead("Image Editor");
-            var $bodyHead = buildBodyHead();
-            var $leftSide = buildLeftSide();
-            $rightSidePanel = buildRightSide(imageEditorBEM);
-
-            return imageEditorBEM.buildBlock("<div>", [
-                {"head": $head},
-                {"image-characteristics": $bodyHead},
-                {"left-side": $leftSide},
-                {"right-side": $rightSidePanel}
-            ]).addClass("imcms-editor-window");
+            }).buildBlock("<div>", {"class": "imcms-editor-window"});
         }
 
         function fillBodyHeadData(imageData) {
@@ -655,7 +611,7 @@ Imcms.define("imcms-image-editor-builder",
             imageDataContainers.$image.attr("src", imageData.path);
 
             // fixes to prevent stupid little scroll because of borders
-            var angleBorderSize = parseInt(imageDataContainers.$angleTopLeft.css("border-width")) || 0;
+            var angleBorderSize = parseInt(imageDataContainers.angles.$topLeft.css("border-width")) || 0;
             var imageWidth = imageDataContainers.$image.width();
             var imageHeight = imageDataContainers.$image.height();
 
@@ -691,10 +647,7 @@ Imcms.define("imcms-image-editor-builder",
                 $croppingArea: imageDataContainers.$cropArea,
                 $cropImg: $cropImg,
                 $originImg: imageDataContainers.$image,
-                $topLeftAngle: imageDataContainers.$angleTopLeft,
-                $topRightAngle: imageDataContainers.$angleTopRight,
-                $bottomRightAngle: imageDataContainers.$angleBottomRight,
-                $bottomLeftAngle: imageDataContainers.$angleBottomLeft,
+                angles: imageDataContainers.angles,
                 borderWidth: angleBorderSize
             });
         }

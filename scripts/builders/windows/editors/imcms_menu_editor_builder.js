@@ -9,14 +9,6 @@ Imcms.define("imcms-menu-editor-builder",
     ],
     function (BEM, components, documentEditorBuilder, imcmsModalWindow, WindowBuilder, menuRestApi,
               controls, pageInfoBuilder, $) {
-        var menuEditorBEM = new BEM({
-            block: "imcms-menu-editor",
-            elements: {
-                "head": "imcms-head",
-                "body": "imcms-menu-editor-body",
-                "footer": "imcms-footer"
-            }
-        });
 
         var $title, $menuElementsContainer, $documentsContainer;
         var docId, menuId;
@@ -27,25 +19,20 @@ Imcms.define("imcms-menu-editor-builder",
         }
 
         function buildHead() {
-            return menuWindowBuilder.buildHead("menu editor");
+            var $head = menuWindowBuilder.buildHead("menu editor");
+            $title = $head.find(".imcms-title");
+
+            return $head;
         }
 
         function buildBody() {
-            var bodyBEM = new BEM({
+            return new BEM({
                 block: "imcms-menu-editor-body",
                 elements: {
-                    "left-side": "imcms-left-side",
-                    "right-side": "imcms-right-side"
+                    "left-side": $menuElementsContainer = $("<div>", {"class": "imcms-left-side"}),
+                    "right-side": $documentsContainer = $("<div>", {"class": "imcms-right-side"})
                 }
-            });
-
-            $menuElementsContainer = bodyBEM.buildElement("left-side", "<div>");
-            $documentsContainer = bodyBEM.buildElement("right-side", "<div>");
-
-            return bodyBEM.buildBlock("<div>", [
-                {"left-side": $menuElementsContainer},
-                {"right-side": $documentsContainer}
-            ]);
+            }).buildBlockStructure("<div>");
         }
 
         function buildFooter() {
@@ -123,45 +110,30 @@ Imcms.define("imcms-menu-editor-builder",
             }
 
             function buildMenuItems(menuElementTree) {
-                var menuItemBEM = new BEM({
-                    block: "imcms-menu-item",
-                    elements: {
-                        "btn": "",
-                        "info": "imcms-title",
-                        "controls": "imcms-controls"
-                    }
-                });
-
-                var $menuItemId = menuItemBEM.buildElement("info", "<div>", {
-                    text: menuElementTree.id + " - " + menuElementTree.title
-                });
-                var $controls = buildMenuItemControls(menuElementTree.id);
-
-                var $menuItemRowComponents = [
-                    {"info": $menuItemId},
-                    {"controls": $controls}
-                ];
+                var elements = {};
 
                 if (menuElementTree.children.length) {
-                    var $openSubMenuBtn = menuItemBEM.buildElement("btn", "<div>", {click: showHideSubmenu});
-                    $menuItemRowComponents.unshift({"btn": $openSubMenuBtn});
+                    elements.btn = $("<div>", {click: showHideSubmenu});
                 }
 
-                return menuItemBEM.buildBlock("<div>", $menuItemRowComponents);
+                elements.info = components.texts.titleText("<div>", menuElementTree.id + " - " + menuElementTree.title);
+                elements.controls = buildMenuItemControls(menuElementTree.id);
+
+                return new BEM({
+                    block: "imcms-menu-item",
+                    elements: elements
+                }).buildBlockStructure("<div>");
             }
 
             function buildMenuItemTree(menuElementTree, level) {
                 menuElementTree.children = menuElementTree.children || [];
 
-                var menuItemsBEM = new BEM({
+                var treeBlock = new BEM({
                     block: "imcms-menu-items",
-                    elements: {"menu-item": "imcms-menu-item"}
-                });
-
-                var $testMenuItem = buildMenuItems(menuElementTree);
-                var treeBlock = menuItemsBEM.buildBlock("<div>", [{"menu-item": $testMenuItem}], {
-                    "data-menu-items-lvl": level
-                });
+                    elements: {
+                        "menu-item": buildMenuItems(menuElementTree)
+                    }
+                }).buildBlockStructure("<div>", {"data-menu-items-lvl": level});
 
                 ++level;
 
@@ -173,49 +145,44 @@ Imcms.define("imcms-menu-editor-builder",
             }
 
             function buildMenuElements(menuElementsTree) {
-                var menuTreeBEM = new BEM({
+                var $menuItems = menuElementsTree.map(function (menuElementTree) {
+                    return buildMenuItemTree(menuElementTree, 1);
+                });
+
+                return new BEM({
                     block: "imcms-menu-items-tree",
-                    elements: {"menu-items": "imcms-menu-items"}
-                });
-
-                var $blockElements = menuElementsTree.map(function (menuElementTree) {
-                    var $menuItems = buildMenuItemTree(menuElementTree, 1);
-                    return {"menu-items": $menuItems}
-                });
-
-                return menuTreeBEM.buildBlock("<div>", $blockElements);
+                    elements: {
+                        "menu-items": $menuItems
+                    }
+                }).buildBlockStructure("<div>");
             }
 
             function buildMenuTitlesRow() {
-                var titlesBEM = new BEM({
-                    block: "imcms-menu-list-titles",
-                    elements: {"title": "imcms-grid-coll-2"}
+                var $idColumnHead = $("<div>", {
+                    "class": "imcms-grid-coll-2",
+                    text: "id"
+                });
+                var $titleColumnHead = $("<div>", {
+                    "class": "imcms-grid-coll-2",
+                    text: "Title"
                 });
 
-                var $idColumnHead = titlesBEM.buildElement("title", "<div>", {text: "id"});
-                var $titleColumnHead = titlesBEM.buildElement("title", "<div>", {text: "Title"});
-
-                return titlesBEM.buildBlock("<div>", [
-                    {"title": $idColumnHead},
-                    {"title": $titleColumnHead}
-                ]);
+                return new BEM({
+                    block: "imcms-menu-list-titles",
+                    elements: {
+                        "title": [$idColumnHead, $titleColumnHead]
+                    }
+                }).buildBlockStructure("<div>");
             }
 
-            var menuListBEM = new BEM({
+
+            return new BEM({
                 block: "imcms-menu-list",
                 elements: {
-                    "titles": "imcms-menu-list-titles",
-                    "items": "imcms-menu-items-tree"
+                    "titles": buildMenuTitlesRow(),
+                    "items": buildMenuElements(menuElementsTree)
                 }
-            });
-
-            var $titles = buildMenuTitlesRow();
-            var $menuList = buildMenuElements(menuElementsTree);
-
-            return menuListBEM.buildBlock("<div>", [
-                {"titles": $titles},
-                {"items": $menuList}
-            ]);
+            }).buildBlockStructure("<div>");
         }
 
         function fillEditorContent(menuElementsTree) {
@@ -240,17 +207,14 @@ Imcms.define("imcms-menu-editor-builder",
             docId = opts.docId;
             menuId = opts.menuId;
 
-            var $head = buildHead(),
-                $body = buildBody(),
-                $footer = buildFooter();
-
-            $title = $head.find(".imcms-title");
-
-            return menuEditorBEM.buildBlock("<div>", [
-                {"head": $head},
-                {"body": $body},
-                {"footer": $footer}
-            ]).addClass("imcms-editor-window");
+            return new BEM({
+                block: "imcms-menu-editor",
+                elements: {
+                    "head": buildHead(),
+                    "body": buildBody(),
+                    "footer": buildFooter()
+                }
+            }).buildBlockStructure("<div>", {"class": "imcms-editor-window"});
         }
 
         function clearData() {

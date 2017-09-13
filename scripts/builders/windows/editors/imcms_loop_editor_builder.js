@@ -5,9 +5,9 @@
 Imcms.define("imcms-loop-editor-builder",
     [
         "imcms-bem-builder", "imcms-components-builder", "imcms-loop-rest-api", "imcms-window-builder",
-        "imcms-controls-builder"
+        "imcms-controls-builder", "jquery"
     ],
-    function (BEM, components, loopREST, WindowBuilder, controls) {
+    function (BEM, components, loopREST, WindowBuilder, controls, $) {
         var $title, $body, $listItems;
 
         var modifiers = {
@@ -25,6 +25,13 @@ Imcms.define("imcms-loop-editor-builder",
             }
         });
 
+        var bodyBEM = new BEM({
+            block: "imcms-loop-editor-body",
+            elements: {
+                "list": "imcms-loop-list"
+            }
+        });
+
         function buildEditor() {
             function onCreateNewClicked() {
                 var newLoopEntry = {
@@ -34,11 +41,7 @@ Imcms.define("imcms-loop-editor-builder",
                 };
 
                 loopREST.create(newLoopEntry)
-                    .done(function (response) {
-                        if (response.code !== 200) {
-                            return;
-                        }
-
+                    .done(function () {
                         $listItems.append(itemsBEM.makeBlockElement("item", buildItem(newLoopEntry)));
                     });
             }
@@ -48,18 +51,8 @@ Imcms.define("imcms-loop-editor-builder",
                 loopWindowBuilder.closeWindow();
             }
 
-            var editorBEM = new BEM({
-                block: "imcms-loop-editor",
-                elements: {
-                    "head": "imcms-head",
-                    "body": "imcms-loop-editor-body",
-                    "footer": "imcms-footer"
-                }
-            });
-
             var $head = loopWindowBuilder.buildHead("Loop Editor");
             $title = $head.find(".imcms-title");
-            $body = editorBEM.buildElement("body", "<div>");
 
             var $footer = loopWindowBuilder.buildFooter([
                 components.buttons.positiveButton({
@@ -72,37 +65,32 @@ Imcms.define("imcms-loop-editor-builder",
                 })
             ]);
 
-            return editorBEM.buildBlock("<div>", [
-                    {"head": $head},
-                    {"body": $body},
-                    {"footer": $footer}
-                ],
-                {"class": "imcms-editor-window"}
-            );
+            return new BEM({
+                block: "imcms-loop-editor",
+                elements: {
+                    "head": $head,
+                    "body": $body = bodyBEM.buildBlock("<div>"),
+                    "footer": $footer
+                }
+            }).buildBlockStructure("<div>", {"class": "imcms-editor-window"});
         }
 
         function buildTitles() {
-            var titlesBEM = new BEM({
+            var $id = $("<div>", {text: "id"});
+            $id.modifiers = modifiers.ID;
+
+            var $content = $("<div>", {text: "text content"});
+            $content.modifiers = modifiers.CONTENT;
+
+            var $isEnabled = $("<div>", {text: "is enabled"});
+            $isEnabled.modifiers = modifiers.CONTROLS;
+
+            return new BEM({
                 block: "imcms-loop-list-titles",
-                elements: {"title": ""}
-            });
-
-            var $id = titlesBEM.buildElement("title", "<div>", {text: "id"});
-            var $content = titlesBEM.buildElement("title", "<div>", {text: "text content"});
-            var $isEnabled = titlesBEM.buildElement("title", "<div>", {text: "is enabled"});
-
-            return titlesBEM.buildBlock("<div>", [
-                {
-                    "title": $id,
-                    modifiers: modifiers.ID
-                }, {
-                    "title": $content,
-                    modifiers: modifiers.CONTENT
-                }, {
-                    "title": $isEnabled,
-                    modifiers: modifiers.CONTROLS
+                elements: {
+                    "title": [$id, $content, $isEnabled]
                 }
-            ]);
+            }).buildBlockStructure("<div>");
         }
 
         function removeLoopEntry(response) {
@@ -133,36 +121,25 @@ Imcms.define("imcms-loop-editor-builder",
         }
 
         function buildItem(loopEntry) {
-            var itemBEM = new BEM({
-                block: "imcms-loop-item",
-                elements: {
-                    "info": "imcms-title",
-                    "controls": "imcms-controls"
-                }
-            });
+            var $no = components.texts.titleText("<div>", loopEntry.no);
+            $no.modifiers = modifiers.ID;
 
-            var $no = itemBEM.buildElement("info", "<div>", {text: loopEntry.no});
-            var $content = itemBEM.buildElement("info", "<div>", {text: loopEntry.content});
+            var $content = components.texts.titleText("<div>", loopEntry.content);
+            $content.modifiers = modifiers.CONTENT;
+
             var $isEnabled = components.checkboxes.imcmsCheckbox("<div>", {
                 name: "isEnabled" + loopEntry.no,
                 checked: loopEntry.enabled ? "checked" : undefined
             });
-            var $deleteBtn = buildControls(loopEntry);
+            $isEnabled.modifiers = modifiers.CONTROLS;
 
-            return itemBEM.buildBlock("<div>", [
-                {
-                    "info": $no,
-                    modifiers: modifiers.ID
-                }, {
-                    "info": $content,
-                    modifiers: modifiers.CONTENT
-                }, {
-                    "info": $isEnabled,
-                    modifiers: modifiers.CONTROLS
-                }, {
-                    "controls": $deleteBtn
+            return new BEM({
+                block: "imcms-loop-item",
+                elements: {
+                    "info": [$no, $content, $isEnabled],
+                    "controls": buildControls(loopEntry)
                 }
-            ]);
+            }).buildBlockStructure("<div>");
         }
 
         function buildItems(loop) {
@@ -174,21 +151,13 @@ Imcms.define("imcms-loop-editor-builder",
         }
 
         function buildLoopList(loop) {
-            var listBEM = new BEM({
+            return new BEM({
                 block: "imcms-loop-list",
                 elements: {
-                    "titles": "imcms-loop-list-titles",
-                    "items": "imcms-loop-items"
+                    "titles": buildTitles(),
+                    "items": $listItems = buildItems(loop)
                 }
-            });
-
-            var $titles = buildTitles();
-            $listItems = buildItems(loop);
-
-            return listBEM.buildBlock("<div>", [
-                {"titles": $titles},
-                {"items": $listItems}
-            ]);
+            }).buildBlockStructure("<div>");
         }
 
         function buildData(loop) {
@@ -196,13 +165,6 @@ Imcms.define("imcms-loop-editor-builder",
             loopId = loop.loopId;
 
             addHeadData(loop);
-
-            var bodyBEM = new BEM({
-                block: "imcms-loop-editor-body",
-                elements: {
-                    "list": "imcms-loop-list"
-                }
-            });
 
             var $list = bodyBEM.makeBlockElement("list", buildLoopList(loop));
             $body.append($list);
