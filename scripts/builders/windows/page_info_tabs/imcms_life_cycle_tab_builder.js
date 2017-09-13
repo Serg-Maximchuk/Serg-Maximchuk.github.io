@@ -93,63 +93,63 @@ Imcms.define("imcms-life-cycle-tab-builder",
             ]);
         }
 
+        function buildArchivedDateTimeContainer() {
+            var $archivedTitle = components.texts.titleText("<div>", "Archived"),
+                $archivedDate = components.dateTime.datePickerCalendar({title: "Set archived date"}),
+                $archivedTime = components.dateTime.timePickerClock({title: "Set archived time"}),
+                $setArchivedTimeNowBtn = components.buttons.neutralButton({
+                    text: "Now",
+                    click: onTimeNowButtonClick
+                }),
+                $setArchivedTimeNowContainer = components.buttons.buttonsContainer("<div>", [$setArchivedTimeNowBtn]),
+
+                $archivedDateTime = components.dateTime.dateTimeReadOnly({title: "Saved archived date-time"}),
+
+                $clearArchivedTimeBtn = components.buttons.neutralButton({
+                    text: "Clear",
+                    click: onTimeClearButtonClick
+                }),
+                $clearArchivedTimeContainer = components.buttons.buttonsContainer("<div>", [$clearArchivedTimeBtn])
+            ;
+
+            tabData.archivedTime = new TimePicker($archivedTime);
+            tabData.archivedDate = new DatePicker($archivedDate);
+            tabData.archivedDateTime = {
+                date: new DatePicker($archivedDateTime),
+                time: new TimePicker($archivedDateTime)
+            };
+
+            return lifeCycleInnerStructureBEM.buildBlock("<div>", [
+                {"title": $archivedTitle},
+                {
+                    "item": $archivedDate,
+                    modifiers: itemModifiers
+                }, {
+                    "item": $archivedTime,
+                    modifiers: itemModifiers
+                }, {
+                    "item": $setArchivedTimeNowContainer,
+                    modifiers: itemModifiers
+                }, {
+                    "item": $archivedDateTime,
+                    modifiers: itemModifiers
+                }, {
+                    "item": $clearArchivedTimeContainer,
+                    modifiers: itemModifiers
+                }
+            ]);
+        }
+
         return {
             name: "life cycle",
             buildTab: function (index) {
                 var $docStatusSelectContainer = buildDocStatusSelect(),
                     $publishedDateTimeContainer = buildPublishedDateTimeContainer(),
-
-                    // archived date-time row
-
-                    $archivedTitle = components.texts.titleText("<div>", "Archived"),
-                    $archivedDate = components.dateTime.datePickerCalendar({title: "Set archived date"}),
-                    $archivedTime = components.dateTime.timePickerClock({title: "Set archived time"}),
-                    $setArchivedTimeNowBtn = components.buttons.neutralButton({
-                        text: "Now",
-                        click: onTimeNowButtonClick
-                    }),
-                    $setArchivedTimeNowContainer = components.buttons.buttonsContainer("<div>", [$setArchivedTimeNowBtn]),
-
-                    $archivedDateTime = components.dateTime.dateTimeReadOnly({title: "Saved archived date-time"}),
-
-                    $clearArchivedTimeBtn = components.buttons.neutralButton({
-                        text: "Clear",
-                        click: onTimeClearButtonClick
-                    })
-                ;
-
-                tabData.archivedTime = new TimePicker($archivedTime);
-                tabData.archivedDate = new DatePicker($archivedDate);
-                tabData.archivedDateTime = {
-                    date: new DatePicker($archivedDateTime),
-                    time: new TimePicker($archivedDateTime)
-                };
-
-                var $clearArchivedTimeContainer = components.buttons.buttonsContainer("<div>", [$clearArchivedTimeBtn]),
-
-                    $archivedDateTimeContainer = lifeCycleInnerStructureBEM.buildBlock("<div>", [
-                        {"title": $archivedTitle},
-                        {
-                            "item": $archivedDate,
-                            modifiers: itemModifiers
-                        }, {
-                            "item": $archivedTime,
-                            modifiers: itemModifiers
-                        }, {
-                            "item": $setArchivedTimeNowContainer,
-                            modifiers: itemModifiers
-                        }, {
-                            "item": $archivedDateTime,
-                            modifiers: itemModifiers
-                        }, {
-                            "item": $clearArchivedTimeContainer,
-                            modifiers: itemModifiers
-                        }
-                    ]),
+                    $archivedDateTimeContainer = buildArchivedDateTimeContainer();
 
                     // publication date-time row
 
-                    $publishEndTitle = components.texts.titleText("<div>", "Publication end"),
+                var $publishEndTitle = components.texts.titleText("<div>", "Publication end"),
                     $publishEndDate = components.dateTime.datePickerCalendar({title: "Set publication end date"}),
                     $publishEndTime = components.dateTime.timePickerClock({title: "Set publication end time"}),
 
