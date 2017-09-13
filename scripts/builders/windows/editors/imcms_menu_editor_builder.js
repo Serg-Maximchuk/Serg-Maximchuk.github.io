@@ -9,14 +9,6 @@ Imcms.define("imcms-menu-editor-builder",
     ],
     function (BEM, components, documentEditorBuilder, imcmsModalWindow, WindowBuilder, menuRestApi,
               controls, pageInfoBuilder, $) {
-        var menuEditorBEM = new BEM({
-            block: "imcms-menu-editor",
-            elements: {
-                "head": "imcms-head",
-                "body": "imcms-menu-editor-body",
-                "footer": "imcms-footer"
-            }
-        });
 
         var $title, $menuElementsContainer, $documentsContainer;
         var docId, menuId;
@@ -27,7 +19,10 @@ Imcms.define("imcms-menu-editor-builder",
         }
 
         function buildHead() {
-            return menuWindowBuilder.buildHead("menu editor");
+            var $head = menuWindowBuilder.buildHead("menu editor");
+            $title = $head.find(".imcms-title");
+
+            return $head;
         }
 
         function buildBody() {
@@ -240,17 +235,14 @@ Imcms.define("imcms-menu-editor-builder",
             docId = opts.docId;
             menuId = opts.menuId;
 
-            var $head = buildHead(),
-                $body = buildBody(),
-                $footer = buildFooter();
-
-            $title = $head.find(".imcms-title");
-
-            return menuEditorBEM.buildBlock("<div>", [
-                {"head": $head},
-                {"body": $body},
-                {"footer": $footer}
-            ]).addClass("imcms-editor-window");
+            return new BEM({
+                block: "imcms-menu-editor",
+                elements: {
+                    "head": buildHead(),
+                    "body": buildBody(),
+                    "footer": buildFooter()
+                }
+            }).buildBlockStructure("<div>", {"class": "imcms-editor-window"});
         }
 
         function clearData() {
