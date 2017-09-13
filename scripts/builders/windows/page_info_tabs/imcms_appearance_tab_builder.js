@@ -3,9 +3,11 @@ Imcms.define("imcms-appearance-tab-builder",
         "imcms-bem-builder", "imcms-components-builder", "imcms-page-info-tabs-linker", "imcms-choose-image-builder"
     ],
     function (BEM, components, linker, chooseImage) {
+
+        var tabData = {};
+
         return {
             name: "appearance",
-            data: {},
             buildTab: function (index) {
                 var pageInfoInnerStructureBEM = new BEM({
                     block: "imcms-field",
@@ -18,39 +20,39 @@ Imcms.define("imcms-appearance-tab-builder",
                     }
                 });
 
-                this.data.$engCheckbox = components.checkboxes.imcmsCheckbox("<div>", {
+                tabData.$engCheckbox = components.checkboxes.imcmsCheckbox("<div>", {
                     name: "english",
                     text: "English",
                     checked: "checked"
                 });
 
                 var $engCheckboxWrapper = components.checkboxes.checkboxContainer("<div>", [
-                    this.data.$engCheckbox
+                    tabData.$engCheckbox
                 ]);
                 var $engCheckboxContainer = pageInfoInnerStructureBEM.buildBlock("<div>", [{
                     "checkboxes": $engCheckboxWrapper
                 }]);
 
-                this.data.$engPageTitle = components.texts.textBox("<div>", {
+                tabData.$engPageTitle = components.texts.textBox("<div>", {
                     name: "title",
                     text: "Title",
                     placeholder: "Start page"
                 });
 
                 var $pageTitleContainer = pageInfoInnerStructureBEM.buildBlock("<div>", [
-                    {"text-box": this.data.$engPageTitle}
+                    {"text-box": tabData.$engPageTitle}
                 ]);
 
-                this.data.$engMenuText = components.texts.textArea("<div>", {
+                tabData.$engMenuText = components.texts.textArea("<div>", {
                     text: "Menu text",
                     name: "menu-text"
                 });
 
                 var $menuTextContainer = pageInfoInnerStructureBEM.buildBlock("<div>", [
-                    {"text-area": this.data.$engMenuText}
+                    {"text-area": tabData.$engMenuText}
                 ]);
 
-                this.data.$engLinkToImage = chooseImage.container("<div>", {
+                tabData.$engLinkToImage = chooseImage.container("<div>", {
                     id: "path-to-image",
                     name: "image",
                     placeholder: "Image path",
@@ -59,41 +61,41 @@ Imcms.define("imcms-appearance-tab-builder",
                 });
 
                 var $linkToImageContainer = pageInfoInnerStructureBEM.buildBlock("<div>", [{
-                    "choose-image": this.data.$engLinkToImage
+                    "choose-image": tabData.$engLinkToImage
                 }]);
 
-                this.data.$sweCheckbox = components.checkboxes.imcmsCheckbox("<div>", {
+                tabData.$sweCheckbox = components.checkboxes.imcmsCheckbox("<div>", {
                     name: "swedish",
                     text: "Swedish"
                 });
 
                 var $sweCheckboxWrapper = components.checkboxes.checkboxContainer("<div>", [
-                        this.data.$sweCheckbox
+                        tabData.$sweCheckbox
                     ]),
                     $sweCheckboxContainer = pageInfoInnerStructureBEM.buildBlock("<div>", [{
                         "checkboxes": $sweCheckboxWrapper
                     }]);
 
-                this.data.$swePageTitle = components.texts.textBox("<div>", {
+                tabData.$swePageTitle = components.texts.textBox("<div>", {
                     name: "title",
                     text: "Title",
                     placeholder: "Startsida"
                 });
 
                 var $pageTitleSweContainer = pageInfoInnerStructureBEM.buildBlock("<div>", [{
-                    "text-box": this.data.$swePageTitle
+                    "text-box": tabData.$swePageTitle
                 }]);
 
-                this.data.$sweMenuText = components.texts.textArea("<div>", {
+                tabData.$sweMenuText = components.texts.textArea("<div>", {
                     text: "Menu text",
                     name: "menu-text"
                 });
 
                 var $menuTextSweContainer = pageInfoInnerStructureBEM.buildBlock("<div>", [{
-                    "text-area": this.data.$sweMenuText
+                    "text-area": tabData.$sweMenuText
                 }]);
 
-                this.data.$linkToImageSwe = chooseImage.container("<div>", {
+                tabData.$linkToImageSwe = chooseImage.container("<div>", {
                     id: "path-to-image-swe",
                     name: "image",
                     placeholder: "Image path",
@@ -102,10 +104,10 @@ Imcms.define("imcms-appearance-tab-builder",
                 });
 
                 var $linkToImageSweContainer = pageInfoInnerStructureBEM.buildBlock("<div>", [{
-                    "choose-image": this.data.$linkToImageSwe
+                    "choose-image": tabData.$linkToImageSwe
                 }]);
 
-                this.data.$showIn = components.selects.imcmsSelect("<div>", {
+                tabData.$showIn = components.selects.imcmsSelect("<div>", {
                     id: "show-in",
                     text: "Show in",
                     name: "show-in"
@@ -121,17 +123,17 @@ Imcms.define("imcms-appearance-tab-builder",
                 }]);
 
                 var $showInContainer = pageInfoInnerStructureBEM.buildBlock("<div>", [
-                    {"select": this.data.$showIn}
+                    {"select": tabData.$showIn}
                 ]);
 
-                this.data.$documentAlias = components.texts.textBox("<div>", {
+                tabData.$documentAlias = components.texts.textBox("<div>", {
                     name: "alias",
                     text: "Document alias",
                     placeholder: "this-doc-alias"
                 });
 
                 var $documentAliasContainer = pageInfoInnerStructureBEM.buildBlock("<div>", [
-                    {"text-box": this.data.$documentAlias}
+                    {"text-box": tabData.$documentAlias}
                 ]);
 
                 var tabElements = [
@@ -150,40 +152,33 @@ Imcms.define("imcms-appearance-tab-builder",
                 return linker.buildFormBlock(tabElements, index);
             },
             fillTabDataFromDocument: function (document) {
-                var appearanceTab = this.data,
-
-                    englishLanguage = document.languages["eng"],
+                var englishLanguage = document.languages["eng"],
                     swedishLanguage = document.languages["swe"];
 
-                appearanceTab.$engCheckbox.setLabelText(englishLanguage.name)
-                    .setChecked(englishLanguage.enabled);
-                appearanceTab.$engPageTitle.setValue(englishLanguage.title);
-                appearanceTab.$engMenuText.setValue(englishLanguage.menu_text);
+                tabData.$engCheckbox.setLabelText(englishLanguage.name).setChecked(englishLanguage.enabled);
+                tabData.$engPageTitle.setValue(englishLanguage.title);
+                tabData.$engMenuText.setValue(englishLanguage.menu_text);
 
-                appearanceTab.$sweCheckbox.setLabelText(swedishLanguage.name)
-                    .setChecked(swedishLanguage.enabled);
-                appearanceTab.$swePageTitle.setValue(swedishLanguage.title);
-                appearanceTab.$sweMenuText.setValue(swedishLanguage.menu_text);
+                tabData.$sweCheckbox.setLabelText(swedishLanguage.name).setChecked(swedishLanguage.enabled);
+                tabData.$swePageTitle.setValue(swedishLanguage.title);
+                tabData.$sweMenuText.setValue(swedishLanguage.menu_text);
 
-                appearanceTab.$showIn.selectValue(document.show_in);
-
-                appearanceTab.$documentAlias.setValue(document.alias);
+                tabData.$showIn.selectValue(document.show_in);
+                tabData.$documentAlias.setValue(document.alias);
             },
             clearTabData: function () {
-                var appearanceTab = this.data,
-                    emptyString = '';
+                var emptyString = '';
 
-                appearanceTab.$engCheckbox.setChecked(true);
-                appearanceTab.$engPageTitle.setValue(emptyString);
-                appearanceTab.$engMenuText.setValue(emptyString);
+                tabData.$engCheckbox.setChecked(true);
+                tabData.$engPageTitle.setValue(emptyString);
+                tabData.$engMenuText.setValue(emptyString);
 
-                appearanceTab.$sweCheckbox.setChecked(false);
-                appearanceTab.$swePageTitle.setValue(emptyString);
-                appearanceTab.$sweMenuText.setValue(emptyString);
+                tabData.$sweCheckbox.setChecked(false);
+                tabData.$swePageTitle.setValue(emptyString);
+                tabData.$sweMenuText.setValue(emptyString);
 
-                appearanceTab.$showIn.selectFirst();
-
-                appearanceTab.$documentAlias.setValue(emptyString);
+                tabData.$showIn.selectFirst();
+                tabData.$documentAlias.setValue(emptyString);
             }
         };
     }
