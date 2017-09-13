@@ -14,9 +14,9 @@ Imcms.define("imcms-life-cycle-tab-builder",
                     "item": ""
                 }
             }),
-            itemModifiers = ["float-l"];
-
-        var tabData = {};
+            itemModifiers = ["float-l"],
+            tabData = {}
+        ;
 
         function onTimeNowButtonClick() {
             console.log("%c Not implemented feature: set time.", "color: red;")
@@ -166,12 +166,11 @@ Imcms.define("imcms-life-cycle-tab-builder",
 
             usersRestApi.read(null).done(function (users) {
                 var usersDataMapped = users.map(function (user) {
-                        return {
-                            text: user.username,
-                            "data-value": user.id
-                        }
-                    })
-                ;
+                    return {
+                        text: user.username,
+                        "data-value": user.id
+                    }
+                });
 
                 components.selects.addOptionsToSelect(usersDataMapped, tabData.$publisherSelect);
             });// todo receive users with specific role admin
@@ -203,8 +202,7 @@ Imcms.define("imcms-life-cycle-tab-builder",
 
         function buildCurrentVersionRow() {
             var $currentVersionRowTitle = components.texts.titleText("<div>", "Current version:"),
-                $docVersionSaveDateTime = components.dateTime.dateTimeReadOnly()
-            ;
+                $docVersionSaveDateTime = components.dateTime.dateTimeReadOnly();
 
             tabData.$currentVersionNumber = components.texts.textBox("<div>", {
                 readonly: "readonly",
