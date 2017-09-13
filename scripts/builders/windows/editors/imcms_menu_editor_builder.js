@@ -128,15 +128,12 @@ Imcms.define("imcms-menu-editor-builder",
             function buildMenuItemTree(menuElementTree, level) {
                 menuElementTree.children = menuElementTree.children || [];
 
-                var menuItemsBEM = new BEM({
+                var treeBlock = new BEM({
                     block: "imcms-menu-items",
-                    elements: {"menu-item": "imcms-menu-item"}
-                });
-
-                var $testMenuItem = buildMenuItems(menuElementTree);
-                var treeBlock = menuItemsBEM.buildBlock("<div>", [{"menu-item": $testMenuItem}], {
-                    "data-menu-items-lvl": level
-                });
+                    elements: {
+                        "menu-item": buildMenuItems(menuElementTree)
+                    }
+                }).buildBlockStructure("<div>", {"data-menu-items-lvl": level});
 
                 ++level;
 
