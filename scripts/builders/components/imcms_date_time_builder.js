@@ -136,16 +136,17 @@ Imcms.define("imcms-date-time-builder",
 
         function validateDateInput($dateInput, dateValidator) {
             $dateInput
-                .keydown(leaveNumbersAndHyphens)
+                .keydown(allowNumbersAndHyphens)
                 .on('input', errorInputIfNotValid.bindArgs($dateInput, dateValidator));
 
-            function leaveNumbersAndHyphens(event) {
-                var pressedButton = event.key;
+            function allowNumbersAndHyphens(event) {
+                var pressedButton = event.key,
+                    result = true;
                 if (pressedButton.length === 1) {
-                    if (!/^[0-9-]$/.test(pressedButton)) {
-                        event.preventDefault();
-                    }
+                    result = /^[0-9-]$/.test(pressedButton);
                 }
+
+                return result;
             }
 
             function errorInputIfNotValid($dateInput, dateValidator) {
