@@ -24,11 +24,12 @@ Imcms.define("imcms-life-cycle-tab-builder",
             console.log("%c Not implemented feature: clear time.", "color: red;")
         }
 
+        var tabData = {};
+
         return {
             name: "life cycle",
-            data: {},
             buildTab: function (index) {
-                this.data.$docStatusSelect = components.selects.imcmsSelect("<div>", {
+                tabData.$docStatusSelect = components.selects.imcmsSelect("<div>", {
                     id: "doc-status",
                     text: "Status",
                     name: "status"
@@ -44,7 +45,7 @@ Imcms.define("imcms-life-cycle-tab-builder",
                 }]);
 
                 var $docStatusSelectContainer = lifeCycleInnerStructureBEM.buildBlock("<div>", [
-                        {"select": this.data.$docStatusSelect}
+                        {"select": tabData.$docStatusSelect}
                     ]),
 
                     // published date-time row
@@ -65,11 +66,12 @@ Imcms.define("imcms-life-cycle-tab-builder",
                     })
                 ;
 
-                this.data.publishTime = new TimePicker($publishTime);
-                this.data.publishDate = new DatePicker($publishDate);
-                this.data.publishDateTime = {};
-                this.data.publishDateTime.date = new DatePicker($publishDateTime);
-                this.data.publishDateTime.time = new TimePicker($publishDateTime);
+                tabData.publishTime = new TimePicker($publishTime);
+                tabData.publishDate = new DatePicker($publishDate);
+                tabData.publishDateTime = {
+                    date: new DatePicker($publishDateTime),
+                    time: new TimePicker($publishDateTime)
+                };
 
                 var $clearPublishTimeContainer = components.buttons.buttonsContainer("<div>", [$clearPublishTimeBtn]),
 
@@ -112,11 +114,12 @@ Imcms.define("imcms-life-cycle-tab-builder",
                     })
                 ;
 
-                this.data.archivedTime = new TimePicker($archivedTime);
-                this.data.archivedDate = new DatePicker($archivedDate);
-                this.data.archivedDateTime = {};
-                this.data.archivedDateTime.date = new DatePicker($archivedDateTime);
-                this.data.archivedDateTime.time = new TimePicker($archivedDateTime);
+                tabData.archivedTime = new TimePicker($archivedTime);
+                tabData.archivedDate = new DatePicker($archivedDate);
+                tabData.archivedDateTime = {
+                    date: new DatePicker($archivedDateTime),
+                    time: new TimePicker($archivedDateTime)
+                };
 
                 var $clearArchivedTimeContainer = components.buttons.buttonsContainer("<div>", [$clearArchivedTimeBtn]),
 
@@ -189,48 +192,48 @@ Imcms.define("imcms-life-cycle-tab-builder",
                     ])
                 ;
 
-                this.data.publishEndTime = new TimePicker($publishEndTime);
-                this.data.publishEndDate = new DatePicker($publishEndDate);
-                this.data.publishEndDateTime = {};
-                this.data.publishEndDateTime.date = new DatePicker($publishEndDateTime);
-                this.data.publishEndDateTime.time = new TimePicker($publishEndDateTime);
+                tabData.publishEndTime = new TimePicker($publishEndTime);
+                tabData.publishEndDate = new DatePicker($publishEndDate);
+                tabData.publishEndDateTime = {
+                    date: new DatePicker($publishEndDateTime),
+                    time: new TimePicker($publishEndDateTime)
+                };
 
                 // publisher select row
 
-                this.data.$publisherSelect = components.selects.imcmsSelect("<div>", {
+                tabData.$publisherSelect = components.selects.imcmsSelect("<div>", {
                     id: "doc-publisher",
                     text: "Publisher",
                     name: "publisher"
                 });
-                var parentContext = this;
-                usersRestApi.read(null)
-                    .done(function (users) {
-                        var usersDataMapped = users.map(function (user) {
-                                return {
-                                    text: user.username,
-                                    "data-value": user.id
-                                }
-                            })
-                        ;
 
-                        components.selects.addOptionsToSelect(usersDataMapped, parentContext.data.$publisherSelect);
-                    });// todo receive users with specific role admin
+                usersRestApi.read(null).done(function (users) {
+                    var usersDataMapped = users.map(function (user) {
+                            return {
+                                text: user.username,
+                                "data-value": user.id
+                            }
+                        })
+                    ;
+
+                    components.selects.addOptionsToSelect(usersDataMapped, tabData.$publisherSelect);
+                });// todo receive users with specific role admin
 
                 var $publisherSelectContainer = lifeCycleInnerStructureBEM.buildBlock("<div>", [
-                    {"select": this.data.$publisherSelect}
+                    {"select": tabData.$publisherSelect}
                 ]);
 
                 // languages row
 
                 var $languagesTitle = components.texts.titleText("<div>", "If requested language is missing:");
 
-                this.data.$showDefaultLang = components.radios.imcmsRadio("<div>", {
+                tabData.$showDefaultLang = components.radios.imcmsRadio("<div>", {
                     text: "Show in default language if enabled",
                     name: "langSetting",
                     value: "SHOW_DEFAULT",
                     checked: "checked" // default value
                 });
-                this.data.$doNotShow = components.radios.imcmsRadio("<div>", {
+                tabData.$doNotShow = components.radios.imcmsRadio("<div>", {
                     text: "Don't show at all",
                     name: "langSetting",
                     value: "DO_NOT_SHOW"
@@ -238,14 +241,14 @@ Imcms.define("imcms-life-cycle-tab-builder",
 
                 var $languagesContainer = lifeCycleInnerStructureBEM.buildBlock("<div>", [
                     {"title": $languagesTitle},
-                    {"item": this.data.$showDefaultLang},
-                    {"item": this.data.$doNotShow}
+                    {"item": tabData.$showDefaultLang},
+                    {"item": tabData.$doNotShow}
                 ]);
 
                 // current version row
 
                 var $currentVersionRowTitle = components.texts.titleText("<div>", "Current version:");
-                this.data.$currentVersionNumber = components.texts.textBox("<div>", {
+                tabData.$currentVersionNumber = components.texts.textBox("<div>", {
                     readonly: "readonly",
                     value: "0"
                 });
@@ -254,7 +257,7 @@ Imcms.define("imcms-life-cycle-tab-builder",
                     $docVersionContainer = lifeCycleInnerStructureBEM.buildBlock("<div>", [
                         {"title": $currentVersionRowTitle},
                         {
-                            "item": this.data.$currentVersionNumber,
+                            "item": tabData.$currentVersionNumber,
                             modifiers: itemModifiers.concat("short")
                         }, {
                             "item": $docVersionSaveDateTime,
@@ -276,9 +279,10 @@ Imcms.define("imcms-life-cycle-tab-builder",
                     ])
                 ;
 
-                this.data.docVersionSaveDateTime = {};
-                this.data.docVersionSaveDateTime.date = new DatePicker($docVersionSaveDateTime);
-                this.data.docVersionSaveDateTime.time = new TimePicker($docVersionSaveDateTime);
+                tabData.docVersionSaveDateTime = {
+                    date: new DatePicker($docVersionSaveDateTime),
+                    time: new TimePicker($docVersionSaveDateTime)
+                };
 
                 var formElements = [
                     $docStatusSelectContainer,
@@ -294,62 +298,59 @@ Imcms.define("imcms-life-cycle-tab-builder",
                 return linker.buildFormBlock(formElements, index);
             },
             fillTabDataFromDocument: function (document) {
-                var lifeCycleTab = this.data;
+                tabData.$docStatusSelect.selectValue(document.status);
 
-                lifeCycleTab.$docStatusSelect.selectValue(document.status);
+                tabData.publishDate.setDate(document.published.date);
+                tabData.publishTime.setTime(document.published.time);
+                tabData.publishDateTime.date.setDate(document.published.date);
+                tabData.publishDateTime.time.setTime(document.published.time);
 
-                lifeCycleTab.publishDate.setDate(document.published.date);
-                lifeCycleTab.publishTime.setTime(document.published.time);
-                lifeCycleTab.publishDateTime.date.setDate(document.published.date);
-                lifeCycleTab.publishDateTime.time.setTime(document.published.time);
+                tabData.archivedDate.setDate(document.archived.date);
+                tabData.archivedTime.setTime(document.archived.time);
+                tabData.archivedDateTime.date.setDate(document.archived.date);
+                tabData.archivedDateTime.time.setTime(document.archived.time);
 
-                lifeCycleTab.archivedDate.setDate(document.archived.date);
-                lifeCycleTab.archivedTime.setTime(document.archived.time);
-                lifeCycleTab.archivedDateTime.date.setDate(document.archived.date);
-                lifeCycleTab.archivedDateTime.time.setTime(document.archived.time);
+                tabData.publishEndDate.setDate(document.publication_end.date);
+                tabData.publishEndTime.setTime(document.publication_end.time);
+                tabData.publishEndDateTime.date.setDate(document.publication_end.date);
+                tabData.publishEndDateTime.time.setTime(document.publication_end.time);
 
-                lifeCycleTab.publishEndDate.setDate(document.publication_end.date);
-                lifeCycleTab.publishEndTime.setTime(document.publication_end.time);
-                lifeCycleTab.publishEndDateTime.date.setDate(document.publication_end.date);
-                lifeCycleTab.publishEndDateTime.time.setTime(document.publication_end.time);
+                tabData.$publisherSelect.selectValue(document.publisher);
 
-                lifeCycleTab.$publisherSelect.selectValue(document.publisher);
-
-                components.radios.group(lifeCycleTab.$showDefaultLang, lifeCycleTab.$doNotShow)
+                components.radios.group(tabData.$showDefaultLang, tabData.$doNotShow)
                     .checkAmongGroup(document.if_requested_lang_missing_doc_opts);
 
-                lifeCycleTab.$currentVersionNumber.setValue(document.currentVersion);
-                lifeCycleTab.docVersionSaveDateTime.date.setDate(document.currentVersionDate);
-                lifeCycleTab.docVersionSaveDateTime.time.setTime(document.currentVersionTime);
+                tabData.$currentVersionNumber.setValue(document.currentVersion);
+                tabData.docVersionSaveDateTime.date.setDate(document.currentVersionDate);
+                tabData.docVersionSaveDateTime.time.setTime(document.currentVersionTime);
             },
             clearTabData: function () {
-                var lifeCycleTab = this.data,
-                    emptyString = '';
+                var emptyString = '';
 
-                lifeCycleTab.$docStatusSelect.selectFirst();
+                tabData.$docStatusSelect.selectFirst();
 
-                lifeCycleTab.publishDate.setDate(emptyString);
-                lifeCycleTab.publishTime.setTime(emptyString);
-                lifeCycleTab.publishDateTime.date.setDate(emptyString);
-                lifeCycleTab.publishDateTime.time.setTime(emptyString);
+                tabData.publishDate.setDate(emptyString);
+                tabData.publishTime.setTime(emptyString);
+                tabData.publishDateTime.date.setDate(emptyString);
+                tabData.publishDateTime.time.setTime(emptyString);
 
-                lifeCycleTab.archivedDate.setDate(emptyString);
-                lifeCycleTab.archivedTime.setTime(emptyString);
-                lifeCycleTab.archivedDateTime.date.setDate(emptyString);
-                lifeCycleTab.archivedDateTime.time.setTime(emptyString);
+                tabData.archivedDate.setDate(emptyString);
+                tabData.archivedTime.setTime(emptyString);
+                tabData.archivedDateTime.date.setDate(emptyString);
+                tabData.archivedDateTime.time.setTime(emptyString);
 
-                lifeCycleTab.publishEndDate.setDate(emptyString);
-                lifeCycleTab.publishEndTime.setTime(emptyString);
-                lifeCycleTab.publishEndDateTime.date.setDate(emptyString);
-                lifeCycleTab.publishEndDateTime.time.setTime(emptyString);
+                tabData.publishEndDate.setDate(emptyString);
+                tabData.publishEndTime.setTime(emptyString);
+                tabData.publishEndDateTime.date.setDate(emptyString);
+                tabData.publishEndDateTime.time.setTime(emptyString);
 
-                lifeCycleTab.$publisherSelect.selectFirst();
+                tabData.$publisherSelect.selectFirst();
 
-                lifeCycleTab.$showDefaultLang.setChecked(true); //default value
+                tabData.$showDefaultLang.setChecked(true); //default value
 
-                lifeCycleTab.$currentVersionNumber.setValue(emptyString);
-                lifeCycleTab.docVersionSaveDateTime.date.setDate(emptyString);
-                lifeCycleTab.docVersionSaveDateTime.time.setTime(emptyString);
+                tabData.$currentVersionNumber.setValue(emptyString);
+                tabData.docVersionSaveDateTime.date.setDate(emptyString);
+                tabData.docVersionSaveDateTime.time.setTime(emptyString);
 
             }
         };
