@@ -232,9 +232,7 @@ Imcms.define("imcms-time-picker", ["imcms", "jquery"], function (imcms, $) {
             .blur(currentTimeValidation)
             .mask("00:00");
 
-        $timePickerContainer.setTime = apiSetTime($timePickerContainer);
-
-        return $timePickerContainer;
+        this.setTime = apiSetTime($timePickerContainer);
     };
 
     $(document).click(closePicker);
