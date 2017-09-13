@@ -1,10 +1,9 @@
 Imcms.define("imcms-life-cycle-tab-builder",
     [
-        "imcms-date-picker", "imcms-time-picker",
         "imcms-bem-builder", "imcms-components-builder", "imcms-users-rest-api",
         "imcms-page-info-tabs-linker"
     ],
-    function (DatePicker, TimePicker, BEM, components, usersRestApi, linker) {
+    function (BEM, components, usersRestApi, linker) {
 
         var lifeCycleInnerStructureBEM = new BEM({
                 block: "imcms-field",
@@ -246,18 +245,18 @@ Imcms.define("imcms-life-cycle-tab-builder",
 
                 tabData.$publishDate.setDate(document.published.date);
                 tabData.$publishTime.setTime(document.published.time);
-                tabData.$publishDateTime.date.setDate(document.published.date);
-                tabData.$publishDateTime.time.setTime(document.published.time);
+                tabData.$publishDateTime.getDate().setDate(document.published.date);
+                tabData.$publishDateTime.getTime().setTime(document.published.time);
 
                 tabData.$archivedDate.setDate(document.archived.date);
                 tabData.$archivedTime.setTime(document.archived.time);
-                tabData.$archivedDateTime.date.setDate(document.archived.date);
-                tabData.$archivedDateTime.time.setTime(document.archived.time);
+                tabData.$archivedDateTime.getDate().setDate(document.archived.date);
+                tabData.$archivedDateTime.getTime().setTime(document.archived.time);
 
                 tabData.$publishEndDate.setDate(document.publication_end.date);
                 tabData.$publishEndTime.setTime(document.publication_end.time);
-                tabData.$publishEndDateTime.date.setDate(document.publication_end.date);
-                tabData.$publishEndDateTime.time.setTime(document.publication_end.time);
+                tabData.$publishEndDateTime.getDate().setDate(document.publication_end.date);
+                tabData.$publishEndDateTime.getTime().setTime(document.publication_end.time);
 
                 tabData.$publisherSelect.selectValue(document.publisher);
 
@@ -265,8 +264,8 @@ Imcms.define("imcms-life-cycle-tab-builder",
                     .checkAmongGroup(document.if_requested_lang_missing_doc_opts);
 
                 tabData.$currentVersionNumber.setValue(document.currentVersion);
-                tabData.$docVersionSaveDateTime.date.setDate(document.currentVersionDate);
-                tabData.$docVersionSaveDateTime.time.setTime(document.currentVersionTime);
+                tabData.$docVersionSaveDateTime.getDate().setDate(document.currentVersionDate);
+                tabData.$docVersionSaveDateTime.getTime().setTime(document.currentVersionTime);
             },
             clearTabData: function () {
                 var emptyString = '';
@@ -275,25 +274,25 @@ Imcms.define("imcms-life-cycle-tab-builder",
 
                 tabData.$publishDate.setDate(emptyString);
                 tabData.$publishTime.setTime(emptyString);
-                tabData.$publishDateTime.date.setDate(emptyString);
-                tabData.$publishDateTime.time.setTime(emptyString);
+                tabData.$publishDateTime.getDate().setDate(emptyString);
+                tabData.$publishDateTime.getTime().setTime(emptyString);
 
                 tabData.$archivedDate.setDate(emptyString);
                 tabData.$archivedTime.setTime(emptyString);
-                tabData.$archivedDateTime.date.setDate(emptyString);
-                tabData.$archivedDateTime.time.setTime(emptyString);
+                tabData.$archivedDateTime.getDate().setDate(emptyString);
+                tabData.$archivedDateTime.getTime().setTime(emptyString);
 
                 tabData.$publishEndDate.setDate(emptyString);
                 tabData.$publishEndTime.setTime(emptyString);
-                tabData.$publishEndDateTime.date.setDate(emptyString);
-                tabData.$publishEndDateTime.time.setTime(emptyString);
+                tabData.$publishEndDateTime.getDate().setDate(emptyString);
+                tabData.$publishEndDateTime.getTime().setTime(emptyString);
 
                 tabData.$publisherSelect.selectFirst();
                 tabData.$showDefaultLang.setChecked(true); //default value
 
                 tabData.$currentVersionNumber.setValue(emptyString);
-                tabData.$docVersionSaveDateTime.date.setDate(emptyString);
-                tabData.$docVersionSaveDateTime.time.setTime(emptyString);
+                tabData.$docVersionSaveDateTime.getDate().setDate(emptyString);
+                tabData.$docVersionSaveDateTime.getTime().setTime(emptyString);
 
             }
         };

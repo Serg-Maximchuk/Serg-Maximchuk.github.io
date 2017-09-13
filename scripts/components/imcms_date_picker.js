@@ -154,12 +154,6 @@ Imcms.define("imcms-date-picker",
 
             return $dateBoxContainer;
         };
-        DatePicker.prototype = {
-            setDate: function (date) {
-                this.datePicker.find(".imcms-current-date__input").val(date);
-                return this;
-            }
-        };
 
         return DatePicker
     });
