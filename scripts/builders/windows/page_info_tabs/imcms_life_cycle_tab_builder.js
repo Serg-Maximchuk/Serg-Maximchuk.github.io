@@ -16,6 +16,8 @@ Imcms.define("imcms-life-cycle-tab-builder",
             }),
             itemModifiers = ["float-l"];
 
+        var tabData = {};
+
         function onTimeNowButtonClick() {
             console.log("%c Not implemented feature: set time.", "color: red;")
         }
@@ -24,76 +26,78 @@ Imcms.define("imcms-life-cycle-tab-builder",
             console.log("%c Not implemented feature: clear time.", "color: red;")
         }
 
-        var tabData = {};
+        function buildDocStatusSelect() {
+            tabData.$docStatusSelect = components.selects.imcmsSelect("<div>", {
+                id: "doc-status",
+                text: "Status",
+                name: "status"
+            }, [{
+                text: "In Process",
+                "data-value": "0"
+            }, {
+                text: "Disapproved",
+                "data-value": "1"
+            }, {
+                text: "Approved",
+                "data-value": "2"
+            }]);
+
+            return lifeCycleInnerStructureBEM.buildBlock("<div>", [{"select": tabData.$docStatusSelect}]);
+        }
+
+        function publishedDateTimeContainer() {
+            var $publishedTitle = components.texts.titleText("<div>", "Published"),
+                $publishDate = components.dateTime.datePickerCalendar({title: "Set published date"}),
+                $publishTime = components.dateTime.timePickerClock({title: "Set published time"}),
+                $setPublishTimeNowBtn = components.buttons.neutralButton({
+                    text: "Now",
+                    click: onTimeNowButtonClick
+                }),
+                $setPublishTimeNowContainer = components.buttons.buttonsContainer("<div>", [$setPublishTimeNowBtn]),
+
+                $publishDateTime = components.dateTime.dateTimeReadOnly({title: "Saved publish date-time"}),
+
+                $clearPublishTimeBtn = components.buttons.neutralButton({
+                    text: "Clear",
+                    click: onTimeClearButtonClick
+                }),
+                $clearPublishTimeContainer = components.buttons.buttonsContainer("<div>", [$clearPublishTimeBtn])
+            ;
+
+            tabData.publishTime = new TimePicker($publishTime);
+            tabData.publishDate = new DatePicker($publishDate);
+            tabData.publishDateTime = {
+                date: new DatePicker($publishDateTime),
+                time: new TimePicker($publishDateTime)
+            };
+
+            return lifeCycleInnerStructureBEM.buildBlock("<div>", [
+                {
+                    "title": $publishedTitle
+                }, {
+                    "item": $publishDate,
+                    modifiers: itemModifiers
+                }, {
+                    "item": $publishTime,
+                    modifiers: itemModifiers
+                }, {
+                    "item": $setPublishTimeNowContainer,
+                    modifiers: itemModifiers
+                }, {
+                    "item": $publishDateTime,
+                    modifiers: itemModifiers
+                }, {
+                    "item": $clearPublishTimeContainer,
+                    modifiers: itemModifiers
+                }
+            ]);
+        }
 
         return {
             name: "life cycle",
             buildTab: function (index) {
-                tabData.$docStatusSelect = components.selects.imcmsSelect("<div>", {
-                    id: "doc-status",
-                    text: "Status",
-                    name: "status"
-                }, [{
-                    text: "In Process",
-                    "data-value": "0"
-                }, {
-                    text: "Disapproved",
-                    "data-value": "1"
-                }, {
-                    text: "Approved",
-                    "data-value": "2"
-                }]);
-
-                var $docStatusSelectContainer = lifeCycleInnerStructureBEM.buildBlock("<div>", [
-                        {"select": tabData.$docStatusSelect}
-                    ]),
-
-                    // published date-time row
-                    $publishedTitle = components.texts.titleText("<div>", "Published"),
-                    $publishDate = components.dateTime.datePickerCalendar({title: "Set published date"}),
-                    $publishTime = components.dateTime.timePickerClock({title: "Set published time"}),
-                    $setPublishTimeNowBtn = components.buttons.neutralButton({
-                        text: "Now",
-                        click: onTimeNowButtonClick
-                    }),
-                    $setPublishTimeNowContainer = components.buttons.buttonsContainer("<div>", [$setPublishTimeNowBtn]),
-
-                    $publishDateTime = components.dateTime.dateTimeReadOnly({title: "Saved publish date-time"}),
-
-                    $clearPublishTimeBtn = components.buttons.neutralButton({
-                        text: "Clear",
-                        click: onTimeClearButtonClick
-                    })
-                ;
-
-                tabData.publishTime = new TimePicker($publishTime);
-                tabData.publishDate = new DatePicker($publishDate);
-                tabData.publishDateTime = {
-                    date: new DatePicker($publishDateTime),
-                    time: new TimePicker($publishDateTime)
-                };
-
-                var $clearPublishTimeContainer = components.buttons.buttonsContainer("<div>", [$clearPublishTimeBtn]),
-
-                    $publishedDateTimeContainer = lifeCycleInnerStructureBEM.buildBlock("<div>", [
-                        {"title": $publishedTitle},
-                        {
-                            "item": $publishDate,
-                            modifiers: itemModifiers
-                        }, {
-                            "item": $publishTime,
-                            modifiers: itemModifiers
-                        }, {
-                            "item": $setPublishTimeNowContainer,
-                            modifiers: itemModifiers
-                        }, {
-                            "item": $publishDateTime,
-                            modifiers: itemModifiers
-                        }, {
-                            "item": $clearPublishTimeContainer,
-                            modifiers: itemModifiers
-                        }
-                    ]),
+                var $docStatusSelectContainer = buildDocStatusSelect(),
+                    $publishedDateTimeContainer = publishedDateTimeContainer(),
 
                     // archived date-time row
 
