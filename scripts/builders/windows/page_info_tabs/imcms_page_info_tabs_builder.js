@@ -6,7 +6,7 @@ Imcms.define("imcms-page-info-tabs-builder",
     ],
     function (appearance, lifeCycle, keywords, categories, access, permissions, templates, status) {
         return {
-            data: [
+            tabBuilders: [
                 appearance,
                 lifeCycle,
                 keywords,

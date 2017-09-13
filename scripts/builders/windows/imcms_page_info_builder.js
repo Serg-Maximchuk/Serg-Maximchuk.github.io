@@ -35,7 +35,7 @@ Imcms.define("imcms-page-info-builder",
                 }
             }
 
-            var $tabs = pageInfoTabs.data.map(function (tabData, index) {
+            var $tabs = pageInfoTabs.tabBuilders.map(function (tabData, index) {
                 return {
                     tag: "<div>",
                     "class": "imcms-title",
@@ -64,7 +64,7 @@ Imcms.define("imcms-page-info-builder",
         }
 
         function buildPageInfoPanels(docId) {
-            return pageInfoTabs.data.map(function (tabData, index) {
+            return pageInfoTabs.tabBuilders.map(function (tabData, index) {
                 return tabData.buildTab(index, docId).css("display", (index === 0 ? "block" : "none"));
             });
         }
@@ -121,14 +121,14 @@ Imcms.define("imcms-page-info-builder",
             documentsRestApi.read(docId).done(function (document) {
                 $title.text("document " + document.id);
 
-                pageInfoTabs.data.forEach(function (tab) {
+                pageInfoTabs.tabBuilders.forEach(function (tab) {
                     tab.fillTabDataFromDocument(document);
                 });
             });
         }
 
         function clearPageInfoData() {
-            pageInfoTabs.data.forEach(function (tab) {
+            pageInfoTabs.tabBuilders.forEach(function (tab) {
                 tab.clearTabData();
             });
         }
