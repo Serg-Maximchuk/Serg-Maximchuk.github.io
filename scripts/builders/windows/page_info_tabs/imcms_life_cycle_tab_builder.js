@@ -45,7 +45,7 @@ Imcms.define("imcms-life-cycle-tab-builder",
             return lifeCycleInnerStructureBEM.buildBlock("<div>", [{"select": tabData.$docStatusSelect}]);
         }
 
-        function publishedDateTimeContainer() {
+        function buildPublishedDateTimeContainer() {
             var $publishedTitle = components.texts.titleText("<div>", "Published"),
                 $publishDate = components.dateTime.datePickerCalendar({title: "Set published date"}),
                 $publishTime = components.dateTime.timePickerClock({title: "Set published time"}),
@@ -97,7 +97,7 @@ Imcms.define("imcms-life-cycle-tab-builder",
             name: "life cycle",
             buildTab: function (index) {
                 var $docStatusSelectContainer = buildDocStatusSelect(),
-                    $publishedDateTimeContainer = publishedDateTimeContainer(),
+                    $publishedDateTimeContainer = buildPublishedDateTimeContainer(),
 
                     // archived date-time row
 
