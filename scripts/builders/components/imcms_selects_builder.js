@@ -166,6 +166,8 @@ Imcms.define("imcms-selects-builder",
 
         return {
             imcmsSelect: function (tag, attributes, options) {
+                attributes = attributes || {};
+
                 var blockElements = [];
 
                 if (attributes.text) {
