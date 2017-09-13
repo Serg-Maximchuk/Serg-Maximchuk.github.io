@@ -28,7 +28,8 @@ Imcms.define("imcms-date-picker",
                     day = currentDate[2];
 
                 if ($currentDateInput.hasClass("imcms-currrent-date__input--error")) {
-                    $currentDateInput.val(getCurrentDate());
+                    $currentDateInput.val(getCurrentDate())
+                        .removeClass("imcms-currrent-date__input--error");
                 } else {
                     var monthCorrected = month;
                     if (monthCorrected && monthCorrected.length === 1) {
