@@ -145,17 +145,16 @@ Imcms.define("imcms-menu-editor-builder",
             }
 
             function buildMenuElements(menuElementsTree) {
-                var menuTreeBEM = new BEM({
+                var $menuItems = menuElementsTree.map(function (menuElementTree) {
+                    return buildMenuItemTree(menuElementTree, 1);
+                });
+
+                return new BEM({
                     block: "imcms-menu-items-tree",
-                    elements: {"menu-items": "imcms-menu-items"}
-                });
-
-                var $blockElements = menuElementsTree.map(function (menuElementTree) {
-                    var $menuItems = buildMenuItemTree(menuElementTree, 1);
-                    return {"menu-items": $menuItems}
-                });
-
-                return menuTreeBEM.buildBlock("<div>", $blockElements);
+                    elements: {
+                        "menu-items": $menuItems
+                    }
+                }).buildBlockStructure("<div>");
             }
 
             function buildMenuTitlesRow() {
