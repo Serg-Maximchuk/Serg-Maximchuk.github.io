@@ -6,28 +6,28 @@ Imcms.define("imcms-life-cycle-tab-builder",
     ],
     function (DatePicker, TimePicker, BEM, components, usersRestApi, linker) {
 
+        var lifeCycleInnerStructureBEM = new BEM({
+                block: "imcms-field",
+                elements: {
+                    "select": "imcms-select",
+                    "title": "imcms-title",
+                    "item": ""
+                }
+            }),
+            itemModifiers = ["float-l"];
+
+        function onTimeNowButtonClick() {
+            console.log("%c Not implemented feature: set time.", "color: red;")
+        }
+
+        function onTimeClearButtonClick() {
+            console.log("%c Not implemented feature: clear time.", "color: red;")
+        }
+
         return {
             name: "life cycle",
             data: {},
             buildTab: function (index) {
-                var lifeCycleInnerStructureBEM = new BEM({
-                        block: "imcms-field",
-                        elements: {
-                            "select": "imcms-select",
-                            "title": "imcms-title",
-                            "item": ""
-                        }
-                    }),
-                    itemModifiers = ["float-l"];
-
-                function onTimeNowButtonClick() {
-                    console.log("%c Not implemented feature: set time.", "color: red;")
-                }
-
-                function onTimeClearButtonClick() {
-                    console.log("%c Not implemented feature: clear time.", "color: red;")
-                }
-
                 this.data.$docStatusSelect = components.selects.imcmsSelect("<div>", {
                     id: "doc-status",
                     text: "Status",
@@ -48,7 +48,7 @@ Imcms.define("imcms-life-cycle-tab-builder",
                     ]),
 
                     // published date-time row
-                    $publishedTitle = lifeCycleInnerStructureBEM.buildElement("title", "<div>", {text: "Published"}),
+                    $publishedTitle = components.texts.titleText("<div>", "Published"),
                     $publishDate = components.dateTime.datePickerCalendar({title: "Set published date"}),
                     $publishTime = components.dateTime.timePickerClock({title: "Set published time"}),
                     $setPublishTimeNowBtn = components.buttons.neutralButton({
@@ -95,7 +95,7 @@ Imcms.define("imcms-life-cycle-tab-builder",
 
                     // archived date-time row
 
-                    $archivedTitle = lifeCycleInnerStructureBEM.buildElement("title", "<div>", {text: "Archived"}),
+                    $archivedTitle = components.texts.titleText("<div>", "Archived"),
                     $archivedDate = components.dateTime.datePickerCalendar({title: "Set archived date"}),
                     $archivedTime = components.dateTime.timePickerClock({title: "Set archived time"}),
                     $setArchivedTimeNowBtn = components.buttons.neutralButton({
@@ -142,9 +142,7 @@ Imcms.define("imcms-life-cycle-tab-builder",
 
                     // publication date-time row
 
-                    $publishEndTitle = lifeCycleInnerStructureBEM.buildElement("title", "<div>", {
-                        text: "Publication end"
-                    }),
+                    $publishEndTitle = components.texts.titleText("<div>", "Publication end"),
                     $publishEndDate = components.dateTime.datePickerCalendar({title: "Set publication end date"}),
                     $publishEndTime = components.dateTime.timePickerClock({title: "Set publication end time"}),
 
@@ -224,9 +222,7 @@ Imcms.define("imcms-life-cycle-tab-builder",
 
                 // languages row
 
-                var $languagesTitle = lifeCycleInnerStructureBEM.buildElement("title", "<div>", {
-                    text: "If requested language is missing:"
-                });
+                var $languagesTitle = components.texts.titleText("<div>", "If requested language is missing:");
 
                 this.data.$showDefaultLang = components.radios.imcmsRadio("<div>", {
                     text: "Show in default language if enabled",
@@ -248,9 +244,7 @@ Imcms.define("imcms-life-cycle-tab-builder",
 
                 // current version row
 
-                var $currentVersionRowTitle = lifeCycleInnerStructureBEM.buildElement("title", "<div>", {
-                    text: "Current version:"
-                });
+                var $currentVersionRowTitle = components.texts.titleText("<div>", "Current version:");
                 this.data.$currentVersionNumber = components.texts.textBox("<div>", {
                     readonly: "readonly",
                     value: "0"
