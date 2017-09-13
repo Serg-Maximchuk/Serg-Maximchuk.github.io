@@ -38,6 +38,7 @@ Imcms.define("imcms-page-info-builder",
             var $tabs = pageInfoTabs.data.map(function (tabData, index) {
                 return {
                     tag: "<div>",
+                    "class": "imcms-title",
                     attributes: {
                         "data-window-id": index,
                         text: tabData.name,
@@ -46,7 +47,6 @@ Imcms.define("imcms-page-info-builder",
                     modifiers: (index === 0 ? ["active"] : [])
                 };
             });
-            $tabs["class"] = "imcms-title";
 
             var $tabsContainer = new BEM({
                 block: "imcms-tabs",
