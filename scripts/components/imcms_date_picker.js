@@ -36,7 +36,7 @@ Imcms.define("imcms-date-picker",
                         monthCorrected = "0" + monthCorrected;
                     }
 
-                    var dayCorrected = day;
+                    var dayCorrected = day === undefined ? new Date().getDate().toString() : day;
                     if (dayCorrected && dayCorrected.length === 1) {
                         dayCorrected = "0" + dayCorrected;
                     }
@@ -101,7 +101,7 @@ Imcms.define("imcms-date-picker",
                 isValid = !$currentDateInput.hasClass("imcms-currrent-date__input--error"),
                 year = defaultIfFalse(isValid, carDate[0], currentDate.getFullYear()),
                 month = defaultIfFalse(isValid, carDate[1], currentDate.getMonth() + 1),
-                day = defaultIfFalse(isValid, carDate[2], currentDate.getDate())
+                day = defaultIfFalse(isValid && carDate[2], carDate[2], currentDate.getDate())
             ;
 
             imcmsCalendar.buildCalendar(year, month, day, $calendar);
