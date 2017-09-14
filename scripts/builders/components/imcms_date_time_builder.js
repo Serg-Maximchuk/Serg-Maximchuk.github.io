@@ -196,7 +196,7 @@ Imcms.define("imcms-date-time-builder",
             var elements = [];
 
             for (var i = 0; i < howManyElements; i++) {
-                elements.push(timePickerBEM.buildBlockElement(elementName, "<div>"));
+                elements.push(timePickerBEM.buildBlockElement(elementName, "<div>", {"data-link-index": i}));
             }
 
             return elements;

@@ -3,210 +3,53 @@ Imcms.define("imcms-time-picker", ["imcms", "jquery"], function (imcms, $) {
         TIME_PICKER_CLASS_SELECTOR = ".imcms-time-picker"
     ;
 
-    function getCurrentTime() {
-        var currentDate = new Date(),
-            hour = currentDate.getHours(),
-            minute = currentDate.getMinutes()
-        ;
-
-        if (hour < 10) {
-            hour = "0" + hour;
-        }
-        if (minute < 10) {
-            minute = "0" + minute;
-        }
-
-        return hour + ":" + minute;
+    function optionalAddZeroBeforeNumber(numberStr) {
+        return +numberStr < 10 ? "0" + numberStr : numberStr;
     }
 
-    function openPicker() {
-        var curTime = $(this),
-            timePicker = curTime.parents(TIME_PICKER_CLASS_SELECTOR),
-            hour = timePicker.find(".imcms-time-picker__hour"),
-            minute = timePicker.find(".imcms-time-picker__minute"),
-            curHour, curMinute,
-            currentTimeInput = timePicker.find(".imcms-current-time__input"),
-            currentTimeInputVal = currentTimeInput.val().split(":")
-        ;
+    function getCurrentTimeObj() {
+        var currentDate = new Date();
+        return {
+            hours: optionalAddZeroBeforeNumber(currentDate.getHours()),
+            minutes: optionalAddZeroBeforeNumber(currentDate.getMinutes())
+        }
+    }
 
-        if (parseInt(currentTimeInputVal[0]) >= 18) {
-            curHour = 18;
+    function getDateObjValidated($inputTime) {
+        var inputVal = $inputTime.val().split(":"),
+            currentTime = getCurrentTimeObj(),
+            currentHours = currentTime.hours.toString(),
+            currentMinutes = currentTime.minutes.toString(),
+            hours = inputVal[0],
+            minutes = inputVal[1],
+            hasErrorClass = false;
+
+        if (!hours || +hours > 23) {
+            hours = currentHours;
+            hasErrorClass = true;
+        }
+
+        if (!minutes || +minutes > 59) {
+            minutes = currentMinutes;
+            hasErrorClass = true;
+        }
+
+        if (hasErrorClass) {
+            $inputTime.addClass("imcms-current-time__input--error");
         } else {
-            curHour = parseInt(currentTimeInputVal[0]);
+            $inputTime.removeClass("imcms-current-time__input--error");
         }
 
-        if (parseInt(currentTimeInputVal[1]) >= 55) {
-            curMinute = 55;
-        } else {
-            curMinute = parseInt(currentTimeInputVal[1]);
-        }
-
-        if (!timePicker.hasClass("imcms-time-picker--active")
-            && timePicker.find(".imcms-time-picker__time").length !== 0
-        ) {
-            timePicker.addClass("imcms-time-picker--active")
-        }
-
-        hour.each(function () {
-            var $this = $(this);
-            $this.click(setSelectTime);
-            $this.html(curHour);
-            if ($this.hasClass("imcms-time-picker__hour--choose") && $this.html() !== currentTimeInputVal[0]) {
-                $this.removeClass("imcms-time-picker__hour--choose");
-            }
-            if ($this.html() === currentTimeInputVal[0]) {
-                $this.addClass("imcms-time-picker__hour--choose");
-            }
-            curHour++
-        });
-        minute.each(function () {
-            var $this = $(this);
-            $this.click(setSelectTime);
-            $this.html(curMinute);
-            if ($this.hasClass("imcms-time-picker__minute--choose") && $this.html() !== currentTimeInputVal[1]) {
-                $this.removeClass("imcms-time-picker__minute--choose");
-            }
-            if ($this.html() === currentTimeInputVal[1]) {
-                $this.addClass("imcms-time-picker__minute--choose");
-            }
-            curMinute++;
-        });
-    }
-
-    function closePicker(e) {
-        var $target = $(e.target);
-        if ($target.closest(".imcms-current-time__input").length
-            || $target.hasClass("imcms-current-time__input")
-            || $target.hasClass("imcms-time-picker__current-time")
-            || $target.parents(".imcms-time-picker__time").length
-        ) {
-            return;
-        }
-
-        $(TIME_PICKER_CLASS_SELECTOR).removeClass("imcms-time-picker--active");
-        e.stopPropagation();
-    }
-
-    function chooseTime(event) {
-        var $btn = $(this),
-            hours, hour, minutes, minute, curHour, curMinute,
-            timePicker = $btn.parents(TIME_PICKER_CLASS_SELECTOR),
-            currentTimeInput = timePicker.find(".imcms-current-time__input"),
-            currentTimeInputVal = currentTimeInput.val().split(":")
-        ;
-
-        curHour = parseInt(currentTimeInputVal[0]);
-        curMinute = parseInt(currentTimeInputVal[1]);
-
-        if ($btn.parent(".imcms-time-picker__hours").length !== 0) {
-            hours = $btn.parent();
-            hour = hours.find(".imcms-time-picker__hour");
-
-            if ($btn.hasClass("imcms-button--increment") && curHour > 0) {
-                curHour -= 1;
-                hour.each(function () {
-                    $(this).html(curHour);
-                    curHour++;
-                });
-                curHour = parseInt(hour.first().html());
-                if (curHour < 10) curHour = "0" + curHour;
-                if (curMinute < 10) curMinute = "0" + curMinute;
-                currentTimeInput.val(curHour + ":" + curMinute);
-
-            } else if ($btn.hasClass("imcms-button--decrement") && parseInt(hour.last().html()) < 23) {
-                curHour += 1;
-                hour.each(function () {
-                    $(this).html(curHour);
-                    curHour++;
-                });
-                curHour = parseInt(hour.first().html());
-                if (curHour < 10) curHour = "0" + curHour;
-                if (curMinute < 10) curMinute = "0" + curMinute;
-                currentTimeInput.val(curHour + ":" + curMinute);
-
-            } else {
-                event.preventDefault();
-            }
-        } else if ($btn.parent(".imcms-time-picker__minutes").length !== 0) {
-            minutes = $btn.parent();
-            minute = minutes.find(".imcms-time-picker__minute");
-
-            if ($btn.hasClass("imcms-button--increment") && curMinute > 0) {
-                curMinute -= 1;
-                minute.each(function () {
-                    $(this).html(curMinute);
-                    curMinute++;
-                });
-                curMinute = parseInt(minute.first().html());
-                if (curHour < 10) curHour = "0" + curHour;
-                if (curMinute < 10) curMinute = "0" + curMinute;
-                currentTimeInput.val(curHour + ":" + curMinute);
-
-            } else if ($btn.hasClass("imcms-button--decrement") && parseInt(minute.last().html()) < 60) {
-                curMinute += 1;
-                minute.each(function () {
-                    $(this).html(curMinute);
-                    curMinute++;
-                });
-                curMinute = parseInt(minute.first().html());
-                if (curHour < 10) curHour = "0" + curHour;
-                if (curMinute < 10) curMinute = "0" + curMinute;
-                currentTimeInput.val(curHour + ":" + curMinute);
-
-            } else {
-                event.preventDefault();
-            }
+        return {
+            hours: hours,
+            minutes: minutes
         }
     }
 
-    function setSelectTime() {
-        var $this = $(this),
-            hour, minute,
-            currentTimeInput = $this.parents(TIME_PICKER_CLASS_SELECTOR).find(".imcms-current-time__input"),
-            currentTimeInputVal = currentTimeInput.val().split(":")
-        ;
-
-        hour = currentTimeInputVal[0];
-        minute = currentTimeInputVal[1];
-
-        $this.parent().children().each(function () {
-            if ($(this).hasClass("imcms-time-picker__hour--choose")) {
-                $(this).removeClass("imcms-time-picker__hour--choose");
-            }
-            else if ($(this).hasClass("imcms-time-picker__minute--choose")) {
-                $(this).removeClass("imcms-time-picker__minute--choose")
-            }
-        });
-
-        if ($this.hasClass("imcms-time-picker__hour")) {
-            hour = $this.html();
-            if (hour < 10) hour = "0" + hour;
-            currentTimeInput.val(hour + ":" + currentTimeInputVal[1]);
-            $this.addClass("imcms-time-picker__hour--choose");
-        }
-        if ($this.hasClass("imcms-time-picker__minute")) {
-            minute = $this.html();
-            if (minute < 10) minute = "0" + minute;
-            currentTimeInput.val(currentTimeInputVal[0] + ":" + minute);
-            $this.addClass("imcms-time-picker__minute--choose");
-        }
-    }
-
-    function currentTimeValidation() {
-        var currentTimeInputVal = $(this).val().split(":"),
-            hours = parseInt(currentTimeInputVal[0]),
-            minutes = parseInt(currentTimeInputVal[1])
-        ;
-
-        if ((hours < 0)
-            || (hours > 23)
-            || (minutes < 0)
-            || (minutes > 60)
-            || (currentTimeInputVal[1].length !== 2)
-        ) {
-            // todo: do not overwrite valid hours/minutes if minutes/hours are not valid
-            $(this).val(getCurrentTime());
-        }
+    function getTimePicker($timePickerContainer) {
+        return $timePickerContainer.hasClass(TIME_PICKER_CLASS)
+            ? $timePickerContainer
+            : $timePickerContainer.find(TIME_PICKER_CLASS_SELECTOR);
     }
 
     function apiSetTime($timePickerContainer) {
@@ -217,27 +60,180 @@ Imcms.define("imcms-time-picker", ["imcms", "jquery"], function (imcms, $) {
         }
     }
 
-    var TimePicker = function ($timePickerContainer) {
-        this.$timePicker = $timePickerContainer.hasClass(TIME_PICKER_CLASS)
-            ? $timePickerContainer
-            : $timePickerContainer.find(TIME_PICKER_CLASS_SELECTOR);
+    function allowNumbersAndColons() {
+        var pressedButton = event.key,
+            result = true;
+        if (pressedButton.length === 1) {
+            result = /^[0-9:]$/.test(pressedButton);
+        }
 
-        this.$timePicker.find(".imcms-time-picker__current-time")
-            .click(openPicker)
-            .end()
-            .find(".imcms-time-picker__time .imcms-time-picker__button")
-            .click(chooseTime)
-            .end()
-            .find(".imcms-current-time__input")
-            .blur(currentTimeValidation)
-            .mask("00:00");
+        return result;
+    }
+
+    function addValuesWithShift(timeValue, value, limit) {
+        var result = timeValue + value;
+        if (result > limit) {
+            result = result - (limit + 1);
+        }
+        if (result < 0) {
+            result = limit;
+        }
+        result = optionalAddZeroBeforeNumber(result);
+        return result;
+    }
+
+    function initTimePicker($timePicker, $inputTime) {
+        var parsedDate = getDateObjValidated($inputTime);
+
+        $timePicker
+            .find(".imcms-time-picker__time")
+            .css("display", "block");
+
+        var hours = +parsedDate.hours,
+            minutes = +parsedDate.minutes,
+            hoursContainers = $timePicker
+                .find(".imcms-time-picker__hour"),
+            minutesContainers = $timePicker
+                .find(".imcms-time-picker__minute");
+
+
+        hoursContainers.each(function (index) {
+            $(this).text(addValuesWithShift(hours, index, 23));
+        });
+
+        minutesContainers.each(function (index) {
+            $(this).text(addValuesWithShift(minutes, index, 59));
+        });
+    }
+
+    function arrowButtonsClick() {
+        var $clickedArrow = $(this),
+            addValue = $clickedArrow.hasClass("imcms-button--increment") ? -1 : 1,
+            $timeContainers = $clickedArrow.parent().find("div"),
+            limit = $timeContainers.first().hasClass("imcms-time-picker__hour") ? 23 : 59;
+
+        $timeContainers.each(function () {
+            var $timeContainer = $(this);
+            $timeContainer.text(addValuesWithShift(+$timeContainer.text(), addValue, limit));
+        });
+    }
+
+    function minutesAndHoursContainersMouseWheel(e) {
+        var event = window.event || e;
+        event = event.originalEvent ? event.originalEvent : event;
+        var delta = event.detail ? event.detail * (-40) : event.wheelDelta,
+            mousewheelUp = delta > 0,
+            incrementOrDecrementBtnSelector;
+
+        if (mousewheelUp) {
+            incrementOrDecrementBtnSelector = ".imcms-button--increment";
+        } else {
+            incrementOrDecrementBtnSelector = ".imcms-button--decrement";
+        }
+
+        $(this)
+            .find(incrementOrDecrementBtnSelector)
+            .click();
+
+        return false;
+    }
+
+    function getTimeHovereTime(element) {
+        var $selectedTimeUnit = $(element),
+            linkIndex = $selectedTimeUnit.data("link-index"),
+            $connectedTimeUnit = $selectedTimeUnit.parent().siblings().find("[data-link-index='" + linkIndex + "']");
+
+        return {
+            $selectedTimeUnit: $selectedTimeUnit,
+            $connectedTimeUnit: $connectedTimeUnit
+        };
+    }
+
+    function highlightConnecteOnMouseOver() {
+        var hoveredTime = getTimeHovereTime(this);
+        hoveredTime.$connectedTimeUnit.addClass(hoveredTime.$connectedTimeUnit.hasClass("imcms-time-picker__hour")
+            ? "imcms-time-picker__hour--choose" : "imcms-time-picker__minute--choose");
+        hoveredTime.$selectedTimeUnit.addClass(hoveredTime.$selectedTimeUnit.hasClass("imcms-time-picker__hour")
+            ? "imcms-time-picker__hour--choose" : "imcms-time-picker__minute--choose");
+    }
+
+    function disHighlightConnectedOnMouseOut() {
+        var hoveredTime = getTimeHovereTime(this);
+        hoveredTime.$connectedTimeUnit.removeClass(hoveredTime.$connectedTimeUnit.hasClass("imcms-time-picker__hour")
+            ? "imcms-time-picker__hour--choose" : "imcms-time-picker__minute--choose");
+        hoveredTime.$selectedTimeUnit.removeClass(hoveredTime.$selectedTimeUnit.hasClass("imcms-time-picker__hour")
+            ? "imcms-time-picker__hour--choose" : "imcms-time-picker__minute--choose");
+    }
+
+    function pickTime() {
+        var $selectedTimeUnit = $(this),
+            linkIndex = $selectedTimeUnit.data("link-index"),
+            $pickerHourOrMinute = $selectedTimeUnit.parent(),
+            $connectedTimeUnit = $pickerHourOrMinute.siblings().find("[data-link-index='" + linkIndex + "']"),
+            $timeInput = $pickerHourOrMinute.parent().siblings().find(".imcms-current-time__input"),
+            time = [$selectedTimeUnit.text(), $connectedTimeUnit.text()];
+
+        if ($selectedTimeUnit.hasClass("imcms-time-picker__minute")) {
+            time = time.reverse();
+        }
+
+        $timeInput.val(time.join(":"));
+    }
+
+    var TimePicker = function ($timePickerContainer) {
+        var $timePicker = getTimePicker($timePickerContainer),
+            $inputTime = $timePicker.find(".imcms-current-time__input"),
+            $arrowButtons = $timePicker.find(".imcms-time-picker__button"),
+            mousewheelEvent = (/Firefox/i.test(navigator.userAgent)) ? "DOMMouseScroll" : "mousewheel";
+
+        $inputTime
+            .click(initTimePicker.bindArgs($timePicker, $inputTime))
+            .keydown(allowNumbersAndColons)
+            .on("input", initTimePicker.bindArgs($timePicker, $inputTime));
 
         $timePickerContainer.setTime = apiSetTime($timePickerContainer);
 
+        $arrowButtons
+            .click(arrowButtonsClick);
+
+        $timePicker.find(".imcms-time-picker__hours,.imcms-time-picker__minutes")
+            .bind(mousewheelEvent, minutesAndHoursContainersMouseWheel)
+            .end()
+            .find(".imcms-time-picker__minute,.imcms-time-picker__hour")
+            .click(pickTime)
+            .mouseenter(highlightConnecteOnMouseOver)
+            .mouseleave(disHighlightConnectedOnMouseOut);
+
+        $(document).click(function (e) {
+            var className = e.target.className;
+            if (className
+                && className.indexOf("imcms-time-picker") === -1
+                && className.indexOf("imcms-current-time") === -1) {
+                $timePicker
+                    .find(".imcms-time-picker__time")
+                    .css("display", "none");
+            }
+
+            if ($inputTime.hasClass("imcms-current-time__input--error")) {
+                var currentTime = getCurrentTimeObj();
+                $inputTime.val(currentTime.hours + ":" + currentTime.minutes);
+                $inputTime.removeClass("imcms-current-time__input--error")
+            } else {
+                var prevVal = $inputTime
+                        .val(),
+                    correctedVal = prevVal
+                        .split(":")
+                        .map(optionalAddZeroBeforeNumber)
+                        .join(":");
+
+                if (prevVal !== correctedVal) {
+                    $inputTime.val(correctedVal);
+                }
+            }
+        });
+
         return $timePickerContainer;
     };
-
-    $(document).click(closePicker);
 
     return TimePicker;
 });
