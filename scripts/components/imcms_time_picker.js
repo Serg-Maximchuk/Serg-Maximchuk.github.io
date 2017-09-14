@@ -24,12 +24,12 @@ Imcms.define("imcms-time-picker", ["imcms", "jquery"], function (imcms, $) {
             minutes = inputVal[1],
             hasErrorClass = false;
 
-        if (!hours || +hours > 23) {
+        if (!hours || +hours > 23 || hours.length > 2) {
             hours = currentHours;
             hasErrorClass = true;
         }
 
-        if (!minutes || +minutes > 59) {
+        if (!minutes || +minutes > 59 || minutes.length > 2) {
             minutes = currentMinutes;
             hasErrorClass = true;
         }
@@ -138,31 +138,22 @@ Imcms.define("imcms-time-picker", ["imcms", "jquery"], function (imcms, $) {
         return false;
     }
 
-    function getTimeHovereTime(element) {
-        var $selectedTimeUnit = $(element),
+    function optionalHighlight() {
+        var $selectedTimeUnit = $(this),
             linkIndex = $selectedTimeUnit.data("link-index"),
-            $connectedTimeUnit = $selectedTimeUnit.parent().siblings().find("[data-link-index='" + linkIndex + "']");
+            $connectedTimeUnit = $selectedTimeUnit.parent().siblings().find("[data-link-index='" + linkIndex + "']"),
+            selectedTimeUnitChooseClassName = getChooseClassName($selectedTimeUnit),
+            connectedTimeUnitChooseClassName = getChooseClassName($connectedTimeUnit);
 
-        return {
-            $selectedTimeUnit: $selectedTimeUnit,
-            $connectedTimeUnit: $connectedTimeUnit
-        };
-    }
+        $selectedTimeUnit.addClass(selectedTimeUnitChooseClassName)
+            .siblings().removeClass(selectedTimeUnitChooseClassName);
+        $connectedTimeUnit.addClass(connectedTimeUnitChooseClassName)
+            .siblings().removeClass(connectedTimeUnitChooseClassName);
 
-    function highlightConnecteOnMouseOver() {
-        var hoveredTime = getTimeHovereTime(this);
-        hoveredTime.$connectedTimeUnit.addClass(hoveredTime.$connectedTimeUnit.hasClass("imcms-time-picker__hour")
-            ? "imcms-time-picker__hour--choose" : "imcms-time-picker__minute--choose");
-        hoveredTime.$selectedTimeUnit.addClass(hoveredTime.$selectedTimeUnit.hasClass("imcms-time-picker__hour")
-            ? "imcms-time-picker__hour--choose" : "imcms-time-picker__minute--choose");
-    }
-
-    function disHighlightConnectedOnMouseOut() {
-        var hoveredTime = getTimeHovereTime(this);
-        hoveredTime.$connectedTimeUnit.removeClass(hoveredTime.$connectedTimeUnit.hasClass("imcms-time-picker__hour")
-            ? "imcms-time-picker__hour--choose" : "imcms-time-picker__minute--choose");
-        hoveredTime.$selectedTimeUnit.removeClass(hoveredTime.$selectedTimeUnit.hasClass("imcms-time-picker__hour")
-            ? "imcms-time-picker__hour--choose" : "imcms-time-picker__minute--choose");
+        function getChooseClassName($timeUnit) {
+            return $timeUnit.hasClass("imcms-time-picker__hour")
+                ? "imcms-time-picker__hour--choose" : "imcms-time-picker__minute--choose";
+        }
     }
 
     function pickTime() {
@@ -201,8 +192,8 @@ Imcms.define("imcms-time-picker", ["imcms", "jquery"], function (imcms, $) {
             .end()
             .find(".imcms-time-picker__minute,.imcms-time-picker__hour")
             .click(pickTime)
-            .mouseenter(highlightConnecteOnMouseOver)
-            .mouseleave(disHighlightConnectedOnMouseOut);
+            .mouseenter(optionalHighlight)
+            .mouseleave(optionalHighlight);
 
         $(document).click(function (e) {
             var className = e.target.className;
