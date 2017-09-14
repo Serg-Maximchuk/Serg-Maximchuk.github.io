@@ -142,17 +142,24 @@ Imcms.define("imcms-time-picker", ["imcms", "jquery"], function (imcms, $) {
         return false;
     }
 
-    function optionalHighlight() {
+    function optionalHighlight(e) {
         var $selectedTimeUnit = $(this),
             linkIndex = $selectedTimeUnit.data("link-index"),
             $connectedTimeUnit = $selectedTimeUnit.parent().siblings().find("[data-link-index='" + linkIndex + "']"),
+            isMouseLeaveEvent = e.type === "mouseleave",
             selectedTimeUnitChooseClassName = getChooseClassName($selectedTimeUnit),
             connectedTimeUnitChooseClassName = getChooseClassName($connectedTimeUnit);
 
-        $selectedTimeUnit.addClass(selectedTimeUnitChooseClassName)
-            .siblings().removeClass(selectedTimeUnitChooseClassName);
-        $connectedTimeUnit.addClass(connectedTimeUnitChooseClassName)
-            .siblings().removeClass(connectedTimeUnitChooseClassName);
+        if (!isMouseLeaveEvent) {
+            $selectedTimeUnit.addClass(selectedTimeUnitChooseClassName);
+            $connectedTimeUnit.addClass(connectedTimeUnitChooseClassName);
+        } else {
+            $selectedTimeUnit.removeClass(selectedTimeUnitChooseClassName);
+            $connectedTimeUnit.removeClass(connectedTimeUnitChooseClassName);
+        }
+
+        $selectedTimeUnit.siblings().removeClass(selectedTimeUnitChooseClassName);
+        $connectedTimeUnit.siblings().removeClass(connectedTimeUnitChooseClassName);
 
         function getChooseClassName($timeUnit) {
             return $timeUnit.hasClass("imcms-time-picker__hour")
