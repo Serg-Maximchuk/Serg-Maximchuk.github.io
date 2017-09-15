@@ -1,5 +1,5 @@
 Imcms.define("imcms-date-picker",
-    ["imcms", "imcms-calendar", "jquery", "jquery-mask"],
+    ["imcms", "imcms-calendar", "jquery"],
     function (imcms, imcmsCalendar, $) {
         var DATE_PICKER_CLASS = "imcms-date-picker",
             DATE_PICKER_CLASS_SELECTOR = ".imcms-date-picker"

@@ -7,6 +7,9 @@ Imcms = {
         imcms: []
     },
     requiresQueue: [],
+    browserInfo: {
+        isIE10: window.navigator.userAgent.indexOf("Mozilla/5.0 (compatible; MSIE 10.0;") === 0
+    },
     config: {
         basePath: "scripts",
         dependencies: {
@@ -16,18 +19,17 @@ Imcms = {
                     return $.noConflict(true);
                 }
             },
-            "jquery-mask": {
-                path: "./libs/jquery.mask.min.js",
-                moduleName: "jquery-mask"
-            },
             "tinyMCE": {
                 path: "//cdn.tinymce.com/4/tinymce.min.js",
                 moduleName: "tinyMCE",
                 onLoad: function () {
                     var tinyMCE = window.tinyMCE;
 
-                    delete window.tinyMCE;
-                    delete window.tinymce;
+                    // TinyMCE version for IE 10 plugins require "tinymce" in global scope
+                    if (!Imcms.browserInfo.isIE10) {
+                        delete window.tinyMCE;
+                        delete window.tinymce;
+                    }
 
                     return tinyMCE;
                 }
@@ -112,6 +114,9 @@ Imcms = {
         }
     }
 };
+if (Imcms.browserInfo.isIE10) {
+    Imcms.config.dependencies.tinyMCE.path = "//cdnjs.cloudflare.com/ajax/libs/tinymce/4.5.7/tinymce.min.js";
+}
 Imcms.modules = {
     imcms: Imcms // default module
 };

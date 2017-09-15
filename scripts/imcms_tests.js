@@ -69,13 +69,6 @@ Imcms.define("imcms-tests", ["imcms", "jquery"], function (imcms, $) {
             });
             return true;
         },
-        checkJqueryMaskModuleLoading: function () {
-            Imcms.require(["jquery", "jquery-mask"], function ($) {
-                console.assert($, "jQuery not loaded!");
-                console.assert($.fn.mask, "jQuery.mask not found!");
-            });
-            return true;
-        },
         checkIndependentDefine: function () {
             Imcms.define("imcms-independent-define", function () {
                 console.assert(arguments.length === 0, "Some wrong arguments applied! " + arguments);
