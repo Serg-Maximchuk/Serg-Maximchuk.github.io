@@ -221,7 +221,7 @@ Function.prototype.applyAsync = function (args, context) {
         }
         var ajaxRequest = createXMLHttpRequest();
         ajaxRequest.open("GET", url, async);
-        ajaxRequest.overrideMimeType('application/javascript');
+        ajaxRequest.overrideMimeType && ajaxRequest.overrideMimeType('application/javascript');
         ajaxRequest.onreadystatechange = function () {
             if (ajaxRequest.readyState !== XMLHttpRequest.DONE) {
                 return;
