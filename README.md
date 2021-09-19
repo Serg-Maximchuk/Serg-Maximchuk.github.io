@@ -53,6 +53,7 @@ Full stack CMS development.
 
 ### Languages:
 Ukrainian - native
+
 English - upper intermediate
 
 ### Education:
