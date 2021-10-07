@@ -62,7 +62,7 @@ English - upper intermediate
 ###### Specialist's degree.
 
 ##### Additional Information:
-A passionate developer with strong technical background and good programming experience. Making MVP's for fun. I create services that work. My goal is "to make things done".
+A passionate developer with strong technical background and good programming experience. Making MVP's for fun. I create services that work. Getting things done.
 
 ##### References:
 - https://serg-maximchuk.github.io/
