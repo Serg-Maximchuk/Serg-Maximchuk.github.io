@@ -96,13 +96,22 @@
 
         /*  _____________________________ */
 
+        /* title and location share one text baseline */
+        .basic-info.section {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+        }
+
         .basic-info.section .set {
-            margin-top: 6px;
+            margin-left: 0;
+        }
+
+        .basic-info.section > .clear {
+            display: none;
         }
 
         .basic-info .r {
-            float: right;
-            width: 58%;
             text-align: right;
         }
 
@@ -242,9 +251,11 @@
                 margin-left: 0;
             }
 
+            .basic-info.section {
+                display: block;
+            }
+
             .basic-info .r {
-                float: none;
-                width: auto;
                 text-align: left;
                 margin-bottom: 10px;
             }
