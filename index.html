@@ -287,6 +287,19 @@
                 padding: 0;
             }
 
+            .item {
+                margin-bottom: 14px;
+            }
+
+            .section {
+                margin-bottom: 10px;
+            }
+
+            /* short sections read badly when split */
+            .section-languages, .section-education, .section-additional, .section-references {
+                break-inside: avoid;
+            }
+
             /* long jobs may split across pages, but never right after a heading or inside a line */
             .item h3, .item .role, .item h4 {
                 break-after: avoid;
@@ -297,7 +310,7 @@
                 display: none;
             }
 
-            .role, li, .stack, .info p {
+            .role, li, .stack {
                 break-inside: avoid;
             }
         }
