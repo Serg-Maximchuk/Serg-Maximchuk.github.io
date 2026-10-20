@@ -1,8 +1,9 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <title>My CV</title>
-    <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-    <meta content="CV Maker - https://cvmkr.com/" http-equiv="Generator">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Serhii Maksymchuk — CV</title>
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700,500" rel="stylesheet" type="text/css">
     <style type="text/css">
 
@@ -72,26 +73,11 @@
             margin: 0px 0 30px 0;
         }
 
-        #title .c {
-            display: block;
-        }
-
         #title .email {
             font-size: 20px;
             font-weight: 100;
             display: block;
             line-height: 30px;
-        }
-
-        #credit {
-            margin-bottom: 20px;
-            font-size: 11px;
-            color: #999;
-            text-align: center;
-        }
-
-        #credit a {
-            color: #999;
         }
 
         p label {
@@ -109,32 +95,20 @@
         }
 
         /*  _____________________________ */
-        .rtl {
-            direction: rtl;
-        }
 
         .basic-info.section .set {
             margin-top: 6px;
-        }
-
-        .photo .basic-info .set {
-            float: none !important;
-            width: auto !important;
-        }
-
-        /*.section.basic-info {*/
-        /*    border: 0;*/
-        /*}*/
-
-        .basic-info .address {
-            width: 40%;
-            float: left;
         }
 
         .basic-info .r {
             float: right;
             width: 58%;
             text-align: right;
+        }
+
+        .basic-info .title {
+            width: auto;
+            white-space: nowrap;
         }
 
         .basic-info label {
@@ -162,20 +136,16 @@
             float: left;
             font-size: 25px;
             line-height: 32px;
-            font-weight: 500;
             word-wrap: break-word;
             width: 26%;
             margin-right: 30px;
             font-weight: 700;
         }
 
-        .location {
-            width: 50%;
-        }
-
+        /* not floated, so the column keeps its offset when split across PDF pages */
         .section .set {
-            float: left;
-            width: 68%;
+            margin-left: calc(26% + 30px);
+            display: flow-root;
         }
 
         .section .set h3 {
@@ -186,7 +156,7 @@
             display: block;
         }
 
-        .section h3 span.l, .section span.r {
+        .section h3 span.l, .section .role span.l, .section span.r {
             width: 49%;
             float: left;
         }
@@ -196,27 +166,22 @@
             text-align: right;
         }
 
-        .section-education .school,
-        .section-work .job_title {
+        .section-education .school {
             font-size: 100%;
             display: block;
             margin: 5px 0 5px 0;
         }
 
-        /* ___ photo ___ */
-        #photo {
-            width: 180px;
-            height: 180px;
-            overflow: hidden;
-            float: right;
-            border-radius: 100%;
-            vertical-align: middle;
+        /* previous role at the same company */
+        .section .role {
+            font-size: 110%;
+            font-weight: 700;
+            margin: 2px 0 0 0;
         }
 
-        #photo img {
-            width: 100%;
-            height: auto;
-            display: inline-block;
+        .section .stack {
+            margin-top: 8px;
+            font-style: italic;
         }
 
         .header {
@@ -225,34 +190,29 @@
             margin-bottom: 20px;
         }
 
-        .header.photo {
-            float: left;
-            width: 72%;
-        }
-
-        .header.photo #title {
-            text-align: left;
-        }
-
-        .header.photo .basic-info {
-            float: none;
-            padding: 0;
-        }
-
         @media screen and (max-width: 950px) {
             body {
                 background: #fff;
             }
 
             #main {
-                box-shadow: none;
-                padding: 0;
+                width: auto;
                 padding: 5px;
+            }
+        }
+
+        @media print {
+            body {
+                background: #fff;
+            }
+
+            .item, .role {
+                break-inside: avoid;
             }
         }
     </style>
 </head>
-<body class="lang-en ">
+<body>
 
 <div id="main">
     <div class="header">
@@ -266,11 +226,11 @@
             </span>
         </h1>
 
-        <div class="basic-info  section section-1436962303804">
-            <h2 class="title">Software Developer</h2>
+        <div class="basic-info section">
+            <h2 class="title">Senior Software Engineer / Tech Lead</h2>
             <div class="set">
                 <div class="r">
-                    <p class="phone"><label>Location<span class="colon">:</span></label>
+                    <p class="location"><label>Location<span class="colon">:</span></label>
                         <span class="value">Ukraine, Kyiv</span>
                     </p>
                 </div>
@@ -285,15 +245,15 @@
                     <span class="info">
                         <ul>
                             <li>Software architecture, design, implementation and delivery</li>
+                            <li>AI-powered products and LLM assistants</li>
                             <li>Crypto-trading platforms development and support</li>
-                            <li>Digital Finances</li>
                         </ul>
                     </span>
                 </div>
             </div>
             <div class="clear"></div>
         </div>
-        <div class="section section-1520895985558">
+        <div class="section section-skills">
             <h2 class="title">Technical skills</h2>
             <div class="set">
                 <div class="item">
@@ -306,7 +266,7 @@
                         <li>CI/CD: gitlab CI/CD, github actions</li>
                         <li>Docker, terraform</li>
                         <li>Microservices, kafka, design patterns, SOLID</li>
-                        <li>OpenAI API</li>
+                        <li>AI: Spring AI, OpenAI API</li>
                     </ul></span>
                 </div>
             </div>
@@ -318,7 +278,7 @@
                 <div class="item">
                     <h3>
                         <span class="company l">Software Engineer | Co-Founder</span>
-                        <span class="date r">Aug 2025 - Present</span>
+                        <span class="date r">Aug 2025 – Present</span>
                     </h3>
                     <h4>
                         <span>Spilki</span>
@@ -326,8 +286,12 @@
                     <div class="clear"></div>
                     <div class="info">
                         <div>
-                            Spilki – AI Direct Manager<br/><br/>
-                            Kotlin, Typescript, AWS, OpenAI API<br/><br/>
+                            Spilki – AI Direct Manager for small businesses: an assistant that answers customers
+                            in Instagram, Telegram and a website widget 24/7, takes orders and books appointments
+                            directly in the business's CRM.<br/>
+                            It learns from the business's price lists and brand guidelines, speaks the customer's
+                            language and tracks every conversation as a case with conversion analytics.
+                            <div class="stack">Kotlin, TypeScript, Terraform, AWS, Spring AI, OpenAI API</div>
                             <a href="https://spilki.app">https://spilki.app</a>
                         </div>
                     </div>
@@ -335,7 +299,7 @@
                 <div class="item">
                     <h3>
                         <span class="company l">Software Engineer | Founder</span>
-                        <span class="date r">Aug 2023 - Present</span>
+                        <span class="date r">Aug 2023 – Present</span>
                     </h3>
                     <h4>
                         <span>ColdWallet</span>
@@ -347,6 +311,7 @@
                             React+Typescript application.<br/>
                             CWT token on Ethereum and BSC.<br/>
                             Front-end as a Service (FaaS): all code runs locally on your machine.<br/>
+                            Your data is encrypted and never leaves your device.<br/>
                             Integrations with MetaMask, Binance, OKX, Monobank and top exchanges via CCXT.<br/>
                             Manual asset entry for any currency.<br/>
                             Ready-to-use MVP at: <a href="https://cold-wallet.app">https://cold-wallet.app</a>
@@ -356,8 +321,13 @@
                 <div class="item">
                     <h3>
                         <span class="company l">Lead Java Developer</span>
-                        <span class="date r">Nov 2018 — Jul 2025</span>
+                        <span class="date r">Jan 2020 – Jul 2025</span>
                     </h3>
+                    <div class="role">
+                        <span class="l">Senior Java Developer</span>
+                        <span class="date r">Nov 2018 – Jan 2020</span>
+                        <div class="clear"></div>
+                    </div>
                     <h4>
                         <span>Prof-IT Blockchain</span>
                     </h4>
@@ -379,35 +349,46 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <h2 class="title"></h2>
-            <div class="set">
                 <div class="item">
-                    <h3><span class="company l">Software Developer</span>
-                        <span class="date r">Oct 2015 — Oct 2018</span>
+                    <h3>
+                        <span class="company l">Full Stack Developer</span>
+                        <span class="date r">Apr 2017 – Oct 2018</span>
                     </h3>
-                    <h4>Ubrainians</h4>
+                    <div class="role">
+                        <span class="l">Junior Software Engineer</span>
+                        <span class="date r">Oct 2015 – Apr 2017</span>
+                        <div class="clear"></div>
+                    </div>
+                    <h4>
+                        <span>Ubrainians</span>
+                    </h4>
                     <div class="clear"></div>
                     <div class="info">
-                        <div>Full stack CMS development.</div>
+                        <div>Full stack CMS development (open source:
+                            <a href="https://github.com/imCodePartnerAB/imcms">github.com/imCodePartnerAB/imcms</a>).
+                        </div>
                         <div>
                             <ul>
-                                <li>Participated in client and server side development</li>
-                                <li>Redesigned old server side</li>
-                                <li>Redesigned DB schema</li>
-                                <li>Redesigned full-text search feature using Solr</li>
+                                <li>Participated in both client and server side development</li>
+                                <li>Redesigned old server side, DB schema and full-text search (Solr)</li>
                                 <li>Moved from Servlets to Spring MVC</li>
                                 <li>Added test frameworks and started doing TDD</li>
+                                <li>Designed and implemented asynchronous module loader (AMD) in pure JS</li>
+                                <li>Implemented new client almost from scratch using BEM, with a server-side
+                                    presentation layer for it
+                                </li>
+                                <li>Added WYSIWYG text editor</li>
                             </ul>
-                            <span><br></span>
+                            <div class="stack">Java, Spring (MVC, Data, AOP), Hibernate, Solr, MySQL, JUnit,
+                                Mockito, JS
+                            </div>
                         </div>
                     </div>
-                    <div class="clear"></div>
                 </div>
             </div>
             <div class="clear"></div>
         </div>
-        <div class="section section-1434564853832">
+        <div class="section section-languages">
             <h2 class="title">Languages</h2>
             <div class="set">
                 <div class="item">
@@ -423,25 +404,21 @@
             <h2 class="title">Education</h2>
             <div class="set">
                 <div class="item">
-                    <h3><span class="course l">NTUU "KPI"</span>
-                        <span class="date r"></span>
-                    </h3>
+                    <h3><span class="course l">NTUU "KPI"</span></h3>
                     <div class="clear"></div>
                     <span class="school">Automation Systems Engineer</span>
                     <div class="info">Specialist's degree.</div>
-                    <span class="clear"> </span>
                 </div>
             </div>
             <div class="clear"></div>
         </div>
-        <div class="section section-1287593158087">
+        <div class="section section-additional">
             <h2 class="title">Additional Information</h2>
             <div class="set">
                 <div class="item">
                     <span class="info">
-                        <span>A passionate developer with a strong technical background
-                            and solid programming experience. I create services that work and build MVPs for fun.
-                        </span>
+                        A passionate developer with a strong technical background
+                        and solid programming experience. I create services that work and build MVPs for fun.
                     </span>
                 </div>
             </div>
@@ -451,23 +428,15 @@
             <h2 class="title">References</h2>
             <div class="set">
                 <div class="item">
-                    <span class="info">
-                        <div>
-                        <strong>
-                        <a href="https://serg-maximchuk.github.io/">https://serg-maximchuk.github.io/</a>
-                        </strong>
-                        </div>
-                        <strong>
-                            <a href="https://github.com/serg-maximchuk">https://github.com/serg-maximchuk</a>
-                        </strong>
-                        <br>
-                        <strong>
-                            <a href="https://www.linkedin.com/in/serhii-maksymchuk">https://www.linkedin.com/in/serhii-maksymchuk</a>
-                        </strong>
-                        <div>
-                            <br>
-                        </div>
-                    </span>
+                    <div>
+                        <strong><a href="https://serg-maximchuk.github.io/">https://serg-maximchuk.github.io/</a></strong>
+                    </div>
+                    <div>
+                        <strong><a href="https://github.com/serg-maximchuk">https://github.com/serg-maximchuk</a></strong>
+                    </div>
+                    <div>
+                        <strong><a href="https://www.linkedin.com/in/serhii-maksymchuk">https://www.linkedin.com/in/serhii-maksymchuk</a></strong>
+                    </div>
                 </div>
             </div>
             <div class="clear"></div>
