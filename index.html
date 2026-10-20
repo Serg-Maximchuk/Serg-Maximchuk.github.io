@@ -271,12 +271,33 @@
             }
         }
 
+        @page {
+            margin: 12mm;
+        }
+
         @media print {
+            /* slightly denser type keeps the CV on two pages */
             body {
                 background: #fff;
+                font-size: 14px;
+                line-height: 21px;
             }
 
-            .item, .role {
+            #main {
+                padding: 0;
+            }
+
+            /* long jobs may split across pages, but never right after a heading or inside a line */
+            .item h3, .item .role, .item h4 {
+                break-after: avoid;
+            }
+
+            /* an empty spacer between a heading and its text would give the page a place to break */
+            .item > .clear {
+                display: none;
+            }
+
+            .role, li, .stack, .info p {
                 break-inside: avoid;
             }
         }
