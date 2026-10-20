@@ -506,5 +506,11 @@
         </div>
     </div>
 </div>
+<script>
+    // browsers use the page title as the default file name for "Save as PDF"
+    var pageTitle = document.title;
+    window.addEventListener('beforeprint', function () { document.title = 'cv_serhii_maksymchuk'; });
+    window.addEventListener('afterprint', function () { document.title = pageTitle; });
+</script>
 </body>
 </html>
